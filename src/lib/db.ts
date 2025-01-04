@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { supabase } from '@/integrations/supabase/client';
 import type { CaseStudy } from '@/types/case-study';
 
 export async function getCaseStudies() {
