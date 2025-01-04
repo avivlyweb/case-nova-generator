@@ -11,7 +11,7 @@ interface CaseAnalysisProps {
     analysis?: string;
     sections?: Array<{ title: string; content: string }>;
     references?: string;
-    icf_codes?: string;
+    icf_codes?: string[] | string;
   };
 }
 
