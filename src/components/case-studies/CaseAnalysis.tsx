@@ -4,6 +4,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, Brain, FileText, List, Stethoscope, Target, Pill } from "lucide-react";
 import ReactMarkdown from 'react-markdown';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface CaseAnalysisProps {
   analysis: {
@@ -32,16 +40,49 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
     }
   };
 
+  const formatTableContent = (content: string) => {
+    if (!content.includes('|')) return content;
+
+    const rows = content.trim().split('\n');
+    const headers = rows[0].split('|').filter(cell => cell.trim());
+    const data = rows.slice(2).map(row => row.split('|').filter(cell => cell.trim()));
+
+    return (
+      <Table>
+        <TableHeader>
+          <TableRow>
+            {headers.map((header, index) => (
+              <TableHead key={index}>{header.trim()}</TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.map((row, rowIndex) => (
+            <TableRow key={rowIndex}>
+              {row.map((cell, cellIndex) => (
+                <TableCell key={cellIndex}>{cell.trim()}</TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    );
+  };
+
   const MarkdownContent = ({ content }: { content: string | null | undefined }) => {
-    // Convert to string and check if it's empty
     const contentString = String(content || '');
     if (!contentString.trim()) return null;
+
+    // Check if content contains table markers
+    if (contentString.includes('|') && contentString.includes('---')) {
+      return formatTableContent(contentString);
+    }
     
     return (
       <ReactMarkdown
         components={{
           p: ({ children }) => (
-            <p className="text-base leading-relaxed mb-4">{children}</p>
+            <p className="text-base leading-relaxed mb-4 text-gray-700 dark:text-gray-300">{children}</p>
           ),
           a: ({ href, children }) => (
             <a
@@ -59,13 +100,22 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
             </strong>
           ),
           ul: ({ children }) => (
-            <ul className="list-disc pl-6 mb-4 space-y-2">{children}</ul>
+            <ul className="list-disc pl-6 mb-4 space-y-2 text-gray-700 dark:text-gray-300">{children}</ul>
           ),
           ol: ({ children }) => (
-            <ol className="list-decimal pl-6 mb-4 space-y-2">{children}</ol>
+            <ol className="list-decimal pl-6 mb-4 space-y-2 text-gray-700 dark:text-gray-300">{children}</ol>
           ),
           li: ({ children }) => (
             <li className="text-base leading-relaxed">{children}</li>
+          ),
+          h1: ({ children }) => (
+            <h1 className="text-2xl font-bold mb-4 text-primary-900 dark:text-primary-100">{children}</h1>
+          ),
+          h2: ({ children }) => (
+            <h2 className="text-xl font-semibold mb-3 text-primary-800 dark:text-primary-200">{children}</h2>
+          ),
+          h3: ({ children }) => (
+            <h3 className="text-lg font-semibold mb-2 text-primary-700 dark:text-primary-300">{children}</h3>
           ),
         }}
       >
@@ -90,10 +140,10 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
       </TabsList>
 
       <TabsContent value="overview">
-        <Card>
+        <Card className="bg-white dark:bg-gray-800 shadow-sm">
           <CardContent className="pt-6">
             <div className="prose prose-slate dark:prose-invert max-w-none">
-              <h3 className="text-xl font-semibold mb-4">AI Analysis Summary</h3>
+              <h3 className="text-xl font-semibold mb-4 text-primary-900 dark:text-primary-100">AI Analysis Summary</h3>
               {analysis.analysis && <MarkdownContent content={analysis.analysis} />}
             </div>
           </CardContent>
@@ -105,11 +155,11 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
           <ScrollArea className="h-[600px] rounded-md">
             <div className="space-y-8 p-6">
               {analysis.sections.map((section, index) => (
-                <Card key={index} className="overflow-hidden">
+                <Card key={index} className="overflow-hidden bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow">
                   <CardContent className="pt-6">
                     <div className="flex items-center gap-2 mb-4">
                       {getSectionIcon(section.title)}
-                      <h3 className="text-xl font-semibold">{section.title}</h3>
+                      <h3 className="text-xl font-semibold text-primary-900 dark:text-primary-100">{section.title}</h3>
                     </div>
                     <div className="prose prose-slate dark:prose-invert max-w-none">
                       <MarkdownContent content={section.content} />
@@ -119,11 +169,11 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
               ))}
 
               {analysis.references && (
-                <Card>
+                <Card className="bg-white dark:bg-gray-800 shadow-sm">
                   <CardContent className="pt-6">
                     <div className="flex items-center gap-2 mb-4">
                       <BookOpen className="h-5 w-5" />
-                      <h3 className="text-xl font-semibold">Evidence-Based References</h3>
+                      <h3 className="text-xl font-semibold text-primary-900 dark:text-primary-100">Evidence-Based References</h3>
                     </div>
                     <div className="prose prose-slate dark:prose-invert max-w-none">
                       <MarkdownContent content={analysis.references} />
@@ -133,15 +183,15 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
               )}
 
               {analysis.icf_codes && (
-                <Card>
+                <Card className="bg-white dark:bg-gray-800 shadow-sm">
                   <CardContent className="pt-6">
                     <div className="flex items-center gap-2 mb-4">
                       <List className="h-5 w-5" />
-                      <h3 className="text-xl font-semibold">ICF Codes</h3>
+                      <h3 className="text-xl font-semibold text-primary-900 dark:text-primary-100">ICF Codes</h3>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {analysis.icf_codes.split('\n').map((code, index) => (
-                        <Badge key={index} variant="secondary">
+                        <Badge key={index} variant="secondary" className="text-sm">
                           {code.trim()}
                         </Badge>
                       ))}

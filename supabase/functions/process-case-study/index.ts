@@ -59,27 +59,28 @@ serve(async (req) => {
     console.log('Processing case study:', caseStudy.id);
 
     if (action === 'analyze') {
-      const completion = await groq.chat.completions.create({
-        messages: [
-          {
-            role: "system",
-            content: "You are a medical assistant analyzing case studies. Provide insights about the case in a concise, professional manner. Focus on key medical observations, potential implications, and suggested areas for further investigation."
-          },
-          {
-            role: "user",
-            content: `Please analyze this medical case study:
-            Patient: ${caseStudy.patient_name}
-            Age: ${caseStudy.age}
-            Gender: ${caseStudy.gender}
-            Medical History: ${caseStudy.medical_history || 'None provided'}
-            Presenting Complaint: ${caseStudy.presenting_complaint || 'None provided'}
-            Condition: ${caseStudy.condition || 'Not specified'}`
-          }
-        ],
-        model: "mixtral-8x7b-32768",
-        temperature: 0.5,
-        max_tokens: 500,
-      });
+
+const completion = await groq.chat.completions.create({
+  messages: [
+    {
+      role: "system",
+      content: "You are a medical assistant analyzing case studies. Provide insights about the case in a concise, professional manner. Focus on key medical observations, potential implications, and suggested areas for further investigation."
+    },
+    {
+      role: "user",
+      content: `Please analyze this medical case study:
+      Patient: ${caseStudy.patient_name}
+      Age: ${caseStudy.age}
+      Gender: ${caseStudy.gender}
+      Medical History: ${caseStudy.medical_history || 'None provided'}
+      Presenting Complaint: ${caseStudy.presenting_complaint || 'None provided'}
+      Condition: ${caseStudy.condition || 'Not specified'}`
+    }
+  ],
+  model: "gemma2-9b-it",
+  temperature: 0.5,
+  max_tokens: 500,
+});
 
       return new Response(
         JSON.stringify({ 
@@ -141,3 +142,4 @@ serve(async (req) => {
     );
   }
 });
+
