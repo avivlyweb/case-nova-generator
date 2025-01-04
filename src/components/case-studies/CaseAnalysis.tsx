@@ -23,11 +23,19 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
 
   // Process generated sections to extract step number and title
   const formattedSections = analysis.generated_sections 
-    ? Object.entries(analysis.generated_sections).map(([title, content]) => {
-        const stepMatch = title.match(/Step (\d+):(.*)/);
+    ? Object.entries(analysis.generated_sections).map(([key, content]) => {
+        // Extract the section title from the key (e.g., "Step 1: Patient Introduction")
+        const titleMatch = key.match(/Step \d+: (.*)/);
+        const title = titleMatch ? titleMatch[1].trim() : key;
+        
+        // Clean up the content by removing any markdown formatting issues
+        const cleanContent = typeof content === 'string' 
+          ? content.replace(/\\n/g, '\n').trim()
+          : JSON.stringify(content);
+
         return {
-          title: stepMatch ? stepMatch[2].trim() : title,
-          content: content
+          title,
+          content: cleanContent
         };
       })
     : [];
@@ -37,6 +45,9 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
     ...(analysis.sections || []),
     ...formattedSections
   ];
+
+  console.log('Formatted Sections:', formattedSections);
+  console.log('All Sections:', allSections);
 
   return (
     <Tabs defaultValue="overview" className="w-full mt-6">
