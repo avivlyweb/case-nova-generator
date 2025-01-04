@@ -21,12 +21,15 @@ interface CaseAnalysisProps {
 const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
   if (!analysis) return null;
 
-  // Map the generated sections to the format expected by SectionCard
+  // Process generated sections to extract step number and title
   const formattedSections = analysis.generated_sections 
-    ? Object.entries(analysis.generated_sections).map(([title, content]) => ({
-        title: title.split('Step')[1]?.split(':')[1]?.trim() || title,
-        content: content
-      }))
+    ? Object.entries(analysis.generated_sections).map(([title, content]) => {
+        const stepMatch = title.match(/Step (\d+):(.*)/);
+        return {
+          title: stepMatch ? stepMatch[2].trim() : title,
+          content: content
+        };
+      })
     : [];
 
   // Combine with any existing sections
