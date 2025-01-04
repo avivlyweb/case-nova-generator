@@ -2,7 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Brain, FileText, List, Stethoscope, Target, Pills } from "lucide-react";
+import { BookOpen, Brain, FileText, List, Stethoscope, Target, Pill } from "lucide-react";
 
 interface CaseAnalysisProps {
   analysis: {
@@ -25,7 +25,7 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
       case "intervention plan":
         return <Target className="h-5 w-5" />;
       case "medications":
-        return <Pills className="h-5 w-5" />;
+        return <Pill className="h-5 w-5" />;
       default:
         return <List className="h-5 w-5" />;
     }
