@@ -7,6 +7,8 @@ import { generateSection } from './utils/sectionGenerator.ts'
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Content-Type': 'application/json'
 }
 
 const sections = [
@@ -45,18 +47,35 @@ const sections = [
 ];
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { 
+      status: 204, 
+      headers: corsHeaders 
+    });
   }
 
   try {
+    if (!req.body) {
+      throw new Error('Request body is required');
+    }
+
     const { caseStudy, action = 'generate' } = await req.json();
     
+    if (!caseStudy) {
+      throw new Error('Case study data is required');
+    }
+
     const groq = new Groq({
       apiKey: Deno.env.get('GROQ_API_KEY')
     });
 
+    if (!groq.apiKey) {
+      throw new Error('GROQ_API_KEY is not configured');
+    }
+
     console.log('Processing case study:', caseStudy.id);
+    console.log('Action:', action);
 
     if (action === 'analyze') {
       console.log('Using gemma2-9b-it model for analysis');
@@ -90,11 +109,11 @@ serve(async (req) => {
           analysis: completion.choices[0]?.message?.content || 'No analysis generated',
           success: true 
         }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { headers: corsHeaders }
       );
     }
 
-    // Extract medical entities and continue with generation
+    // Extract medical entities
     const textForEntityExtraction = `
       ${caseStudy.condition || ''}
       ${caseStudy.medical_history || ''}
@@ -109,8 +128,12 @@ serve(async (req) => {
 
     // Search PubMed for relevant articles
     const pubmedApiKey = Deno.env.get('PUBMED_API_KEY');
+    if (!pubmedApiKey) {
+      throw new Error('PUBMED_API_KEY is not configured');
+    }
+
     const searchQuery = `${caseStudy.condition} physiotherapy treatment`;
-    const pubmedArticles = await searchPubMed(searchQuery, pubmedApiKey || '');
+    const pubmedArticles = await searchPubMed(searchQuery, pubmedApiKey);
     const references = pubmedArticles.map(formatReference);
 
     console.log('Generated PubMed references:', references);
@@ -133,17 +156,23 @@ serve(async (req) => {
       JSON.stringify({
         success: true,
         sections: generatedSections,
-        references,
+        references: references,
         medical_entities: medicalEntities,
       }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { headers: corsHeaders }
     );
 
   } catch (error) {
     console.error('Error processing case study:', error);
     return new Response(
-      JSON.stringify({ error: error.message, success: false }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+      JSON.stringify({ 
+        error: error.message, 
+        success: false 
+      }),
+      { 
+        headers: corsHeaders,
+        status: 500 
+      }
     );
   }
 });
