@@ -4,6 +4,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, Brain, FileText, List, Stethoscope, Target, Pill } from "lucide-react";
 import ReactMarkdown from 'react-markdown';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface CaseAnalysisProps {
   analysis: {
@@ -33,7 +41,6 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
   };
 
   const MarkdownContent = ({ content }: { content: string | null | undefined }) => {
-    // Convert to string and check if it's empty
     const contentString = String(content || '');
     if (!contentString.trim()) return null;
     
@@ -41,14 +48,14 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
       <ReactMarkdown
         components={{
           p: ({ children }) => (
-            <p className="text-base leading-relaxed mb-4">{children}</p>
+            <p className="text-base leading-relaxed mb-4 text-foreground">{children}</p>
           ),
           a: ({ href, children }) => (
             <a
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary-600 hover:text-primary-700 underline"
+              className="text-primary-600 hover:text-primary-700 underline transition-colors"
             >
               {children}
             </a>
@@ -67,6 +74,18 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
           li: ({ children }) => (
             <li className="text-base leading-relaxed">{children}</li>
           ),
+          table: ({ children }) => (
+            <div className="my-4 rounded-lg border bg-card">
+              <Table>{children}</Table>
+            </div>
+          ),
+          thead: ({ children }) => <TableHeader>{children}</TableHeader>,
+          tbody: ({ children }) => <TableBody>{children}</TableBody>,
+          tr: ({ children }) => <TableRow>{children}</TableRow>,
+          th: ({ children }) => (
+            <TableHead className="font-semibold">{children}</TableHead>
+          ),
+          td: ({ children }) => <TableCell>{children}</TableCell>,
         }}
       >
         {contentString}
@@ -90,10 +109,10 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
       </TabsList>
 
       <TabsContent value="overview">
-        <Card>
+        <Card className="bg-card">
           <CardContent className="pt-6">
             <div className="prose prose-slate dark:prose-invert max-w-none">
-              <h3 className="text-xl font-semibold mb-4">AI Analysis Summary</h3>
+              <h3 className="text-xl font-semibold mb-4 text-primary">AI Analysis Summary</h3>
               {analysis.analysis && <MarkdownContent content={analysis.analysis} />}
             </div>
           </CardContent>
@@ -105,11 +124,11 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
           <ScrollArea className="h-[600px] rounded-md">
             <div className="space-y-8 p-6">
               {analysis.sections.map((section, index) => (
-                <Card key={index} className="overflow-hidden">
+                <Card key={index} className="overflow-hidden bg-card">
                   <CardContent className="pt-6">
                     <div className="flex items-center gap-2 mb-4">
                       {getSectionIcon(section.title)}
-                      <h3 className="text-xl font-semibold">{section.title}</h3>
+                      <h3 className="text-xl font-semibold text-primary">{section.title}</h3>
                     </div>
                     <div className="prose prose-slate dark:prose-invert max-w-none">
                       <MarkdownContent content={section.content} />
@@ -119,11 +138,11 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
               ))}
 
               {analysis.references && (
-                <Card>
+                <Card className="bg-card">
                   <CardContent className="pt-6">
                     <div className="flex items-center gap-2 mb-4">
                       <BookOpen className="h-5 w-5" />
-                      <h3 className="text-xl font-semibold">Evidence-Based References</h3>
+                      <h3 className="text-xl font-semibold text-primary">Evidence-Based References</h3>
                     </div>
                     <div className="prose prose-slate dark:prose-invert max-w-none">
                       <MarkdownContent content={analysis.references} />
@@ -133,15 +152,15 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
               )}
 
               {analysis.icf_codes && (
-                <Card>
+                <Card className="bg-card">
                   <CardContent className="pt-6">
                     <div className="flex items-center gap-2 mb-4">
                       <List className="h-5 w-5" />
-                      <h3 className="text-xl font-semibold">ICF Codes</h3>
+                      <h3 className="text-xl font-semibold text-primary">ICF Codes</h3>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {analysis.icf_codes.split('\n').map((code, index) => (
-                        <Badge key={index} variant="secondary">
+                        <Badge key={index} variant="secondary" className="bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-100">
                           {code.trim()}
                         </Badge>
                       ))}
