@@ -13,54 +13,81 @@ export type Database = {
         Row: {
           adl_problem: string | null
           age: number
+          ai_analysis: string | null
           ai_role: string | null
+          assessment_findings: string | null
           comorbidities: string | null
           condition: string | null
           created_at: string
           date: string
           gender: string
+          generated_sections: Json | null
+          icf_codes: Json | null
           id: string
+          intervention_plan: string | null
+          medical_entities: Json | null
           medical_history: string | null
+          medications: Json | null
           patient_background: string | null
           patient_name: string
           presenting_complaint: string | null
           psychosocial_factors: string | null
+          reference_list: string | null
+          smart_goals: Json | null
           specialization: string | null
           user_id: string | null
         }
         Insert: {
           adl_problem?: string | null
           age: number
+          ai_analysis?: string | null
           ai_role?: string | null
+          assessment_findings?: string | null
           comorbidities?: string | null
           condition?: string | null
           created_at?: string
           date: string
           gender: string
+          generated_sections?: Json | null
+          icf_codes?: Json | null
           id?: string
+          intervention_plan?: string | null
+          medical_entities?: Json | null
           medical_history?: string | null
+          medications?: Json | null
           patient_background?: string | null
           patient_name: string
           presenting_complaint?: string | null
           psychosocial_factors?: string | null
+          reference_list?: string | null
+          smart_goals?: Json | null
           specialization?: string | null
           user_id?: string | null
         }
         Update: {
           adl_problem?: string | null
           age?: number
+          ai_analysis?: string | null
           ai_role?: string | null
+          assessment_findings?: string | null
           comorbidities?: string | null
           condition?: string | null
           created_at?: string
           date?: string
           gender?: string
+          generated_sections?: Json | null
+          icf_codes?: Json | null
           id?: string
+          intervention_plan?: string | null
+          medical_entities?: Json | null
           medical_history?: string | null
+          medications?: Json | null
           patient_background?: string | null
           patient_name?: string
           presenting_complaint?: string | null
           psychosocial_factors?: string | null
+          reference_list?: string | null
+          smart_goals?: Json | null
           specialization?: string | null
           user_id?: string | null
         }
