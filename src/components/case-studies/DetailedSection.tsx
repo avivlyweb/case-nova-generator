@@ -23,6 +23,11 @@ const DetailedSection = ({ title, content }: DetailedSectionProps) => {
     }
   };
 
+  // Ensure content is a string and handle special formatting for references
+  const formattedContent = title.toLowerCase() === "evidence-based references" 
+    ? content.split(',').map(ref => `- ${ref.trim()}`).join('\n')
+    : content;
+
   return (
     <Card className="overflow-hidden bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-all duration-200">
       <CardContent className="pt-6">
@@ -47,7 +52,7 @@ const DetailedSection = ({ title, content }: DetailedSectionProps) => {
               ),
             }}
           >
-            {content}
+            {formattedContent}
           </ReactMarkdown>
         </div>
       </CardContent>
