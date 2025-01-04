@@ -3,6 +3,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, Brain, FileText, List, Stethoscope, Target, Pill } from "lucide-react";
+import ReactMarkdown from 'react-markdown';
 
 interface CaseAnalysisProps {
   analysis: {
@@ -31,6 +32,42 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
     }
   };
 
+  const MarkdownContent = ({ content }: { content: string }) => (
+    <ReactMarkdown
+      components={{
+        p: ({ children }) => (
+          <p className="text-base leading-relaxed mb-4">{children}</p>
+        ),
+        a: ({ href, children }) => (
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary-600 hover:text-primary-700 underline"
+          >
+            {children}
+          </a>
+        ),
+        strong: ({ children }) => (
+          <strong className="font-semibold text-primary-900 dark:text-primary-100">
+            {children}
+          </strong>
+        ),
+        ul: ({ children }) => (
+          <ul className="list-disc pl-6 mb-4 space-y-2">{children}</ul>
+        ),
+        ol: ({ children }) => (
+          <ol className="list-decimal pl-6 mb-4 space-y-2">{children}</ol>
+        ),
+        li: ({ children }) => (
+          <li className="text-base leading-relaxed">{children}</li>
+        ),
+      }}
+    >
+      {content}
+    </ReactMarkdown>
+  );
+
   return (
     <Tabs defaultValue="overview" className="w-full mt-6">
       <TabsList className="w-full justify-start">
@@ -51,9 +88,7 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
           <CardContent className="pt-6">
             <div className="prose prose-slate dark:prose-invert max-w-none">
               <h3 className="text-xl font-semibold mb-4">AI Analysis Summary</h3>
-              <p className="text-base leading-relaxed whitespace-pre-wrap">
-                {analysis.analysis}
-              </p>
+              <MarkdownContent content={analysis.analysis || ''} />
             </div>
           </CardContent>
         </Card>
@@ -71,9 +106,7 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
                       <h3 className="text-xl font-semibold">{section.title}</h3>
                     </div>
                     <div className="prose prose-slate dark:prose-invert max-w-none">
-                      <p className="text-base leading-relaxed whitespace-pre-wrap">
-                        {section.content}
-                      </p>
+                      <MarkdownContent content={section.content} />
                     </div>
                   </CardContent>
                 </Card>
@@ -87,9 +120,7 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
                       <h3 className="text-xl font-semibold">Evidence-Based References</h3>
                     </div>
                     <div className="prose prose-slate dark:prose-invert max-w-none">
-                      <p className="text-base leading-relaxed whitespace-pre-wrap">
-                        {analysis.references}
-                      </p>
+                      <MarkdownContent content={analysis.references} />
                     </div>
                   </CardContent>
                 </Card>
