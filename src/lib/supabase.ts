@@ -1,7 +1,14 @@
 import { createClient } from '@supabase/supabase-js'
 
-// These will be provided by the user through the Supabase integration
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+if (!import.meta.env.VITE_SUPABASE_URL) {
+  throw new Error('VITE_SUPABASE_URL is not set. Please connect to Supabase through the Lovable interface.');
+}
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+if (!import.meta.env.VITE_SUPABASE_ANON_KEY) {
+  throw new Error('VITE_SUPABASE_ANON_KEY is not set. Please connect to Supabase through the Lovable interface.');
+}
+
+export const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
