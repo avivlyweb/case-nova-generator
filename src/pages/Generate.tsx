@@ -14,59 +14,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { createCaseStudy } from "@/lib/db";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const Generate = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-
-  const sections = [
-    {
-      title: "Patient Introduction",
-      description: "Collect comprehensive personal and medical history, including demographics, medical history, presenting complaint, contextual information, psychosocial factors, standardized screening tools, and PROMs."
-    },
-    {
-      title: "Interview and Problem List",
-      description: "Conduct a detailed clinical interview to identify all pertinent patient issues and concerns. Include specific details from the anamnesis and multidisciplinary insights."
-    },
-    {
-      title: "Assessment Strategy",
-      description: "Elaborate on the assessment strategy ensuring it aligns with the latest clinical standards and guidelines."
-    },
-    {
-      title: "Assessment Findings",
-      description: "Present the findings clearly, prioritizing clarity and clinical utility in the data presentation."
-    },
-    {
-      title: "Goals/Actions",
-      description: "Establish at least 2 short and 2 long SMART goals that are patient-centered."
-    },
-    {
-      title: "Intervention Plan",
-      description: "Describe the Physiotherapy intervention plan in detail, encompassing therapeutic and multidisciplinary dimensions."
-    },
-    {
-      title: "Reassessment",
-      description: "Plan for systematic reassessment to gauge therapy effectiveness."
-    },
-    {
-      title: "Explanation and Justification",
-      description: "Provide thorough justifications for each choice, supported by current research and guidelines."
-    },
-    {
-      title: "Reference List",
-      description: "List all references from 2019 onwards in APA format."
-    },
-    {
-      title: "Medication Information",
-      description: "Provide a list of medications prescribed, including their purposes."
-    },
-    {
-      title: "ICF Classification",
-      description: "Assign relevant ICF codes based on the International Classification of Functioning, Disability and Health."
-    }
-  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -142,25 +94,25 @@ const Generate = () => {
               </div>
             </div>
 
-            <Accordion type="single" collapsible className="w-full">
-              {sections.map((section, index) => (
-                <AccordionItem key={index} value={`section-${index}`}>
-                  <AccordionTrigger className="text-left">
-                    {section.title}
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="space-y-4">
-                      <p className="text-sm text-muted-foreground">{section.description}</p>
-                      <Textarea
-                        name={`section-${index}`}
-                        placeholder={`Enter ${section.title.toLowerCase()} details`}
-                        className="min-h-[100px]"
-                      />
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+            <div className="space-y-2">
+              <Label htmlFor="history">Medical History</Label>
+              <Textarea
+                id="history"
+                name="history"
+                placeholder="Enter relevant medical history"
+                className="min-h-[100px]"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="symptoms">Current Symptoms</Label>
+              <Textarea
+                id="symptoms"
+                name="symptoms"
+                placeholder="Describe current symptoms"
+                className="min-h-[100px]"
+              />
+            </div>
 
             <Button
               type="submit"
