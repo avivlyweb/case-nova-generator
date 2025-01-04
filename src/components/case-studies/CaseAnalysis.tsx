@@ -32,41 +32,45 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
     }
   };
 
-  const MarkdownContent = ({ content }: { content: string }) => (
-    <ReactMarkdown
-      components={{
-        p: ({ children }) => (
-          <p className="text-base leading-relaxed mb-4">{children}</p>
-        ),
-        a: ({ href, children }) => (
-          <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary-600 hover:text-primary-700 underline"
-          >
-            {children}
-          </a>
-        ),
-        strong: ({ children }) => (
-          <strong className="font-semibold text-primary-900 dark:text-primary-100">
-            {children}
-          </strong>
-        ),
-        ul: ({ children }) => (
-          <ul className="list-disc pl-6 mb-4 space-y-2">{children}</ul>
-        ),
-        ol: ({ children }) => (
-          <ol className="list-decimal pl-6 mb-4 space-y-2">{children}</ol>
-        ),
-        li: ({ children }) => (
-          <li className="text-base leading-relaxed">{children}</li>
-        ),
-      }}
-    >
-      {content}
-    </ReactMarkdown>
-  );
+  const MarkdownContent = ({ content }: { content: string }) => {
+    if (!content?.trim()) return null;
+    
+    return (
+      <ReactMarkdown
+        components={{
+          p: ({ children }) => (
+            <p className="text-base leading-relaxed mb-4">{children}</p>
+          ),
+          a: ({ href, children }) => (
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-600 hover:text-primary-700 underline"
+            >
+              {children}
+            </a>
+          ),
+          strong: ({ children }) => (
+            <strong className="font-semibold text-primary-900 dark:text-primary-100">
+              {children}
+            </strong>
+          ),
+          ul: ({ children }) => (
+            <ul className="list-disc pl-6 mb-4 space-y-2">{children}</ul>
+          ),
+          ol: ({ children }) => (
+            <ol className="list-decimal pl-6 mb-4 space-y-2">{children}</ol>
+          ),
+          li: ({ children }) => (
+            <li className="text-base leading-relaxed">{children}</li>
+          ),
+        }}
+      >
+        {content}
+      </ReactMarkdown>
+    );
+  };
 
   return (
     <Tabs defaultValue="overview" className="w-full mt-6">
@@ -88,7 +92,7 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
           <CardContent className="pt-6">
             <div className="prose prose-slate dark:prose-invert max-w-none">
               <h3 className="text-xl font-semibold mb-4">AI Analysis Summary</h3>
-              <MarkdownContent content={analysis.analysis || ''} />
+              {analysis.analysis && <MarkdownContent content={analysis.analysis} />}
             </div>
           </CardContent>
         </Card>
