@@ -11,39 +11,57 @@ export type Database = {
     Tables: {
       case_studies: {
         Row: {
+          adl_problem: string | null
           age: number
+          ai_role: string | null
+          comorbidities: string | null
           condition: string | null
           created_at: string
           date: string
           gender: string
           id: string
           medical_history: string | null
+          patient_background: string | null
           patient_name: string
           presenting_complaint: string | null
+          psychosocial_factors: string | null
+          specialization: string | null
           user_id: string | null
         }
         Insert: {
+          adl_problem?: string | null
           age: number
+          ai_role?: string | null
+          comorbidities?: string | null
           condition?: string | null
           created_at?: string
           date: string
           gender: string
           id?: string
           medical_history?: string | null
+          patient_background?: string | null
           patient_name: string
           presenting_complaint?: string | null
+          psychosocial_factors?: string | null
+          specialization?: string | null
           user_id?: string | null
         }
         Update: {
+          adl_problem?: string | null
           age?: number
+          ai_role?: string | null
+          comorbidities?: string | null
           condition?: string | null
           created_at?: string
           date?: string
           gender?: string
           id?: string
           medical_history?: string | null
+          patient_background?: string | null
           patient_name?: string
           presenting_complaint?: string | null
+          psychosocial_factors?: string | null
+          specialization?: string | null
           user_id?: string | null
         }
         Relationships: []
