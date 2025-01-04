@@ -16,7 +16,7 @@ const sections = [
   },
   {
     title: "Interview and Problem List",
-    description: "Conduct a detailed clinical interview to identify all pertinent patient issues and concerns. Include specific details from the anamnesis and multidisciplinary insights. Write a full RPS form with all relevant information. Include the Health seeking questions (HSQ) State Patient Identified Problems (PIP's) and Non-Patient Identified Problems (NPIP's)in this case (PIP's)? Formulate 3 hypothesis with a problem and target mediator based on this case."
+    description: "Conduct a detailed clinical interview to identify all pertinent patient issues and concerns. Include specific details from the anamnesis and multidisciplinary insights. Write a full RPS form with all relevant information. Include the Health seeking questions (HSQ) State Patient Identified Problems (PIP's) and Non-Patient Identified Problems (NPIP's)in this case (PIP's)? Formulate 3 hypothesis with a problem and target mediator based on this case. Fill out the RPS form with detailed information for a physiotherapy evaluation."
   },
   {
     title: "Assessment Strategy",
@@ -41,6 +41,18 @@ const sections = [
   {
     title: "Explanation and Justification",
     description: "Provide thorough justifications for each choice, supported by current research and guidelines such as the Dutch KNGF. Explain and justify your choices in the steps of the HOAC(Hypothesis-Oriented Algorithm for Clinicians II). Integrate evidence in your justification."
+  },
+  {
+    title: "Reference List",
+    description: "List all references from 2019 onwards in APA format, including primary literature and guideline sources used to support the case study's content."
+  },
+  {
+    title: "Medication Information",
+    description: "Provide a list of medications prescribed, including their purposes and relevant information."
+  },
+  {
+    title: "ICF Classification",
+    description: "Assign relevant ICF codes to the case study based on the International Classification of Functioning, Disability and Health."
   }
 ];
 
@@ -109,24 +121,34 @@ serve(async (req) => {
 
     console.log('Generated PubMed references:', references);
 
-    // Generate sections with PubMed references
+    // Generate all sections with PubMed references
     const generatedSections = await Promise.all(
-      sections.map(section => 
-        generateSection(
+      sections.map(async section => {
+        const sectionContent = await generateSection(
           groq,
           section.title,
           section.description,
           caseStudy,
           medicalEntities,
           references
-        )
-      )
+        );
+        return {
+          title: section.title,
+          content: sectionContent
+        };
+      })
     );
+
+    // Convert sections array to object for storage
+    const sectionsObject = generatedSections.reduce((acc, section) => {
+      acc[section.title.replace(/\s+/g, '_').toLowerCase()] = section.content;
+      return acc;
+    }, {});
 
     return new Response(
       JSON.stringify({
         success: true,
-        sections: generatedSections,
+        sections: sectionsObject,
         references,
         medical_entities: medicalEntities,
       }),
