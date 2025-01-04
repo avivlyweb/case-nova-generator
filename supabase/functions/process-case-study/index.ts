@@ -59,28 +59,31 @@ serve(async (req) => {
     console.log('Processing case study:', caseStudy.id);
 
     if (action === 'analyze') {
+      console.log('Using gemma2-9b-it model for analysis');
+      
+      const completion = await groq.chat.completions.create({
+        messages: [
+          {
+            role: "system",
+            content: "You are a medical assistant analyzing case studies. Provide insights about the case in a concise, professional manner. Focus on key medical observations, potential implications, and suggested areas for further investigation. Format your response using proper markdown, including tables with the | syntax when appropriate."
+          },
+          {
+            role: "user",
+            content: `Please analyze this medical case study and format the response with proper markdown tables and sections:
+            Patient: ${caseStudy.patient_name}
+            Age: ${caseStudy.age}
+            Gender: ${caseStudy.gender}
+            Medical History: ${caseStudy.medical_history || 'None provided'}
+            Presenting Complaint: ${caseStudy.presenting_complaint || 'None provided'}
+            Condition: ${caseStudy.condition || 'Not specified'}`
+          }
+        ],
+        model: "gemma2-9b-it",
+        temperature: 0.5,
+        max_tokens: 500,
+      });
 
-const completion = await groq.chat.completions.create({
-  messages: [
-    {
-      role: "system",
-      content: "You are a medical assistant analyzing case studies. Provide insights about the case in a concise, professional manner. Focus on key medical observations, potential implications, and suggested areas for further investigation."
-    },
-    {
-      role: "user",
-      content: `Please analyze this medical case study:
-      Patient: ${caseStudy.patient_name}
-      Age: ${caseStudy.age}
-      Gender: ${caseStudy.gender}
-      Medical History: ${caseStudy.medical_history || 'None provided'}
-      Presenting Complaint: ${caseStudy.presenting_complaint || 'None provided'}
-      Condition: ${caseStudy.condition || 'Not specified'}`
-    }
-  ],
-  model: "gemma2-9b-it",
-  temperature: 0.5,
-  max_tokens: 500,
-});
+      console.log('Analysis completed with gemma2-9b-it');
 
       return new Response(
         JSON.stringify({ 
@@ -91,13 +94,15 @@ const completion = await groq.chat.completions.create({
       );
     }
 
-    // Extract medical entities
+    // Extract medical entities and continue with generation
     const textForEntityExtraction = `
       ${caseStudy.condition || ''}
       ${caseStudy.medical_history || ''}
       ${caseStudy.presenting_complaint || ''}
       ${caseStudy.comorbidities || ''}
     `;
+    
+    console.log('Using gemma2-9b-it for entity extraction and section generation');
     
     const medicalEntities = await extractMedicalEntities(textForEntityExtraction, groq);
     console.log('Extracted medical entities:', medicalEntities);
@@ -142,4 +147,3 @@ const completion = await groq.chat.completions.create({
     );
   }
 });
-
