@@ -32,11 +32,11 @@ const Home = () => {
         </div>
         <div className="flex-1 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-3xl blur-3xl" />
-          <div className="relative aspect-square max-w-[500px] mx-auto bg-gradient-to-br from-primary/5 to-secondary/5 rounded-3xl border border-primary/10 p-8">
+          <div className="relative aspect-square max-w-[500px] mx-auto overflow-hidden rounded-3xl">
             <img
-              src="/placeholder.svg"
-              alt="Case Study Preview"
-              className="w-full h-full object-cover rounded-2xl"
+              src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
+              alt="Healthcare Professional"
+              className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
             />
           </div>
         </div>
@@ -52,29 +52,39 @@ const Home = () => {
               title: "AI-Powered",
               description:
                 "Leverage advanced AI to generate comprehensive, evidence-based case studies",
+              image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7"
             },
             {
               icon: Activity,
               title: "Clinical Accuracy",
               description:
                 "Ensure your case studies are clinically accurate and follow best practices",
+              image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085"
             },
             {
               icon: Users,
               title: "Educational Value",
               description:
                 "Perfect for students, educators, and healthcare professionals",
+              image: "https://images.unsplash.com/photo-1483058712412-4245e9b90334"
             },
           ].map((feature) => (
             <div
               key={feature.title}
-              className="group relative p-8 rounded-2xl border bg-card transition-all hover:shadow-lg"
+              className="group relative p-8 rounded-2xl border bg-card transition-all hover:shadow-lg overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="relative space-y-4">
                 <feature.icon className="h-8 w-8 text-primary" />
                 <h3 className="text-xl font-semibold">{feature.title}</h3>
                 <p className="text-muted-foreground">{feature.description}</p>
+                <div className="mt-4 h-40 overflow-hidden rounded-lg">
+                  <img
+                    src={feature.image}
+                    alt={feature.title}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
               </div>
             </div>
           ))}
@@ -82,8 +92,15 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 text-center border-t">
-        <div className="max-w-2xl mx-auto space-y-6">
+      <section className="py-16 text-center border-t relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src="https://images.unsplash.com/photo-1721322800607-8c38375eef04"
+            alt="Background"
+            className="w-full h-full object-cover opacity-10"
+          />
+        </div>
+        <div className="relative max-w-2xl mx-auto space-y-6">
           <h2 className="text-3xl font-bold">Ready to Get Started?</h2>
           <p className="text-lg text-muted-foreground">
             Join healthcare professionals worldwide in creating high-quality case studies
