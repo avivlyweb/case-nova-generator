@@ -3,33 +3,65 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { getCaseStudies } from "@/lib/db";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Brain } from "lucide-react";
+import { Loader2, Brain, BookOpen } from "lucide-react";
 
 const CaseStudies = () => {
   const { toast } = useToast();
   const [analyzing, setAnalyzing] = useState<{ [key: string]: boolean }>({});
-  const [analyses, setAnalyses] = useState<{ [key: string]: string }>({});
+  const [analyses, setAnalyses] = useState<{ [key: string]: any }>({});
   
   const { data: caseStudies, isLoading, error } = useQuery({
     queryKey: ['case-studies'],
     queryFn: getCaseStudies,
   });
 
-  const analyzeCase = async (caseStudy: any) => {
+  const generateCase = async (caseStudy: any) => {
     setAnalyzing(prev => ({ ...prev, [caseStudy.id]: true }));
     try {
       const { data, error } = await supabase.functions.invoke('process-case-study', {
-        body: { caseStudy }
+        body: { caseStudy, action: 'generate' }
       });
 
       if (error) throw error;
 
       setAnalyses(prev => ({
         ...prev,
-        [caseStudy.id]: data.analysis
+        [caseStudy.id]: data
+      }));
+
+      toast({
+        title: "Generation Complete",
+        description: "Full case study has been generated.",
+      });
+    } catch (error) {
+      console.error('Error generating case:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to generate case study",
+      });
+    } finally {
+      setAnalyzing(prev => ({ ...prev, [caseStudy.id]: false }));
+    }
+  };
+
+  const analyzeCase = async (caseStudy: any) => {
+    setAnalyzing(prev => ({ ...prev, [caseStudy.id]: true }));
+    try {
+      const { data, error } = await supabase.functions.invoke('process-case-study', {
+        body: { caseStudy, action: 'analyze' }
+      });
+
+      if (error) throw error;
+
+      setAnalyses(prev => ({
+        ...prev,
+        [caseStudy.id]: { analysis: data.analysis }
       }));
 
       toast({
@@ -72,7 +104,7 @@ const CaseStudies = () => {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-bold text-primary">My Case Studies</h1>
+      <h1 className="text-3xl font-bold text-primary">Case Studies</h1>
       <div className="grid gap-6">
         {caseStudies?.map((study) => (
           <Card key={study.id} className="overflow-hidden">
@@ -83,58 +115,100 @@ const CaseStudies = () => {
                     Patient: {study.patient_name}
                   </CardTitle>
                   <CardDescription>
-                    {study.gender}, {study.age} years old
+                    {study.gender}, {study.age} years old | {study.condition}
                   </CardDescription>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => analyzeCase(study)}
-                  disabled={analyzing[study.id]}
-                >
-                  {analyzing[study.id] ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Analyzing...
-                    </>
-                  ) : (
-                    <>
-                      <Brain className="mr-2 h-4 w-4" />
-                      Analyze
-                    </>
-                  )}
-                </Button>
+                <div className="space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => analyzeCase(study)}
+                    disabled={analyzing[study.id]}
+                  >
+                    {analyzing[study.id] ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Analyzing...
+                      </>
+                    ) : (
+                      <>
+                        <Brain className="mr-2 h-4 w-4" />
+                        Quick Analysis
+                      </>
+                    )}
+                  </Button>
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={() => generateCase(study)}
+                    disabled={analyzing[study.id]}
+                  >
+                    {analyzing[study.id] ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Generating...
+                      </>
+                    ) : (
+                      <>
+                        <BookOpen className="mr-2 h-4 w-4" />
+                        Generate Full Case
+                      </>
+                    )}
+                  </Button>
+                </div>
               </div>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <h3 className="font-semibold mb-2">Medical Details</h3>
-                  <dl className="space-y-2">
-                    <div>
-                      <dt className="text-sm font-medium text-gray-500">Condition</dt>
-                      <dd>{study.condition || "Not specified"}</dd>
+            <CardContent>
+              {analyses[study.id] && (
+                <Tabs defaultValue="overview" className="w-full">
+                  <TabsList>
+                    <TabsTrigger value="overview">Overview</TabsTrigger>
+                    {analyses[study.id].sections && (
+                      <TabsTrigger value="full">Full Case Study</TabsTrigger>
+                    )}
+                  </TabsList>
+                  <TabsContent value="overview">
+                    <div className="bg-muted p-4 rounded-lg">
+                      <h3 className="font-semibold mb-2">Quick Analysis</h3>
+                      <p className="text-sm whitespace-pre-wrap">
+                        {analyses[study.id].analysis}
+                      </p>
                     </div>
-                    <div>
-                      <dt className="text-sm font-medium text-gray-500">Medical History</dt>
-                      <dd>{study.medical_history || "None recorded"}</dd>
-                    </div>
-                    <div>
-                      <dt className="text-sm font-medium text-gray-500">Presenting Complaint</dt>
-                      <dd>{study.presenting_complaint || "Not specified"}</dd>
-                    </div>
-                  </dl>
-                </div>
-                {analyses[study.id] && (
-                  <div className="bg-muted p-4 rounded-lg">
-                    <h3 className="font-semibold mb-2">AI Analysis</h3>
-                    <p className="text-sm">{analyses[study.id]}</p>
-                  </div>
-                )}
-              </div>
-              <div className="text-sm text-gray-500">
-                Created: {new Date(study.created_at).toLocaleDateString()}
-              </div>
+                  </TabsContent>
+                  {analyses[study.id].sections && (
+                    <TabsContent value="full">
+                      <ScrollArea className="h-[500px] w-full rounded-md border p-4">
+                        <div className="space-y-6">
+                          {analyses[study.id].sections.map((section: any, index: number) => (
+                            <div key={index} className="space-y-2">
+                              <h3 className="font-semibold text-lg">{section.title}</h3>
+                              <div className="text-sm whitespace-pre-wrap">
+                                {section.content}
+                              </div>
+                            </div>
+                          ))}
+                          {analyses[study.id].references && (
+                            <div className="space-y-2">
+                              <h3 className="font-semibold text-lg">References</h3>
+                              <div className="text-sm whitespace-pre-wrap">
+                                {analyses[study.id].references}
+                              </div>
+                            </div>
+                          )}
+                          {analyses[study.id].icf_codes && (
+                            <div className="space-y-2">
+                              <h3 className="font-semibold text-lg">ICF Codes</h3>
+                              <div className="text-sm whitespace-pre-wrap">
+                                {analyses[study.id].icf_codes}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </ScrollArea>
+                    </TabsContent>
+                  )}
+                </Tabs>
+              )}
             </CardContent>
           </Card>
         ))}
