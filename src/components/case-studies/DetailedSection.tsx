@@ -4,7 +4,7 @@ import { FileText, List, Pill, Stethoscope, Target } from "lucide-react";
 
 interface DetailedSectionProps {
   title: string;
-  content: string;
+  content: string | string[];
 }
 
 const DetailedSection = ({ title, content }: DetailedSectionProps) => {
@@ -23,10 +23,24 @@ const DetailedSection = ({ title, content }: DetailedSectionProps) => {
     }
   };
 
-  // Ensure content is a string and handle special formatting for references
-  const formattedContent = title.toLowerCase() === "evidence-based references" 
-    ? content.split(',').map(ref => `- ${ref.trim()}`).join('\n')
-    : content;
+  // Format content based on type and section
+  const formatContent = (content: string | string[], isReferences: boolean): string => {
+    if (!content) return '';
+    
+    if (isReferences) {
+      if (Array.isArray(content)) {
+        return content.map(ref => `- ${ref.trim()}`).join('\n');
+      }
+      if (typeof content === 'string') {
+        return content.split(',').map(ref => `- ${ref.trim()}`).join('\n');
+      }
+    }
+    
+    return typeof content === 'string' ? content : content.join('\n');
+  };
+
+  const isReferencesSection = title.toLowerCase() === "evidence-based references";
+  const formattedContent = formatContent(content, isReferencesSection);
 
   return (
     <Card className="overflow-hidden bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-all duration-200">
