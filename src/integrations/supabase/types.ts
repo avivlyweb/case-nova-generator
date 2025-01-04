@@ -9,6 +9,45 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      case_studies: {
+        Row: {
+          age: number
+          condition: string | null
+          created_at: string
+          date: string
+          gender: string
+          id: string
+          medical_history: string | null
+          patient_name: string
+          presenting_complaint: string | null
+          user_id: string | null
+        }
+        Insert: {
+          age: number
+          condition?: string | null
+          created_at?: string
+          date: string
+          gender: string
+          id?: string
+          medical_history?: string | null
+          patient_name: string
+          presenting_complaint?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          age?: number
+          condition?: string | null
+          created_at?: string
+          date?: string
+          gender?: string
+          id?: string
+          medical_history?: string | null
+          patient_name?: string
+          presenting_complaint?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       ICF: {
         Row: {
           Activity_Description: string

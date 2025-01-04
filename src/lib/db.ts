@@ -1,5 +1,8 @@
 import { supabase } from '@/integrations/supabase/client';
-import type { CaseStudy } from '@/types/case-study';
+import type { Database } from '@/integrations/supabase/types';
+
+type CaseStudy = Database['public']['Tables']['case_studies']['Row'];
+type CaseStudyInsert = Database['public']['Tables']['case_studies']['Insert'];
 
 export async function getCaseStudies() {
   const { data, error } = await supabase
@@ -12,10 +15,10 @@ export async function getCaseStudies() {
     throw error;
   }
 
-  return data as CaseStudy[];
+  return data;
 }
 
-export async function createCaseStudy(caseStudy: Omit<CaseStudy, 'id' | 'created_at' | 'user_id'>) {
+export async function createCaseStudy(caseStudy: CaseStudyInsert) {
   const { data, error } = await supabase
     .from('case_studies')
     .insert([caseStudy])
@@ -27,7 +30,7 @@ export async function createCaseStudy(caseStudy: Omit<CaseStudy, 'id' | 'created
     throw error;
   }
 
-  return data as CaseStudy;
+  return data;
 }
 
 export async function updateCaseStudy(id: string, updates: Partial<CaseStudy>) {
@@ -43,7 +46,7 @@ export async function updateCaseStudy(id: string, updates: Partial<CaseStudy>) {
     throw error;
   }
 
-  return data as CaseStudy;
+  return data;
 }
 
 export async function deleteCaseStudy(id: string) {
