@@ -18,13 +18,8 @@ interface CaseAnalysisProps {
 const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
   if (!analysis) return null;
 
-  // Create sections array from the case study data
-  const sections = [
-    { title: "Medical History", content: analysis.sections?.find(s => s.title === "Medical History")?.content || "" },
-    { title: "Assessment Findings", content: analysis.sections?.find(s => s.title === "Assessment Findings")?.content || "" },
-    { title: "Intervention Plan", content: analysis.sections?.find(s => s.title === "Intervention Plan")?.content || "" },
-    { title: "Medications", content: analysis.sections?.find(s => s.title === "Medications")?.content || "" }
-  ].filter(section => section.content);
+  // Use all available sections directly from the case study data
+  const sections = analysis.sections || [];
 
   return (
     <Tabs defaultValue="overview" className="w-full mt-6">
