@@ -75,19 +75,19 @@ const Generate = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
+    <div className="w-full max-w-4xl mx-auto space-y-6 px-4 md:px-8">
       <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
+        <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
           Generate New Case Study
         </h1>
-        <p className="text-lg text-gray-500 dark:text-gray-400">
+        <p className="text-base md:text-lg text-gray-500 dark:text-gray-400">
           Create an evidence-based physiotherapy case study with AI assistance
         </p>
       </div>
 
-      <Card className="p-6 bg-white/5 backdrop-blur-sm border border-gray-800/50 shadow-xl">
-        <form onSubmit={handleSubmit} className="space-y-8">
-          <div className="space-y-8">
+      <Card className="p-4 md:p-6 bg-white/5 backdrop-blur-sm border border-gray-800/50 shadow-xl">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-6">
             <SpecializationSelect
               specialization={specialization}
               aiRole={aiRole}
@@ -103,7 +103,7 @@ const Generate = () => {
 
           <Button
             type="submit"
-            className="w-full bg-orange-500 hover:bg-orange-600 text-white transition-colors"
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white transition-colors py-6 md:py-4"
             disabled={loading}
           >
             {loading ? (
