@@ -1,112 +1,158 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent } from "@/components/ui/card";
-import { BookOpen, Brain } from "lucide-react";
-import SectionCard from "./SectionCard";
-import ICFCodes from "./ICFCodes";
-import MarkdownRenderer from "./MarkdownRenderer";
+import { Badge } from "@/components/ui/badge";
+import { BookOpen, Brain, FileText, List, Stethoscope, Target, Pill } from "lucide-react";
+import ReactMarkdown from 'react-markdown';
 
 interface CaseAnalysisProps {
   analysis: {
     analysis?: string;
     sections?: Array<{ title: string; content: string }>;
     references?: string;
-    icf_codes?: string[] | string;
-    generated_sections?: {
-      [key: string]: string;
-    };
+    icf_codes?: string;
   };
 }
 
 const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
   if (!analysis) return null;
 
-  // Process generated sections to extract step number and title
-  const formattedSections = analysis.generated_sections 
-    ? Object.entries(analysis.generated_sections).map(([key, content]) => {
-        // Extract the section title from the key (e.g., "Step 1: Patient Introduction")
-        const titleMatch = key.match(/Step \d+: (.*)/);
-        const title = titleMatch ? titleMatch[1].trim() : key;
-        
-        // Clean up the content by removing any markdown formatting issues
-        const cleanContent = typeof content === 'string' 
-          ? content.replace(/\\n/g, '\n').trim()
-          : JSON.stringify(content);
+  const getSectionIcon = (title: string) => {
+    switch (title.toLowerCase()) {
+      case "medical history":
+        return <FileText className="h-5 w-5" />;
+      case "assessment findings":
+        return <Stethoscope className="h-5 w-5" />;
+      case "intervention plan":
+        return <Target className="h-5 w-5" />;
+      case "medications":
+        return <Pill className="h-5 w-5" />;
+      default:
+        return <List className="h-5 w-5" />;
+    }
+  };
 
-        return {
-          title,
-          content: cleanContent
-        };
-      })
-    : [];
-
-  // Combine with any existing sections
-  const allSections = [
-    ...(analysis.sections || []),
-    ...formattedSections
-  ];
-
-  console.log('Formatted Sections:', formattedSections);
-  console.log('All Sections:', allSections);
+  const MarkdownContent = ({ content }: { content: string | null | undefined }) => {
+    // Convert to string and check if it's empty
+    const contentString = String(content || '');
+    if (!contentString.trim()) return null;
+    
+    return (
+      <ReactMarkdown
+        components={{
+          p: ({ children }) => (
+            <p className="text-base leading-relaxed mb-4">{children}</p>
+          ),
+          a: ({ href, children }) => (
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-600 hover:text-primary-700 underline"
+            >
+              {children}
+            </a>
+          ),
+          strong: ({ children }) => (
+            <strong className="font-semibold text-primary-900 dark:text-primary-100">
+              {children}
+            </strong>
+          ),
+          ul: ({ children }) => (
+            <ul className="list-disc pl-6 mb-4 space-y-2">{children}</ul>
+          ),
+          ol: ({ children }) => (
+            <ol className="list-decimal pl-6 mb-4 space-y-2">{children}</ol>
+          ),
+          li: ({ children }) => (
+            <li className="text-base leading-relaxed">{children}</li>
+          ),
+        }}
+      >
+        {contentString}
+      </ReactMarkdown>
+    );
+  };
 
   return (
     <Tabs defaultValue="overview" className="w-full mt-6">
-      <TabsList className="w-full justify-start bg-background border-b">
-        <TabsTrigger value="overview" className="flex items-center gap-2 data-[state=active]:bg-primary-100 dark:data-[state=active]:bg-primary-900">
+      <TabsList className="w-full justify-start">
+        <TabsTrigger value="overview" className="flex items-center gap-2">
           <Brain className="h-4 w-4" />
           Quick Analysis
         </TabsTrigger>
-        <TabsTrigger value="full" className="flex items-center gap-2 data-[state=active]:bg-primary-100 dark:data-[state=active]:bg-primary-900">
-          <BookOpen className="h-4 w-4" />
-          Full Case Study
-        </TabsTrigger>
+        {analysis.sections && (
+          <TabsTrigger value="full" className="flex items-center gap-2">
+            <BookOpen className="h-4 w-4" />
+            Full Case Study
+          </TabsTrigger>
+        )}
       </TabsList>
 
       <TabsContent value="overview">
-        <Card className="bg-card border-none shadow-lg">
+        <Card>
           <CardContent className="pt-6">
             <div className="prose prose-slate dark:prose-invert max-w-none">
-              <h3 className="text-xl font-semibold mb-4 text-primary flex items-center gap-2">
-                <Brain className="h-5 w-5" />
-                AI Analysis Summary
-              </h3>
-              {analysis.analysis && <MarkdownRenderer content={analysis.analysis} />}
+              <h3 className="text-xl font-semibold mb-4">AI Analysis Summary</h3>
+              {analysis.analysis && <MarkdownContent content={analysis.analysis} />}
             </div>
           </CardContent>
         </Card>
       </TabsContent>
 
-      <TabsContent value="full">
-        <ScrollArea className="h-[600px] rounded-md">
-          <div className="space-y-8 p-6">
-            {allSections.map((section, index) => (
-              <SectionCard 
-                key={index}
-                title={section.title}
-                content={section.content}
-              />
-            ))}
+      {analysis.sections && (
+        <TabsContent value="full">
+          <ScrollArea className="h-[600px] rounded-md">
+            <div className="space-y-8 p-6">
+              {analysis.sections.map((section, index) => (
+                <Card key={index} className="overflow-hidden">
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      {getSectionIcon(section.title)}
+                      <h3 className="text-xl font-semibold">{section.title}</h3>
+                    </div>
+                    <div className="prose prose-slate dark:prose-invert max-w-none">
+                      <MarkdownContent content={section.content} />
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
 
-            {analysis.references && (
-              <Card className="bg-card border-none shadow-lg">
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-2 mb-4">
-                    <BookOpen className="h-5 w-5" />
-                    <h3 className="text-xl font-semibold text-primary">Evidence-Based References</h3>
-                  </div>
-                  <div className="prose prose-slate dark:prose-invert max-w-none">
-                    <MarkdownRenderer content={analysis.references} />
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+              {analysis.references && (
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <BookOpen className="h-5 w-5" />
+                      <h3 className="text-xl font-semibold">Evidence-Based References</h3>
+                    </div>
+                    <div className="prose prose-slate dark:prose-invert max-w-none">
+                      <MarkdownContent content={analysis.references} />
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
-            {analysis.icf_codes && (
-              <ICFCodes codes={analysis.icf_codes} />
-            )}
-          </div>
-        </ScrollArea>
-      </TabsContent>
+              {analysis.icf_codes && (
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <List className="h-5 w-5" />
+                      <h3 className="text-xl font-semibold">ICF Codes</h3>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {analysis.icf_codes.split('\n').map((code, index) => (
+                        <Badge key={index} variant="secondary">
+                          {code.trim()}
+                        </Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </ScrollArea>
+        </TabsContent>
+      )}
     </Tabs>
   );
 };
