@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { createCaseStudy } from "@/lib/db";
+import { ArrowRight } from "lucide-react";
 import PatientInformation, { PatientFormData } from "@/components/generate/PatientInformation";
-import SpecializationSelect, {
-  physiotherapyTypes,
-  aiRoleDescriptions,
-} from "@/components/generate/SpecializationSelect";
+import SpecializationSelect from "@/components/generate/SpecializationSelect";
+import { physiotherapyTypes, aiRoleDescriptions } from "@/components/generate/SpecializationSelect";
 
 const Generate = () => {
   const navigate = useNavigate();
@@ -76,14 +75,19 @@ const Generate = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold text-primary mb-8">
-        Generate New Case Study
-      </h1>
+    <div className="max-w-4xl mx-auto space-y-8">
+      <div className="text-center space-y-4">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
+          Generate New Case Study
+        </h1>
+        <p className="text-lg text-gray-500 dark:text-gray-400">
+          Create an evidence-based physiotherapy case study with AI assistance
+        </p>
+      </div>
 
-      <Card>
-        <CardContent className="pt-6">
-          <form onSubmit={handleSubmit} className="space-y-8">
+      <Card className="p-6 bg-white/5 backdrop-blur-sm border border-gray-800/50 shadow-xl">
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="space-y-8">
             <SpecializationSelect
               specialization={specialization}
               aiRole={aiRole}
@@ -95,16 +99,23 @@ const Generate = () => {
               formData={formData}
               onChange={handleFormChange}
             />
+          </div>
 
-            <Button
-              type="submit"
-              className="w-full bg-secondary hover:bg-secondary/90"
-              disabled={loading}
-            >
-              {loading ? "Generating..." : "Generate Case Study"}
-            </Button>
-          </form>
-        </CardContent>
+          <Button
+            type="submit"
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white transition-colors"
+            disabled={loading}
+          >
+            {loading ? (
+              "Generating..."
+            ) : (
+              <span className="flex items-center justify-center gap-2">
+                Generate Case Study
+                <ArrowRight className="w-5 h-5" />
+              </span>
+            )}
+          </Button>
+        </form>
       </Card>
     </div>
   );

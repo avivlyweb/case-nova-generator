@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Card } from "@/components/ui/card";
 
 export const physiotherapyTypes = [
   "Orthopedic",
@@ -42,9 +43,11 @@ const SpecializationSelect = ({
   onAiRoleChange,
 }: SpecializationSelectProps) => {
   return (
-    <div className="space-y-6">
+    <Card className="p-6 space-y-6 bg-black/5 dark:bg-white/5 backdrop-blur-sm">
       <div className="space-y-2">
-        <Label htmlFor="specialization">Physiotherapy Specialization</Label>
+        <Label htmlFor="specialization" className="text-lg font-semibold">
+          Physiotherapy Specialization
+        </Label>
         <Select
           name="specialization"
           value={specialization}
@@ -53,7 +56,7 @@ const SpecializationSelect = ({
             onAiRoleChange(aiRoleDescriptions[value as keyof typeof aiRoleDescriptions]);
           }}
         >
-          <SelectTrigger>
+          <SelectTrigger className="bg-white/50 dark:bg-black/50">
             <SelectValue placeholder="Select specialization" />
           </SelectTrigger>
           <SelectContent>
@@ -67,16 +70,18 @@ const SpecializationSelect = ({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="aiRole">AI Role Description</Label>
+        <Label htmlFor="aiRole" className="text-lg font-semibold">
+          AI Role Description
+        </Label>
         <Textarea
           id="aiRole"
           name="aiRole"
           value={aiRole}
           onChange={(e) => onAiRoleChange(e.target.value)}
-          className="min-h-[100px]"
+          className="min-h-[100px] bg-white/50 dark:bg-black/50"
         />
       </div>
-    </div>
+    </Card>
   );
 };
 
