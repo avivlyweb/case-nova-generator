@@ -12,14 +12,28 @@ interface CaseAnalysisProps {
     sections?: Array<{ title: string; content: string }>;
     references?: string;
     icf_codes?: string[] | string;
+    generated_sections?: {
+      [key: string]: string;
+    };
   };
 }
 
 const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
   if (!analysis) return null;
 
-  // Use all available sections directly from the case study data
-  const sections = analysis.sections || [];
+  // Map the generated sections to the format expected by SectionCard
+  const formattedSections = analysis.generated_sections 
+    ? Object.entries(analysis.generated_sections).map(([title, content]) => ({
+        title: title.split('Step')[1]?.split(':')[1]?.trim() || title,
+        content: content
+      }))
+    : [];
+
+  // Combine with any existing sections
+  const allSections = [
+    ...(analysis.sections || []),
+    ...formattedSections
+  ];
 
   return (
     <Tabs defaultValue="overview" className="w-full mt-6">
@@ -51,7 +65,7 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
       <TabsContent value="full">
         <ScrollArea className="h-[600px] rounded-md">
           <div className="space-y-8 p-6">
-            {sections.map((section, index) => (
+            {allSections.map((section, index) => (
               <SectionCard 
                 key={index}
                 title={section.title}
