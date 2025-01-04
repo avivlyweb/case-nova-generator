@@ -65,7 +65,7 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: "You are a medical assistant analyzing case studies. Provide insights about the case in a concise, professional manner. Focus on key medical observations, potential implications, and suggested areas for further investigation. Format your response using proper markdown, including tables with the | syntax when appropriate."
+            content: "You are a medical assistant analyzing case studies. Provide insights about the case in a concise, professional manner. Focus on key medical observations, potential implications, and suggested areas for further investigation. Format your response using proper markdown, including tables with the | syntax when appropriate. Ensure all tables are properly formatted with column headers separated by | and a header separator row with dashes (---)."
           },
           {
             role: "user",
