@@ -1,81 +1,17 @@
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import CaseStudyCard from "@/components/case-studies/CaseStudyCard";
 import CaseAnalysis from "@/components/case-studies/CaseAnalysis";
 import { getCaseStudies } from "@/lib/db";
 
 const CaseStudies = () => {
   const { toast } = useToast();
-  const [analyzing, setAnalyzing] = useState<{ [key: string]: boolean }>({});
-  const [analyses, setAnalyses] = useState<{ [key: string]: any }>({});
   
   const { data: caseStudies, isLoading, error } = useQuery({
     queryKey: ['case-studies'],
     queryFn: getCaseStudies,
   });
-
-  const generateCase = async (caseStudy: any) => {
-    setAnalyzing(prev => ({ ...prev, [caseStudy.id]: true }));
-    try {
-      const { data, error } = await supabase.functions.invoke('process-case-study', {
-        body: { caseStudy, action: 'generate' }
-      });
-
-      if (error) throw error;
-
-      setAnalyses(prev => ({
-        ...prev,
-        [caseStudy.id]: data
-      }));
-
-      toast({
-        title: "Generation Complete",
-        description: "Full case study has been generated.",
-      });
-    } catch (error) {
-      console.error('Error generating case:', error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to generate case study",
-      });
-    } finally {
-      setAnalyzing(prev => ({ ...prev, [caseStudy.id]: false }));
-    }
-  };
-
-  const analyzeCase = async (caseStudy: any) => {
-    setAnalyzing(prev => ({ ...prev, [caseStudy.id]: true }));
-    try {
-      const { data, error } = await supabase.functions.invoke('process-case-study', {
-        body: { caseStudy, action: 'analyze' }
-      });
-
-      if (error) throw error;
-
-      setAnalyses(prev => ({
-        ...prev,
-        [caseStudy.id]: { analysis: data.analysis }
-      }));
-
-      toast({
-        title: "Analysis Complete",
-        description: "AI analysis has been generated for this case study.",
-      });
-    } catch (error) {
-      console.error('Error analyzing case:', error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to analyze case study",
-      });
-    } finally {
-      setAnalyzing(prev => ({ ...prev, [caseStudy.id]: false }));
-    }
-  };
 
   if (isLoading) {
     return (
@@ -101,21 +37,38 @@ const CaseStudies = () => {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-bold text-primary">Case Studies</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold text-primary">Case Studies</h1>
+      </div>
       <div className="grid gap-6">
         {caseStudies?.map((study) => (
-          <div key={study.id}>
+          <div key={study.id} className="space-y-4">
             <CaseStudyCard
               study={study}
-              analyzing={analyzing[study.id]}
-              onAnalyze={() => analyzeCase(study)}
-              onGenerate={() => generateCase(study)}
+              analyzing={false}
+              onAnalyze={() => {}} // Remove analyze functionality since data is already saved
+              onGenerate={() => {}} // Remove generate functionality since data is already saved
             />
-            {analyses[study.id] && (
-              <CaseAnalysis analysis={analyses[study.id]} />
+            {study.generated_sections && (
+              <CaseAnalysis 
+                analysis={{
+                  analysis: study.ai_analysis,
+                  sections: Object.entries(study.generated_sections).map(([title, content]) => ({
+                    title,
+                    content: content as string,
+                  })),
+                  references: study.reference_list,
+                  icf_codes: study.icf_codes as string,
+                }} 
+              />
             )}
           </div>
         ))}
+        {caseStudies?.length === 0 && (
+          <div className="text-center py-12 text-muted-foreground">
+            <p>No case studies found. Generate your first case study to get started.</p>
+          </div>
+        )}
       </div>
     </div>
   );

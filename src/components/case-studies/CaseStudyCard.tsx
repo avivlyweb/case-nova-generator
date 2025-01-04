@@ -1,7 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Loader2, Brain, BookOpen } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { CaseStudy } from "@/types/case-study";
+import { useState } from "react";
 
 interface CaseStudyCardProps {
   study: CaseStudy;
@@ -10,12 +11,14 @@ interface CaseStudyCardProps {
   onGenerate: () => void;
 }
 
-const CaseStudyCard = ({ study, analyzing, onAnalyze, onGenerate }: CaseStudyCardProps) => {
+const CaseStudyCard = ({ study }: CaseStudyCardProps) => {
+  const [isExpanded, setIsExpanded] = useState(true);
+
   return (
     <Card className="overflow-hidden">
       <CardHeader>
         <div className="flex justify-between items-start">
-          <div>
+          <div className="flex-1">
             <CardTitle className="text-xl">
               Patient: {study.patient_name}
             </CardTitle>
@@ -23,53 +26,43 @@ const CaseStudyCard = ({ study, analyzing, onAnalyze, onGenerate }: CaseStudyCar
               {study.gender}, {study.age} years old | {study.condition}
             </CardDescription>
           </div>
-          <div className="space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onAnalyze}
-              disabled={analyzing}
-            >
-              {analyzing ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Analyzing...
-                </>
-              ) : (
-                <>
-                  <Brain className="mr-2 h-4 w-4" />
-                  Quick Analysis
-                </>
-              )}
-            </Button>
-            <Button
-              variant="default"
-              size="sm"
-              onClick={onGenerate}
-              disabled={analyzing}
-            >
-              {analyzing ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Generating...
-                </>
-              ) : (
-                <>
-                  <BookOpen className="mr-2 h-4 w-4" />
-                  Generate Full Case
-                </>
-              )}
-            </Button>
-          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? (
+              <ChevronUp className="h-4 w-4" />
+            ) : (
+              <ChevronDown className="h-4 w-4" />
+            )}
+          </Button>
         </div>
       </CardHeader>
-      <CardContent>
-        {study.condition && (
-          <p className="text-sm text-muted-foreground">
-            Primary Condition: {study.condition}
-          </p>
-        )}
-      </CardContent>
+      {isExpanded && (
+        <CardContent>
+          <div className="space-y-4">
+            {study.presenting_complaint && (
+              <div>
+                <h3 className="font-medium text-sm text-muted-foreground">Presenting Complaint</h3>
+                <p className="mt-1">{study.presenting_complaint}</p>
+              </div>
+            )}
+            {study.medical_history && (
+              <div>
+                <h3 className="font-medium text-sm text-muted-foreground">Medical History</h3>
+                <p className="mt-1">{study.medical_history}</p>
+              </div>
+            )}
+            {study.condition && (
+              <div>
+                <h3 className="font-medium text-sm text-muted-foreground">Primary Condition</h3>
+                <p className="mt-1">{study.condition}</p>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      )}
     </Card>
   );
 };
