@@ -32,8 +32,10 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
     }
   };
 
-  const MarkdownContent = ({ content }: { content: string }) => {
-    if (!content?.trim()) return null;
+  const MarkdownContent = ({ content }: { content: string | null | undefined }) => {
+    // Convert to string and check if it's empty
+    const contentString = String(content || '');
+    if (!contentString.trim()) return null;
     
     return (
       <ReactMarkdown
@@ -67,7 +69,7 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
           ),
         }}
       >
-        {content}
+        {contentString}
       </ReactMarkdown>
     );
   };
