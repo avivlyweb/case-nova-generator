@@ -79,7 +79,7 @@ const CaseStudies = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-4 p-4">
         <Skeleton className="h-8 w-[200px]" />
         <div className="grid gap-6">
           {[1, 2, 3].map((n) => (
@@ -100,9 +100,9 @@ const CaseStudies = () => {
   }
 
   return (
-    <div className="space-y-8">
-      <h1 className="text-3xl font-bold text-primary">Case Studies</h1>
-      <div className="grid gap-6">
+    <div className="space-y-8 max-w-full overflow-x-hidden">
+      <h1 className="text-2xl md:text-3xl font-bold text-primary px-4 md:px-0">Case Studies</h1>
+      <div className="grid gap-6 px-4 md:px-0">
         {caseStudies?.map((study) => (
           <div key={study.id}>
             <CaseStudyCard

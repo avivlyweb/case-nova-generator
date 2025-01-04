@@ -14,7 +14,7 @@ const CaseStudyCard = ({ study, analyzing, onAnalyze, onGenerate }: CaseStudyCar
   return (
     <Card className="overflow-hidden">
       <CardHeader>
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
           <div>
             <CardTitle className="text-xl">
               Patient: {study.patient_name}
@@ -23,12 +23,13 @@ const CaseStudyCard = ({ study, analyzing, onAnalyze, onGenerate }: CaseStudyCar
               {study.gender}, {study.age} years old | {study.condition}
             </CardDescription>
           </div>
-          <div className="space-x-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <Button
               variant="outline"
               size="sm"
               onClick={onAnalyze}
               disabled={analyzing}
+              className="w-full sm:w-auto"
             >
               {analyzing ? (
                 <>
@@ -47,6 +48,7 @@ const CaseStudyCard = ({ study, analyzing, onAnalyze, onGenerate }: CaseStudyCar
               size="sm"
               onClick={onGenerate}
               disabled={analyzing}
+              className="w-full sm:w-auto"
             >
               {analyzing ? (
                 <>
