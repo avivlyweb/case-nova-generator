@@ -4,24 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { createCaseStudy } from "@/lib/db";
-import PatientInformation from "@/components/generate/PatientInformation";
+import PatientInformation, { PatientFormData } from "@/components/generate/PatientInformation";
 import SpecializationSelect, {
   physiotherapyTypes,
   aiRoleDescriptions,
 } from "@/components/generate/SpecializationSelect";
-
-interface FormData {
-  patientName: string;
-  age: number;
-  gender: string;
-  condition: string;
-  adlProblem: string;
-  background: string;
-  history: string;
-  symptoms: string;
-  comorbidities: string;
-  psychosocialFactors: string;
-}
 
 const Generate = () => {
   const navigate = useNavigate();
@@ -29,7 +16,7 @@ const Generate = () => {
   const [loading, setLoading] = useState(false);
   const [specialization, setSpecialization] = useState("Orthopedic");
   const [aiRole, setAiRole] = useState(aiRoleDescriptions.Orthopedic);
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<PatientFormData>({
     patientName: "",
     age: 0,
     gender: "",

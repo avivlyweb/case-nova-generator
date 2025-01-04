@@ -9,8 +9,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+export interface PatientFormData {
+  patientName: string;
+  age: number;
+  gender: string;
+  condition: string;
+  adlProblem: string;
+  background: string;
+  history: string;
+  symptoms: string;
+  comorbidities: string;
+  psychosocialFactors: string;
+}
+
 interface PatientInformationProps {
-  formData: FormData;
+  formData: PatientFormData;
   onChange: (field: string, value: string | number) => void;
 }
 
