@@ -1,10 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { List } from "lucide-react";
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from 'recharts';
+import type { Json } from "@/integrations/supabase/types";
 
 interface ICFClassificationChartProps {
   caseStudies: Array<{
-    icf_codes: string[] | null;
+    icf_codes: Json | null;
   }>;
 }
 
@@ -12,7 +13,7 @@ export const ICFClassificationChart = ({ caseStudies }: ICFClassificationChartPr
   // Process ICF codes data
   const icfCodesDistribution = caseStudies.reduce((acc: Record<string, number>, study) => {
     if (study.icf_codes && Array.isArray(study.icf_codes)) {
-      study.icf_codes.forEach((code) => {
+      (study.icf_codes as string[]).forEach((code) => {
         // Extract the main category (first letter) from the ICF code
         const category = code.charAt(0);
         acc[category] = (acc[category] || 0) + 1;
