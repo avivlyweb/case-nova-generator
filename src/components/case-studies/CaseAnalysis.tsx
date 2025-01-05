@@ -27,10 +27,10 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
 
   return (
     <Tabs defaultValue="overview" className="w-full mt-6">
-      <TabsList className="w-full justify-start bg-white dark:bg-gray-800 p-1 rounded-lg">
+      <TabsList className="w-full justify-start bg-primary-100 dark:bg-primary-900/50 p-2 rounded-lg border border-primary-200 dark:border-primary-800">
         <TabsTrigger 
           value="overview" 
-          className="flex items-center gap-2 data-[state=active]:bg-primary-100 dark:data-[state=active]:bg-primary-900"
+          className="flex items-center gap-2 data-[state=active]:bg-white dark:data-[state=active]:bg-primary-800 data-[state=active]:text-primary-900 dark:data-[state=active]:text-primary-100"
         >
           <Brain className="h-4 w-4" />
           Quick Analysis
@@ -38,7 +38,7 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
         {formattedSections.length > 0 && (
           <TabsTrigger 
             value="full" 
-            className="flex items-center gap-2 data-[state=active]:bg-primary-100 dark:data-[state=active]:bg-primary-900"
+            className="flex items-center gap-2 data-[state=active]:bg-white dark:data-[state=active]:bg-primary-800 data-[state=active]:text-primary-900 dark:data-[state=active]:text-primary-100"
           >
             <BookOpen className="h-4 w-4" />
             Full Case Study

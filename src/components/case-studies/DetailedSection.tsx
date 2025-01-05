@@ -49,26 +49,26 @@ const DetailedSection = ({ title, content }: DetailedSectionProps) => {
                 <ol className="list-decimal pl-6 mb-4 space-y-2 text-gray-700 dark:text-gray-300">{children}</ol>
               ),
               table: ({ children }) => (
-                <div className="overflow-x-auto my-4">
+                <div className="overflow-x-auto my-4 rounded-lg border border-gray-200 dark:border-gray-700">
                   <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     {children}
                   </table>
                 </div>
               ),
               thead: ({ children }) => (
-                <thead className="bg-gray-50 dark:bg-gray-800">{children}</thead>
+                <thead className="bg-primary-100 dark:bg-primary-900">{children}</thead>
               ),
               tbody: ({ children }) => (
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">{children}</tbody>
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">{children}</tbody>
               ),
               tr: ({ children }) => (
-                <tr className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">{children}</tr>
+                <tr className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">{children}</tr>
               ),
               th: ({ children }) => (
-                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">{children}</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-primary-900 dark:text-primary-100">{children}</th>
               ),
               td: ({ children }) => (
-                <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{children}</td>
+                <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300 whitespace-normal break-words">{children}</td>
               ),
             }}
           >
