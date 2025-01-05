@@ -7,6 +7,7 @@ import { AgeDistributionChart } from "@/components/dashboard/AgeDistributionChar
 import { TimelineChart } from "@/components/dashboard/TimelineChart";
 import { InterventionChart } from "@/components/dashboard/InterventionChart";
 import { RecentCasesTable } from "@/components/dashboard/RecentCasesTable";
+import { ICFClassificationChart } from "@/components/dashboard/ICFClassificationChart";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const Dashboard = () => {
@@ -21,7 +22,7 @@ const Dashboard = () => {
       <div className="space-y-4 p-4">
         <Skeleton className="h-8 w-[200px]" />
         <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2">
-          {[1, 2, 3, 4, 5].map((n) => (
+          {[1, 2, 3, 4, 5, 6].map((n) => (
             <Skeleton key={n} className="h-[300px]" />
           ))}
         </div>
@@ -109,6 +110,9 @@ const Dashboard = () => {
                 entities !== null && entities !== undefined
               ) || []}
           />
+        </div>
+        <div className="col-span-1">
+          <ICFClassificationChart caseStudies={caseStudies || []} />
         </div>
         <div className="col-span-1 md:col-span-2 xl:col-span-3">
           <RecentCasesTable caseStudies={caseStudies || []} />
