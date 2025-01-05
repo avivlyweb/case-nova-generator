@@ -40,23 +40,20 @@ const MedicalEntitiesChart = ({ medicalEntities }: MedicalEntitiesChartProps) =>
   const entityCounts: Record<string, number> = {};
   
   medicalEntities.forEach(entitySet => {
-    console.log('Processing entity set:', entitySet);
     if (typeof entitySet === 'object' && entitySet !== null) {
       Object.entries(entitySet).forEach(([category, entities]) => {
-        console.log('Category:', category, 'Entities:', entities);
         if (Array.isArray(entities)) {
           entities.forEach(entity => {
             if (typeof entity === 'string') {
-              const key = `${category}: ${entity}`;
-              entityCounts[key] = (entityCounts[key] || 0) + 1;
+              // Format the entity name to be more readable
+              const formattedEntity = `${category}: ${entity.toLowerCase()}`;
+              entityCounts[formattedEntity] = (entityCounts[formattedEntity] || 0) + 1;
             }
           });
         }
       });
     }
   });
-
-  console.log('Entity counts:', entityCounts);
 
   // Convert to array and sort by count
   const chartData: MedicalEntity[] = Object.entries(entityCounts)
@@ -83,15 +80,15 @@ const MedicalEntitiesChart = ({ medicalEntities }: MedicalEntitiesChartProps) =>
               <BarChart
                 data={chartData}
                 layout="vertical"
-                margin={{ top: 5, right: 30, left: 100, bottom: 5 }}
+                margin={{ top: 5, right: 30, left: 120, bottom: 5 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis type="number" />
                 <YAxis 
                   type="category" 
                   dataKey="name" 
-                  width={90}
-                  tick={{ fontSize: 12 }}
+                  width={110}
+                  tick={{ fontSize: 11 }}
                 />
                 <Tooltip />
                 <Bar dataKey="count" fill="#0A2540" />
