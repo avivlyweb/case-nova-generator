@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, FileText, PlusCircle, MessageSquare, Info } from "lucide-react";
+import { Home, FileText, PlusCircle, MessageSquare, Info, ChartBar } from "lucide-react";
 
 interface SidebarProps {
   onClose?: () => void;
@@ -10,6 +10,7 @@ const Sidebar = ({ onClose }: SidebarProps) => {
   
   const links = [
     { to: "/", icon: Home, label: "Home" },
+    { to: "/dashboard", icon: ChartBar, label: "Dashboard" },
     { to: "/case-studies", icon: FileText, label: "My Case Studies" },
     { to: "/generate", icon: PlusCircle, label: "Generate New" },
     { to: "/feedback", icon: MessageSquare, label: "Feedback" },
