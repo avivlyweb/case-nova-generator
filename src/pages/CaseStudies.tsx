@@ -7,6 +7,9 @@ import CaseStudyCard from "@/components/case-studies/CaseStudyCard";
 import CaseAnalysis from "@/components/case-studies/CaseAnalysis";
 import { getCaseStudies } from "@/lib/db";
 
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 1000; // 1 second
+
 const CaseStudies = () => {
   const { toast } = useToast();
   const [analyzing, setAnalyzing] = useState<{ [key: string]: boolean }>({});
@@ -17,30 +20,58 @@ const CaseStudies = () => {
     queryFn: getCaseStudies,
   });
 
+  const invokeFunctionWithRetry = async (functionName: string, body: any, retries = 0) => {
+    try {
+      console.log(`Attempting to invoke ${functionName}, attempt ${retries + 1}`);
+      const { data, error } = await supabase.functions.invoke(functionName, {
+        body: body,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      return { data, error: null };
+    } catch (error) {
+      console.error(`Error invoking ${functionName}:`, error);
+      
+      if (retries < MAX_RETRIES) {
+        console.log(`Retrying in ${RETRY_DELAY}ms...`);
+        await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+        return invokeFunctionWithRetry(functionName, body, retries + 1);
+      }
+      
+      return { data: null, error };
+    }
+  };
+
   const generateCase = async (caseStudy: any) => {
     setAnalyzing(prev => ({ ...prev, [caseStudy.id]: true }));
     try {
-      const { data, error } = await supabase.functions.invoke('process-case-study', {
-        body: { caseStudy, action: 'generate' }
+      const { data, error } = await invokeFunctionWithRetry('process-case-study', {
+        caseStudy,
+        action: 'generate'
       });
 
       if (error) throw error;
 
-      setAnalyses(prev => ({
-        ...prev,
-        [caseStudy.id]: data
-      }));
+      if (data) {
+        setAnalyses(prev => ({
+          ...prev,
+          [caseStudy.id]: data
+        }));
 
-      toast({
-        title: "Generation Complete",
-        description: "Full case study has been generated.",
-      });
+        toast({
+          title: "Generation Complete",
+          description: "Full case study has been generated.",
+        });
+      }
     } catch (error) {
       console.error('Error generating case:', error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to generate case study",
+        description: "Failed to generate case study. Please try again.",
       });
     } finally {
       setAnalyzing(prev => ({ ...prev, [caseStudy.id]: false }));
@@ -50,27 +81,30 @@ const CaseStudies = () => {
   const analyzeCase = async (caseStudy: any) => {
     setAnalyzing(prev => ({ ...prev, [caseStudy.id]: true }));
     try {
-      const { data, error } = await supabase.functions.invoke('process-case-study', {
-        body: { caseStudy, action: 'analyze' }
+      const { data, error } = await invokeFunctionWithRetry('process-case-study', {
+        caseStudy,
+        action: 'analyze'
       });
 
       if (error) throw error;
 
-      setAnalyses(prev => ({
-        ...prev,
-        [caseStudy.id]: { analysis: data.analysis }
-      }));
+      if (data) {
+        setAnalyses(prev => ({
+          ...prev,
+          [caseStudy.id]: { analysis: data.analysis }
+        }));
 
-      toast({
-        title: "Analysis Complete",
-        description: "AI analysis has been generated for this case study.",
-      });
+        toast({
+          title: "Analysis Complete",
+          description: "AI analysis has been generated for this case study.",
+        });
+      }
     } catch (error) {
       console.error('Error analyzing case:', error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to analyze case study",
+        description: "Failed to analyze case study. Please try again.",
       });
     } finally {
       setAnalyzing(prev => ({ ...prev, [caseStudy.id]: false }));
