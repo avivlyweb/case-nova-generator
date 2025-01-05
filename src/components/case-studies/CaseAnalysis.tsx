@@ -5,6 +5,7 @@ import AnalysisOverview from "./AnalysisOverview";
 import DetailedSection from "./DetailedSection";
 import ICFCodes from "./ICFCodes";
 import { Json } from "@/integrations/supabase/types";
+import { useEffect, useState } from "react";
 
 interface CaseAnalysisProps {
   analysis: {
@@ -13,9 +14,16 @@ interface CaseAnalysisProps {
     references?: string;
     icf_codes?: Json;
   };
+  defaultTab?: string;
 }
 
-const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
+const CaseAnalysis = ({ analysis, defaultTab = 'overview' }: CaseAnalysisProps) => {
+  const [activeTab, setActiveTab] = useState(defaultTab);
+
+  useEffect(() => {
+    setActiveTab(defaultTab);
+  }, [defaultTab]);
+
   if (!analysis) return null;
 
   // Type guard to check if sections is an array of the correct shape
@@ -41,7 +49,7 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
     : [];
 
   return (
-    <Tabs defaultValue="overview" className="w-full mt-6">
+    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-6">
       <TabsList className="w-full justify-start bg-white dark:bg-gray-800 p-1 rounded-lg">
         <TabsTrigger 
           value="overview" 

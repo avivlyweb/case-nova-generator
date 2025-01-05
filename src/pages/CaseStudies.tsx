@@ -1,54 +1,32 @@
 import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { getCaseStudies } from "@/lib/db";
 import CaseStudyCard from "@/components/case-studies/CaseStudyCard";
 import CaseAnalysis from "@/components/case-studies/CaseAnalysis";
-import { getCaseStudies } from "@/lib/db";
 
 const CaseStudies = () => {
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
+  const newCaseId = searchParams.get('newCase');
+  const defaultTab = searchParams.get('tab') || 'overview';
+
   const { data: caseStudies, isLoading, error } = useQuery({
     queryKey: ['case-studies'],
     queryFn: getCaseStudies,
   });
 
-  const analyzeCase = async (caseStudy: any) => {
-    try {
-      const { data, error } = await supabase.functions.invoke('process-case-study', {
-        body: {
-          caseStudy,
-          action: 'analyze'
-        }
-      });
-
-      if (error) throw error;
-
-      if (data) {
-        // Update the case study with the analysis
-        const { error: updateError } = await supabase
-          .from('case_studies')
-          .update({
-            ai_analysis: data.analysis
-          })
-          .eq('id', caseStudy.id);
-
-        if (updateError) throw updateError;
-
-        toast({
-          title: "Analysis Complete",
-          description: "AI analysis has been generated for this case study.",
-        });
-      }
-    } catch (error) {
-      console.error('Error analyzing case:', error);
+  useEffect(() => {
+    if (error) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to analyze case study. Please try again.",
+        description: "Failed to load case studies",
       });
     }
-  };
+  }, [error, toast]);
 
   if (isLoading) {
     return (
@@ -63,25 +41,13 @@ const CaseStudies = () => {
     );
   }
 
-  if (error) {
-    toast({
-      variant: "destructive",
-      title: "Error",
-      description: "Failed to load case studies",
-    });
-    return null;
-  }
-
   return (
     <div className="space-y-8 max-w-full overflow-x-hidden">
       <h1 className="text-2xl md:text-3xl font-bold text-primary px-4 md:px-0">Case Studies</h1>
       <div className="grid gap-6 px-4 md:px-0">
         {caseStudies?.map((study) => (
-          <div key={study.id}>
-            <CaseStudyCard
-              study={study}
-              onAnalyze={() => analyzeCase(study)}
-            />
+          <div key={study.id} className={`transition-all duration-300 ${study.id === newCaseId ? 'ring-2 ring-primary ring-offset-2 rounded-lg' : ''}`}>
+            <CaseStudyCard study={study} />
             {study.ai_analysis && (
               <CaseAnalysis 
                 analysis={{
@@ -90,6 +56,7 @@ const CaseStudies = () => {
                   references: study.reference_list,
                   icf_codes: study.icf_codes
                 }}
+                defaultTab={study.id === newCaseId ? defaultTab : 'overview'}
               />
             )}
           </div>
