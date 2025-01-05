@@ -1,11 +1,63 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { pipeline } from "https://cdn.jsdelivr.net/npm/@huggingface/transformers";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+// Medical terms patterns
+const patterns = {
+  conditions: [
+    /(?:chronic|acute)\s+\w+/gi,
+    /(?:arthritis|pain|syndrome|disease|disorder|injury|fracture|sprain|strain)\b/gi,
+  ],
+  symptoms: [
+    /(?:pain|ache|weakness|stiffness|swelling|numbness|tingling|fatigue|dizziness)\b/gi,
+    /(?:limited|decreased|reduced)\s+(?:range|motion|mobility|strength|function)/gi,
+  ],
+  medications: [
+    /(?:medication|drug|pill|tablet|capsule|injection)\b/gi,
+    /(?:anti-inflammatory|analgesic|painkiller|nsaid)\b/gi,
+  ],
+  procedures: [
+    /(?:surgery|operation|procedure|therapy|treatment|assessment|evaluation)\b/gi,
+    /(?:physical therapy|rehabilitation|exercise|massage|manipulation)\b/gi,
+  ],
+  tests: [
+    /(?:x-ray|mri|ct scan|ultrasound|imaging|test|examination)\b/gi,
+    /(?:range of motion|strength|balance|gait)\s+(?:test|assessment|evaluation)/gi,
+  ],
+  anatomical: [
+    /(?:muscle|joint|bone|ligament|tendon|nerve|spine|back|neck|shoulder|knee|hip|ankle|wrist|elbow)\b/gi,
+    /(?:upper|lower)\s+(?:extremity|limb|body)/gi,
+  ],
+};
+
+function extractEntities(text: string) {
+  const entities: Record<string, string[]> = {
+    conditions: [],
+    symptoms: [],
+    medications: [],
+    procedures: [],
+    tests: [],
+    anatomical: [],
+  };
+
+  // Extract entities for each category
+  Object.entries(patterns).forEach(([category, categoryPatterns]) => {
+    const matches = new Set<string>();
+    categoryPatterns.forEach(pattern => {
+      const found = text.match(pattern);
+      if (found) {
+        found.forEach(match => matches.add(match.toLowerCase().trim()));
+      }
+    });
+    entities[category] = Array.from(matches);
+  });
+
+  return entities;
+}
 
 serve(async (req) => {
   // Handle CORS preflight requests
@@ -14,6 +66,8 @@ serve(async (req) => {
   }
 
   try {
+    console.log('Starting medical entity extraction process...');
+    
     // Initialize Supabase client
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -24,18 +78,14 @@ serve(async (req) => {
       .from('case_studies')
       .select('*');
 
-    if (fetchError) throw fetchError;
+    if (fetchError) {
+      console.error('Error fetching case studies:', fetchError);
+      throw fetchError;
+    }
 
-    // Initialize the NER pipeline with BiomedNLP model
-    const ner = await pipeline(
-      "token-classification",
-      "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext",
-      { aggregation_strategy: "simple" }
-    );
+    console.log(`Processing ${caseStudies?.length || 0} case studies...`);
 
-    console.log('Processing case studies...');
-
-    for (const study of caseStudies) {
+    for (const study of caseStudies || []) {
       // Combine relevant text fields for entity extraction
       const textToAnalyze = `
         ${study.condition || ''}
@@ -47,70 +97,24 @@ serve(async (req) => {
 
       console.log(`Processing case study ${study.id}`);
 
-      // Extract entities
-      const entities = await ner(textToAnalyze);
+      // Extract entities using regex patterns
+      const entities = extractEntities(textToAnalyze);
       
-      // Organize entities by category
-      const organizedEntities = {
-        conditions: [],
-        symptoms: [],
-        medications: [],
-        procedures: [],
-        tests: [],
-        anatomical: []
-      };
-
-      // Categorize entities based on their labels
-      entities.forEach((entity: any) => {
-        const text = entity.word.toLowerCase();
-        const score = entity.score;
-        const label = entity.entity_group;
-
-        // Only include entities with high confidence
-        if (score > 0.8) {
-          if (label.includes('DISEASE') || label.includes('CONDITION')) {
-            if (!organizedEntities.conditions.includes(text)) {
-              organizedEntities.conditions.push(text);
-            }
-          } else if (label.includes('SYMPTOM')) {
-            if (!organizedEntities.symptoms.includes(text)) {
-              organizedEntities.symptoms.push(text);
-            }
-          } else if (label.includes('DRUG') || label.includes('MEDICATION')) {
-            if (!organizedEntities.medications.includes(text)) {
-              organizedEntities.medications.push(text);
-            }
-          } else if (label.includes('PROCEDURE')) {
-            if (!organizedEntities.procedures.includes(text)) {
-              organizedEntities.procedures.push(text);
-            }
-          } else if (label.includes('TEST')) {
-            if (!organizedEntities.tests.includes(text)) {
-              organizedEntities.tests.push(text);
-            }
-          } else if (label.includes('ANATOMY')) {
-            if (!organizedEntities.anatomical.includes(text)) {
-              organizedEntities.anatomical.push(text);
-            }
-          }
-        }
-      });
-
       // Update the case study with extracted entities
       const { error: updateError } = await supabase
         .from('case_studies')
-        .update({ medical_entities: organizedEntities })
+        .update({ medical_entities: entities })
         .eq('id', study.id);
 
       if (updateError) {
         console.error(`Error updating case study ${study.id}:`, updateError);
       } else {
-        console.log(`Successfully updated case study ${study.id}`);
+        console.log(`Successfully updated case study ${study.id} with entities:`, entities);
       }
     }
 
     return new Response(
-      JSON.stringify({ message: 'Medical entities extraction completed' }),
+      JSON.stringify({ message: 'Medical entities extraction completed successfully' }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
