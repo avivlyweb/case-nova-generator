@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Stethoscope } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Json } from "@/integrations/supabase/types";
 
 interface MedicalEntity {
   name: string;
@@ -8,7 +9,7 @@ interface MedicalEntity {
 }
 
 interface MedicalEntitiesChartProps {
-  medicalEntities: Record<string, any>[] | null;
+  medicalEntities: Json[] | null;
 }
 
 const MedicalEntitiesChart = ({ medicalEntities }: MedicalEntitiesChartProps) => {
@@ -19,14 +20,16 @@ const MedicalEntitiesChart = ({ medicalEntities }: MedicalEntitiesChartProps) =>
   
   medicalEntities.forEach(entitySet => {
     // Count occurrences of each entity type
-    Object.entries(entitySet).forEach(([category, entities]) => {
-      if (Array.isArray(entities)) {
-        entities.forEach(entity => {
-          const key = `${category}: ${entity}`;
-          entityCounts[key] = (entityCounts[key] || 0) + 1;
-        });
-      }
-    });
+    if (typeof entitySet === 'object' && entitySet !== null) {
+      Object.entries(entitySet).forEach(([category, entities]) => {
+        if (Array.isArray(entities)) {
+          entities.forEach(entity => {
+            const key = `${category}: ${entity}`;
+            entityCounts[key] = (entityCounts[key] || 0) + 1;
+          });
+        }
+      });
+    }
   });
 
   // Convert to array and sort by count
