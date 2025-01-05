@@ -43,16 +43,20 @@ export const processCaseStudy = async (caseStudy: any, action: string) => {
     }
   }
 
-  // Extract medical entities
+  // Extract medical entities from all relevant text fields
   const textForEntityExtraction = `
-    ${caseStudy.condition || ''}
-    ${caseStudy.medical_history || ''}
-    ${caseStudy.presenting_complaint || ''}
-    ${caseStudy.comorbidities || ''}
-  `
+    Patient Condition: ${caseStudy.condition || ''}
+    Medical History: ${caseStudy.medical_history || ''}
+    Presenting Complaint: ${caseStudy.presenting_complaint || ''}
+    Comorbidities: ${caseStudy.comorbidities || ''}
+    ADL Problem: ${caseStudy.adl_problem || ''}
+    Background: ${caseStudy.patient_background || ''}
+    Psychosocial Factors: ${caseStudy.psychosocial_factors || ''}
+  `.trim();
   
-  const medicalEntities = await extractMedicalEntities(textForEntityExtraction, groq)
-  console.log('Extracted medical entities:', medicalEntities)
+  console.log('Extracting medical entities from:', textForEntityExtraction);
+  const medicalEntities = await extractMedicalEntities(textForEntityExtraction, groq);
+  console.log('Extracted medical entities:', medicalEntities);
 
   // Search PubMed
   const pubmedApiKey = Deno.env.get('PUBMED_API_KEY')
