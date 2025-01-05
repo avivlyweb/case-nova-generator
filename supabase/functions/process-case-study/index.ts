@@ -1,6 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { handleCors, corsHeaders } from './utils/cors.ts'
-import { sendResponse, sendError } from './utils/responseHandler.ts'
 import { processCaseStudy } from './utils/caseProcessor.ts'
 
 serve(async (req) => {
@@ -16,7 +15,10 @@ serve(async (req) => {
     } catch (e) {
       console.error('Error parsing request body:', e)
       return new Response(
-        JSON.stringify({ error: 'Invalid request body' }),
+        JSON.stringify({ 
+          error: 'Invalid request body',
+          details: e.message 
+        }),
         { 
           status: 400,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -40,6 +42,8 @@ serve(async (req) => {
     console.log(`Processing ${action} request for case study:`, caseStudy.id)
     
     const result = await processCaseStudy(caseStudy, action)
+    console.log('Processing completed successfully:', result)
+    
     return new Response(
       JSON.stringify(result),
       { 
@@ -53,7 +57,8 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         error: error.message || 'Internal server error',
-        details: error.stack
+        details: error.stack,
+        type: error.name
       }),
       { 
         status: 500,
