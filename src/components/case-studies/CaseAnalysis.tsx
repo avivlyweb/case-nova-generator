@@ -4,18 +4,41 @@ import { Brain, BookOpen } from "lucide-react";
 import AnalysisOverview from "./AnalysisOverview";
 import DetailedSection from "./DetailedSection";
 import ICFCodes from "./ICFCodes";
+import { Json } from "@/integrations/supabase/types";
 
 interface CaseAnalysisProps {
   analysis: {
     analysis?: string;
-    sections?: Array<{ title: string; content: string }>;
+    sections?: Json;
     references?: string;
-    icf_codes?: string;
+    icf_codes?: Json;
   };
 }
 
 const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
   if (!analysis) return null;
+
+  // Type guard to check if sections is an array of the correct shape
+  const isSectionsArray = (sections: Json): sections is Array<{ title: string; content: string }> => {
+    if (!Array.isArray(sections)) return false;
+    return sections.every(section => 
+      typeof section === 'object' && 
+      section !== null && 
+      'title' in section && 
+      'content' in section &&
+      typeof section.title === 'string' &&
+      typeof section.content === 'string'
+    );
+  };
+
+  // Convert icf_codes to string if it's not already
+  const formattedIcfCodes = typeof analysis.icf_codes === 'string' 
+    ? analysis.icf_codes 
+    : JSON.stringify(analysis.icf_codes);
+
+  const validSections = analysis.sections && isSectionsArray(analysis.sections) 
+    ? analysis.sections 
+    : [];
 
   return (
     <Tabs defaultValue="overview" className="w-full mt-6">
@@ -27,7 +50,7 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
           <Brain className="h-4 w-4" />
           Quick Analysis
         </TabsTrigger>
-        {analysis.sections && (
+        {validSections.length > 0 && (
           <TabsTrigger 
             value="full" 
             className="flex items-center gap-2 data-[state=active]:bg-primary-100 dark:data-[state=active]:bg-primary-900"
@@ -42,11 +65,11 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
         <AnalysisOverview analysis={analysis.analysis} />
       </TabsContent>
 
-      {analysis.sections && (
+      {validSections.length > 0 && (
         <TabsContent value="full" className="mt-6">
           <ScrollArea className="h-[600px] rounded-md pr-4">
             <div className="space-y-6">
-              {analysis.sections.map((section, index) => (
+              {validSections.map((section, index) => (
                 <DetailedSection
                   key={index}
                   title={section.title}
@@ -61,8 +84,8 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
                 />
               )}
 
-              {analysis.icf_codes && (
-                <ICFCodes codes={analysis.icf_codes} />
+              {formattedIcfCodes && (
+                <ICFCodes codes={formattedIcfCodes} />
               )}
             </div>
           </ScrollArea>
