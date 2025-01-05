@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
@@ -16,29 +16,6 @@ const CaseStudies = () => {
     queryKey: ['case-studies'],
     queryFn: getCaseStudies,
   });
-
-  const processAllCaseStudies = async () => {
-    try {
-      const { data, error } = await supabase.functions.invoke('extract-medical-entities');
-      
-      if (error) throw error;
-
-      toast({
-        title: "Success",
-        description: "Medical entities have been extracted and saved for all case studies.",
-      });
-
-      // Refetch to get the updated data
-      refetch();
-    } catch (error) {
-      console.error('Error processing case studies:', error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to process case studies",
-      });
-    }
-  };
 
   const generateCase = async (caseStudy: any) => {
     setAnalyzing(prev => ({ ...prev, [caseStudy.id]: true }));
@@ -138,11 +115,6 @@ const CaseStudies = () => {
       setAnalyzing(prev => ({ ...prev, [caseStudy.id]: false }));
     }
   };
-
-  useEffect(() => {
-    // Process all case studies when the component mounts
-    processAllCaseStudies();
-  }, []);
 
   if (isLoading) {
     return (

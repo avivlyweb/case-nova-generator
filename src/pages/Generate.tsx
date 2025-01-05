@@ -60,16 +60,21 @@ const Generate = () => {
 
       const newCaseStudy = await createCaseStudy(caseStudyData);
       
-      // Only extract medical entities for the newly created case study
+      // Process the newly created case study
       if (newCaseStudy?.id) {
-        await supabase.functions.invoke('extract-medical-entities', {
-          body: { caseStudyId: newCaseStudy.id }
+        const { error } = await supabase.functions.invoke('process-case-study', {
+          body: { 
+            caseStudy: newCaseStudy,
+            action: 'generate'
+          }
         });
+
+        if (error) throw error;
       }
 
       toast({
         title: "Success",
-        description: "Case study created successfully",
+        description: "Case study created and processed successfully",
       });
       navigate("/case-studies");
     } catch (error) {
