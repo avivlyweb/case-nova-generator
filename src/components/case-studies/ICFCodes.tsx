@@ -3,11 +3,16 @@ import { Badge } from "@/components/ui/badge";
 import { List } from "lucide-react";
 
 interface ICFCodesProps {
-  codes: string;
+  codes: string | string[];
 }
 
 const ICFCodes = ({ codes }: ICFCodesProps) => {
   if (!codes) return null;
+
+  // Convert codes to array whether it comes as string or array
+  const codesArray = Array.isArray(codes) 
+    ? codes 
+    : codes.split('\n');
 
   return (
     <Card className="bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-all duration-200">
@@ -17,13 +22,13 @@ const ICFCodes = ({ codes }: ICFCodesProps) => {
           <h3 className="text-xl font-semibold text-primary-900 dark:text-primary-100">ICF Codes</h3>
         </div>
         <div className="flex flex-wrap gap-2">
-          {codes.split('\n').map((code, index) => (
+          {codesArray.map((code, index) => (
             <Badge 
               key={index} 
               variant="secondary" 
               className="text-sm hover:bg-primary-100 dark:hover:bg-primary-900 transition-colors"
             >
-              {code.trim()}
+              {typeof code === 'string' ? code.trim() : code}
             </Badge>
           ))}
         </div>
