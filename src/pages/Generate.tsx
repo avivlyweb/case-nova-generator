@@ -42,7 +42,7 @@ const Generate = () => {
     setLoading(true);
 
     try {
-      // First, create the case study in the database
+      // First, create the initial case study in the database
       const caseStudyData = {
         patient_name: formData.patientName,
         age: formData.age,
@@ -65,7 +65,7 @@ const Generate = () => {
         throw new Error("Failed to create case study");
       }
 
-      // Generate the case study content using the edge function
+      // Immediately generate the full case study content
       const { data: generatedData, error: generationError } = await supabase.functions.invoke('process-case-study', {
         body: {
           caseStudy: createdCase,
@@ -75,7 +75,7 @@ const Generate = () => {
 
       if (generationError) throw generationError;
 
-      // Update the case study with the generated content
+      // Update the case study with all generated content
       const { error: updateError } = await supabase
         .from('case_studies')
         .update({
@@ -89,17 +89,17 @@ const Generate = () => {
 
       toast({
         title: "Success",
-        description: "Case study created and generated successfully",
+        description: "Case study has been created and fully generated!",
       });
       
-      // Navigate to case studies page to see the result
+      // Navigate to case studies page to see the complete result
       navigate("/case-studies");
     } catch (error) {
-      console.error("Error creating case study:", error);
+      console.error("Error creating and generating case study:", error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to create case study",
+        description: "Failed to create and generate case study. Please try again.",
       });
     } finally {
       setLoading(false);
@@ -132,7 +132,7 @@ const Generate = () => {
               className="w-full bg-secondary hover:bg-secondary/90"
               disabled={loading}
             >
-              {loading ? "Generating..." : "Generate Case Study"}
+              {loading ? "Generating Full Case Study..." : "Generate Full Case Study"}
             </Button>
           </form>
         </CardContent>
