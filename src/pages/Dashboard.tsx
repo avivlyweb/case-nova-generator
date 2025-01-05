@@ -219,7 +219,11 @@ const Dashboard = () => {
 
         {/* Medical Entities Chart */}
         <MedicalEntitiesChart 
-          medicalEntities={caseStudies?.map(study => study.medical_entities).filter(Boolean) || []}
+          medicalEntities={caseStudies
+            ?.map(study => study.medical_entities)
+            .filter((entities): entities is NonNullable<typeof entities> => 
+              entities !== null && entities !== undefined
+            ) || []}
         />
 
         {/* Recent Cases Table */}

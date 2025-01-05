@@ -13,19 +13,38 @@ interface MedicalEntitiesChartProps {
 }
 
 const MedicalEntitiesChart = ({ medicalEntities }: MedicalEntitiesChartProps) => {
-  if (!medicalEntities?.length) return null;
+  if (!medicalEntities?.length) {
+    return (
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-lg font-medium">
+            <div className="flex items-center gap-2">
+              <Stethoscope className="h-5 w-5 text-primary" />
+              Top Medical Entities
+            </div>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[300px] flex items-center justify-center text-muted-foreground">
+            No medical entities data available
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   // Process medical entities data
   const entityCounts: Record<string, number> = {};
   
   medicalEntities.forEach(entitySet => {
-    // Count occurrences of each entity type
     if (typeof entitySet === 'object' && entitySet !== null) {
       Object.entries(entitySet).forEach(([category, entities]) => {
         if (Array.isArray(entities)) {
           entities.forEach(entity => {
-            const key = `${category}: ${entity}`;
-            entityCounts[key] = (entityCounts[key] || 0) + 1;
+            if (typeof entity === 'string') {
+              const key = `${category}: ${entity}`;
+              entityCounts[key] = (entityCounts[key] || 0) + 1;
+            }
           });
         }
       });
@@ -50,24 +69,30 @@ const MedicalEntitiesChart = ({ medicalEntities }: MedicalEntitiesChartProps) =>
       </CardHeader>
       <CardContent>
         <div className="h-[300px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={chartData}
-              layout="vertical"
-              margin={{ top: 5, right: 30, left: 100, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" />
-              <YAxis 
-                type="category" 
-                dataKey="name" 
-                width={90}
-                tick={{ fontSize: 12 }}
-              />
-              <Tooltip />
-              <Bar dataKey="count" fill="#0A2540" />
-            </BarChart>
-          </ResponsiveContainer>
+          {chartData.length > 0 ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={chartData}
+                layout="vertical"
+                margin={{ top: 5, right: 30, left: 100, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis type="number" />
+                <YAxis 
+                  type="category" 
+                  dataKey="name" 
+                  width={90}
+                  tick={{ fontSize: 12 }}
+                />
+                <Tooltip />
+                <Bar dataKey="count" fill="#0A2540" />
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="h-full flex items-center justify-center text-muted-foreground">
+              No entities found in the data
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
