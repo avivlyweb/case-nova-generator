@@ -2,8 +2,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dna } from "lucide-react";
 
+interface MedicalEntity {
+  [category: string]: string[];
+}
+
 interface MedicalEntitiesProps {
-  entities: any;
+  entities: MedicalEntity | string;
 }
 
 const MedicalEntities = ({ entities }: MedicalEntitiesProps) => {
@@ -17,7 +21,7 @@ const MedicalEntities = ({ entities }: MedicalEntitiesProps) => {
   // Filter out empty categories
   const nonEmptyCategories = Object.entries(processedEntities).filter(([_, items]) => 
     Array.isArray(items) && items.length > 0
-  );
+  ) as [string, string[]][];
 
   if (nonEmptyCategories.length === 0) return null;
 
