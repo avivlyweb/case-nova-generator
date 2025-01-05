@@ -1,27 +1,29 @@
 import { Groq } from 'npm:groq-sdk';
 
 export const extractMedicalEntities = async (text: string, groq: Groq) => {
-  console.log('Starting medical entity extraction with text:', text);
+  console.log('Starting medical entity extraction...');
   
-  const prompt = `As a medical entity extractor using BioBERT's approach, analyze this medical text and extract all medical entities into these categories:
+  const prompt = `Extract medical entities from the following text and categorize them into these groups:
+  - Conditions (medical conditions, disorders, diagnoses)
+  - Symptoms (clinical manifestations)
+  - Medications (drugs, pharmaceutical substances)
+  - Procedures (medical procedures, interventions)
+  - Tests (medical tests, diagnostic procedures)
+  - Anatomical (body parts, anatomical structures)
 
-Conditions: List all medical conditions, disorders, and diagnoses
-Symptoms: List all symptoms and clinical manifestations
-Medications: List all medications and pharmaceutical substances
-Procedures: List all medical procedures, interventions, and treatments
-Tests: List all medical tests, assessments, and diagnostic procedures
-Anatomical: List all body parts and anatomical structures
+Text to analyze:
+${text}
 
-Format the output as a JSON object with these categories as keys and arrays of unique entities as values. Only include entities that are explicitly mentioned in the text.
-
-Text to analyze: ${text}`;
+Format the response as a JSON object with these exact keys: conditions, symptoms, medications, procedures, tests, anatomical. 
+Each key should have an array of unique strings as values.
+Only include entities that are explicitly mentioned in the text.`;
 
   try {
     const completion = await groq.chat.completions.create({
       messages: [
         {
           role: "system",
-          content: "You are a medical entity extraction system based on BioBERT, specialized in identifying and categorizing medical terminology from clinical text. Extract only explicitly mentioned entities, no inferences."
+          content: "You are a medical entity extraction system. Extract and categorize medical terms from clinical text into predefined categories. Only include explicitly mentioned entities."
         },
         {
           role: "user",
@@ -36,16 +38,51 @@ Text to analyze: ${text}`;
     const response = completion.choices[0]?.message?.content;
     console.log('Raw entity extraction response:', response);
     
+    if (!response) {
+      console.error('No response from entity extraction');
+      return {
+        conditions: [],
+        symptoms: [],
+        medications: [],
+        procedures: [],
+        tests: [],
+        anatomical: []
+      };
+    }
+
     try {
-      const parsedEntities = JSON.parse(response || '{}');
+      const parsedEntities = JSON.parse(response);
       console.log('Parsed medical entities:', parsedEntities);
+      
+      // Ensure all required categories exist
+      const defaultCategories = ['conditions', 'symptoms', 'medications', 'procedures', 'tests', 'anatomical'];
+      defaultCategories.forEach(category => {
+        if (!parsedEntities[category]) {
+          parsedEntities[category] = [];
+        }
+      });
+
       return parsedEntities;
     } catch (parseError) {
       console.error('Error parsing medical entities JSON:', parseError);
-      return {};
+      return {
+        conditions: [],
+        symptoms: [],
+        medications: [],
+        procedures: [],
+        tests: [],
+        anatomical: []
+      };
     }
   } catch (error) {
     console.error('Error in medical entity extraction:', error);
-    return {};
+    return {
+      conditions: [],
+      symptoms: [],
+      medications: [],
+      procedures: [],
+      tests: [],
+      anatomical: []
+    };
   }
 };
