@@ -12,11 +12,18 @@ interface ICFClassificationChartProps {
 export const ICFClassificationChart = ({ caseStudies }: ICFClassificationChartProps) => {
   // Process ICF codes data
   const icfCodesDistribution = caseStudies.reduce((acc: Record<string, number>, study) => {
-    if (study.icf_codes && Array.isArray(study.icf_codes)) {
-      (study.icf_codes as string[]).forEach((code) => {
-        // Extract the main category (first letter) from the ICF code
-        const category = code.charAt(0);
-        acc[category] = (acc[category] || 0) + 1;
+    if (study.icf_codes) {
+      const codes = Array.isArray(study.icf_codes) ? study.icf_codes : 
+                   typeof study.icf_codes === 'string' ? [study.icf_codes] : [];
+      
+      codes.forEach((code) => {
+        if (typeof code === 'string' && code.length > 0) {
+          // Extract the main category (first letter) from the ICF code
+          const category = code.charAt(0).toLowerCase();
+          if (['b', 'd', 'e', 's'].includes(category)) {
+            acc[category] = (acc[category] || 0) + 1;
+          }
+        }
       });
     }
     return acc;
