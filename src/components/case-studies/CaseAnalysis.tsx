@@ -8,7 +8,7 @@ import ICFCodes from "./ICFCodes";
 interface CaseAnalysisProps {
   analysis: {
     analysis?: string;
-    sections?: Array<{ title: string; content: string }>;
+    sections?: Array<{ title: string; content: string }> | any;
     references?: string;
     icf_codes?: string;
   };
@@ -16,6 +16,14 @@ interface CaseAnalysisProps {
 
 const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
   if (!analysis) return null;
+
+  // Convert sections to array if it's stored as an object
+  const formattedSections = analysis.sections ? 
+    (Array.isArray(analysis.sections) ? analysis.sections : 
+     Object.entries(analysis.sections).map(([title, content]) => ({
+       title,
+       content: typeof content === 'string' ? content : JSON.stringify(content)
+     }))) : [];
 
   return (
     <Tabs defaultValue="overview" className="w-full mt-6">
@@ -27,7 +35,7 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
           <Brain className="h-4 w-4" />
           Quick Analysis
         </TabsTrigger>
-        {analysis.sections && (
+        {formattedSections.length > 0 && (
           <TabsTrigger 
             value="full" 
             className="flex items-center gap-2 data-[state=active]:bg-primary-100 dark:data-[state=active]:bg-primary-900"
@@ -42,11 +50,11 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
         <AnalysisOverview analysis={analysis.analysis} />
       </TabsContent>
 
-      {analysis.sections && (
+      {formattedSections.length > 0 && (
         <TabsContent value="full" className="mt-6">
           <ScrollArea className="h-[600px] rounded-md pr-4">
             <div className="space-y-6">
-              {analysis.sections.map((section, index) => (
+              {formattedSections.map((section, index) => (
                 <DetailedSection
                   key={index}
                   title={section.title}
