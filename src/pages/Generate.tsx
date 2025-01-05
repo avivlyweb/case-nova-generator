@@ -9,6 +9,7 @@ import SpecializationSelect, {
   physiotherapyTypes,
   aiRoleDescriptions,
 } from "@/components/generate/SpecializationSelect";
+import { supabase } from "@/integrations/supabase/client";
 
 const Generate = () => {
   const navigate = useNavigate();
@@ -57,7 +58,15 @@ const Generate = () => {
         date: new Date().toISOString().split('T')[0],
       };
 
-      await createCaseStudy(caseStudyData);
+      const newCaseStudy = await createCaseStudy(caseStudyData);
+      
+      // Only extract medical entities for the newly created case study
+      if (newCaseStudy?.id) {
+        await supabase.functions.invoke('extract-medical-entities', {
+          body: { caseStudyId: newCaseStudy.id }
+        });
+      }
+
       toast({
         title: "Success",
         description: "Case study created successfully",
