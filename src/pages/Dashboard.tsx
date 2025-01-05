@@ -3,8 +3,12 @@ import { getCaseStudies } from "@/lib/db";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { ChartBar, ChartPie, List } from "lucide-react";
+import { 
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
+  PieChart, Pie, Cell, LineChart, Line, Legend, RadarChart, Radar, 
+  PolarGrid, PolarAngleAxis, PolarRadiusAxis 
+} from 'recharts';
+import { ChartBar, ChartPie, List, TrendingUp, Target } from "lucide-react";
 
 const Dashboard = () => {
   const { toast } = useToast();
@@ -18,7 +22,7 @@ const Dashboard = () => {
       <div className="space-y-4 p-4">
         <Skeleton className="h-8 w-[200px]" />
         <div className="grid gap-6 md:grid-cols-2">
-          {[1, 2, 3, 4].map((n) => (
+          {[1, 2, 3, 4, 5].map((n) => (
             <Skeleton key={n} className="h-[300px]" />
           ))}
         </div>
@@ -48,6 +52,7 @@ const Dashboard = () => {
     value,
   }));
 
+  // Process age group data
   const ageGroups = caseStudies?.reduce((acc: Record<string, number>, study) => {
     const ageGroup = `${Math.floor(study.age / 10) * 10}-${Math.floor(study.age / 10) * 10 + 9}`;
     acc[ageGroup] = (acc[ageGroup] || 0) + 1;
@@ -57,6 +62,27 @@ const Dashboard = () => {
   const ageData = Object.entries(ageGroups || {}).map(([name, value]) => ({
     name,
     value,
+  }));
+
+  // Process timeline data
+  const timelineData = caseStudies?.reduce((acc: Record<string, number>, study) => {
+    const month = new Date(study.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+    acc[month] = (acc[month] || 0) + 1;
+    return acc;
+  }, {});
+
+  const timelineChartData = Object.entries(timelineData || {}).map(([date, count]) => ({
+    date,
+    cases: count,
+  }));
+
+  // Process intervention data for radar chart
+  const interventionCategories = ['Assessment', 'Treatment', 'Rehabilitation', 'Prevention', 'Education'];
+  const interventionData = interventionCategories.map(category => ({
+    category,
+    value: caseStudies?.filter(study => 
+      study.intervention_plan?.toLowerCase().includes(category.toLowerCase())
+    ).length || 0,
   }));
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
@@ -126,7 +152,69 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
-        {/* Recent Cases */}
+        {/* Cases Timeline */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-lg font-medium">
+              <div className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-primary" />
+                Cases Timeline
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={timelineChartData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line 
+                    type="monotone" 
+                    dataKey="cases" 
+                    stroke="#0A2540" 
+                    name="Number of Cases"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Intervention Focus Areas */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-lg font-medium">
+              <div className="flex items-center gap-2">
+                <Target className="h-5 w-5 text-primary" />
+                Intervention Focus Areas
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={interventionData}>
+                  <PolarGrid />
+                  <PolarAngleAxis dataKey="category" />
+                  <PolarRadiusAxis />
+                  <Radar
+                    name="Interventions"
+                    dataKey="value"
+                    stroke="#0A2540"
+                    fill="#0A2540"
+                    fillOpacity={0.6}
+                  />
+                  <Tooltip />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Recent Cases Table */}
         <Card className="md:col-span-2">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-lg font-medium">
