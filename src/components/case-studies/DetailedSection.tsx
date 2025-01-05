@@ -23,6 +23,9 @@ const DetailedSection = ({ title, content }: DetailedSectionProps) => {
     }
   };
 
+  // Convert content to string if it's an array (for references)
+  const formattedContent = Array.isArray(content) ? content.join('\n\n') : content;
+
   return (
     <Card className="overflow-hidden bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-all duration-200">
       <CardContent className="pt-6">
@@ -47,7 +50,7 @@ const DetailedSection = ({ title, content }: DetailedSectionProps) => {
               ),
             }}
           >
-            {content}
+            {formattedContent}
           </ReactMarkdown>
         </div>
       </CardContent>
