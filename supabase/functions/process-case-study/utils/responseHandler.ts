@@ -15,6 +15,7 @@ export const sendError = (error: any) => {
   return new Response(
     JSON.stringify({ 
       error: error.message || 'Internal server error',
+      details: error.stack,
       success: false 
     }),
     { 
