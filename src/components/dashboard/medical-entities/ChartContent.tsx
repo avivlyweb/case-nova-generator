@@ -1,12 +1,17 @@
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell } from 'recharts';
 import { CustomTooltip } from './CustomTooltip';
-import { categoryColors } from './constants';
+import { categoryColors, type CategoryKey } from './constants';
 import { MedicalEntity } from './types';
 
 interface ChartContentProps {
+  /** Array of medical entities to display in the chart */
   chartData: MedicalEntity[];
 }
 
+/**
+ * Renders the main chart visualization for medical entities
+ * Uses a horizontal bar chart to display entity frequencies
+ */
 export const ChartContent = ({ chartData }: ChartContentProps) => {
   if (!chartData.length) {
     return (
@@ -42,7 +47,7 @@ export const ChartContent = ({ chartData }: ChartContentProps) => {
           {chartData.map((entry, index) => (
             <Cell 
               key={`cell-${index}`}
-              fill={categoryColors[entry.category as keyof typeof categoryColors] || '#0A2540'}
+              fill={categoryColors[entry.category as CategoryKey] || '#0A2540'}
             />
           ))}
         </Bar>

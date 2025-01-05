@@ -7,12 +7,19 @@ import { processEntityData } from "./medical-entities/utils";
 import { MedicalEntity } from "./medical-entities/types";
 
 interface MedicalEntitiesChartProps {
+  /** Array of medical entities from the case study */
   medicalEntities: Json[] | null;
 }
 
+/**
+ * Main component for displaying medical entities analysis
+ * Shows a chart of entity frequencies categorized by type
+ */
 const MedicalEntitiesChart = ({ medicalEntities }: MedicalEntitiesChartProps) => {
+  // Log received data for debugging purposes
   console.log('Medical Entities received:', medicalEntities);
 
+  // Handle empty data case
   if (!medicalEntities?.length) {
     return (
       <Card>
@@ -33,9 +40,10 @@ const MedicalEntitiesChart = ({ medicalEntities }: MedicalEntitiesChartProps) =>
     );
   }
 
+  // Process the raw entity data
   const { entityDetails, entityCounts } = processEntityData(medicalEntities);
 
-  // Convert to array and sort by count
+  // Convert to array and sort by count, showing top 10 entities
   const chartData: MedicalEntity[] = Object.entries(entityCounts)
     .map(([name, count]) => {
       const [category] = name.split(':');
@@ -47,7 +55,7 @@ const MedicalEntitiesChart = ({ medicalEntities }: MedicalEntitiesChartProps) =>
       };
     })
     .sort((a, b) => b.count - a.count)
-    .slice(0, 10); // Show top 10 entities
+    .slice(0, 10);
 
   return (
     <Card>
