@@ -47,11 +47,12 @@ serve(async (req) => {
         max_tokens: 500,
       });
 
-      console.log('Analysis completed with gemma2-9b-it');
+      const analysisContent = completion.choices[0]?.message?.content || 'No analysis generated';
+      console.log('Analysis completed:', analysisContent);
 
       return new Response(
         JSON.stringify({ 
-          analysis: completion.choices[0]?.message?.content || 'No analysis generated',
+          analysis: analysisContent,
           success: true 
         }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -81,20 +82,30 @@ serve(async (req) => {
 
     // Generate sections with PubMed references
     const generatedSections = await Promise.all(
-      sections.map(section => 
-        generateSection(
-          groq,
-          section.title,
-          section.description,
-          caseStudy,
-          medicalEntities,
-          references
-        )
-      )
+      sections.map(async section => {
+        try {
+          const sectionResult = await generateSection(
+            groq,
+            section.title,
+            section.description,
+            caseStudy,
+            medicalEntities,
+            references
+          );
+          console.log(`Generated section ${section.title}:`, sectionResult);
+          return sectionResult;
+        } catch (error) {
+          console.error(`Error generating section ${section.title}:`, error);
+          return {
+            title: section.title,
+            content: `Error generating content: ${error.message}`
+          };
+        }
+      })
     );
 
     // Generate medications list
-    const medicationsPrompt = `Based on the following case study information, generate a list of likely prescribed medications including their purposes and relevant information. Format as a JSON array of objects with 'name', 'purpose', and 'details' properties:
+    const medicationsPrompt = `Based on the following case study information, list likely prescribed medications with their purposes:
     
     Condition: ${caseStudy.condition}
     Medical History: ${caseStudy.medical_history}
@@ -104,7 +115,7 @@ serve(async (req) => {
       messages: [
         {
           role: "system",
-          content: "You are a medical expert generating medication information in JSON format."
+          content: "Generate a list of medications in a clear, structured format."
         },
         {
           role: "user",
@@ -116,10 +127,17 @@ serve(async (req) => {
       max_tokens: 1000,
     });
 
-    const medications = JSON.parse(medicationsCompletion.choices[0]?.message?.content || '[]');
+    const medicationsContent = medicationsCompletion.choices[0]?.message?.content || '[]';
+    let medications;
+    try {
+      medications = JSON.parse(medicationsContent);
+    } catch (error) {
+      console.error('Error parsing medications:', error);
+      medications = [];
+    }
 
     // Generate ICF codes based on the case
-    const icfPrompt = `Based on the following case study information, generate relevant ICF codes and their descriptions. Format as a JSON array of strings:
+    const icfPrompt = `Based on the following case study information, list relevant ICF codes:
     
     Condition: ${caseStudy.condition}
     ADL Problem: ${caseStudy.adl_problem}
@@ -130,7 +148,7 @@ serve(async (req) => {
       messages: [
         {
           role: "system",
-          content: "You are an expert in ICF classification generating ICF codes."
+          content: "Generate a list of ICF codes in a clear format."
         },
         {
           role: "user",
@@ -142,10 +160,17 @@ serve(async (req) => {
       max_tokens: 1000,
     });
 
-    const icfCodes = JSON.parse(icfCompletion.choices[0]?.message?.content || '[]');
+    const icfContent = icfCompletion.choices[0]?.message?.content || '[]';
+    let icfCodes;
+    try {
+      icfCodes = JSON.parse(icfContent);
+    } catch (error) {
+      console.error('Error parsing ICF codes:', error);
+      icfCodes = [];
+    }
 
     // Generate SMART goals
-    const goalsPrompt = `Based on the following case study information, generate at least 2 short-term and 2 long-term SMART goals. Format as a JSON array of objects with 'type' (short/long), 'goal', and 'timeline' properties:
+    const goalsPrompt = `Based on the following case study information, generate SMART goals:
     
     Condition: ${caseStudy.condition}
     ADL Problem: ${caseStudy.adl_problem}
@@ -155,7 +180,7 @@ serve(async (req) => {
       messages: [
         {
           role: "system",
-          content: "You are a physiotherapy expert generating SMART goals in JSON format."
+          content: "Generate SMART goals in a clear format."
         },
         {
           role: "user",
@@ -167,20 +192,31 @@ serve(async (req) => {
       max_tokens: 1000,
     });
 
-    const smartGoals = JSON.parse(goalsCompletion.choices[0]?.message?.content || '[]');
+    const goalsContent = goalsCompletion.choices[0]?.message?.content || '[]';
+    let smartGoals;
+    try {
+      smartGoals = JSON.parse(goalsContent);
+    } catch (error) {
+      console.error('Error parsing SMART goals:', error);
+      smartGoals = [];
+    }
+
+    const response = {
+      success: true,
+      sections: generatedSections,
+      references,
+      medical_entities: medicalEntities,
+      medications,
+      icf_codes: icfCodes,
+      smart_goals: smartGoals,
+      assessment_findings: generatedSections.find(s => s.title === "Assessment Findings")?.content || '',
+      intervention_plan: generatedSections.find(s => s.title === "Intervention Plan")?.content || '',
+    };
+
+    console.log('Final response:', JSON.stringify(response));
 
     return new Response(
-      JSON.stringify({
-        success: true,
-        sections: generatedSections,
-        references,
-        medical_entities: medicalEntities,
-        medications,
-        icf_codes: icfCodes,
-        smart_goals: smartGoals,
-        assessment_findings: generatedSections.find(s => s.title === "Assessment Findings")?.content || '',
-        intervention_plan: generatedSections.find(s => s.title === "Intervention Plan")?.content || '',
-      }),
+      JSON.stringify(response),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
