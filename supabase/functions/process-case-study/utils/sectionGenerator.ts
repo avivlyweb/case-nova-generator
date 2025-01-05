@@ -1,5 +1,10 @@
 import { Groq } from 'npm:groq-sdk';
 
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 5000; // 5 seconds
+
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export const generateSection = async (
   groq: Groq,
   sectionTitle: string,
@@ -10,7 +15,12 @@ export const generateSection = async (
 ) => {
   console.log(`Generating section: ${sectionTitle}`);
   
-  const prompt = `Generate the following section for a physiotherapy case study:
+  let retries = 0;
+  let lastError;
+
+  while (retries < MAX_RETRIES) {
+    try {
+      const prompt = `Generate the following section for a physiotherapy case study:
 
 ${sectionTitle}
 
@@ -41,32 +51,42 @@ Please ensure your response:
 4. References the provided literature where appropriate
 5. Uses proper markdown table syntax with | for columns when presenting data`;
 
-  try {
-    const completion = await groq.chat.completions.create({
-      messages: [
-        {
-          role: "system",
-          content: "You are an expert physiotherapist creating detailed case study sections. Format your responses using proper markdown with clear headings and proper table syntax."
-        },
-        {
-          role: "user",
-          content: prompt
-        }
-      ],
-      model: "gemma2-9b-it",
-      temperature: 0.5,
-      max_tokens: 2000,
-    });
+      const completion = await groq.chat.completions.create({
+        messages: [
+          {
+            role: "system",
+            content: "You are an expert physiotherapist creating detailed case study sections. Format your responses using proper markdown with clear headings and proper table syntax."
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        model: "gemma2-9b-it",
+        temperature: 0.5,
+        max_tokens: 2000,
+      });
 
-    const content = completion.choices[0]?.message?.content || 'Error generating content';
-    console.log(`Section ${sectionTitle} generated:`, content);
-    
-    return {
-      title: sectionTitle,
-      content: content
-    };
-  } catch (error) {
-    console.error(`Error generating section ${sectionTitle}:`, error);
-    throw error;
+      const content = completion.choices[0]?.message?.content || 'Error generating content';
+      console.log(`Section ${sectionTitle} generated:`, content);
+      
+      return {
+        title: sectionTitle,
+        content: content
+      };
+    } catch (error) {
+      console.error(`Attempt ${retries + 1} for section ${sectionTitle} failed:`, error);
+      lastError = error;
+      
+      if (error.message?.toLowerCase().includes('rate limit')) {
+        await delay(RETRY_DELAY);
+        retries++;
+        continue;
+      }
+      
+      throw error;
+    }
   }
+
+  throw new Error(`Maximum retries reached for section ${sectionTitle}. Please try again later.`);
 };
