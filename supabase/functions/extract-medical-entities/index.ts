@@ -7,41 +7,46 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-async function extractEntities(text: string, groq: Groq) {
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+async function extractEntities(text: string, groq: Groq, retryCount = 0): Promise<any> {
   console.log('Starting entity extraction for text:', text.substring(0, 100) + '...');
   
-  const prompt = `Extract and categorize medical entities from the following clinical text into these specific categories:
-
-  - Clinical Diagnoses (specific medical conditions, disorders, pathologies)
-  - Clinical Signs & Symptoms (objective and subjective manifestations)
-  - Therapeutic Interventions (medications, treatments, procedures)
-  - Diagnostic Procedures (tests, imaging, assessments)
-  - Anatomical Structures (specific body parts, systems)
-  - Physiological Parameters (measurements, vital signs)
-
-For each entity:
-1. Use precise medical terminology
-2. Include relevant clinical context or measurements in parentheses
-3. Standardize terminology to medical nomenclature
-4. Add brief clinical significance note
-
-Text to analyze:
-${text}
-
-Return a JSON object with these exact keys:
-{
-  "diagnoses": [],
-  "symptoms": [],
-  "interventions": [],
-  "diagnostics": [],
-  "anatomical": [],
-  "physiological": []
-}
-
-Each array should contain strings with the format: "term (context/measurement) [clinical significance]"
-Only include entities explicitly mentioned in the text.`;
+  const maxRetries = 3;
+  const baseDelay = 2000; // 2 seconds
 
   try {
+    const prompt = `Extract and categorize medical entities from the following clinical text into these specific categories:
+
+    - Clinical Diagnoses (specific medical conditions, disorders, pathologies)
+    - Clinical Signs & Symptoms (objective and subjective manifestations)
+    - Therapeutic Interventions (medications, treatments, procedures)
+    - Diagnostic Procedures (tests, imaging, assessments)
+    - Anatomical Structures (specific body parts, systems)
+    - Physiological Parameters (measurements, vital signs)
+
+    For each entity:
+    1. Use precise medical terminology
+    2. Include relevant clinical context or measurements in parentheses
+    3. Standardize terminology to medical nomenclature
+    4. Add brief clinical significance note
+
+    Text to analyze:
+    ${text}
+
+    Return a JSON object with these exact keys:
+    {
+      "diagnoses": [],
+      "symptoms": [],
+      "interventions": [],
+      "diagnostics": [],
+      "anatomical": [],
+      "physiological": []
+    }
+
+    Each array should contain strings with the format: "term (context/measurement) [clinical significance]"
+    Only include entities explicitly mentioned in the text.`;
+
     const completion = await groq.chat.completions.create({
       messages: [
         {
@@ -66,7 +71,6 @@ Only include entities explicitly mentioned in the text.`;
 
     console.log('Raw response from Groq:', response);
 
-    // Clean up the response by removing any markdown formatting
     const cleanedResponse = response.replace(/```json\n|\n```/g, '').trim();
     console.log('Cleaned response:', cleanedResponse);
 
@@ -76,7 +80,6 @@ Only include entities explicitly mentioned in the text.`;
       return parsedEntities;
     } catch (parseError) {
       console.error('Error parsing JSON:', parseError);
-      // Return a default structure if parsing fails
       return {
         diagnoses: [],
         symptoms: [],
@@ -87,13 +90,22 @@ Only include entities explicitly mentioned in the text.`;
       };
     }
   } catch (error) {
-    console.error('Error in entity extraction:', error);
+    console.error(`Error in entity extraction (attempt ${retryCount + 1}):`, error);
+    
+    // Check if it's a rate limit error
+    if (error.message?.includes('rate_limit_exceeded')) {
+      if (retryCount < maxRetries) {
+        const delay = baseDelay * Math.pow(2, retryCount); // Exponential backoff
+        console.log(`Rate limit hit. Retrying in ${delay}ms...`);
+        await sleep(delay);
+        return extractEntities(text, groq, retryCount + 1);
+      }
+    }
     throw error;
   }
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -111,7 +123,8 @@ serve(async (req) => {
 
     const { data: caseStudies, error: fetchError } = await supabase
       .from('case_studies')
-      .select('*');
+      .select('*')
+      .is('medical_entities', null);  // Only process cases without entities
 
     if (fetchError) {
       console.error('Error fetching case studies:', fetchError);
@@ -120,34 +133,53 @@ serve(async (req) => {
 
     console.log(`Processing ${caseStudies?.length || 0} case studies...`);
 
-    for (const study of caseStudies || []) {
-      const textToAnalyze = `
-        ${study.condition || ''}
-        ${study.medical_history || ''}
-        ${study.presenting_complaint || ''}
-        ${study.assessment_findings || ''}
-        ${study.intervention_plan || ''}
-      `.trim();
+    // Process in smaller batches
+    const batchSize = 5;
+    const batches = [];
+    for (let i = 0; i < (caseStudies?.length || 0); i += batchSize) {
+      batches.push(caseStudies!.slice(i, i + batchSize));
+    }
 
-      console.log(`Processing case study ${study.id}`);
+    for (const batch of batches) {
+      await Promise.all(batch.map(async (study) => {
+        const textToAnalyze = `
+          ${study.condition || ''}
+          ${study.medical_history || ''}
+          ${study.presenting_complaint || ''}
+          ${study.assessment_findings || ''}
+          ${study.intervention_plan || ''}
+        `.trim();
 
-      if (!textToAnalyze) {
-        console.log(`Skipping case study ${study.id} - no text to analyze`);
-        continue;
-      }
+        console.log(`Processing case study ${study.id}`);
 
-      const entities = await extractEntities(textToAnalyze, groq);
-      
-      const { error: updateError } = await supabase
-        .from('case_studies')
-        .update({ medical_entities: entities })
-        .eq('id', study.id);
+        if (!textToAnalyze) {
+          console.log(`Skipping case study ${study.id} - no text to analyze`);
+          return;
+        }
 
-      if (updateError) {
-        console.error(`Error updating case study ${study.id}:`, updateError);
-      } else {
-        console.log(`Successfully updated case study ${study.id} with entities:`, entities);
-      }
+        try {
+          const entities = await extractEntities(textToAnalyze, groq);
+          
+          const { error: updateError } = await supabase
+            .from('case_studies')
+            .update({ medical_entities: entities })
+            .eq('id', study.id);
+
+          if (updateError) {
+            console.error(`Error updating case study ${study.id}:`, updateError);
+          } else {
+            console.log(`Successfully updated case study ${study.id} with entities:`, entities);
+          }
+        } catch (error) {
+          console.error(`Error processing case study ${study.id}:`, error);
+        }
+
+        // Add a small delay between processing items in the batch
+        await sleep(500);
+      }));
+
+      // Add a delay between batches
+      await sleep(1000);
     }
 
     return new Response(
