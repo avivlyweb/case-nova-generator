@@ -13,7 +13,10 @@ interface MedicalEntitiesChartProps {
 }
 
 const MedicalEntitiesChart = ({ medicalEntities }: MedicalEntitiesChartProps) => {
+  console.log('Medical Entities received:', medicalEntities);
+
   if (!medicalEntities?.length) {
+    console.log('No medical entities array or empty array');
     return (
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -37,8 +40,10 @@ const MedicalEntitiesChart = ({ medicalEntities }: MedicalEntitiesChartProps) =>
   const entityCounts: Record<string, number> = {};
   
   medicalEntities.forEach(entitySet => {
+    console.log('Processing entity set:', entitySet);
     if (typeof entitySet === 'object' && entitySet !== null) {
       Object.entries(entitySet).forEach(([category, entities]) => {
+        console.log('Category:', category, 'Entities:', entities);
         if (Array.isArray(entities)) {
           entities.forEach(entity => {
             if (typeof entity === 'string') {
@@ -51,11 +56,15 @@ const MedicalEntitiesChart = ({ medicalEntities }: MedicalEntitiesChartProps) =>
     }
   });
 
+  console.log('Entity counts:', entityCounts);
+
   // Convert to array and sort by count
   const chartData: MedicalEntity[] = Object.entries(entityCounts)
     .map(([name, count]) => ({ name, count }))
     .sort((a, b) => b.count - a.count)
     .slice(0, 10); // Show top 10 entities
+
+  console.log('Chart data:', chartData);
 
   return (
     <Card>
