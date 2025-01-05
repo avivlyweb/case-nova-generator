@@ -5,14 +5,14 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import CaseStudyCard from "@/components/case-studies/CaseStudyCard";
 import CaseAnalysis from "@/components/case-studies/CaseAnalysis";
-import { getCaseStudies } from "@/lib/db";
+import { getCaseStudies, updateCaseStudy } from "@/lib/db";
 
 const CaseStudies = () => {
   const { toast } = useToast();
   const [analyzing, setAnalyzing] = useState<{ [key: string]: boolean }>({});
   const [analyses, setAnalyses] = useState<{ [key: string]: any }>({});
   
-  const { data: caseStudies, isLoading, error } = useQuery({
+  const { data: caseStudies, isLoading, error, refetch } = useQuery({
     queryKey: ['case-studies'],
     queryFn: getCaseStudies,
   });
@@ -26,14 +26,25 @@ const CaseStudies = () => {
 
       if (error) throw error;
 
+      // Save the generated data to the database
+      await updateCaseStudy(caseStudy.id, {
+        generated_sections: data.sections,
+        ai_analysis: data.analysis,
+        reference_list: data.references,
+        icf_codes: data.icf_codes
+      });
+
       setAnalyses(prev => ({
         ...prev,
         [caseStudy.id]: data
       }));
 
+      // Refetch to get the updated data
+      refetch();
+
       toast({
         title: "Generation Complete",
-        description: "Full case study has been generated.",
+        description: "Full case study has been generated and saved.",
       });
     } catch (error) {
       console.error('Error generating case:', error);
@@ -56,14 +67,22 @@ const CaseStudies = () => {
 
       if (error) throw error;
 
+      // Save the analysis to the database
+      await updateCaseStudy(caseStudy.id, {
+        ai_analysis: data.analysis
+      });
+
       setAnalyses(prev => ({
         ...prev,
         [caseStudy.id]: { analysis: data.analysis }
       }));
 
+      // Refetch to get the updated data
+      refetch();
+
       toast({
         title: "Analysis Complete",
-        description: "AI analysis has been generated for this case study.",
+        description: "AI analysis has been generated and saved.",
       });
     } catch (error) {
       console.error('Error analyzing case:', error);
@@ -111,8 +130,13 @@ const CaseStudies = () => {
               onAnalyze={() => analyzeCase(study)}
               onGenerate={() => generateCase(study)}
             />
-            {analyses[study.id] && (
-              <CaseAnalysis analysis={analyses[study.id]} />
+            {(analyses[study.id] || study.ai_analysis || study.generated_sections) && (
+              <CaseAnalysis analysis={{
+                analysis: analyses[study.id]?.analysis || study.ai_analysis,
+                sections: analyses[study.id]?.sections || study.generated_sections,
+                references: analyses[study.id]?.references || study.reference_list,
+                icf_codes: analyses[study.id]?.icf_codes || study.icf_codes
+              }} />
             )}
           </div>
         ))}
