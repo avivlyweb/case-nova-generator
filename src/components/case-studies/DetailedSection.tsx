@@ -48,6 +48,28 @@ const DetailedSection = ({ title, content }: DetailedSectionProps) => {
               ol: ({ children }) => (
                 <ol className="list-decimal pl-6 mb-4 space-y-2 text-gray-700 dark:text-gray-300">{children}</ol>
               ),
+              table: ({ children }) => (
+                <div className="overflow-x-auto my-4">
+                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    {children}
+                  </table>
+                </div>
+              ),
+              thead: ({ children }) => (
+                <thead className="bg-gray-50 dark:bg-gray-800">{children}</thead>
+              ),
+              tbody: ({ children }) => (
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">{children}</tbody>
+              ),
+              tr: ({ children }) => (
+                <tr className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">{children}</tr>
+              ),
+              th: ({ children }) => (
+                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">{children}</th>
+              ),
+              td: ({ children }) => (
+                <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{children}</td>
+              ),
             }}
           >
             {formattedContent}
