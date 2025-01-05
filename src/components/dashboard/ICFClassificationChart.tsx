@@ -13,13 +13,23 @@ export const ICFClassificationChart = ({ caseStudies }: ICFClassificationChartPr
   // Process ICF codes data
   const icfCodesDistribution = caseStudies.reduce((acc: Record<string, number>, study) => {
     if (study.icf_codes) {
-      const codes = Array.isArray(study.icf_codes) ? study.icf_codes : 
-                   typeof study.icf_codes === 'string' ? [study.icf_codes] : [];
+      // Handle different possible formats of icf_codes
+      let codes: string[] = [];
       
+      if (Array.isArray(study.icf_codes)) {
+        codes = study.icf_codes.map(code => String(code));
+      } else if (typeof study.icf_codes === 'string') {
+        codes = [study.icf_codes];
+      } else if (typeof study.icf_codes === 'object' && study.icf_codes !== null) {
+        // Handle case where icf_codes might be a JSON object
+        codes = Object.values(study.icf_codes).map(code => String(code));
+      }
+
+      // Process each code
       codes.forEach((code) => {
-        if (typeof code === 'string' && code.length > 0) {
+        if (typeof code === 'string' && code.trim().length > 0) {
           // Extract the main category (first letter) from the ICF code
-          const category = code.charAt(0).toLowerCase();
+          const category = code.trim().charAt(0).toLowerCase();
           if (['b', 'd', 'e', 's'].includes(category)) {
             acc[category] = (acc[category] || 0) + 1;
           }
@@ -29,10 +39,14 @@ export const ICFClassificationChart = ({ caseStudies }: ICFClassificationChartPr
     return acc;
   }, {});
 
+  console.log('ICF Codes Distribution:', icfCodesDistribution); // Debug log
+
   const chartData = Object.entries(icfCodesDistribution).map(([category, count]) => ({
     name: getCategoryName(category),
     value: count,
   }));
+
+  console.log('Chart Data:', chartData); // Debug log
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
@@ -59,7 +73,7 @@ export const ICFClassificationChart = ({ caseStudies }: ICFClassificationChartPr
                   cy="50%"
                   outerRadius={100}
                   fill="#8884d8"
-                  label
+                  label={({ name, value }) => `${name}: ${value}`}
                 >
                   {chartData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
