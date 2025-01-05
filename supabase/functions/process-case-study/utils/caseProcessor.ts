@@ -5,39 +5,40 @@ import { generateSection } from './sectionGenerator.ts'
 import { sections } from './sectionConfig.ts'
 import { type ProcessedCaseStudy, type CaseStudy } from './types.ts'
 
-/**
- * Extracts ICF codes from the generated content
- */
 const extractICFCodes = (content: string): string[] => {
-  // Match ICF codes pattern (letter followed by numbers)
   const icfPattern = /\b[bdes]\d{3}\b/gi;
   const matches = content.match(icfPattern) || [];
-  return [...new Set(matches)]; // Remove duplicates
+  return [...new Set(matches)];
 };
 
-/**
- * Processes a case study by either analyzing it or generating a full report
- */
 export const processCaseStudy = async (
   caseStudy: CaseStudy, 
   action: 'analyze' | 'generate'
 ): Promise<ProcessedCaseStudy> => {
   console.log(`Starting processCaseStudy with action: ${action} for case study ${caseStudy.id}`);
   
-  const groq = new Groq({
-    apiKey: Deno.env.get('GROQ_API_KEY')
-  });
+  try {
+    const groq = new Groq({
+      apiKey: Deno.env.get('GROQ_API_KEY')
+    });
 
-  if (action === 'analyze') {
-    return await generateQuickAnalysis(groq, caseStudy);
+    if (action === 'analyze') {
+      return await generateQuickAnalysis(groq, caseStudy);
+    }
+
+    return await generateFullCaseStudy(groq, caseStudy);
+  } catch (error) {
+    console.error('Error in processCaseStudy:', error);
+    
+    // Check if it's a rate limit error
+    if (error.message?.includes('Rate limit reached')) {
+      throw new Error('API rate limit reached. Please try again in 30 minutes.');
+    }
+    
+    throw error;
   }
-
-  return await generateFullCaseStudy(groq, caseStudy);
 };
 
-/**
- * Generates a quick analysis of the case study
- */
 async function generateQuickAnalysis(groq: Groq, caseStudy: CaseStudy): Promise<ProcessedCaseStudy> {
   console.log('Performing quick analysis...');
   
@@ -75,64 +76,61 @@ async function generateQuickAnalysis(groq: Groq, caseStudy: CaseStudy): Promise<
   };
 }
 
-/**
- * Generates a full case study report including medical entities, references, and detailed sections
- */
 async function generateFullCaseStudy(groq: Groq, caseStudy: CaseStudy): Promise<ProcessedCaseStudy> {
   console.log('Generating full case study...');
 
-  // Extract medical entities from all relevant text fields
-  const textForEntityExtraction = buildEntityExtractionText(caseStudy);
-  console.log('Extracting medical entities...');
-  const medicalEntities = await extractMedicalEntities(textForEntityExtraction, groq);
-  console.log('Extracted medical entities:', medicalEntities);
+  try {
+    const textForEntityExtraction = buildEntityExtractionText(caseStudy);
+    console.log('Extracting medical entities...');
+    const medicalEntities = await extractMedicalEntities(textForEntityExtraction, groq);
+    console.log('Extracted medical entities:', medicalEntities);
 
-  // Search PubMed for relevant references
-  console.log('Searching PubMed...');
-  const pubmedApiKey = Deno.env.get('PUBMED_API_KEY');
-  const searchQuery = `${caseStudy.condition} physiotherapy treatment`;
-  const pubmedArticles = await searchPubMed(searchQuery, pubmedApiKey || '');
-  const references = pubmedArticles.map(formatReference);
-  console.log('Generated PubMed references:', references);
+    console.log('Searching PubMed...');
+    const pubmedApiKey = Deno.env.get('PUBMED_API_KEY');
+    const searchQuery = `${caseStudy.condition} physiotherapy treatment`;
+    const pubmedArticles = await searchPubMed(searchQuery, pubmedApiKey || '');
+    const references = pubmedArticles.map(formatReference);
+    console.log('Generated PubMed references:', references);
 
-  // Generate all sections
-  console.log('Generating sections...');
-  const generatedSections = await Promise.all(
-    sections.map(section => generateSection(groq, section.title, section.description, caseStudy, medicalEntities, references))
-  );
+    console.log('Generating sections...');
+    const generatedSections = await Promise.all(
+      sections.map(section => generateSection(groq, section.title, section.description, caseStudy, medicalEntities, references))
+    );
 
-  // Extract ICF codes from all generated content
-  const allContent = [
-    ...generatedSections.map(s => s.content),
-    caseStudy.medical_history,
-    caseStudy.presenting_complaint,
-    caseStudy.assessment_findings,
-    caseStudy.intervention_plan
-  ].join(' ');
-  
-  const icfCodes = extractICFCodes(allContent);
-  console.log('Extracted ICF codes:', icfCodes);
+    const allContent = [
+      ...generatedSections.map(s => s.content),
+      caseStudy.medical_history,
+      caseStudy.presenting_complaint,
+      caseStudy.assessment_findings,
+      caseStudy.intervention_plan
+    ].join(' ');
+    
+    const icfCodes = extractICFCodes(allContent);
+    console.log('Extracted ICF codes:', icfCodes);
 
-  // Ensure all optional fields have default values
-  const processedStudy: ProcessedCaseStudy = {
-    success: true,
-    sections: generatedSections,
-    references: references || [],
-    medical_entities: medicalEntities || {},
-    icf_codes: icfCodes,
-    assessment_findings: generatedSections.find(s => s.title === "Assessment Findings")?.content || '',
-    intervention_plan: generatedSections.find(s => s.title === "Intervention Plan")?.content || '',
-    smart_goals: [],
-    medications: []
-  };
+    const processedStudy: ProcessedCaseStudy = {
+      success: true,
+      sections: generatedSections,
+      references: references || [],
+      medical_entities: medicalEntities || {},
+      icf_codes: icfCodes,
+      assessment_findings: generatedSections.find(s => s.title === "Assessment Findings")?.content || '',
+      intervention_plan: generatedSections.find(s => s.title === "Intervention Plan")?.content || '',
+      smart_goals: [],
+      medications: []
+    };
 
-  console.log('All processing completed successfully');
-  return processedStudy;
+    console.log('All processing completed successfully');
+    return processedStudy;
+  } catch (error) {
+    console.error('Error in generateFullCaseStudy:', error);
+    if (error.message?.includes('Rate limit reached')) {
+      throw new Error('API rate limit reached. Please try again in 30 minutes.');
+    }
+    throw error;
+  }
 }
 
-/**
- * Builds the text to be used for medical entity extraction
- */
 function buildEntityExtractionText(caseStudy: CaseStudy): string {
   return `
     Patient Condition: ${caseStudy.condition || ''}

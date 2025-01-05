@@ -24,7 +24,23 @@ const CaseStudies = () => {
         body: { caseStudy, action: 'generate' }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error generating case:', error);
+        if (error.message?.includes('rate limit')) {
+          toast({
+            variant: "destructive",
+            title: "Rate Limit Reached",
+            description: "The AI service is currently at capacity. Please try again in 30 minutes.",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to generate case study. Please try again later.",
+          });
+        }
+        return;
+      }
 
       // Ensure sections are in the correct format before saving
       const formattedSections = Array.isArray(data.sections) ? data.sections : 
@@ -33,11 +49,9 @@ const CaseStudies = () => {
           content: typeof content === 'string' ? content : JSON.stringify(content)
         }));
 
-      // Format ICF codes if they're not already in the correct format
       const formattedICFCodes = Array.isArray(data.icf_codes) ? data.icf_codes :
         typeof data.icf_codes === 'string' ? [data.icf_codes] : [];
 
-      // Save all generated data to the database
       await updateCaseStudy(caseStudy.id, {
         generated_sections: formattedSections,
         ai_analysis: data.analysis,
@@ -59,7 +73,6 @@ const CaseStudies = () => {
         }
       }));
 
-      // Refetch to get the updated data
       refetch();
 
       toast({
@@ -71,7 +84,7 @@ const CaseStudies = () => {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to generate case study",
+        description: error.message || "Failed to generate case study",
       });
     } finally {
       setAnalyzing(prev => ({ ...prev, [caseStudy.id]: false }));
@@ -85,9 +98,24 @@ const CaseStudies = () => {
         body: { caseStudy, action: 'analyze' }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error analyzing case:', error);
+        if (error.message?.includes('rate limit')) {
+          toast({
+            variant: "destructive",
+            title: "Rate Limit Reached",
+            description: "The AI service is currently at capacity. Please try again in 30 minutes.",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to analyze case study. Please try again later.",
+          });
+        }
+        return;
+      }
 
-      // Save the analysis to the database
       await updateCaseStudy(caseStudy.id, {
         ai_analysis: data.analysis
       });
@@ -97,7 +125,6 @@ const CaseStudies = () => {
         [caseStudy.id]: { analysis: data.analysis }
       }));
 
-      // Refetch to get the updated data
       refetch();
 
       toast({
@@ -109,7 +136,7 @@ const CaseStudies = () => {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to analyze case study",
+        description: error.message || "Failed to analyze case study",
       });
     } finally {
       setAnalyzing(prev => ({ ...prev, [caseStudy.id]: false }));
