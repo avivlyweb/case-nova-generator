@@ -9,6 +9,9 @@ import {
   PolarGrid, PolarAngleAxis, PolarRadiusAxis 
 } from 'recharts';
 import { ChartBar, ChartPie, List, TrendingUp, Target } from "lucide-react";
+import MedicalEntitiesChart from "@/components/dashboard/MedicalEntitiesChart";
+
+// ... keep existing code (imports and component start)
 
 const Dashboard = () => {
   const { toast } = useToast();
@@ -213,6 +216,11 @@ const Dashboard = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Medical Entities Chart */}
+        <MedicalEntitiesChart 
+          medicalEntities={caseStudies?.map(study => study.medical_entities).filter(Boolean) || []}
+        />
 
         {/* Recent Cases Table */}
         <Card className="md:col-span-2">
