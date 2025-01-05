@@ -6,7 +6,13 @@ interface MedicalEntitiesProps {
 }
 
 const MedicalEntities = ({ entities }: MedicalEntitiesProps) => {
+  // Log the entities to help with debugging
+  console.log('Medical Entities received:', entities);
+
   if (!entities || Object.keys(entities).length === 0) return null;
+
+  // Process the entities to ensure we're handling both object and array formats
+  const processedEntities = typeof entities === 'string' ? JSON.parse(entities) : entities;
 
   return (
     <Card className="bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-all duration-200">
@@ -18,12 +24,16 @@ const MedicalEntities = ({ entities }: MedicalEntitiesProps) => {
           </h3>
         </div>
         <div className="space-y-4">
-          {Object.entries(entities).map(([category, items]: [string, any]) => {
-            if (!items || items.length === 0) return null;
+          {Object.entries(processedEntities).map(([category, items]: [string, any]) => {
+            if (!items || (Array.isArray(items) && items.length === 0)) return null;
+            
+            // Log each entity set to help with debugging
+            console.log('Processing entity set:', items);
+            
             return (
               <div key={category} className="space-y-2">
                 <h4 className="text-lg font-medium text-primary-800 dark:text-primary-200 capitalize">
-                  {category}
+                  {category.replace(/_/g, ' ')}
                 </h4>
                 <ul className="list-disc pl-6 space-y-1">
                   {Array.isArray(items) ? (
