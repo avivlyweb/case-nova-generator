@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { createCaseStudy } from "@/lib/db";
+import { supabase } from "@/integrations/supabase/client";
 import PatientInformation, { PatientFormData } from "@/components/generate/PatientInformation";
 import SpecializationSelect, {
   physiotherapyTypes,
@@ -41,6 +42,7 @@ const Generate = () => {
     setLoading(true);
 
     try {
+      // First, create the case study in the database
       const caseStudyData = {
         patient_name: formData.patientName,
         age: formData.age,
@@ -57,11 +59,40 @@ const Generate = () => {
         date: new Date().toISOString().split('T')[0],
       };
 
-      await createCaseStudy(caseStudyData);
+      const createdCase = await createCaseStudy(caseStudyData);
+
+      if (!createdCase) {
+        throw new Error("Failed to create case study");
+      }
+
+      // Generate the case study content using the edge function
+      const { data: generatedData, error: generationError } = await supabase.functions.invoke('process-case-study', {
+        body: {
+          caseStudy: createdCase,
+          action: 'generate'
+        }
+      });
+
+      if (generationError) throw generationError;
+
+      // Update the case study with the generated content
+      const { error: updateError } = await supabase
+        .from('case_studies')
+        .update({
+          generated_sections: generatedData.sections,
+          medical_entities: generatedData.medical_entities,
+          reference_list: generatedData.references,
+        })
+        .eq('id', createdCase.id);
+
+      if (updateError) throw updateError;
+
       toast({
         title: "Success",
-        description: "Case study created successfully",
+        description: "Case study created and generated successfully",
       });
+      
+      // Navigate to case studies page to see the result
       navigate("/case-studies");
     } catch (error) {
       console.error("Error creating case study:", error);
