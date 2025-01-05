@@ -4,6 +4,7 @@ import { Brain, BookOpen } from "lucide-react";
 import AnalysisOverview from "./AnalysisOverview";
 import DetailedSection from "./DetailedSection";
 import ICFCodes from "./ICFCodes";
+import MedicalEntities from "./MedicalEntities";
 
 interface CaseAnalysisProps {
   analysis: {
@@ -11,6 +12,7 @@ interface CaseAnalysisProps {
     sections?: Array<{ title: string; content: string }> | any;
     references?: string;
     icf_codes?: string;
+    medical_entities?: any;
   };
 }
 
@@ -61,6 +63,10 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
                   content={section.content}
                 />
               ))}
+
+              {analysis.medical_entities && (
+                <MedicalEntities entities={analysis.medical_entities} />
+              )}
 
               {analysis.references && (
                 <DetailedSection
