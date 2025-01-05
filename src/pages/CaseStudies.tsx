@@ -46,7 +46,12 @@ const CaseStudies = () => {
       <h1 className="text-2xl md:text-3xl font-bold text-primary px-4 md:px-0">Case Studies</h1>
       <div className="grid gap-6 px-4 md:px-0">
         {caseStudies?.map((study) => (
-          <div key={study.id} className={`transition-all duration-300 ${study.id === newCaseId ? 'ring-2 ring-primary ring-offset-2 rounded-lg' : ''}`}>
+          <div 
+            key={study.id} 
+            className={`transition-all duration-300 ${
+              study.id === newCaseId ? 'ring-2 ring-primary ring-offset-2 rounded-lg' : ''
+            }`}
+          >
             <CaseStudyCard study={study} />
             {study.ai_analysis && (
               <CaseAnalysis 

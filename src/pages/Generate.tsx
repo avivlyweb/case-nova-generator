@@ -62,6 +62,11 @@ const Generate = () => {
         throw new Error("Failed to create case study");
       }
 
+      toast({
+        title: "Processing Case Study",
+        description: "Please wait while we generate your case study...",
+      });
+
       // Immediately generate the full case study content
       const { data: generatedData, error: generationError } = await supabase.functions.invoke('process-case-study', {
         body: {
