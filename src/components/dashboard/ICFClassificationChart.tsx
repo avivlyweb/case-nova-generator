@@ -10,8 +10,12 @@ interface ICFClassificationChartProps {
 }
 
 export const ICFClassificationChart = ({ caseStudies }: ICFClassificationChartProps) => {
+  console.log('Received case studies:', caseStudies); // Debug log for incoming data
+
   // Process ICF codes data
   const icfCodesDistribution = caseStudies.reduce((acc: Record<string, number>, study) => {
+    console.log('Processing study ICF codes:', study.icf_codes); // Debug log for each study's ICF codes
+
     if (study.icf_codes) {
       // Handle different possible formats of icf_codes
       let codes: string[] = [];
@@ -25,11 +29,14 @@ export const ICFClassificationChart = ({ caseStudies }: ICFClassificationChartPr
         codes = Object.values(study.icf_codes).map(code => String(code));
       }
 
+      console.log('Extracted codes:', codes); // Debug log for extracted codes
+
       // Process each code
       codes.forEach((code) => {
         if (typeof code === 'string' && code.trim().length > 0) {
           // Extract the main category (first letter) from the ICF code
           const category = code.trim().charAt(0).toLowerCase();
+          console.log('Processing code:', code, 'Category:', category); // Debug log for each code processing
           if (['b', 'd', 'e', 's'].includes(category)) {
             acc[category] = (acc[category] || 0) + 1;
           }
@@ -39,14 +46,14 @@ export const ICFClassificationChart = ({ caseStudies }: ICFClassificationChartPr
     return acc;
   }, {});
 
-  console.log('ICF Codes Distribution:', icfCodesDistribution); // Debug log
+  console.log('ICF Codes Distribution:', icfCodesDistribution);
 
   const chartData = Object.entries(icfCodesDistribution).map(([category, count]) => ({
     name: getCategoryName(category),
     value: count,
   }));
 
-  console.log('Chart Data:', chartData); // Debug log
+  console.log('Chart Data:', chartData);
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
