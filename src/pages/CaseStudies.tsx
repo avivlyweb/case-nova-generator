@@ -26,17 +26,37 @@ const CaseStudies = () => {
 
       if (error) throw error;
 
-      // Save the generated data to the database
+      // Ensure sections are in the correct format before saving
+      const formattedSections = Array.isArray(data.sections) ? data.sections : 
+        Object.entries(data.sections || {}).map(([title, content]) => ({
+          title,
+          content: typeof content === 'string' ? content : JSON.stringify(content)
+        }));
+
+      // Format ICF codes if they're not already in the correct format
+      const formattedICFCodes = Array.isArray(data.icf_codes) ? data.icf_codes :
+        typeof data.icf_codes === 'string' ? [data.icf_codes] : [];
+
+      // Save all generated data to the database
       await updateCaseStudy(caseStudy.id, {
-        generated_sections: data.sections,
+        generated_sections: formattedSections,
         ai_analysis: data.analysis,
         reference_list: data.references,
-        icf_codes: data.icf_codes
+        icf_codes: formattedICFCodes,
+        assessment_findings: data.assessment_findings,
+        intervention_plan: data.intervention_plan,
+        medical_entities: data.medical_entities || [],
+        smart_goals: data.smart_goals || []
       });
 
       setAnalyses(prev => ({
         ...prev,
-        [caseStudy.id]: data
+        [caseStudy.id]: {
+          analysis: data.analysis,
+          sections: formattedSections,
+          references: data.references,
+          icf_codes: formattedICFCodes
+        }
       }));
 
       // Refetch to get the updated data
