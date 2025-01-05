@@ -16,12 +16,21 @@ interface MedicalEntitiesChartProps {
 }
 
 const categoryColors = {
-  conditions: "#0088FE",
+  diagnoses: "#0088FE",
   symptoms: "#00C49F",
-  medications: "#FFBB28",
-  procedures: "#FF8042",
-  tests: "#8884d8",
-  anatomical: "#82ca9d"
+  interventions: "#FFBB28",
+  diagnostics: "#FF8042",
+  anatomical: "#8884d8",
+  physiological: "#82ca9d"
+};
+
+const categoryLabels = {
+  diagnoses: "Clinical Diagnoses",
+  symptoms: "Signs & Symptoms",
+  interventions: "Therapeutic Interventions",
+  diagnostics: "Diagnostic Procedures",
+  anatomical: "Anatomical Structures",
+  physiological: "Physiological Parameters"
 };
 
 const MedicalEntitiesChart = ({ medicalEntities }: MedicalEntitiesChartProps) => {
@@ -57,24 +66,27 @@ const MedicalEntitiesChart = ({ medicalEntities }: MedicalEntitiesChartProps) =>
         if (Array.isArray(entities)) {
           entities.forEach(entity => {
             if (typeof entity === 'string') {
-              // Extract entity name and clinical note if present
-              const [entityName, ...notes] = entity.split('(');
-              const cleanName = entityName.trim().toLowerCase();
-              const formattedEntity = `${category}: ${cleanName}`;
-              
-              // Store entity details
-              if (!entityDetails[formattedEntity]) {
-                entityDetails[formattedEntity] = [];
-              }
-              if (notes.length > 0) {
-                const note = notes.join('(').replace(/\)$/, '').trim();
-                if (!entityDetails[formattedEntity].includes(note)) {
-                  entityDetails[formattedEntity].push(note);
+              // Extract entity name, context, and clinical significance
+              const matches = entity.match(/^(.*?)(?:\s*\((.*?)\))?\s*(?:\[(.*?)\])?$/);
+              if (matches) {
+                const [, term, context, significance] = matches;
+                const cleanTerm = term.trim();
+                const formattedEntity = `${category}: ${cleanTerm}`;
+                
+                // Store entity details
+                if (!entityDetails[formattedEntity]) {
+                  entityDetails[formattedEntity] = [];
                 }
+                if (context) {
+                  entityDetails[formattedEntity].push(`Context: ${context}`);
+                }
+                if (significance) {
+                  entityDetails[formattedEntity].push(`Clinical Significance: ${significance}`);
+                }
+                
+                // Count occurrences
+                entityCounts[formattedEntity] = (entityCounts[formattedEntity] || 0) + 1;
               }
-              
-              // Count occurrences
-              entityCounts[formattedEntity] = (entityCounts[formattedEntity] || 0) + 1;
             }
           });
         }
@@ -96,19 +108,17 @@ const MedicalEntitiesChart = ({ medicalEntities }: MedicalEntitiesChartProps) =>
     .sort((a, b) => b.count - a.count)
     .slice(0, 10); // Show top 10 entities
 
-  console.log('Chart data:', chartData);
-
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
         <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200">
           <p className="font-medium text-gray-900">{data.name.split(': ')[1]}</p>
-          <p className="text-sm text-gray-600">Category: {data.category}</p>
+          <p className="text-sm text-gray-600">Category: {categoryLabels[data.category as keyof typeof categoryLabels]}</p>
           <p className="text-sm text-gray-600">Frequency: {data.count}</p>
           {data.details.length > 0 && (
             <div className="mt-2">
-              <p className="text-sm font-medium text-gray-900">Clinical Notes:</p>
+              <p className="text-sm font-medium text-gray-900">Clinical Information:</p>
               <div className="flex flex-wrap gap-1 mt-1">
                 {data.details.map((detail: string, index: number) => (
                   <Badge key={index} variant="secondary" className="text-xs">
@@ -177,13 +187,13 @@ const MedicalEntitiesChart = ({ medicalEntities }: MedicalEntitiesChartProps) =>
         <div className="mt-4">
           <p className="text-sm text-muted-foreground mb-2">Categories:</p>
           <div className="flex flex-wrap gap-2">
-            {Object.entries(categoryColors).map(([category, color]) => (
-              <div key={category} className="flex items-center gap-1">
+            {Object.entries(categoryLabels).map(([key, label]) => (
+              <div key={key} className="flex items-center gap-1">
                 <div 
                   className="w-3 h-3 rounded-sm"
-                  style={{ backgroundColor: color }}
+                  style={{ backgroundColor: categoryColors[key as keyof typeof categoryColors] }}
                 />
-                <span className="text-sm capitalize">{category}</span>
+                <span className="text-sm">{label}</span>
               </div>
             ))}
           </div>

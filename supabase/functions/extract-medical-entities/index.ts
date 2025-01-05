@@ -8,28 +8,34 @@ const corsHeaders = {
 };
 
 async function extractEntities(text: string, groq: Groq) {
-  const prompt = `Extract medical entities from the following text and categorize them into these groups:
-  - Conditions (medical conditions, disorders, diagnoses)
-  - Symptoms (clinical manifestations, signs)
-  - Medications (drugs, pharmaceutical substances)
-  - Procedures (medical procedures, interventions, therapies)
-  - Tests (medical tests, diagnostic procedures)
-  - Anatomical (body parts, anatomical structures)
+  const prompt = `Extract and categorize medical entities from the following clinical text into these specific categories:
+
+  - Clinical Diagnoses (specific medical conditions, disorders, pathologies)
+  - Clinical Signs & Symptoms (objective and subjective manifestations)
+  - Therapeutic Interventions (medications, treatments, procedures)
+  - Diagnostic Procedures (tests, imaging, assessments)
+  - Anatomical Structures (specific body parts, systems)
+  - Physiological Parameters (measurements, vital signs)
+
+For each entity:
+1. Use precise medical terminology
+2. Include relevant clinical context or measurements in parentheses
+3. Standardize terminology to medical nomenclature
+4. Add brief clinical significance note
 
 Text to analyze:
 ${text}
 
-Format the response as a JSON object with these exact keys: conditions, symptoms, medications, procedures, tests, anatomical. 
-Each key should have an array of unique strings as values.
-Only include entities that are explicitly mentioned in the text.
-For each entity, also include a brief clinical relevance note in parentheses.`;
+Format the response as a JSON object with these exact keys: diagnoses, symptoms, interventions, diagnostics, anatomical, physiological.
+Each key should contain an array of strings with the format: "term (context/measurement) [clinical significance]"
+Only include entities explicitly mentioned in the text.`;
 
   try {
     const completion = await groq.chat.completions.create({
       messages: [
         {
           role: "system",
-          content: "You are a medical entity extraction system with deep knowledge of clinical terminology and biomedical concepts. Extract and categorize medical terms from clinical text into predefined categories, adding brief clinical relevance notes."
+          content: "You are a clinical terminology expert with deep knowledge of medical nomenclature and biomedical concepts. Extract and categorize medical terms using standardized clinical terminology, adding relevant context and clinical significance notes."
         },
         {
           role: "user",
