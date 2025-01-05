@@ -5,6 +5,8 @@ import { generateSection } from './sectionGenerator.ts'
 import { sections } from './sectionConfig.ts'
 
 export const processCaseStudy = async (caseStudy: any, action: string) => {
+  console.log('Starting processCaseStudy with action:', action)
+  
   const groq = new Groq({
     apiKey: Deno.env.get('GROQ_API_KEY')
   })
@@ -12,6 +14,7 @@ export const processCaseStudy = async (caseStudy: any, action: string) => {
   console.log('Processing case study:', caseStudy.id)
 
   if (action === 'analyze') {
+    console.log('Performing analysis...')
     const completion = await groq.chat.completions.create({
       messages: [
         {
@@ -54,11 +57,12 @@ export const processCaseStudy = async (caseStudy: any, action: string) => {
     Psychosocial Factors: ${caseStudy.psychosocial_factors || ''}
   `.trim();
   
-  console.log('Extracting medical entities from:', textForEntityExtraction);
+  console.log('Extracting medical entities...');
   const medicalEntities = await extractMedicalEntities(textForEntityExtraction, groq);
   console.log('Extracted medical entities:', medicalEntities);
 
   // Search PubMed
+  console.log('Searching PubMed...');
   const pubmedApiKey = Deno.env.get('PUBMED_API_KEY')
   const searchQuery = `${caseStudy.condition} physiotherapy treatment`
   const pubmedArticles = await searchPubMed(searchQuery, pubmedApiKey || '')
@@ -67,10 +71,12 @@ export const processCaseStudy = async (caseStudy: any, action: string) => {
   console.log('Generated PubMed references:', references)
 
   // Generate sections
+  console.log('Generating sections...');
   const generatedSections = await Promise.all(
     sections.map(section => generateSection(groq, section.title, section.description, caseStudy, medicalEntities, references))
   )
 
+  console.log('All processing completed successfully');
   return {
     success: true,
     sections: generatedSections,
