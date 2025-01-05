@@ -8,6 +8,8 @@ const corsHeaders = {
 };
 
 async function extractEntities(text: string, groq: Groq) {
+  console.log('Starting entity extraction for text:', text.substring(0, 100) + '...');
+  
   const prompt = `Extract and categorize medical entities from the following clinical text into these specific categories:
 
   - Clinical Diagnoses (specific medical conditions, disorders, pathologies)
@@ -26,8 +28,17 @@ For each entity:
 Text to analyze:
 ${text}
 
-Format the response as a JSON object with these exact keys: diagnoses, symptoms, interventions, diagnostics, anatomical, physiological.
-Each key should contain an array of strings with the format: "term (context/measurement) [clinical significance]"
+Return a JSON object with these exact keys:
+{
+  "diagnoses": [],
+  "symptoms": [],
+  "interventions": [],
+  "diagnostics": [],
+  "anatomical": [],
+  "physiological": []
+}
+
+Each array should contain strings with the format: "term (context/measurement) [clinical significance]"
 Only include entities explicitly mentioned in the text.`;
 
   try {
@@ -35,7 +46,7 @@ Only include entities explicitly mentioned in the text.`;
       messages: [
         {
           role: "system",
-          content: "You are a clinical terminology expert with deep knowledge of medical nomenclature and biomedical concepts. Extract and categorize medical terms using standardized clinical terminology, adding relevant context and clinical significance notes."
+          content: "You are a clinical terminology expert with deep knowledge of medical nomenclature and biomedical concepts. Extract and categorize medical terms using standardized clinical terminology, adding relevant context and clinical significance notes. Always return valid JSON."
         },
         {
           role: "user",
@@ -49,10 +60,32 @@ Only include entities explicitly mentioned in the text.`;
 
     const response = completion.choices[0]?.message?.content;
     if (!response) {
+      console.error('No response from Groq');
       throw new Error('No response from Groq');
     }
 
-    return JSON.parse(response);
+    console.log('Raw response from Groq:', response);
+
+    // Clean up the response by removing any markdown formatting
+    const cleanedResponse = response.replace(/```json\n|\n```/g, '').trim();
+    console.log('Cleaned response:', cleanedResponse);
+
+    try {
+      const parsedEntities = JSON.parse(cleanedResponse);
+      console.log('Successfully parsed entities:', parsedEntities);
+      return parsedEntities;
+    } catch (parseError) {
+      console.error('Error parsing JSON:', parseError);
+      // Return a default structure if parsing fails
+      return {
+        diagnoses: [],
+        symptoms: [],
+        interventions: [],
+        diagnostics: [],
+        anatomical: [],
+        physiological: []
+      };
+    }
   } catch (error) {
     console.error('Error in entity extraction:', error);
     throw error;
@@ -60,6 +93,7 @@ Only include entities explicitly mentioned in the text.`;
 }
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -97,6 +131,11 @@ serve(async (req) => {
 
       console.log(`Processing case study ${study.id}`);
 
+      if (!textToAnalyze) {
+        console.log(`Skipping case study ${study.id} - no text to analyze`);
+        continue;
+      }
+
       const entities = await extractEntities(textToAnalyze, groq);
       
       const { error: updateError } = await supabase
@@ -113,16 +152,27 @@ serve(async (req) => {
 
     return new Response(
       JSON.stringify({ message: 'Medical entities extraction completed successfully' }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { 
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json' 
+        } 
+      }
     );
 
   } catch (error) {
     console.error('Error in extract-medical-entities function:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message,
+        details: error.stack
+      }),
       { 
         status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json' 
+        }
       }
     );
   }
