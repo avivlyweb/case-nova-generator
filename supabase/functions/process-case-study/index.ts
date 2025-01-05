@@ -15,23 +15,7 @@ serve(async (req) => {
 
   try {
     // Parse request body
-    let body
-    try {
-      body = await req.json()
-    } catch (e) {
-      console.error('Error parsing request body:', e)
-      return new Response(
-        JSON.stringify({ 
-          error: 'Invalid request body',
-          details: e.message 
-        }),
-        { 
-          status: 400,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        }
-      )
-    }
-
+    const body = await req.json()
     const { caseStudy, action = 'generate' } = body
     
     if (!caseStudy) {
