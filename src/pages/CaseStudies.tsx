@@ -83,7 +83,14 @@ const CaseStudies = () => {
               onAnalyze={() => analyzeCase(study)}
             />
             {study.ai_analysis && (
-              <CaseAnalysis analysis={study.ai_analysis} />
+              <CaseAnalysis 
+                analysis={{
+                  analysis: study.ai_analysis,
+                  sections: study.generated_sections,
+                  references: study.reference_list,
+                  icf_codes: study.icf_codes
+                }}
+              />
             )}
           </div>
         ))}
