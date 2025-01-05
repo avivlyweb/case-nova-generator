@@ -13,7 +13,7 @@ const Layout = ({ children }: LayoutProps) => {
   const isMobile = useIsMobile();
 
   return (
-    <div className="flex min-h-screen bg-gray-50 relative">
+    <div className="flex min-h-screen bg-gray-50">
       {/* Mobile menu button */}
       {isMobile && (
         <Button
@@ -36,8 +36,10 @@ const Layout = ({ children }: LayoutProps) => {
       </div>
 
       {/* Main content */}
-      <main className={`flex-1 p-4 md:p-8 ${isMobile ? "mt-16" : ""}`}>
-        {children}
+      <main className={`flex-1 overflow-x-hidden ${isMobile ? "pt-16" : ""}`}>
+        <div className="min-h-screen bg-background">
+          {children}
+        </div>
       </main>
 
       {/* Overlay for mobile */}

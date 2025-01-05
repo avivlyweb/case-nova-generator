@@ -20,7 +20,7 @@ const Dashboard = () => {
     return (
       <div className="space-y-4 p-4">
         <Skeleton className="h-8 w-[200px]" />
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2">
           {[1, 2, 3, 4, 5].map((n) => (
             <Skeleton key={n} className="h-[300px]" />
           ))}
@@ -85,22 +85,34 @@ const Dashboard = () => {
   }));
 
   return (
-    <div className="p-4 md:p-8 space-y-8">
+    <div className="p-4 md:p-8 space-y-6 md:space-y-8 max-w-[1600px] mx-auto">
       <h1 className="text-2xl md:text-3xl font-bold text-primary">Analytics Dashboard</h1>
       
-      <div className="grid gap-6 md:grid-cols-2">
-        <ConditionsChart conditionData={conditionData} />
-        <AgeDistributionChart ageData={ageData} />
-        <TimelineChart timelineData={timelineChartData} />
-        <InterventionChart interventionData={interventionData} />
-        <MedicalEntitiesChart 
-          medicalEntities={caseStudies
-            ?.map(study => study.medical_entities)
-            .filter((entities): entities is NonNullable<typeof entities> => 
-              entities !== null && entities !== undefined
-            ) || []}
-        />
-        <RecentCasesTable caseStudies={caseStudies || []} />
+      <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
+        <div className="col-span-1 md:col-span-2 xl:col-span-1">
+          <ConditionsChart conditionData={conditionData} />
+        </div>
+        <div className="col-span-1">
+          <AgeDistributionChart ageData={ageData} />
+        </div>
+        <div className="col-span-1">
+          <TimelineChart timelineData={timelineChartData} />
+        </div>
+        <div className="col-span-1">
+          <InterventionChart interventionData={interventionData} />
+        </div>
+        <div className="col-span-1">
+          <MedicalEntitiesChart 
+            medicalEntities={caseStudies
+              ?.map(study => study.medical_entities)
+              .filter((entities): entities is NonNullable<typeof entities> => 
+                entities !== null && entities !== undefined
+              ) || []}
+          />
+        </div>
+        <div className="col-span-1 md:col-span-2 xl:col-span-3">
+          <RecentCasesTable caseStudies={caseStudies || []} />
+        </div>
       </div>
     </div>
   );
