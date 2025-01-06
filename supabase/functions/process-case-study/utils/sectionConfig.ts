@@ -9,7 +9,7 @@ export const sections = [
   },
   {
     title: "Assessment Strategy",
-    description: "Elaborate on the assessment strategy ensuring it aligns with the latest clinical standards and guidelines. List special tests and provide a table with outcomes and explanations."
+    description: "write the assessment strategy ensuring it aligns with the latest clinical standards and guidelines. List special tests and provide a table with outcomes and explanations."
   },
   {
     title: "Assessment Findings",
@@ -21,7 +21,7 @@ export const sections = [
   },
   {
     title: "Intervention Plan",
-    description: "Describe the Physiotherapy intervention plan in detail, encompassing therapeutic and multidisciplinary dimensions, including patient education, exercise therapy, behavioral approaches, and technological integrations."
+    description: "Describe the Physiotherapy intervention plan in detail, encompassing therapeutic and multidisciplinary dimensions, including patient education, prevention, ebp exercise therapy, behavioral approaches, and technological integrations."
   },
   {
     title: "Reassessment",
@@ -33,7 +33,7 @@ export const sections = [
   },
   {
     title: "Reference List",
-    description: "List all references from 2019 onwards in APA format, including primary literature and guideline sources used to support the case study's content."
+    description: "List all references from 2022 onwards in APA format, including primary literature and guideline sources used to support the case study's content."
   },
   {
     title: "Medication Information",
