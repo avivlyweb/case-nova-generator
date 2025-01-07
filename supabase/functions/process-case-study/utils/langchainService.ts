@@ -11,6 +11,38 @@ export class LangChainService {
     });
   }
 
+  async generateEmbedding(text: string): Promise<number[]> {
+    console.log('Generating embedding for text:', text.substring(0, 100) + '...');
+    
+    try {
+      const completion = await this.model.chat.completions.create({
+        messages: [
+          {
+            role: "system",
+            content: "You are an embedding generator. Convert the following text into a semantic vector representation. Return only the vector values as a comma-separated list of numbers."
+          },
+          {
+            role: "user",
+            content: text
+          }
+        ],
+        model: "mixtral-8x7b-32768",
+        temperature: 0,
+        max_tokens: 1536,
+      });
+
+      const response = completion.choices[0]?.message?.content || '';
+      // Parse the response into a vector of numbers
+      const vector = response.split(',').map(num => parseFloat(num.trim()));
+      
+      console.log('Successfully generated embedding vector of length:', vector.length);
+      return vector;
+    } catch (error) {
+      console.error('Error generating embedding:', error);
+      throw error;
+    }
+  }
+
   async generateQuickAnalysis(caseStudy: CaseStudy, guidelines: any = null): Promise<string> {
     console.log('Generating quick analysis for case study:', caseStudy.id);
     
