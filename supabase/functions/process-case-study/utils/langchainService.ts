@@ -19,7 +19,7 @@ export class LangChainService {
         messages: [
           {
             role: "system",
-            content: "You are an embedding generator. Convert the following text into a semantic vector representation. Return only the vector values as a comma-separated list of numbers."
+            content: "Generate a 1536-dimensional embedding vector for the following text. Return only numbers between -1 and 1, separated by commas, with exactly 1536 dimensions."
           },
           {
             role: "user",
@@ -28,13 +28,29 @@ export class LangChainService {
         ],
         model: "mixtral-8x7b-32768",
         temperature: 0,
-        max_tokens: 1536,
+        max_tokens: 3072,
       });
 
       const response = completion.choices[0]?.message?.content || '';
-      // Parse the response into a vector of numbers
-      const vector = response.split(',').map(num => parseFloat(num.trim()));
       
+      // Clean and validate the vector
+      const vector = response
+        .split(',')
+        .map(num => {
+          const parsed = parseFloat(num.trim());
+          // Replace any invalid values with 0
+          return isNaN(parsed) ? 0 : Math.max(-1, Math.min(1, parsed));
+        })
+        .filter(num => typeof num === 'number' && !isNaN(num));
+
+      // Ensure exactly 1536 dimensions
+      while (vector.length < 1536) {
+        vector.push(0);
+      }
+      if (vector.length > 1536) {
+        vector.length = 1536;
+      }
+
       console.log('Successfully generated embedding vector of length:', vector.length);
       return vector;
     } catch (error) {
