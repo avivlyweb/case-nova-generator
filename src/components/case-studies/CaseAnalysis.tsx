@@ -6,13 +6,16 @@ import DetailedSection from "./DetailedSection";
 import ICFCodes from "./ICFCodes";
 import MedicalEntities from "./MedicalEntities";
 
+// Update the interface to include new fields
 interface CaseAnalysisProps {
   analysis: {
     analysis?: string;
     sections?: Array<{ title: string; content: string }> | any;
-    references?: string;
+    references?: any[];
     icf_codes?: string;
     medical_entities?: any;
+    clinical_guidelines?: any[];
+    evidence_levels?: Record<string, number>;
   };
 }
 
@@ -68,10 +71,24 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
                 <MedicalEntities entities={analysis.medical_entities} />
               )}
 
-              {analysis.references && (
+              {analysis.clinical_guidelines && analysis.clinical_guidelines.length > 0 && (
+                <DetailedSection
+                  title="Clinical Guidelines"
+                  content={formatGuidelines(analysis.clinical_guidelines)}
+                />
+              )}
+
+              {analysis.evidence_levels && Object.keys(analysis.evidence_levels).length > 0 && (
+                <DetailedSection
+                  title="Evidence Levels"
+                  content={formatEvidenceLevels(analysis.evidence_levels)}
+                />
+              )}
+
+              {analysis.references && analysis.references.length > 0 && (
                 <DetailedSection
                   title="Evidence-Based References"
-                  content={analysis.references}
+                  content={formatReferences(analysis.references)}
                 />
               )}
 
@@ -84,6 +101,30 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
       )}
     </Tabs>
   );
+};
+
+// Helper functions for formatting
+const formatGuidelines = (guidelines: any[]) => {
+  return guidelines.map(g => (
+    `### ${g.name}\n\n` +
+    `**Recommendation Level:** ${g.recommendation_level}\n\n` +
+    `**Key Points:**\n${g.key_points.map(p => `- ${p}`).join('\n')}\n\n` +
+    `[View Guideline](${g.url})\n`
+  )).join('\n---\n\n');
+};
+
+const formatEvidenceLevels = (levels: Record<string, number>) => {
+  return '### Evidence Distribution\n\n' +
+    Object.entries(levels)
+      .map(([level, count]) => `- ${level}: ${count} studies`)
+      .join('\n');
+};
+
+const formatReferences = (references: any[]) => {
+  return references.map(ref => (
+    `- ${ref.authors.join(', ')} (${new Date(ref.publicationDate).getFullYear()}). ` +
+    `[${ref.title}](${ref.url}). ${ref.journal}. Evidence Level: ${ref.evidenceLevel}`
+  )).join('\n\n');
 };
 
 export default CaseAnalysis;

@@ -1,20 +1,13 @@
 import { Groq } from 'npm:groq-sdk';
 import { extractMedicalEntities } from './entityExtraction.ts';
-import { searchPubMed, formatReference } from './pubmedSearch.ts';
+import { searchPubMed, fetchClinicalGuidelines } from './evidenceRetrieval.ts';
+import { generateSection } from './sectionGenerator.ts';
 import { sections } from './sectionConfig.ts';
-import { type ProcessedCaseStudy, type CaseStudy } from './types.ts';
-import { LangChainService } from './langchainService.ts';
+import { ProcessedCaseStudy, CaseStudy } from './types.ts';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
 const MAX_RETRIES = 3;
-const RETRY_DELAY = 5000; // 5 seconds
-
-const extractICFCodes = (content: string): string[] => {
-  const icfPattern = /\b[bdes]\d{3}\b/gi;
-  const matches = content.match(icfPattern) || [];
-  return [...new Set(matches)];
-};
+const RETRY_DELAY = 5000;
 
 export const processCaseStudy = async (
   caseStudy: CaseStudy, 
@@ -24,44 +17,41 @@ export const processCaseStudy = async (
   
   try {
     const groqApiKey = Deno.env.get('GROQ_API_KEY');
+    const pubmedApiKey = Deno.env.get('PUBMED_API_KEY');
+    
     if (!groqApiKey) {
       throw new Error('GROQ_API_KEY is not set');
     }
 
+    const groq = new Groq({ apiKey: groqApiKey });
     const langchainService = new LangChainService(groqApiKey);
 
     if (action === 'analyze') {
       return await generateQuickAnalysis(langchainService, caseStudy);
     }
 
-    return await generateFullCaseStudy(langchainService, caseStudy);
+    return await generateFullCaseStudy(groq, langchainService, caseStudy, pubmedApiKey || '');
   } catch (error) {
     console.error('Error in processCaseStudy:', error);
-    
     if (error.message?.toLowerCase().includes('rate limit')) {
       throw new Error('The AI service is currently at capacity. Please try again in a few minutes.');
     }
-    
     throw error;
   }
 };
 
 async function generateQuickAnalysis(
-  langchainService: LangChainService,
+  langchainService: any,
   caseStudy: CaseStudy
 ): Promise<ProcessedCaseStudy> {
   console.log('Performing quick analysis...');
-  
   let retries = 0;
-  let lastError;
 
   while (retries < MAX_RETRIES) {
     try {
       const analysisContent = await langchainService.generateQuickAnalysis(caseStudy);
       const icfCodes = extractICFCodes(analysisContent);
       
-      console.log('Analysis completed with ICF codes:', icfCodes);
-
       return { 
         success: true,
         analysis: analysisContent,
@@ -69,111 +59,76 @@ async function generateQuickAnalysis(
       };
     } catch (error) {
       console.error(`Attempt ${retries + 1} failed:`, error);
-      lastError = error;
-      
       if (error.message?.toLowerCase().includes('rate limit')) {
         await delay(RETRY_DELAY);
         retries++;
         continue;
       }
-      
       throw error;
     }
   }
-
-  throw new Error('Maximum retries reached. The AI service is currently unavailable. Please try again later.');
+  throw new Error('Maximum retries reached');
 }
 
 async function generateFullCaseStudy(
-  langchainService: LangChainService,
-  caseStudy: CaseStudy
+  groq: Groq,
+  langchainService: any,
+  caseStudy: CaseStudy,
+  pubmedApiKey: string
 ): Promise<ProcessedCaseStudy> {
   console.log('Generating full case study...');
-  let retries = 0;
+  
+  // Extract medical entities
+  const textForEntityExtraction = buildEntityExtractionText(caseStudy);
+  console.log('Extracting medical entities...');
+  const medicalEntities = await extractMedicalEntities(textForEntityExtraction, groq);
+  
+  // Fetch evidence-based content
+  console.log('Fetching evidence-based content...');
+  const searchQuery = `${caseStudy.condition} physiotherapy treatment`;
+  const [pubmedArticles, clinicalGuidelines] = await Promise.all([
+    searchPubMed(searchQuery, pubmedApiKey),
+    fetchClinicalGuidelines(caseStudy.condition || '')
+  ]);
 
-  while (retries < MAX_RETRIES) {
-    try {
-      const textForEntityExtraction = buildEntityExtractionText(caseStudy);
-      console.log('Extracting medical entities...');
-      const groq = new Groq({ apiKey: Deno.env.get('GROQ_API_KEY') });
-      const medicalEntities = await extractMedicalEntities(textForEntityExtraction, groq);
-      console.log('Extracted medical entities:', medicalEntities);
+  // Generate sections with evidence integration
+  console.log('Generating sections with evidence...');
+  const generatedSections = await Promise.all(
+    sections.map(section => 
+      generateSection(
+        groq,
+        section.title,
+        section.description,
+        caseStudy,
+        medicalEntities,
+        pubmedArticles
+      )
+    )
+  );
 
-      console.log('Searching PubMed...');
-      const pubmedApiKey = Deno.env.get('PUBMED_API_KEY');
-      const searchQuery = `${caseStudy.condition} physiotherapy treatment`;
-      const pubmedArticles = await searchPubMed(searchQuery, pubmedApiKey || '');
-      
-      // Enhanced reference formatting with URLs
-      const references = pubmedArticles.map(article => ({
-        citation: formatReference(article),
-        url: `https://pubmed.ncbi.nlm.nih.gov/${article.id}/`,
-        type: 'pubmed',
-        evidenceLevel: determineEvidenceLevel(article)
-      }));
+  // Extract ICF codes from all content
+  const allContent = [
+    ...generatedSections.map(s => s.content),
+    caseStudy.medical_history,
+    caseStudy.presenting_complaint
+  ].join(' ');
+  
+  const icfCodes = extractICFCodes(allContent);
+  
+  // Aggregate evidence levels
+  const evidenceLevels = aggregateEvidenceLevels(pubmedArticles);
 
-      // Generate clinical guidelines references
-      const guidelineRefs = await langchainService.generateClinicalGuidelines(caseStudy.condition);
-      
-      // Generate learning objectives
-      const learningObjectives = await langchainService.generateLearningObjectives(caseStudy);
-      
-      // Generate clinical reasoning path
-      const clinicalReasoningPath = await langchainService.generateClinicalReasoningPath(caseStudy);
-
-      console.log('Generating sections...');
-      const generatedSections = await Promise.all(
-        sections.map(section => 
-          langchainService.generateSection(
-            section.title,
-            section.description,
-            caseStudy,
-            medicalEntities,
-            references
-          )
-        )
-      );
-
-      const allContent = [
-        ...generatedSections.map(s => s.content),
-        caseStudy.medical_history,
-        caseStudy.presenting_complaint,
-        caseStudy.assessment_findings,
-        caseStudy.intervention_plan
-      ].join(' ');
-      
-      const icfCodes = extractICFCodes(allContent);
-      console.log('Extracted ICF codes:', icfCodes);
-
-      return {
-        success: true,
-        sections: generatedSections,
-        references: references,
-        medical_entities: medicalEntities,
-        icf_codes: icfCodes,
-        assessment_findings: generatedSections.find(s => s.title === "Assessment Findings")?.content || '',
-        intervention_plan: generatedSections.find(s => s.title === "Intervention Plan")?.content || '',
-        clinical_guidelines: guidelineRefs,
-        learning_objectives: learningObjectives,
-        clinical_reasoning_path: clinicalReasoningPath,
-        evidence_levels: aggregateEvidenceLevels(references),
-        smart_goals: [],
-        medications: []
-      };
-    } catch (error) {
-      console.error(`Attempt ${retries + 1} failed:`, error);
-      
-      if (error.message?.toLowerCase().includes('rate limit')) {
-        await delay(RETRY_DELAY);
-        retries++;
-        continue;
-      }
-      
-      throw error;
-    }
-  }
-
-  throw new Error('Maximum retries reached. The AI service is currently unavailable. Please try again later.');
+  return {
+    success: true,
+    sections: generatedSections,
+    references: pubmedArticles,
+    medical_entities: medicalEntities,
+    icf_codes: icfCodes,
+    assessment_findings: generatedSections.find(s => s.title === "Assessment Findings")?.content || '',
+    intervention_plan: generatedSections.find(s => s.title === "Intervention Plan")?.content || '',
+    clinical_guidelines: clinicalGuidelines,
+    evidence_levels: evidenceLevels
+  };
 }
 
 function buildEntityExtractionText(caseStudy: CaseStudy): string {
@@ -188,15 +143,16 @@ function buildEntityExtractionText(caseStudy: CaseStudy): string {
   `.trim();
 }
 
-function determineEvidenceLevel(article: any): string {
-  // Implement evidence level determination logic
-  return 'Level II'; // Placeholder
+function extractICFCodes(content: string): string[] {
+  const icfPattern = /\b[bdes]\d{3}\b/gi;
+  const matches = content.match(icfPattern) || [];
+  return [...new Set(matches)];
 }
 
-function aggregateEvidenceLevels(references: any[]): Record<string, number> {
+function aggregateEvidenceLevels(articles: any[]): Record<string, number> {
   const levels: Record<string, number> = {};
-  references.forEach(ref => {
-    levels[ref.evidenceLevel] = (levels[ref.evidenceLevel] || 0) + 1;
+  articles.forEach(article => {
+    levels[article.evidenceLevel] = (levels[article.evidenceLevel] || 0) + 1;
   });
   return levels;
 }

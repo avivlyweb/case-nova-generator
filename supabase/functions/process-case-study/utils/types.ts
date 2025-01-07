@@ -19,15 +19,15 @@ export interface ProcessedCaseStudy {
     title: string;
     content: string;
   }>;
-  references?: string[];
+  references?: any[];
   medical_entities?: Record<string, string[]>;
   assessment_findings?: string;
   intervention_plan?: string;
-}
-
-export interface Section {
-  title: string;
-  description: string;
+  clinical_guidelines?: ClinicalGuideline[];
+  learning_objectives?: string[];
+  clinical_reasoning_path?: any[];
+  evidence_levels?: Record<string, number>;
+  icf_codes?: string[];
 }
 
 export interface PubMedArticle {
@@ -37,4 +37,13 @@ export interface PubMedArticle {
   authors: string[];
   publicationDate: string;
   journal: string;
+  evidenceLevel: string;
+  url: string;
+}
+
+export interface ClinicalGuideline {
+  name: string;
+  url: string;
+  key_points: string[];
+  recommendation_level: string;
 }
