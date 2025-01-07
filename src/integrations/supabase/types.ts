@@ -627,6 +627,36 @@ export type Database = {
             }
             Returns: unknown
           }
+      gtrgm_compress: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      gtrgm_decompress: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      gtrgm_in: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      gtrgm_options: {
+        Args: {
+          "": unknown
+        }
+        Returns: undefined
+      }
+      gtrgm_out: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
       halfvec_avg: {
         Args: {
           "": number[]
@@ -758,6 +788,39 @@ export type Database = {
           relevance_to_vision: string
           similarity: number
         }[]
+      }
+      search_medical_guidelines: {
+        Args: {
+          query_text: string
+          query_embedding: string
+          match_count?: number
+          similarity_threshold?: number
+          full_text_weight?: number
+          semantic_weight?: number
+        }
+        Returns: {
+          id: string
+          title: string
+          condition: string
+          content: Json
+          similarity: number
+        }[]
+      }
+      set_limit: {
+        Args: {
+          "": number
+        }
+        Returns: number
+      }
+      show_limit: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      show_trgm: {
+        Args: {
+          "": string
+        }
+        Returns: string[]
       }
       sparsevec_out: {
         Args: {
