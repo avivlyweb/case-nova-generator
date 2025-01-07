@@ -33,7 +33,11 @@ export const processCaseStudy = async (
       let retries = 0;
       while (retries < MAX_RETRIES) {
         try {
-          return await analysisService.generateQuickAnalysis(caseStudy, null);
+          // Search for relevant Dutch guidelines before analysis
+          const relevantGuidelines = await searchService.searchGuidelines(caseStudy.condition || '');
+          console.log('Found relevant Dutch guidelines:', relevantGuidelines.length);
+          
+          return await analysisService.generateQuickAnalysis(caseStudy, relevantGuidelines);
         } catch (error) {
           console.error(`Attempt ${retries + 1} failed:`, error);
           if (error.message?.toLowerCase().includes('rate limit')) {
@@ -77,12 +81,14 @@ async function generateFullCaseStudy(
   console.log('Extracting medical entities...');
   const medicalEntities = await extractMedicalEntities(textForEntityExtraction, groq);
   
-  // Fetch evidence-based content
-  console.log('Fetching evidence-based content...');
+  // Fetch evidence-based content and Dutch guidelines
+  console.log('Fetching evidence-based content and Dutch guidelines...');
   const [pubmedArticles, relevantGuidelines] = await Promise.all([
     searchPubMed(caseStudy.condition || '', pubmedApiKey),
     searchService.searchGuidelines(caseStudy.condition || '')
   ]);
+
+  console.log(`Found ${relevantGuidelines.length} relevant Dutch guidelines`);
 
   // Generate sections with evidence integration
   console.log('Generating sections with evidence...');
@@ -99,6 +105,14 @@ async function generateFullCaseStudy(
     )
   );
 
+  // Process guidelines recommendations
+  const guidelineRecommendations = relevantGuidelines.map(g => ({
+    name: g.title,
+    url: g.url || `https://richtlijnendatabase.nl/search?q=${encodeURIComponent(g.condition)}`,
+    key_points: g.content?.key_points || [],
+    recommendation_level: g.content?.evidence_level || "Evidence-based"
+  }));
+
   return {
     success: true,
     sections: generatedSections,
@@ -107,12 +121,8 @@ async function generateFullCaseStudy(
     icf_codes: extractICFCodes(generatedSections.map(s => s.content).join(' ')),
     assessment_findings: generatedSections.find(s => s.title === "Assessment Findings")?.content || '',
     intervention_plan: generatedSections.find(s => s.title === "Intervention Plan")?.content || '',
-    clinical_guidelines: relevantGuidelines.map(g => ({
-      name: g.title,
-      url: g.url || `https://richtlijnendatabase.nl/search?q=${encodeURIComponent(g.condition)}`,
-      key_points: g.content?.key_points || [],
-      recommendation_level: "Evidence-based"
-    }))
+    clinical_guidelines: guidelineRecommendations,
+    evidence_levels: processEvidenceLevels(relevantGuidelines)
   };
 }
 
@@ -132,6 +142,15 @@ function extractICFCodes(content: string): string[] {
   const icfPattern = /\b[bdes]\d{3}\b/gi;
   const matches = content.match(icfPattern) || [];
   return [...new Set(matches)];
+}
+
+function processEvidenceLevels(guidelines: any[]): Record<string, number> {
+  const levels: Record<string, number> = {};
+  guidelines.forEach(guideline => {
+    const evidenceLevel = guideline.content?.evidence_level || 'Not specified';
+    levels[evidenceLevel] = (levels[evidenceLevel] || 0) + 1;
+  });
+  return levels;
 }
 
 async function generateSection(
@@ -155,7 +174,11 @@ async function generateSection(
     Include relevant information from:
     - Medical entities: ${JSON.stringify(medicalEntities)}
     - Evidence: ${JSON.stringify(pubmedArticles.slice(0, 3))}
-    - Guidelines: ${JSON.stringify(guidelines)}
+    - Dutch Guidelines: ${JSON.stringify(guidelines.map(g => ({
+      title: g.title,
+      key_points: g.content?.key_points,
+      recommendations: g.content?.recommendations
+    })))}
     
     ${description}
     

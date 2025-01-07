@@ -14,10 +14,10 @@ export class SearchService {
     try {
       console.log('Searching guidelines for condition:', condition);
       
-      // Generate embedding for the condition
+      // Generate embedding for the condition using Groq
       const embedding = await this.langchainService.generateEmbedding(condition);
       
-      // Perform hybrid search using our new function
+      // Perform hybrid search using our function
       const { data: guidelines, error } = await this.supabase.rpc(
         'search_medical_guidelines',
         {
