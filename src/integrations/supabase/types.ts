@@ -185,6 +185,60 @@ export type Database = {
         }
         Relationships: []
       }
+      dutch_guidelines: {
+        Row: {
+          assessment_criteria: Json
+          condition: string
+          content: Json
+          created_at: string | null
+          embedding: string | null
+          evidence_levels: Json
+          exercise_recommendations: Json
+          grade_evidence: Json
+          id: string
+          interventions: Json
+          last_updated: string | null
+          protocols: Json
+          sections: Json
+          title: string
+          url: string
+        }
+        Insert: {
+          assessment_criteria?: Json
+          condition: string
+          content?: Json
+          created_at?: string | null
+          embedding?: string | null
+          evidence_levels?: Json
+          exercise_recommendations?: Json
+          grade_evidence?: Json
+          id?: string
+          interventions?: Json
+          last_updated?: string | null
+          protocols?: Json
+          sections?: Json
+          title: string
+          url: string
+        }
+        Update: {
+          assessment_criteria?: Json
+          condition?: string
+          content?: Json
+          created_at?: string | null
+          embedding?: string | null
+          evidence_levels?: Json
+          exercise_recommendations?: Json
+          grade_evidence?: Json
+          id?: string
+          interventions?: Json
+          last_updated?: string | null
+          protocols?: Json
+          sections?: Json
+          title?: string
+          url?: string
+        }
+        Relationships: []
+      }
       ICF: {
         Row: {
           Activity_Description: string
@@ -671,6 +725,20 @@ export type Database = {
             }
             Returns: unknown
           }
+      search_dutch_guidelines: {
+        Args: {
+          query_text: string
+          query_embedding: string
+          match_count?: number
+          similarity_threshold?: number
+        }
+        Returns: {
+          id: string
+          title: string
+          condition: string
+          similarity: number
+        }[]
+      }
       search_lifestyle_tips: {
         Args: {
           query_text: string

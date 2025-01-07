@@ -11,8 +11,12 @@ export class LangChainService {
     });
   }
 
-  async generateQuickAnalysis(caseStudy: CaseStudy): Promise<string> {
+  async generateQuickAnalysis(caseStudy: CaseStudy, guidelines: any = null): Promise<string> {
     console.log('Generating quick analysis for case study:', caseStudy.id);
+    
+    const guidelinesContext = guidelines ? 
+      `Consider these Dutch guidelines: ${JSON.stringify(guidelines.content)}` :
+      '';
     
     const prompt = `You are a phd level KNGF physiotherapist analyzing case studies. 
     Provide insights about the case in a concise, professional manner. 
@@ -20,6 +24,8 @@ export class LangChainService {
     Format your response using proper markdown, including tables with the | syntax when appropriate.
     Include relevant ICF codes in your analysis using the format b### for body functions, 
     d### for activities and participation, e### for environmental factors, and s### for body structures.
+
+    ${guidelinesContext}
 
     Patient: ${caseStudy.patient_name}
     Age: ${caseStudy.age}
@@ -58,9 +64,14 @@ export class LangChainService {
     sectionDescription: string,
     caseStudy: CaseStudy,
     entities: any,
-    references: PubMedArticle[]
+    references: PubMedArticle[],
+    guidelines: any = null
   ): Promise<Section> {
     console.log(`Generating section: ${sectionTitle}`);
+    
+    const guidelinesContext = guidelines ? 
+      `Consider these Dutch guidelines: ${JSON.stringify(guidelines.content)}` :
+      '';
     
     const prompt = `Generate the following section for a physiotherapy case study:
 
@@ -68,6 +79,8 @@ export class LangChainService {
 
     Description of what to include:
     ${sectionDescription}
+
+    ${guidelinesContext}
 
     Case Information:
     Patient Name: ${caseStudy.patient_name}
@@ -118,6 +131,32 @@ export class LangChainService {
       };
     } catch (error) {
       console.error(`Error generating section ${sectionTitle}:`, error);
+      throw error;
+    }
+  }
+
+  async generateStructuredGuidelines(condition: string, systemPrompt: string): Promise<any> {
+    try {
+      const completion = await this.model.chat.completions.create({
+        messages: [
+          {
+            role: "system",
+            content: systemPrompt
+          },
+          {
+            role: "user",
+            content: `Analyze and structure treatment guidelines for: ${condition}`
+          }
+        ],
+        model: "gemma2-9b-it",
+        temperature: 0.3,
+        max_tokens: 2000,
+      });
+
+      const response = completion.choices[0]?.message?.content || '';
+      return JSON.parse(response);
+    } catch (error) {
+      console.error('Error generating structured guidelines:', error);
       throw error;
     }
   }

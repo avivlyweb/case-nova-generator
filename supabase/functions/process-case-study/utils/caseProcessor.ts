@@ -1,4 +1,5 @@
 import { Groq } from 'npm:groq-sdk';
+import { createClient } from '@supabase/supabase-js';
 import { extractMedicalEntities } from './entityExtraction.ts';
 import { searchPubMed, fetchClinicalGuidelines } from './evidenceRetrieval.ts';
 import { sections } from './sectionConfig.ts';
@@ -26,11 +27,14 @@ export const processCaseStudy = async (
     const groq = new Groq({ apiKey: groqApiKey });
     const langchainService = new LangChainService(groqApiKey);
 
+    // Fetch relevant Dutch guidelines if they exist
+    const guidelines = await fetchRelevantGuidelines(caseStudy.condition || '');
+
     if (action === 'analyze') {
-      return await generateQuickAnalysis(langchainService, caseStudy);
+      return await generateQuickAnalysis(langchainService, caseStudy, guidelines);
     }
 
-    return await generateFullCaseStudy(groq, langchainService, caseStudy, pubmedApiKey || '');
+    return await generateFullCaseStudy(groq, langchainService, caseStudy, pubmedApiKey || '', guidelines);
   } catch (error) {
     console.error('Error in processCaseStudy:', error);
     if (error.message?.toLowerCase().includes('rate limit')) {
@@ -40,22 +44,50 @@ export const processCaseStudy = async (
   }
 };
 
+async function fetchRelevantGuidelines(condition: string) {
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  const { data, error } = await supabase
+    .from('dutch_guidelines')
+    .select('*')
+    .eq('condition', condition)
+    .single();
+
+  if (error) {
+    console.error('Error fetching guidelines:', error);
+    return null;
+  }
+
+  return data;
+}
+
 async function generateQuickAnalysis(
   langchainService: LangChainService,
-  caseStudy: CaseStudy
+  caseStudy: CaseStudy,
+  guidelines: any
 ): Promise<ProcessedCaseStudy> {
   console.log('Performing quick analysis...');
   let retries = 0;
 
   while (retries < MAX_RETRIES) {
     try {
-      const analysisContent = await langchainService.generateQuickAnalysis(caseStudy);
+      const analysisContent = await langchainService.generateQuickAnalysis(caseStudy, guidelines);
       const icfCodes = extractICFCodes(analysisContent);
       
       return { 
         success: true,
         analysis: analysisContent,
-        icf_codes: icfCodes
+        icf_codes: icfCodes,
+        clinical_guidelines: guidelines ? [
+          {
+            name: "Dutch Guidelines",
+            url: guidelines.url,
+            key_points: guidelines.content.key_points || [],
+            recommendation_level: "Evidence-based"
+          }
+        ] : []
       };
     } catch (error) {
       console.error(`Attempt ${retries + 1} failed:`, error);
@@ -74,7 +106,8 @@ async function generateFullCaseStudy(
   groq: Groq,
   langchainService: LangChainService,
   caseStudy: CaseStudy,
-  pubmedApiKey: string
+  pubmedApiKey: string,
+  guidelines: any
 ): Promise<ProcessedCaseStudy> {
   console.log('Generating full case study...');
   
@@ -100,7 +133,8 @@ async function generateFullCaseStudy(
         section.description,
         caseStudy,
         medicalEntities,
-        pubmedArticles
+        pubmedArticles,
+        guidelines
       )
     )
   );
@@ -115,7 +149,10 @@ async function generateFullCaseStudy(
   const icfCodes = extractICFCodes(allContent);
   
   // Aggregate evidence levels
-  const evidenceLevels = aggregateEvidenceLevels(pubmedArticles);
+  const evidenceLevels = {
+    ...aggregateEvidenceLevels(pubmedArticles),
+    ...(guidelines?.evidence_levels || {})
+  };
 
   return {
     success: true,
@@ -125,7 +162,15 @@ async function generateFullCaseStudy(
     icf_codes: icfCodes,
     assessment_findings: generatedSections.find(s => s.title === "Assessment Findings")?.content || '',
     intervention_plan: generatedSections.find(s => s.title === "Intervention Plan")?.content || '',
-    clinical_guidelines: clinicalGuidelines,
+    clinical_guidelines: [
+      ...(guidelines ? [{
+        name: "Dutch Guidelines",
+        url: guidelines.url,
+        key_points: guidelines.content.key_points || [],
+        recommendation_level: "Evidence-based"
+      }] : []),
+      ...clinicalGuidelines
+    ],
     evidence_levels: evidenceLevels
   };
 }
