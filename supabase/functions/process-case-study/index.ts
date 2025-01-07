@@ -14,7 +14,6 @@ serve(async (req) => {
   }
 
   try {
-    // Parse request body
     const body = await req.json()
     const { caseStudy, action = 'generate' } = body
     
@@ -44,14 +43,20 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Error in edge function:', error)
+    
+    const status = error.message?.toLowerCase().includes('rate limit') ? 429 : 500;
+    const message = status === 429 
+      ? 'The AI service is currently at capacity. Please try again in a few minutes.'
+      : error.message || 'Internal server error';
+    
     return new Response(
       JSON.stringify({ 
-        error: error.message || 'Internal server error',
+        error: message,
         details: error.stack,
         type: error.name
       }),
       { 
-        status: 500,
+        status,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     )

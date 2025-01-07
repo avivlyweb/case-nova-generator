@@ -1,5 +1,6 @@
 import { Groq } from 'npm:groq-sdk';
-import { CaseStudy, Section, PubMedArticle } from './types.ts';
+import { withRetry } from './retryUtils.ts';
+import type { CaseStudy, Section, PubMedArticle } from './types.ts';
 
 export class LangChainService {
   private model: Groq;
@@ -14,49 +15,54 @@ export class LangChainService {
   async generateEmbedding(text: string): Promise<number[]> {
     console.log('Generating embedding for text:', text.substring(0, 100) + '...');
     
-    try {
-      const completion = await this.model.chat.completions.create({
-        messages: [
-          {
-            role: "system",
-            content: "Generate a 1536-dimensional embedding vector for the following text. Return only numbers between -1 and 1, separated by commas, with exactly 1536 dimensions."
-          },
-          {
-            role: "user",
-            content: text
-          }
-        ],
-        model: "mixtral-8x7b-32768",
-        temperature: 0,
-        max_tokens: 3072,
-      });
+    return await withRetry(
+      async () => {
+        const completion = await this.model.chat.completions.create({
+          messages: [
+            {
+              role: "system",
+              content: "Generate a 1536-dimensional embedding vector for the following text. Return only numbers between -1 and 1, separated by commas, with exactly 1536 dimensions."
+            },
+            {
+              role: "user",
+              content: text
+            }
+          ],
+          model: "mixtral-8x7b-32768",
+          temperature: 0,
+          max_tokens: 3072,
+        });
 
-      const response = completion.choices[0]?.message?.content || '';
-      
-      // Clean and validate the vector
-      const vector = response
-        .split(',')
-        .map(num => {
-          const parsed = parseFloat(num.trim());
-          // Replace any invalid values with 0
-          return isNaN(parsed) ? 0 : Math.max(-1, Math.min(1, parsed));
-        })
-        .filter(num => typeof num === 'number' && !isNaN(num));
+        const response = completion.choices[0]?.message?.content || '';
+        
+        // Clean and validate the vector
+        const vector = response
+          .split(',')
+          .map(num => {
+            const parsed = parseFloat(num.trim());
+            return isNaN(parsed) ? 0 : Math.max(-1, Math.min(1, parsed));
+          })
+          .filter(num => typeof num === 'number' && !isNaN(num));
 
-      // Ensure exactly 1536 dimensions
-      while (vector.length < 1536) {
-        vector.push(0);
+        // Ensure exactly 1536 dimensions
+        while (vector.length < 1536) {
+          vector.push(0);
+        }
+        if (vector.length > 1536) {
+          vector.length = 1536;
+        }
+
+        console.log('Successfully generated embedding vector of length:', vector.length);
+        return vector;
+      },
+      {
+        maxRetries: 3,
+        timeout: 60000,
+        onRetry: (attempt, error) => {
+          console.log(`Retry attempt ${attempt + 1} for embedding generation. Error: ${error.message}`);
+        }
       }
-      if (vector.length > 1536) {
-        vector.length = 1536;
-      }
-
-      console.log('Successfully generated embedding vector of length:', vector.length);
-      return vector;
-    } catch (error) {
-      console.error('Error generating embedding:', error);
-      throw error;
-    }
+    );
   }
 
   async generateQuickAnalysis(caseStudy: CaseStudy, guidelines: any = null): Promise<string> {
