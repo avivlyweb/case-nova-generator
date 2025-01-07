@@ -1,7 +1,8 @@
-import { ChatGroq } from '@langchain/groq';
-import { PromptTemplate } from 'langchain/prompts';
-import { StringOutputParser } from 'langchain/schema/output_parser';
-import { RunnableSequence } from 'langchain/schema/runnable';
+import { ChatGroq } from 'npm:@langchain/groq';
+import { PromptTemplate } from 'npm:@langchain/core/prompts';
+import { StringOutputParser } from 'npm:@langchain/core/output_parsers';
+import { RunnableSequence } from 'npm:@langchain/core/runnables';
+import type { CaseStudy } from './types.ts';
 
 export class LangChainService {
   private model: ChatGroq;
@@ -19,7 +20,7 @@ export class LangChainService {
   async generateSection(
     sectionTitle: string,
     sectionDescription: string,
-    caseStudy: any,
+    caseStudy: CaseStudy,
     entities: any,
     references: string[]
   ) {
@@ -84,7 +85,7 @@ Please ensure your response:
     };
   }
 
-  async generateQuickAnalysis(caseStudy: any) {
+  async generateQuickAnalysis(caseStudy: CaseStudy) {
     const template = `You are a phd level KNGF physiotherapist analyzing case studies. Provide insights about the case in a concise, professional manner. Focus on key medical observations, potential implications, and suggested areas for further investigation. Format your response using proper markdown, including tables with the | syntax when appropriate. Include relevant ICF codes in your analysis using the format b### for body functions, d### for activities and participation, e### for environmental factors, and s### for body structures.
 
 Patient: {patientName}
