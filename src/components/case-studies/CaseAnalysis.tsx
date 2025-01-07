@@ -127,7 +127,12 @@ const formatReferences = (references: any[] | string | null): string => {
   if (!references) return '';
   if (typeof references === 'string') {
     try {
-      references = JSON.parse(references);
+      const parsed = JSON.parse(references);
+      if (Array.isArray(parsed)) {
+        references = parsed;
+      } else {
+        return references; // Return as-is if can't parse into array
+      }
     } catch {
       return references; // Return as-is if can't parse
     }
