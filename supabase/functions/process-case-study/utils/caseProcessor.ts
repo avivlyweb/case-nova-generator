@@ -1,5 +1,5 @@
-import { Groq } from 'npm:groq-sdk';
-import { createClient } from '@supabase/supabase-js';
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "npm:@supabase/supabase-js@2";
 import { extractMedicalEntities } from './entityExtraction.ts';
 import { searchPubMed, fetchClinicalGuidelines } from './evidenceRetrieval.ts';
 import { sections } from './sectionConfig.ts';

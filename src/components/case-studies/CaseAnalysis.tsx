@@ -6,13 +6,12 @@ import DetailedSection from "./DetailedSection";
 import ICFCodes from "./ICFCodes";
 import MedicalEntities from "./MedicalEntities";
 
-// Update the interface to include new fields
 interface CaseAnalysisProps {
   analysis: {
     analysis?: string;
     sections?: Array<{ title: string; content: string }> | any;
     references?: any[];
-    icf_codes?: string;
+    icf_codes?: string | string[];
     medical_entities?: any;
     clinical_guidelines?: any[];
     evidence_levels?: Record<string, number>;
@@ -123,7 +122,6 @@ const formatEvidenceLevels = (levels: Record<string, number>): string => {
 };
 
 const formatReferences = (references: any[] | string | null): string => {
-  // Handle cases where references might be a string or null
   if (!references) return '';
   if (typeof references === 'string') {
     try {
@@ -131,16 +129,15 @@ const formatReferences = (references: any[] | string | null): string => {
       if (Array.isArray(parsed)) {
         references = parsed;
       } else {
-        return references; // Return as-is if can't parse into array
+        return references;
       }
     } catch {
-      return references; // Return as-is if can't parse
+      return references;
     }
   }
   if (!Array.isArray(references)) return '';
   
   return references.map(ref => {
-    // Ensure ref has all required properties
     const authors = Array.isArray(ref.authors) ? ref.authors.join(', ') : 'Unknown';
     const year = ref.publicationDate ? new Date(ref.publicationDate).getFullYear() : 'N/A';
     const title = ref.title || 'Untitled';
