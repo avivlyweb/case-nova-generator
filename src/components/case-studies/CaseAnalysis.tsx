@@ -21,7 +21,6 @@ interface CaseAnalysisProps {
 const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
   if (!analysis) return null;
 
-  // Convert sections to array if it's stored as an object
   const formattedSections = analysis.sections ? 
     (Array.isArray(analysis.sections) ? analysis.sections : 
      Object.entries(analysis.sections).map(([title, content]) => ({
@@ -87,7 +86,9 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
               {analysis.references && (
                 <DetailedSection
                   title="Evidence-Based References"
-                  content={formatReferences(analysis.references)}
+                  content={typeof analysis.references === 'string' 
+                    ? analysis.references 
+                    : formatReferences(analysis.references)}
                 />
               )}
 
@@ -124,21 +125,8 @@ const formatEvidenceLevels = (levels: Record<string, number>): string => {
 const formatReferences = (references: any[] | string | null): string => {
   if (!references) return '';
   
-  // If references is a string, try to parse it as JSON
-  if (typeof references === 'string') {
-    try {
-      const parsed = JSON.parse(references);
-      if (Array.isArray(parsed)) {
-        references = parsed;
-      } else {
-        // If parsed but not an array, stringify it
-        return JSON.stringify(parsed, null, 2);
-      }
-    } catch {
-      // If parsing fails, return the original string
-      return references;
-    }
-  }
+  // If references is a string, return it directly
+  if (typeof references === 'string') return references;
   
   // If references is not an array at this point, return empty string
   if (!Array.isArray(references)) return '';
