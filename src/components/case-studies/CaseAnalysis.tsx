@@ -123,20 +123,27 @@ const formatEvidenceLevels = (levels: Record<string, number>): string => {
 
 const formatReferences = (references: any[] | string | null): string => {
   if (!references) return '';
+  
+  // If references is a string, try to parse it as JSON
   if (typeof references === 'string') {
     try {
       const parsed = JSON.parse(references);
       if (Array.isArray(parsed)) {
         references = parsed;
       } else {
-        return references;
+        // If parsed but not an array, stringify it
+        return JSON.stringify(parsed, null, 2);
       }
     } catch {
+      // If parsing fails, return the original string
       return references;
     }
   }
+  
+  // If references is not an array at this point, return empty string
   if (!Array.isArray(references)) return '';
   
+  // Format the references array into a string
   return references.map(ref => {
     const authors = Array.isArray(ref.authors) ? ref.authors.join(', ') : 'Unknown';
     const year = ref.publicationDate ? new Date(ref.publicationDate).getFullYear() : 'N/A';
