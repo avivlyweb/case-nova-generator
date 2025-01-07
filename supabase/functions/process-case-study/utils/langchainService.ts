@@ -1,18 +1,19 @@
-import { ChatGroq } from 'npm:groq-sdk';
-import { CaseStudy } from './types.ts';
+import { Groq } from 'npm:groq-sdk';
+import { CaseStudy, Section, PubMedArticle } from './types.ts';
 
 export class LangChainService {
-  private model: ChatGroq;
+  private model: Groq;
 
   constructor(apiKey: string) {
-    this.model = new ChatGroq({
-      apiKey,
+    this.model = new Groq({
+      apiKey: apiKey,
       temperature: 0.5,
-      modelName: "gemma2-9b-it",
     });
   }
 
   async generateQuickAnalysis(caseStudy: CaseStudy): Promise<string> {
+    console.log('Generating quick analysis for case study:', caseStudy.id);
+    
     const prompt = `You are a phd level KNGF physiotherapist analyzing case studies. 
     Provide insights about the case in a concise, professional manner. 
     Focus on key medical observations, potential implications, and suggested areas for further investigation.
@@ -27,22 +28,29 @@ export class LangChainService {
     Presenting Complaint: ${caseStudy.presenting_complaint || 'None provided'}
     Condition: ${caseStudy.condition || 'Not specified'}`;
 
-    const completion = await this.model.chat.completions.create({
-      messages: [
-        {
-          role: "system",
-          content: "You are a medical analysis system specialized in physiotherapy case studies."
-        },
-        {
-          role: "user",
-          content: prompt
-        }
-      ],
-      temperature: 0.7,
-      max_tokens: 2000,
-    });
+    try {
+      const completion = await this.model.chat.completions.create({
+        messages: [
+          {
+            role: "system",
+            content: "You are a medical analysis system specialized in physiotherapy case studies."
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        model: "gemma2-9b-it",
+        temperature: 0.7,
+        max_tokens: 2000,
+      });
 
-    return completion.choices[0]?.message?.content || '';
+      console.log('Quick analysis generated successfully');
+      return completion.choices[0]?.message?.content || '';
+    } catch (error) {
+      console.error('Error generating quick analysis:', error);
+      throw error;
+    }
   }
 
   async generateSection(
@@ -50,8 +58,10 @@ export class LangChainService {
     sectionDescription: string,
     caseStudy: CaseStudy,
     entities: any,
-    references: any[]
-  ): Promise<{ title: string; content: string }> {
+    references: PubMedArticle[]
+  ): Promise<Section> {
+    console.log(`Generating section: ${sectionTitle}`);
+    
     const prompt = `Generate the following section for a physiotherapy case study:
 
     ${sectionTitle}
@@ -84,24 +94,31 @@ export class LangChainService {
     5. Uses proper markdown table syntax with | for columns when presenting data
     6. Includes evidence levels for each recommendation`;
 
-    const completion = await this.model.chat.completions.create({
-      messages: [
-        {
-          role: "system",
-          content: "You are a medical content generation system specialized in physiotherapy case studies."
-        },
-        {
-          role: "user",
-          content: prompt
-        }
-      ],
-      temperature: 0.7,
-      max_tokens: 2000,
-    });
+    try {
+      const completion = await this.model.chat.completions.create({
+        messages: [
+          {
+            role: "system",
+            content: "You are a medical content generation system specialized in physiotherapy case studies."
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        model: "gemma2-9b-it",
+        temperature: 0.7,
+        max_tokens: 2000,
+      });
 
-    return {
-      title: sectionTitle,
-      content: completion.choices[0]?.message?.content || ''
-    };
+      console.log(`Section ${sectionTitle} generated successfully`);
+      return {
+        title: sectionTitle,
+        content: completion.choices[0]?.message?.content || ''
+      };
+    } catch (error) {
+      console.error(`Error generating section ${sectionTitle}:`, error);
+      throw error;
+    }
   }
 }

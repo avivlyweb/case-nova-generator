@@ -1,7 +1,6 @@
 import { Groq } from 'npm:groq-sdk';
 import { extractMedicalEntities } from './entityExtraction.ts';
 import { searchPubMed, fetchClinicalGuidelines } from './evidenceRetrieval.ts';
-import { generateSection } from './sectionGenerator.ts';
 import { sections } from './sectionConfig.ts';
 import { ProcessedCaseStudy, CaseStudy } from './types.ts';
 import { LangChainService } from './langchainService.ts';
@@ -42,7 +41,7 @@ export const processCaseStudy = async (
 };
 
 async function generateQuickAnalysis(
-  langchainService: any,
+  langchainService: LangChainService,
   caseStudy: CaseStudy
 ): Promise<ProcessedCaseStudy> {
   console.log('Performing quick analysis...');
@@ -73,7 +72,7 @@ async function generateQuickAnalysis(
 
 async function generateFullCaseStudy(
   groq: Groq,
-  langchainService: any,
+  langchainService: LangChainService,
   caseStudy: CaseStudy,
   pubmedApiKey: string
 ): Promise<ProcessedCaseStudy> {
@@ -96,8 +95,7 @@ async function generateFullCaseStudy(
   console.log('Generating sections with evidence...');
   const generatedSections = await Promise.all(
     sections.map(section => 
-      generateSection(
-        groq,
+      langchainService.generateSection(
         section.title,
         section.description,
         caseStudy,

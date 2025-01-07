@@ -12,7 +12,6 @@ export interface CaseStudy {
   patient_background?: string;
   comorbidities?: string;
   psychosocial_factors?: string;
-  date?: string;
 }
 
 export interface Section {
