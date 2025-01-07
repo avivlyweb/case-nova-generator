@@ -10,7 +10,7 @@ interface CaseAnalysisProps {
   analysis: {
     analysis?: string;
     sections?: Array<{ title: string; content: string }> | any;
-    references?: any[];
+    references?: any[] | string;
     icf_codes?: string | string[];
     medical_entities?: any;
     clinical_guidelines?: any[];
