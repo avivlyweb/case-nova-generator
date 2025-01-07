@@ -1,9 +1,9 @@
-import { Groq } from 'npm:groq-sdk'
-import { extractMedicalEntities } from './entityExtraction.ts'
-import { searchPubMed, formatReference } from './pubmedSearch.ts'
-import { generateSection } from './sectionGenerator.ts'
-import { sections } from './sectionConfig.ts'
-import { type ProcessedCaseStudy, type CaseStudy } from './types.ts'
+import { Groq } from 'npm:groq-sdk';
+import { extractMedicalEntities } from './entityExtraction.ts';
+import { searchPubMed, formatReference } from './pubmedSearch.ts';
+import { sections } from './sectionConfig.ts';
+import { type ProcessedCaseStudy, type CaseStudy } from './types.ts';
+import { LangChainService } from './langchainService.ts';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -23,15 +23,18 @@ export const processCaseStudy = async (
   console.log(`Starting processCaseStudy with action: ${action} for case study ${caseStudy.id}`);
   
   try {
-    const groq = new Groq({
-      apiKey: Deno.env.get('GROQ_API_KEY')
-    });
-
-    if (action === 'analyze') {
-      return await generateQuickAnalysis(groq, caseStudy);
+    const groqApiKey = Deno.env.get('GROQ_API_KEY');
+    if (!groqApiKey) {
+      throw new Error('GROQ_API_KEY is not set');
     }
 
-    return await generateFullCaseStudy(groq, caseStudy);
+    const langchainService = new LangChainService(groqApiKey);
+
+    if (action === 'analyze') {
+      return await generateQuickAnalysis(langchainService, caseStudy);
+    }
+
+    return await generateFullCaseStudy(langchainService, caseStudy);
   } catch (error) {
     console.error('Error in processCaseStudy:', error);
     
@@ -43,7 +46,10 @@ export const processCaseStudy = async (
   }
 };
 
-async function generateQuickAnalysis(groq: Groq, caseStudy: CaseStudy): Promise<ProcessedCaseStudy> {
+async function generateQuickAnalysis(
+  langchainService: LangChainService,
+  caseStudy: CaseStudy
+): Promise<ProcessedCaseStudy> {
   console.log('Performing quick analysis...');
   
   let retries = 0;
@@ -51,29 +57,7 @@ async function generateQuickAnalysis(groq: Groq, caseStudy: CaseStudy): Promise<
 
   while (retries < MAX_RETRIES) {
     try {
-      const completion = await groq.chat.completions.create({
-        messages: [
-          {
-            role: "system",
-            content: "You are a phd level KNGF physiotherapist analyzing case studies. Provide insights about the case in a concise, professional manner. Focus on key medical observations, potential implications, and suggested areas for further investigation. Format your response using proper markdown, including tables with the | syntax when appropriate. Include relevant ICF codes in your analysis using the format b### for body functions, d### for activities and participation, e### for environmental factors, and s### for body structures."
-          },
-          {
-            role: "user",
-            content: `Please analyze this medical case study and include relevant ICF codes:
-            Patient: ${caseStudy.patient_name}
-            Age: ${caseStudy.age}
-            Gender: ${caseStudy.gender}
-            Medical History: ${caseStudy.medical_history || 'None provided'}
-            Presenting Complaint: ${caseStudy.presenting_complaint || 'None provided'}
-            Condition: ${caseStudy.condition || 'Not specified'}`
-          }
-        ],
-        model: "gemma2-9b-it",
-        temperature: 0.5,
-        max_tokens: 500,
-      });
-
-      const analysisContent = completion.choices[0]?.message?.content || 'No analysis generated';
+      const analysisContent = await langchainService.generateQuickAnalysis(caseStudy);
       const icfCodes = extractICFCodes(analysisContent);
       
       console.log('Analysis completed with ICF codes:', icfCodes);
@@ -100,15 +84,18 @@ async function generateQuickAnalysis(groq: Groq, caseStudy: CaseStudy): Promise<
   throw new Error('Maximum retries reached. The AI service is currently unavailable. Please try again later.');
 }
 
-async function generateFullCaseStudy(groq: Groq, caseStudy: CaseStudy): Promise<ProcessedCaseStudy> {
+async function generateFullCaseStudy(
+  langchainService: LangChainService,
+  caseStudy: CaseStudy
+): Promise<ProcessedCaseStudy> {
   console.log('Generating full case study...');
   let retries = 0;
-  let lastError;
 
   while (retries < MAX_RETRIES) {
     try {
       const textForEntityExtraction = buildEntityExtractionText(caseStudy);
       console.log('Extracting medical entities...');
+      const groq = new Groq({ apiKey: Deno.env.get('GROQ_API_KEY') });
       const medicalEntities = await extractMedicalEntities(textForEntityExtraction, groq);
       console.log('Extracted medical entities:', medicalEntities);
 
@@ -121,7 +108,15 @@ async function generateFullCaseStudy(groq: Groq, caseStudy: CaseStudy): Promise<
 
       console.log('Generating sections...');
       const generatedSections = await Promise.all(
-        sections.map(section => generateSection(groq, section.title, section.description, caseStudy, medicalEntities, references))
+        sections.map(section => 
+          langchainService.generateSection(
+            section.title,
+            section.description,
+            caseStudy,
+            medicalEntities,
+            references
+          )
+        )
       );
 
       const allContent = [
@@ -148,7 +143,6 @@ async function generateFullCaseStudy(groq: Groq, caseStudy: CaseStudy): Promise<
       };
     } catch (error) {
       console.error(`Attempt ${retries + 1} failed:`, error);
-      lastError = error;
       
       if (error.message?.toLowerCase().includes('rate limit')) {
         await delay(RETRY_DELAY);
