@@ -10,6 +10,8 @@ export interface CaseStudy {
   patient_background?: string;
   comorbidities?: string;
   psychosocial_factors?: string;
+  specialization?: string;
+  ai_role?: string;
 }
 
 export interface ProcessedCaseStudy {
@@ -19,7 +21,7 @@ export interface ProcessedCaseStudy {
     title: string;
     content: string;
   }>;
-  references?: any[];
+  references?: PubMedArticle[];
   medical_entities?: Record<string, string[]>;
   assessment_findings?: string;
   intervention_plan?: string;
@@ -39,6 +41,7 @@ export interface PubMedArticle {
   journal: string;
   evidenceLevel: string;
   url: string;
+  citation?: string;
 }
 
 export interface ClinicalGuideline {

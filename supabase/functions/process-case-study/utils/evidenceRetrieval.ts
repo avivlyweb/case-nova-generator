@@ -1,4 +1,4 @@
-import { PubMedArticle } from './types';
+import { PubMedArticle, ClinicalGuideline } from './types.ts';
 
 export async function searchPubMed(query: string, apiKey: string): Promise<PubMedArticle[]> {
   console.log('Searching PubMed for:', query);
@@ -22,7 +22,8 @@ export async function searchPubMed(query: string, apiKey: string): Promise<PubMe
       publicationDate: article.pubdate,
       journal: article.source,
       evidenceLevel: determineEvidenceLevel(article),
-      url: `https://pubmed.ncbi.nlm.nih.gov/${article.uid}/`
+      url: `https://pubmed.ncbi.nlm.nih.gov/${article.uid}/`,
+      citation: `${article.authors?.[0]?.name || 'Unknown'} et al. (${new Date(article.pubdate).getFullYear()})`
     }));
   } catch (error) {
     console.error('Error searching PubMed:', error);
@@ -47,7 +48,7 @@ function determineEvidenceLevel(article: any): string {
   }
 }
 
-export async function fetchClinicalGuidelines(condition: string): Promise<any[]> {
+export async function fetchClinicalGuidelines(condition: string): Promise<ClinicalGuideline[]> {
   console.log('Fetching clinical guidelines for:', condition);
   // Simulated guidelines data structure
   return [
