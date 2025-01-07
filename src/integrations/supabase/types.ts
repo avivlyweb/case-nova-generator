@@ -194,6 +194,7 @@ export type Database = {
           embedding: string | null
           evidence_levels: Json
           exercise_recommendations: Json
+          fts: unknown | null
           grade_evidence: Json
           id: string
           interventions: Json
@@ -211,6 +212,7 @@ export type Database = {
           embedding?: string | null
           evidence_levels?: Json
           exercise_recommendations?: Json
+          fts?: unknown | null
           grade_evidence?: Json
           id?: string
           interventions?: Json
@@ -228,6 +230,7 @@ export type Database = {
           embedding?: string | null
           evidence_levels?: Json
           exercise_recommendations?: Json
+          fts?: unknown | null
           grade_evidence?: Json
           id?: string
           interventions?: Json
