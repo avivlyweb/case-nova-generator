@@ -104,7 +104,7 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
 };
 
 // Helper functions for formatting
-const formatGuidelines = (guidelines: any[]) => {
+const formatGuidelines = (guidelines: any[]): string => {
   if (!Array.isArray(guidelines)) return '';
   return guidelines.map(g => (
     `### ${g.name}\n\n` +
@@ -114,7 +114,7 @@ const formatGuidelines = (guidelines: any[]) => {
   )).join('\n---\n\n');
 };
 
-const formatEvidenceLevels = (levels: Record<string, number>) => {
+const formatEvidenceLevels = (levels: Record<string, number>): string => {
   if (!levels || typeof levels !== 'object') return '';
   return '### Evidence Distribution\n\n' +
     Object.entries(levels)
@@ -122,7 +122,7 @@ const formatEvidenceLevels = (levels: Record<string, number>) => {
       .join('\n');
 };
 
-const formatReferences = (references: any[] | string | null) => {
+const formatReferences = (references: any[] | string | null): string => {
   // Handle cases where references might be a string or null
   if (!references) return '';
   if (typeof references === 'string') {
