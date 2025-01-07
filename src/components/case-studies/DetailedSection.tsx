@@ -14,7 +14,6 @@ import {
   BookOpen,
   BookmarkCheck,
   ListChecks,
-  Pills,
   Activity
 } from "lucide-react";
 
@@ -45,7 +44,7 @@ const DetailedSection = ({ title, content }: DetailedSectionProps) => {
       case "reference list":
         return <BookmarkCheck className="h-5 w-5 text-primary" />;
       case "medication information":
-        return <Pills className="h-5 w-5 text-primary" />;
+        return <Pill className="h-5 w-5 text-primary" />;
       case "icf classification":
         return <Activity className="h-5 w-5 text-primary" />;
       default:
