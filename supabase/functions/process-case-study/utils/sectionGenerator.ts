@@ -1,6 +1,6 @@
 import { Groq } from 'npm:groq-sdk';
-import { CaseStudy, Section } from './types';
-import { searchPubMed, fetchClinicalGuidelines } from './evidenceRetrieval';
+import { CaseStudy, Section, PubMedArticle } from './types.ts';
+import { searchPubMed, fetchClinicalGuidelines } from './evidenceRetrieval.ts';
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 5000;
@@ -13,8 +13,8 @@ export async function generateSection(
   sectionDescription: string,
   caseStudy: CaseStudy,
   entities: any,
-  pubmedReferences: any[]
-) {
+  pubmedReferences: PubMedArticle[]
+): Promise<Section> {
   console.log(`Generating section: ${sectionTitle}`);
   
   let retries = 0;
@@ -62,7 +62,7 @@ function buildSectionPrompt(
   sectionDescription: string,
   caseStudy: CaseStudy,
   entities: any,
-  pubmedReferences: any[]
+  pubmedReferences: PubMedArticle[]
 ): string {
   return `Generate the following section for a physiotherapy case study:
 
@@ -97,7 +97,7 @@ Please ensure your response:
 6. Includes evidence levels for each recommendation`;
 }
 
-function formatReferences(references: any[]): string {
+function formatReferences(references: PubMedArticle[]): string {
   return references.map(ref => 
     `- ${ref.authors.join(', ')} (${new Date(ref.publicationDate).getFullYear()}). ${ref.title}. ${ref.journal}. Evidence Level: ${ref.evidenceLevel}`
   ).join('\n');

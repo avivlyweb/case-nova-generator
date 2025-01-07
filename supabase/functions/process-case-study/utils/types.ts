@@ -14,13 +14,15 @@ export interface CaseStudy {
   ai_role?: string;
 }
 
+export interface Section {
+  title: string;
+  content: string;
+}
+
 export interface ProcessedCaseStudy {
   success: boolean;
   analysis?: string;
-  sections?: Array<{
-    title: string;
-    content: string;
-  }>;
+  sections?: Section[];
   references?: PubMedArticle[];
   medical_entities?: Record<string, string[]>;
   assessment_findings?: string;
