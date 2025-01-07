@@ -4,6 +4,7 @@ import { searchPubMed, fetchClinicalGuidelines } from './evidenceRetrieval.ts';
 import { generateSection } from './sectionGenerator.ts';
 import { sections } from './sectionConfig.ts';
 import { ProcessedCaseStudy, CaseStudy } from './types.ts';
+import { LangChainService } from './langchainService.ts';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 const MAX_RETRIES = 3;
