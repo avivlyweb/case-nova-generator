@@ -9,6 +9,83 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      biomedical_responses: {
+        Row: {
+          assessment_id: string | null
+          bmi: number | null
+          comorbidities: string[] | null
+          created_at: string | null
+          id: string
+          morning_stiffness: number | null
+          movement_patterns: Json | null
+          muscle_strength: Json | null
+          neurological_symptoms: string[] | null
+          pain_duration: number | null
+          pain_intensity: number | null
+          pain_location:
+            | Database["public"]["Enums"]["pain_location_type"]
+            | null
+          pain_pattern: Database["public"]["Enums"]["pain_pattern_type"] | null
+          physical_fitness_level: number | null
+          posture_assessment: Json | null
+          previous_injuries: Json | null
+          rom_limitations: Json | null
+          sleep_quality: number | null
+        }
+        Insert: {
+          assessment_id?: string | null
+          bmi?: number | null
+          comorbidities?: string[] | null
+          created_at?: string | null
+          id?: string
+          morning_stiffness?: number | null
+          movement_patterns?: Json | null
+          muscle_strength?: Json | null
+          neurological_symptoms?: string[] | null
+          pain_duration?: number | null
+          pain_intensity?: number | null
+          pain_location?:
+            | Database["public"]["Enums"]["pain_location_type"]
+            | null
+          pain_pattern?: Database["public"]["Enums"]["pain_pattern_type"] | null
+          physical_fitness_level?: number | null
+          posture_assessment?: Json | null
+          previous_injuries?: Json | null
+          rom_limitations?: Json | null
+          sleep_quality?: number | null
+        }
+        Update: {
+          assessment_id?: string | null
+          bmi?: number | null
+          comorbidities?: string[] | null
+          created_at?: string | null
+          id?: string
+          morning_stiffness?: number | null
+          movement_patterns?: Json | null
+          muscle_strength?: Json | null
+          neurological_symptoms?: string[] | null
+          pain_duration?: number | null
+          pain_intensity?: number | null
+          pain_location?:
+            | Database["public"]["Enums"]["pain_location_type"]
+            | null
+          pain_pattern?: Database["public"]["Enums"]["pain_pattern_type"] | null
+          physical_fitness_level?: number | null
+          posture_assessment?: Json | null
+          previous_injuries?: Json | null
+          rom_limitations?: Json | null
+          sleep_quality?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "biomedical_responses_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "patient_assessments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       case_studies: {
         Row: {
           adl_problem: string | null
@@ -165,6 +242,42 @@ export type Database = {
         }
         Relationships: []
       }
+      indicator_definitions: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string | null
+          id: string
+          max_value: number | null
+          measurement_type: string
+          min_value: number | null
+          name: string
+          unit: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          max_value?: number | null
+          measurement_type: string
+          min_value?: number | null
+          name: string
+          unit?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          max_value?: number | null
+          measurement_type?: string
+          min_value?: number | null
+          name?: string
+          unit?: string | null
+        }
+        Relationships: []
+      }
       lifestyle_tips: {
         Row: {
           actionable_tips: Json
@@ -172,6 +285,7 @@ export type Database = {
           content_embedding: string | null
           created_at: string
           description: string
+          embedding: string | null
           fts: unknown | null
           id: string
           relevance_to_vision: string
@@ -183,6 +297,7 @@ export type Database = {
           content_embedding?: string | null
           created_at?: string
           description: string
+          embedding?: string | null
           fts?: unknown | null
           id?: string
           relevance_to_vision: string
@@ -194,6 +309,7 @@ export type Database = {
           content_embedding?: string | null
           created_at?: string
           description?: string
+          embedding?: string | null
           fts?: unknown | null
           id?: string
           relevance_to_vision?: string
@@ -227,6 +343,202 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      occupational_responses: {
+        Row: {
+          assessment_id: string | null
+          created_at: string | null
+          daily_activities_impact: number | null
+          driving_ability: number | null
+          ergonomic_factors: Json | null
+          household_tasks_ability: number | null
+          id: string
+          job_physical_demands: Json | null
+          lifting_capacity: number | null
+          recreational_activities: string[] | null
+          sick_leave_history: Json | null
+          sitting_tolerance: number | null
+          social_activity_levels: number | null
+          sports_participation: Json | null
+          standing_tolerance: number | null
+          walking_capacity: number | null
+          work_hours: number | null
+          work_status: Database["public"]["Enums"]["work_status_type"] | null
+        }
+        Insert: {
+          assessment_id?: string | null
+          created_at?: string | null
+          daily_activities_impact?: number | null
+          driving_ability?: number | null
+          ergonomic_factors?: Json | null
+          household_tasks_ability?: number | null
+          id?: string
+          job_physical_demands?: Json | null
+          lifting_capacity?: number | null
+          recreational_activities?: string[] | null
+          sick_leave_history?: Json | null
+          sitting_tolerance?: number | null
+          social_activity_levels?: number | null
+          sports_participation?: Json | null
+          standing_tolerance?: number | null
+          walking_capacity?: number | null
+          work_hours?: number | null
+          work_status?: Database["public"]["Enums"]["work_status_type"] | null
+        }
+        Update: {
+          assessment_id?: string | null
+          created_at?: string | null
+          daily_activities_impact?: number | null
+          driving_ability?: number | null
+          ergonomic_factors?: Json | null
+          household_tasks_ability?: number | null
+          id?: string
+          job_physical_demands?: Json | null
+          lifting_capacity?: number | null
+          recreational_activities?: string[] | null
+          sick_leave_history?: Json | null
+          sitting_tolerance?: number | null
+          social_activity_levels?: number | null
+          sports_participation?: Json | null
+          standing_tolerance?: number | null
+          walking_capacity?: number | null
+          work_hours?: number | null
+          work_status?: Database["public"]["Enums"]["work_status_type"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "occupational_responses_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "patient_assessments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      patient_assessments: {
+        Row: {
+          assessment_date: string | null
+          created_at: string | null
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          assessment_date?: string | null
+          created_at?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          assessment_date?: string | null
+          created_at?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      posture_analysis: {
+        Row: {
+          analysis: string
+          created_at: string
+          id: string
+          image_path: string
+          tips: Json
+          user_id: string | null
+        }
+        Insert: {
+          analysis: string
+          created_at?: string
+          id?: string
+          image_path: string
+          tips?: Json
+          user_id?: string | null
+        }
+        Update: {
+          analysis?: string
+          created_at?: string
+          id?: string
+          image_path?: string
+          tips?: Json
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      psychosocial_responses: {
+        Row: {
+          anxiety_levels: number | null
+          assessment_id: string | null
+          coping_strategies: string[] | null
+          created_at: string | null
+          depression_symptoms: number | null
+          emotional_state: string | null
+          family_dynamics: string | null
+          fear_of_movement: number | null
+          financial_stress: number | null
+          id: string
+          motivation_levels: number | null
+          pain_beliefs: string[] | null
+          pain_catastrophizing: number | null
+          quality_of_life_impact: number | null
+          recovery_beliefs: string | null
+          self_efficacy: number | null
+          social_support: number | null
+          stress_levels: number | null
+          treatment_expectations: string | null
+          work_satisfaction: number | null
+        }
+        Insert: {
+          anxiety_levels?: number | null
+          assessment_id?: string | null
+          coping_strategies?: string[] | null
+          created_at?: string | null
+          depression_symptoms?: number | null
+          emotional_state?: string | null
+          family_dynamics?: string | null
+          fear_of_movement?: number | null
+          financial_stress?: number | null
+          id?: string
+          motivation_levels?: number | null
+          pain_beliefs?: string[] | null
+          pain_catastrophizing?: number | null
+          quality_of_life_impact?: number | null
+          recovery_beliefs?: string | null
+          self_efficacy?: number | null
+          social_support?: number | null
+          stress_levels?: number | null
+          treatment_expectations?: string | null
+          work_satisfaction?: number | null
+        }
+        Update: {
+          anxiety_levels?: number | null
+          assessment_id?: string | null
+          coping_strategies?: string[] | null
+          created_at?: string | null
+          depression_symptoms?: number | null
+          emotional_state?: string | null
+          family_dynamics?: string | null
+          fear_of_movement?: number | null
+          financial_stress?: number | null
+          id?: string
+          motivation_levels?: number | null
+          pain_beliefs?: string[] | null
+          pain_catastrophizing?: number | null
+          quality_of_life_impact?: number | null
+          recovery_beliefs?: string | null
+          self_efficacy?: number | null
+          social_support?: number | null
+          stress_levels?: number | null
+          treatment_expectations?: string | null
+          work_satisfaction?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "psychosocial_responses_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "patient_assessments"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -344,40 +656,26 @@ export type Database = {
             }
             Returns: unknown
           }
-      search_lifestyle_tips:
-        | {
-            Args: {
-              query_text: string
-              match_count?: number
-              similarity_threshold?: number
-            }
-            Returns: {
-              id: string
-              category: string
-              title: string
-              description: string
-              actionable_tips: Json
-              relevance_to_vision: string
-              similarity: number
-            }[]
-          }
-        | {
-            Args: {
-              query_text: string
-              query_embedding: string
-              match_count?: number
-              similarity_threshold?: number
-            }
-            Returns: {
-              id: string
-              category: string
-              title: string
-              description: string
-              actionable_tips: Json
-              relevance_to_vision: string
-              similarity: number
-            }[]
-          }
+      search_lifestyle_tips: {
+        Args: {
+          query_text: string
+          query_embedding: string
+          match_count?: number
+          similarity_threshold?: number
+          full_text_weight?: number
+          semantic_weight?: number
+          rrf_k?: number
+        }
+        Returns: {
+          id: string
+          category: string
+          title: string
+          description: string
+          actionable_tips: Json
+          relevance_to_vision: string
+          similarity: number
+        }[]
+      }
       sparsevec_out: {
         Args: {
           "": unknown
@@ -441,7 +739,15 @@ export type Database = {
       }
     }
     Enums: {
+      pain_location_type: "specific" | "diffuse" | "mixed"
+      pain_pattern_type: "constant" | "intermittent" | "varying"
       scale_type: "difficulty" | "intensity" | "frequency" | "facbar"
+      work_status_type:
+        | "full_time"
+        | "part_time"
+        | "unemployed"
+        | "modified_duties"
+        | "sick_leave"
     }
     CompositeTypes: {
       [_ in never]: never
