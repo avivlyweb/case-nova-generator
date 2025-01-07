@@ -103,8 +103,23 @@ async function generateFullCaseStudy(
       const pubmedApiKey = Deno.env.get('PUBMED_API_KEY');
       const searchQuery = `${caseStudy.condition} physiotherapy treatment`;
       const pubmedArticles = await searchPubMed(searchQuery, pubmedApiKey || '');
-      const references = pubmedArticles.map(formatReference);
-      console.log('Generated PubMed references:', references);
+      
+      // Enhanced reference formatting with URLs
+      const references = pubmedArticles.map(article => ({
+        citation: formatReference(article),
+        url: `https://pubmed.ncbi.nlm.nih.gov/${article.id}/`,
+        type: 'pubmed',
+        evidenceLevel: determineEvidenceLevel(article)
+      }));
+
+      // Generate clinical guidelines references
+      const guidelineRefs = await langchainService.generateClinicalGuidelines(caseStudy.condition);
+      
+      // Generate learning objectives
+      const learningObjectives = await langchainService.generateLearningObjectives(caseStudy);
+      
+      // Generate clinical reasoning path
+      const clinicalReasoningPath = await langchainService.generateClinicalReasoningPath(caseStudy);
 
       console.log('Generating sections...');
       const generatedSections = await Promise.all(
@@ -133,11 +148,15 @@ async function generateFullCaseStudy(
       return {
         success: true,
         sections: generatedSections,
-        references: references || [],
-        medical_entities: medicalEntities || {},
+        references: references,
+        medical_entities: medicalEntities,
         icf_codes: icfCodes,
         assessment_findings: generatedSections.find(s => s.title === "Assessment Findings")?.content || '',
         intervention_plan: generatedSections.find(s => s.title === "Intervention Plan")?.content || '',
+        clinical_guidelines: guidelineRefs,
+        learning_objectives: learningObjectives,
+        clinical_reasoning_path: clinicalReasoningPath,
+        evidence_levels: aggregateEvidenceLevels(references),
         smart_goals: [],
         medications: []
       };
@@ -167,4 +186,17 @@ function buildEntityExtractionText(caseStudy: CaseStudy): string {
     Background: ${caseStudy.patient_background || ''}
     Psychosocial Factors: ${caseStudy.psychosocial_factors || ''}
   `.trim();
+}
+
+function determineEvidenceLevel(article: any): string {
+  // Implement evidence level determination logic
+  return 'Level II'; // Placeholder
+}
+
+function aggregateEvidenceLevels(references: any[]): Record<string, number> {
+  const levels: Record<string, number> = {};
+  references.forEach(ref => {
+    levels[ref.evidenceLevel] = (levels[ref.evidenceLevel] || 0) + 1;
+  });
+  return levels;
 }

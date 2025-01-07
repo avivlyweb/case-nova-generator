@@ -93,15 +93,20 @@ export type Database = {
           ai_analysis: string | null
           ai_role: string | null
           assessment_findings: string | null
+          clinical_guidelines: Json | null
+          clinical_reasoning_path: Json | null
           comorbidities: string | null
           condition: string | null
           created_at: string
           date: string
+          evidence_levels: Json | null
+          evidence_sources: Json | null
           gender: string
           generated_sections: Json | null
           icf_codes: Json | null
           id: string
           intervention_plan: string | null
+          learning_objectives: Json | null
           medical_entities: Json | null
           medical_history: string | null
           medications: Json | null
@@ -120,15 +125,20 @@ export type Database = {
           ai_analysis?: string | null
           ai_role?: string | null
           assessment_findings?: string | null
+          clinical_guidelines?: Json | null
+          clinical_reasoning_path?: Json | null
           comorbidities?: string | null
           condition?: string | null
           created_at?: string
           date: string
+          evidence_levels?: Json | null
+          evidence_sources?: Json | null
           gender: string
           generated_sections?: Json | null
           icf_codes?: Json | null
           id?: string
           intervention_plan?: string | null
+          learning_objectives?: Json | null
           medical_entities?: Json | null
           medical_history?: string | null
           medications?: Json | null
@@ -147,15 +157,20 @@ export type Database = {
           ai_analysis?: string | null
           ai_role?: string | null
           assessment_findings?: string | null
+          clinical_guidelines?: Json | null
+          clinical_reasoning_path?: Json | null
           comorbidities?: string | null
           condition?: string | null
           created_at?: string
           date?: string
+          evidence_levels?: Json | null
+          evidence_sources?: Json | null
           gender?: string
           generated_sections?: Json | null
           icf_codes?: Json | null
           id?: string
           intervention_plan?: string | null
+          learning_objectives?: Json | null
           medical_entities?: Json | null
           medical_history?: string | null
           medications?: Json | null

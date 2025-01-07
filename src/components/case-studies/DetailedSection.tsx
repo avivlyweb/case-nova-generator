@@ -48,6 +48,16 @@ const DetailedSection = ({ title, content }: DetailedSectionProps) => {
               ol: ({ children }) => (
                 <ol className="list-decimal pl-6 mb-4 space-y-2 text-gray-700 dark:text-gray-300">{children}</ol>
               ),
+              a: ({ href, children }) => (
+                <a 
+                  href={href} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 underline"
+                >
+                  {children}
+                </a>
+              ),
               table: ({ children }) => (
                 <div className="overflow-x-auto my-4 rounded-lg border border-gray-200 dark:border-gray-700">
                   <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">

@@ -22,7 +22,7 @@ export class LangChainService {
     sectionDescription: string,
     caseStudy: CaseStudy,
     entities: any,
-    references: string[]
+    references: any[]
   ) {
     const template = `Generate the following section for a physiotherapy case study:
 
@@ -52,8 +52,9 @@ Please ensure your response:
 1. Is evidence-based and suitable for PhD/university level
 2. Uses proper markdown formatting
 3. Includes clinical reasoning
-4. References the provided literature where appropriate
-5. Uses proper markdown table syntax with | for columns when presenting data`;
+4. References the provided literature using clickable links [Author et al](URL)
+5. Uses proper markdown table syntax with | for columns when presenting data
+6. Includes evidence levels for each recommendation`;
 
     const prompt = PromptTemplate.fromTemplate(template);
 
@@ -76,7 +77,7 @@ Please ensure your response:
       comorbidities: caseStudy.comorbidities || '',
       psychosocialFactors: caseStudy.psychosocial_factors || '',
       entities: JSON.stringify(entities, null, 2),
-      references: references.join('\n')
+      references: references.map(ref => `[${ref.citation}](${ref.url})`).join('\n')
     });
 
     return {
@@ -113,5 +114,35 @@ Condition: {condition}`;
     });
 
     return response;
+  }
+
+  async generateClinicalGuidelines(condition: string) {
+    const template = `Generate relevant clinical guidelines for {condition} in physiotherapy practice. Include guideline names, URLs, and key recommendations. Format as JSON array with objects containing name, url, and key_points fields.`;
+    
+    const prompt = PromptTemplate.fromTemplate(template);
+    const chain = RunnableSequence.from([prompt, this.model, this.outputParser]);
+    const response = await chain.invoke({ condition });
+    
+    return JSON.parse(response);
+  }
+
+  async generateLearningObjectives(caseStudy: CaseStudy) {
+    const template = `Generate specific learning objectives for a physiotherapy student studying this case of {condition}. Include clinical reasoning, evidence-based practice, and practical skills objectives.`;
+    
+    const prompt = PromptTemplate.fromTemplate(template);
+    const chain = RunnableSequence.from([prompt, this.model, this.outputParser]);
+    const response = await chain.invoke({ condition: caseStudy.condition });
+    
+    return JSON.parse(response);
+  }
+
+  async generateClinicalReasoningPath(caseStudy: CaseStudy) {
+    const template = `Create a clinical reasoning pathway for {condition}, including differential diagnosis, clinical tests, and decision points. Format as a structured JSON array with reasoning steps.`;
+    
+    const prompt = PromptTemplate.fromTemplate(template);
+    const chain = RunnableSequence.from([prompt, this.model, this.outputParser]);
+    const response = await chain.invoke({ condition: caseStudy.condition });
+    
+    return JSON.parse(response);
   }
 }
