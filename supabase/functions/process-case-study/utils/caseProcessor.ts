@@ -1,10 +1,9 @@
-import { Groq } from "npm:groq-sdk";
+import { Groq } from 'npm:groq-sdk';
 import { extractMedicalEntities } from './entityExtraction.ts';
-import { searchPubMed } from './evidenceRetrieval.ts';
+import { searchPubMed, fetchClinicalGuidelines } from './evidenceRetrieval.ts';
 import { sections } from './sectionConfig.ts';
 import { ProcessedCaseStudy, CaseStudy } from './types.ts';
-import { AnalysisService } from './analysisService.ts';
-import { SearchService } from './searchService.ts';
+import { LangChainService } from './langchainService.ts';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 const MAX_RETRIES = 3;
@@ -18,45 +17,20 @@ export const processCaseStudy = async (
   
   try {
     const groqApiKey = Deno.env.get('GROQ_API_KEY');
-    const supabaseUrl = Deno.env.get('SUPABASE_URL');
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
     const pubmedApiKey = Deno.env.get('PUBMED_API_KEY');
     
-    if (!groqApiKey || !supabaseUrl || !supabaseKey) {
-      throw new Error('Required environment variables are not set');
+    if (!groqApiKey) {
+      throw new Error('GROQ_API_KEY is not set');
     }
 
-    const analysisService = new AnalysisService(supabaseUrl, supabaseKey, groqApiKey);
-    const searchService = new SearchService(supabaseUrl, supabaseKey, groqApiKey);
+    const groq = new Groq({ apiKey: groqApiKey });
+    const langchainService = new LangChainService(groqApiKey);
 
     if (action === 'analyze') {
-      let retries = 0;
-      while (retries < MAX_RETRIES) {
-        try {
-          // Search for relevant Dutch guidelines before analysis
-          const relevantGuidelines = await searchService.searchGuidelines(caseStudy.condition || '');
-          console.log('Found relevant Dutch guidelines:', relevantGuidelines.length);
-          
-          return await analysisService.generateQuickAnalysis(caseStudy, relevantGuidelines);
-        } catch (error) {
-          console.error(`Attempt ${retries + 1} failed:`, error);
-          if (error.message?.toLowerCase().includes('rate limit')) {
-            await delay(RETRY_DELAY);
-            retries++;
-            continue;
-          }
-          throw error;
-        }
-      }
-      throw new Error('Maximum retries reached');
+      return await generateQuickAnalysis(langchainService, caseStudy);
     }
 
-    return await generateFullCaseStudy(
-      groqApiKey,
-      caseStudy,
-      pubmedApiKey || '',
-      searchService
-    );
+    return await generateFullCaseStudy(groq, langchainService, caseStudy, pubmedApiKey || '');
   } catch (error) {
     console.error('Error in processCaseStudy:', error);
     if (error.message?.toLowerCase().includes('rate limit')) {
@@ -66,63 +40,93 @@ export const processCaseStudy = async (
   }
 };
 
+async function generateQuickAnalysis(
+  langchainService: LangChainService,
+  caseStudy: CaseStudy
+): Promise<ProcessedCaseStudy> {
+  console.log('Performing quick analysis...');
+  let retries = 0;
+
+  while (retries < MAX_RETRIES) {
+    try {
+      const analysisContent = await langchainService.generateQuickAnalysis(caseStudy);
+      const icfCodes = extractICFCodes(analysisContent);
+      
+      return { 
+        success: true,
+        analysis: analysisContent,
+        icf_codes: icfCodes
+      };
+    } catch (error) {
+      console.error(`Attempt ${retries + 1} failed:`, error);
+      if (error.message?.toLowerCase().includes('rate limit')) {
+        await delay(RETRY_DELAY);
+        retries++;
+        continue;
+      }
+      throw error;
+    }
+  }
+  throw new Error('Maximum retries reached');
+}
+
 async function generateFullCaseStudy(
-  groqApiKey: string,
+  groq: Groq,
+  langchainService: LangChainService,
   caseStudy: CaseStudy,
-  pubmedApiKey: string,
-  searchService: SearchService
+  pubmedApiKey: string
 ): Promise<ProcessedCaseStudy> {
   console.log('Generating full case study...');
-  
-  const groq = new Groq({ apiKey: groqApiKey });
   
   // Extract medical entities
   const textForEntityExtraction = buildEntityExtractionText(caseStudy);
   console.log('Extracting medical entities...');
   const medicalEntities = await extractMedicalEntities(textForEntityExtraction, groq);
   
-  // Fetch evidence-based content and Dutch guidelines
-  console.log('Fetching evidence-based content and Dutch guidelines...');
-  const [pubmedArticles, relevantGuidelines] = await Promise.all([
-    searchPubMed(caseStudy.condition || '', pubmedApiKey),
-    searchService.searchGuidelines(caseStudy.condition || '')
+  // Fetch evidence-based content
+  console.log('Fetching evidence-based content...');
+  const searchQuery = `${caseStudy.condition} physiotherapy treatment`;
+  const [pubmedArticles, clinicalGuidelines] = await Promise.all([
+    searchPubMed(searchQuery, pubmedApiKey),
+    fetchClinicalGuidelines(caseStudy.condition || '')
   ]);
-
-  console.log(`Found ${relevantGuidelines.length} relevant Dutch guidelines`);
 
   // Generate sections with evidence integration
   console.log('Generating sections with evidence...');
   const generatedSections = await Promise.all(
     sections.map(section => 
-      generateSection(
+      langchainService.generateSection(
         section.title,
         section.description,
         caseStudy,
         medicalEntities,
-        pubmedArticles,
-        relevantGuidelines
+        pubmedArticles
       )
     )
   );
 
-  // Process guidelines recommendations
-  const guidelineRecommendations = relevantGuidelines.map(g => ({
-    name: g.title,
-    url: g.url || `https://richtlijnendatabase.nl/search?q=${encodeURIComponent(g.condition)}`,
-    key_points: g.content?.key_points || [],
-    recommendation_level: g.content?.evidence_level || "Evidence-based"
-  }));
+  // Extract ICF codes from all content
+  const allContent = [
+    ...generatedSections.map(s => s.content),
+    caseStudy.medical_history,
+    caseStudy.presenting_complaint
+  ].join(' ');
+  
+  const icfCodes = extractICFCodes(allContent);
+  
+  // Aggregate evidence levels
+  const evidenceLevels = aggregateEvidenceLevels(pubmedArticles);
 
   return {
     success: true,
     sections: generatedSections,
     references: pubmedArticles,
     medical_entities: medicalEntities,
-    icf_codes: extractICFCodes(generatedSections.map(s => s.content).join(' ')),
+    icf_codes: icfCodes,
     assessment_findings: generatedSections.find(s => s.title === "Assessment Findings")?.content || '',
     intervention_plan: generatedSections.find(s => s.title === "Intervention Plan")?.content || '',
-    clinical_guidelines: guidelineRecommendations,
-    evidence_levels: processEvidenceLevels(relevantGuidelines)
+    clinical_guidelines: clinicalGuidelines,
+    evidence_levels: evidenceLevels
   };
 }
 
@@ -144,55 +148,10 @@ function extractICFCodes(content: string): string[] {
   return [...new Set(matches)];
 }
 
-function processEvidenceLevels(guidelines: any[]): Record<string, number> {
+function aggregateEvidenceLevels(articles: any[]): Record<string, number> {
   const levels: Record<string, number> = {};
-  guidelines.forEach(guideline => {
-    const evidenceLevel = guideline.content?.evidence_level || 'Not specified';
-    levels[evidenceLevel] = (levels[evidenceLevel] || 0) + 1;
+  articles.forEach(article => {
+    levels[article.evidenceLevel] = (levels[article.evidenceLevel] || 0) + 1;
   });
   return levels;
-}
-
-async function generateSection(
-  title: string,
-  description: string,
-  caseStudy: any,
-  medicalEntities: any,
-  pubmedArticles: any,
-  guidelines: any
-) {
-  const groq = new Groq({
-    apiKey: Deno.env.get('GROQ_API_KEY')!
-  });
-
-  const prompt = `Generate a detailed ${title} section for a physiotherapy case study.
-    Consider:
-    - Patient condition: ${caseStudy.condition}
-    - Medical history: ${caseStudy.medical_history}
-    - Current symptoms: ${caseStudy.presenting_complaint}
-    
-    Include relevant information from:
-    - Medical entities: ${JSON.stringify(medicalEntities)}
-    - Evidence: ${JSON.stringify(pubmedArticles.slice(0, 3))}
-    - Dutch Guidelines: ${JSON.stringify(guidelines.map(g => ({
-      title: g.title,
-      key_points: g.content?.key_points,
-      recommendations: g.content?.recommendations
-    })))}
-    
-    ${description}
-    
-    Format the response in markdown.`;
-
-  const completion = await groq.chat.completions.create({
-    messages: [{ role: "user", content: prompt }],
-    model: "gemma2-9b-it",
-    temperature: 0.7,
-    max_tokens: 2048,
-  });
-
-  return {
-    title,
-    content: completion.choices[0]?.message?.content || ''
-  };
 }

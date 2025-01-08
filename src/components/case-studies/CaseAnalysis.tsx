@@ -1,24 +1,20 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Brain, BookOpen, FileText } from "lucide-react";
+import { Brain, BookOpen } from "lucide-react";
 import AnalysisOverview from "./AnalysisOverview";
 import DetailedSection from "./DetailedSection";
 import ICFCodes from "./ICFCodes";
 import MedicalEntities from "./MedicalEntities";
 
+// Update the interface to include new fields
 interface CaseAnalysisProps {
   analysis: {
     analysis?: string;
     sections?: Array<{ title: string; content: string }> | any;
-    references?: any[] | string;
-    icf_codes?: string | string[];
+    references?: any[];
+    icf_codes?: string;
     medical_entities?: any;
-    clinical_guidelines?: Array<{
-      name: string;
-      url: string;
-      key_points: string[];
-      recommendation_level: string;
-    }>;
+    clinical_guidelines?: any[];
     evidence_levels?: Record<string, number>;
   };
 }
@@ -26,28 +22,13 @@ interface CaseAnalysisProps {
 const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
   if (!analysis) return null;
 
+  // Convert sections to array if it's stored as an object
   const formattedSections = analysis.sections ? 
     (Array.isArray(analysis.sections) ? analysis.sections : 
      Object.entries(analysis.sections).map(([title, content]) => ({
        title,
        content: typeof content === 'string' ? content : JSON.stringify(content)
      }))) : [];
-
-  // Format clinical guidelines into markdown
-  const formatGuidelinesContent = (guidelines: any[]) => {
-    if (!guidelines || !Array.isArray(guidelines)) return '';
-    
-    return guidelines.map(guideline => `
-### ${guideline.name}
-
-**Recommendation Level:** ${guideline.recommendation_level}
-
-**Key Points:**
-${guideline.key_points.map(point => `- ${point}`).join('\n')}
-
-[View Complete Guideline](${guideline.url})
-`).join('\n\n---\n\n');
-  };
 
   return (
     <Tabs defaultValue="overview" className="w-full mt-6">
@@ -66,15 +47,6 @@ ${guideline.key_points.map(point => `- ${point}`).join('\n')}
           >
             <BookOpen className="h-4 w-4" />
             Full Case Study
-          </TabsTrigger>
-        )}
-        {analysis.clinical_guidelines && analysis.clinical_guidelines.length > 0 && (
-          <TabsTrigger 
-            value="guidelines" 
-            className="flex items-center gap-2 data-[state=active]:bg-white dark:data-[state=active]:bg-primary-800 data-[state=active]:text-primary-900 dark:data-[state=active]:text-primary-100"
-          >
-            <FileText className="h-4 w-4" />
-            Clinical Guidelines
           </TabsTrigger>
         )}
       </TabsList>
@@ -99,6 +71,13 @@ ${guideline.key_points.map(point => `- ${point}`).join('\n')}
                 <MedicalEntities entities={analysis.medical_entities} />
               )}
 
+              {analysis.clinical_guidelines && analysis.clinical_guidelines.length > 0 && (
+                <DetailedSection
+                  title="Clinical Guidelines"
+                  content={formatGuidelines(analysis.clinical_guidelines)}
+                />
+              )}
+
               {analysis.evidence_levels && Object.keys(analysis.evidence_levels).length > 0 && (
                 <DetailedSection
                   title="Evidence Levels"
@@ -109,9 +88,7 @@ ${guideline.key_points.map(point => `- ${point}`).join('\n')}
               {analysis.references && (
                 <DetailedSection
                   title="Evidence-Based References"
-                  content={typeof analysis.references === 'string' 
-                    ? analysis.references 
-                    : formatReferences(analysis.references)}
+                  content={formatReferences(analysis.references)}
                 />
               )}
 
@@ -122,22 +99,21 @@ ${guideline.key_points.map(point => `- ${point}`).join('\n')}
           </ScrollArea>
         </TabsContent>
       )}
-
-      {analysis.clinical_guidelines && analysis.clinical_guidelines.length > 0 && (
-        <TabsContent value="guidelines" className="mt-6">
-          <ScrollArea className="h-[600px] rounded-md pr-4">
-            <DetailedSection
-              title="Dutch Clinical Guidelines"
-              content={formatGuidelinesContent(analysis.clinical_guidelines)}
-            />
-          </ScrollArea>
-        </TabsContent>
-      )}
     </Tabs>
   );
 };
 
 // Helper functions for formatting
+const formatGuidelines = (guidelines: any[]): string => {
+  if (!Array.isArray(guidelines)) return '';
+  return guidelines.map(g => (
+    `### ${g.name}\n\n` +
+    `**Recommendation Level:** ${g.recommendation_level}\n\n` +
+    `**Key Points:**\n${g.key_points.map(p => `- ${p}`).join('\n')}\n\n` +
+    `[View Guideline](${g.url})\n`
+  )).join('\n---\n\n');
+};
+
 const formatEvidenceLevels = (levels: Record<string, number>): string => {
   if (!levels || typeof levels !== 'object') return '';
   return '### Evidence Distribution\n\n' +
@@ -147,16 +123,24 @@ const formatEvidenceLevels = (levels: Record<string, number>): string => {
 };
 
 const formatReferences = (references: any[] | string | null): string => {
+  // Handle cases where references might be a string or null
   if (!references) return '';
-  
-  // If references is a string, return it directly
-  if (typeof references === 'string') return references;
-  
-  // If references is not an array at this point, return empty string
+  if (typeof references === 'string') {
+    try {
+      const parsed = JSON.parse(references);
+      if (Array.isArray(parsed)) {
+        references = parsed;
+      } else {
+        return references; // Return as-is if can't parse into array
+      }
+    } catch {
+      return references; // Return as-is if can't parse
+    }
+  }
   if (!Array.isArray(references)) return '';
   
-  // Format the references array into a string
   return references.map(ref => {
+    // Ensure ref has all required properties
     const authors = Array.isArray(ref.authors) ? ref.authors.join(', ') : 'Unknown';
     const year = ref.publicationDate ? new Date(ref.publicationDate).getFullYear() : 'N/A';
     const title = ref.title || 'Untitled';
