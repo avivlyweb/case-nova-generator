@@ -185,6 +185,63 @@ export type Database = {
         }
         Relationships: []
       }
+      dutch_guidelines: {
+        Row: {
+          assessment_criteria: Json
+          condition: string
+          content: Json
+          created_at: string | null
+          embedding: string | null
+          evidence_levels: Json
+          exercise_recommendations: Json
+          fts: unknown | null
+          grade_evidence: Json
+          id: string
+          interventions: Json
+          last_updated: string | null
+          protocols: Json
+          sections: Json
+          title: string
+          url: string
+        }
+        Insert: {
+          assessment_criteria?: Json
+          condition: string
+          content?: Json
+          created_at?: string | null
+          embedding?: string | null
+          evidence_levels?: Json
+          exercise_recommendations?: Json
+          fts?: unknown | null
+          grade_evidence?: Json
+          id?: string
+          interventions?: Json
+          last_updated?: string | null
+          protocols?: Json
+          sections?: Json
+          title: string
+          url: string
+        }
+        Update: {
+          assessment_criteria?: Json
+          condition?: string
+          content?: Json
+          created_at?: string | null
+          embedding?: string | null
+          evidence_levels?: Json
+          exercise_recommendations?: Json
+          fts?: unknown | null
+          grade_evidence?: Json
+          id?: string
+          interventions?: Json
+          last_updated?: string | null
+          protocols?: Json
+          sections?: Json
+          title?: string
+          url?: string
+        }
+        Relationships: []
+      }
       ICF: {
         Row: {
           Activity_Description: string
@@ -573,6 +630,36 @@ export type Database = {
             }
             Returns: unknown
           }
+      gtrgm_compress: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      gtrgm_decompress: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      gtrgm_in: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      gtrgm_options: {
+        Args: {
+          "": unknown
+        }
+        Returns: undefined
+      }
+      gtrgm_out: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
       halfvec_avg: {
         Args: {
           "": number[]
@@ -671,6 +758,20 @@ export type Database = {
             }
             Returns: unknown
           }
+      search_dutch_guidelines: {
+        Args: {
+          query_text: string
+          query_embedding: string
+          match_count?: number
+          similarity_threshold?: number
+        }
+        Returns: {
+          id: string
+          title: string
+          condition: string
+          similarity: number
+        }[]
+      }
       search_lifestyle_tips: {
         Args: {
           query_text: string
@@ -690,6 +791,39 @@ export type Database = {
           relevance_to_vision: string
           similarity: number
         }[]
+      }
+      search_medical_guidelines: {
+        Args: {
+          query_text: string
+          query_embedding: string
+          match_count?: number
+          similarity_threshold?: number
+          full_text_weight?: number
+          semantic_weight?: number
+        }
+        Returns: {
+          id: string
+          title: string
+          condition: string
+          content: Json
+          similarity: number
+        }[]
+      }
+      set_limit: {
+        Args: {
+          "": number
+        }
+        Returns: number
+      }
+      show_limit: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      show_trgm: {
+        Args: {
+          "": string
+        }
+        Returns: string[]
       }
       sparsevec_out: {
         Args: {
