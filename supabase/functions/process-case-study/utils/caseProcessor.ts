@@ -30,106 +30,62 @@ export const processCaseStudy = async (
       return await generateQuickAnalysis(langchainService, caseStudy);
     }
 
-    return await generateFullCaseStudy(groq, langchainService, caseStudy, pubmedApiKey || '');
+    // Extract medical entities first
+    const textForEntityExtraction = buildEntityExtractionText(caseStudy);
+    console.log('Extracting medical entities...');
+    const medicalEntities = await extractMedicalEntities(textForEntityExtraction, groq);
+    
+    // Fetch evidence-based content
+    console.log('Fetching evidence-based content...');
+    const searchQuery = `${caseStudy.condition} physiotherapy treatment`;
+    const [pubmedArticles, clinicalGuidelines] = await Promise.all([
+      searchPubMed(searchQuery, pubmedApiKey || ''),
+      fetchClinicalGuidelines(caseStudy.condition || '')
+    ]);
+
+    // Generate sections with enhanced context
+    console.log('Generating sections with evidence...');
+    const generatedSections = await Promise.all(
+      sections.map(section => 
+        generateSection(
+          groq,
+          section.title,
+          section.description,
+          caseStudy,
+          medicalEntities,
+          pubmedArticles
+        )
+      )
+    );
+
+    // Extract ICF codes from all content
+    const allContent = [
+      ...generatedSections.map(s => s.content),
+      caseStudy.medical_history,
+      caseStudy.presenting_complaint
+    ].join(' ');
+    
+    const icfCodes = extractICFCodes(allContent);
+    const evidenceLevels = aggregateEvidenceLevels(pubmedArticles);
+
+    return {
+      success: true,
+      sections: generatedSections,
+      references: pubmedArticles,
+      medical_entities: medicalEntities,
+      icf_codes: icfCodes,
+      assessment_findings: generatedSections.find(s => s.title === "Assessment Findings")?.content || '',
+      intervention_plan: generatedSections.find(s => s.title === "Intervention Plan")?.content || '',
+      clinical_guidelines: clinicalGuidelines,
+      evidence_levels: evidenceLevels
+    };
   } catch (error) {
     console.error('Error in processCaseStudy:', error);
-    if (error.message?.toLowerCase().includes('rate limit')) {
-      throw new Error('The AI service is currently at capacity. Please try again in a few minutes.');
-    }
     throw error;
   }
 };
 
-async function generateQuickAnalysis(
-  langchainService: LangChainService,
-  caseStudy: CaseStudy
-): Promise<ProcessedCaseStudy> {
-  console.log('Performing quick analysis...');
-  let retries = 0;
-
-  while (retries < MAX_RETRIES) {
-    try {
-      const analysisContent = await langchainService.generateQuickAnalysis(caseStudy);
-      const icfCodes = extractICFCodes(analysisContent);
-      
-      return { 
-        success: true,
-        analysis: analysisContent,
-        icf_codes: icfCodes
-      };
-    } catch (error) {
-      console.error(`Attempt ${retries + 1} failed:`, error);
-      if (error.message?.toLowerCase().includes('rate limit')) {
-        await delay(RETRY_DELAY);
-        retries++;
-        continue;
-      }
-      throw error;
-    }
-  }
-  throw new Error('Maximum retries reached');
-}
-
-async function generateFullCaseStudy(
-  groq: Groq,
-  langchainService: LangChainService,
-  caseStudy: CaseStudy,
-  pubmedApiKey: string
-): Promise<ProcessedCaseStudy> {
-  console.log('Generating full case study...');
-  
-  // Extract medical entities
-  const textForEntityExtraction = buildEntityExtractionText(caseStudy);
-  console.log('Extracting medical entities...');
-  const medicalEntities = await extractMedicalEntities(textForEntityExtraction, groq);
-  
-  // Fetch evidence-based content
-  console.log('Fetching evidence-based content...');
-  const searchQuery = `${caseStudy.condition} physiotherapy treatment`;
-  const [pubmedArticles, clinicalGuidelines] = await Promise.all([
-    searchPubMed(searchQuery, pubmedApiKey),
-    fetchClinicalGuidelines(caseStudy.condition || '')
-  ]);
-
-  // Generate sections with evidence integration
-  console.log('Generating sections with evidence...');
-  const generatedSections = await Promise.all(
-    sections.map(section => 
-      langchainService.generateSection(
-        section.title,
-        section.description,
-        caseStudy,
-        medicalEntities,
-        pubmedArticles
-      )
-    )
-  );
-
-  // Extract ICF codes from all content
-  const allContent = [
-    ...generatedSections.map(s => s.content),
-    caseStudy.medical_history,
-    caseStudy.presenting_complaint
-  ].join(' ');
-  
-  const icfCodes = extractICFCodes(allContent);
-  
-  // Aggregate evidence levels
-  const evidenceLevels = aggregateEvidenceLevels(pubmedArticles);
-
-  return {
-    success: true,
-    sections: generatedSections,
-    references: pubmedArticles,
-    medical_entities: medicalEntities,
-    icf_codes: icfCodes,
-    assessment_findings: generatedSections.find(s => s.title === "Assessment Findings")?.content || '',
-    intervention_plan: generatedSections.find(s => s.title === "Intervention Plan")?.content || '',
-    clinical_guidelines: clinicalGuidelines,
-    evidence_levels: evidenceLevels
-  };
-}
-
+// Helper functions
 function buildEntityExtractionText(caseStudy: CaseStudy): string {
   return `
     Patient Condition: ${caseStudy.condition || ''}

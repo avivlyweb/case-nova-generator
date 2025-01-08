@@ -1,21 +1,21 @@
 import { Groq } from 'npm:groq-sdk';
 
 export const extractMedicalEntities = async (text: string, groq: Groq) => {
-  console.log('Starting medical entity extraction...');
-  
-  const prompt = `Extract medical entities from the following text and categorize them into these groups:
-  - Conditions (medical conditions, disorders, diagnoses)
-  - Symptoms (clinical manifestations)
-  - Medications (drugs, pharmaceutical substances)
-  - Procedures (medical procedures, interventions)
-  - Tests (medical tests, diagnostic procedures)
-  - Anatomical (body parts, anatomical structures)
+  const prompt = `Extract and categorize medical entities from the following text into these specific categories:
+  - Conditions (medical conditions, diagnoses, disorders)
+  - Symptoms (clinical manifestations, complaints)
+  - Physical Findings (objective observations, measurements)
+  - Functional Limitations (activity restrictions, participation limitations)
+  - Risk Factors (elements that may affect prognosis)
+  - Interventions (current or past treatments)
+  - Medications (drugs, supplements)
+  - Psychosocial Factors (behavioral, social, or psychological elements)
 
 Text to analyze:
 ${text}
 
-Format the response as a JSON object with these exact keys: conditions, symptoms, medications, procedures, tests, anatomical. 
-Each key should have an array of unique strings as values.
+Format the response as a JSON object with these exact categories as keys.
+Each category should contain an array of unique strings.
 Only include entities that are explicitly mentioned in the text.`;
 
   try {
@@ -23,7 +23,7 @@ Only include entities that are explicitly mentioned in the text.`;
       messages: [
         {
           role: "system",
-          content: "You are a medical entity extraction system. Extract and categorize medical terms from clinical text into predefined categories. Only include explicitly mentioned entities."
+          content: "You are a clinical entity extraction system specialized in physiotherapy terminology."
         },
         {
           role: "user",
@@ -36,53 +36,24 @@ Only include entities that are explicitly mentioned in the text.`;
     });
 
     const response = completion.choices[0]?.message?.content;
-    console.log('Raw entity extraction response:', response);
     
     if (!response) {
       console.error('No response from entity extraction');
       return {
         conditions: [],
         symptoms: [],
+        physical_findings: [],
+        functional_limitations: [],
+        risk_factors: [],
+        interventions: [],
         medications: [],
-        procedures: [],
-        tests: [],
-        anatomical: []
+        psychosocial_factors: []
       };
     }
 
-    try {
-      const parsedEntities = JSON.parse(response);
-      console.log('Parsed medical entities:', parsedEntities);
-      
-      // Ensure all required categories exist
-      const defaultCategories = ['conditions', 'symptoms', 'medications', 'procedures', 'tests', 'anatomical'];
-      defaultCategories.forEach(category => {
-        if (!parsedEntities[category]) {
-          parsedEntities[category] = [];
-        }
-      });
-
-      return parsedEntities;
-    } catch (parseError) {
-      console.error('Error parsing medical entities JSON:', parseError);
-      return {
-        conditions: [],
-        symptoms: [],
-        medications: [],
-        procedures: [],
-        tests: [],
-        anatomical: []
-      };
-    }
+    return JSON.parse(response);
   } catch (error) {
     console.error('Error in medical entity extraction:', error);
-    return {
-      conditions: [],
-      symptoms: [],
-      medications: [],
-      procedures: [],
-      tests: [],
-      anatomical: []
-    };
+    throw error;
   }
 };
