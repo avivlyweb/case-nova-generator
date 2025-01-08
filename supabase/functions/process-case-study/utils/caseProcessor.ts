@@ -1,13 +1,8 @@
 import { Groq } from 'npm:groq-sdk';
-import { processCaseStudy } from './utils/caseProcessor.ts'
 import { extractMedicalEntities } from './entityExtraction.ts';
-import { ContextManager } from './contextManager.ts';
 import { sections, specializedPrompts } from './sectionConfig.ts';
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+import { ContextManager } from './contextManager.ts';
+import type { CaseStudy, Section } from './types.ts';
 
 const MAX_PROMPT_LENGTH = 4000; // Groq's limit is around 4096 tokens
 
