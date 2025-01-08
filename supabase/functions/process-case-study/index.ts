@@ -4,7 +4,6 @@ import { processCaseStudy } from './utils/caseProcessor.ts'
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
 }
 
 serve(async (req) => {
@@ -44,6 +43,15 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Error in edge function:', error)
+    
+    // Determine appropriate status code
+    let status = 500;
+    if (error.message?.includes('context_length_exceeded')) {
+      status = 413; // Payload Too Large
+    } else if (error.message?.includes('rate_limit')) {
+      status = 429; // Too Many Requests
+    }
+    
     return new Response(
       JSON.stringify({ 
         error: error.message || 'Internal server error',
@@ -51,7 +59,7 @@ serve(async (req) => {
         type: error.name
       }),
       { 
-        status: 500,
+        status,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     )
