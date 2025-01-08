@@ -2,14 +2,16 @@ import { Groq } from 'npm:groq-sdk';
 
 export const extractMedicalEntities = async (text: string, groq: Groq) => {
   const prompt = `Extract and categorize medical entities from the following text into these specific categories:
-  - Conditions (medical conditions, diagnoses, disorders)
-  - Symptoms (clinical manifestations, complaints)
-  - Physical Findings (objective observations, measurements)
+  - Clinical Diagnoses (specific medical conditions, disorders, pathologies)
+  - Clinical Signs & Symptoms (objective and subjective manifestations)
+  - Physical Findings (measurements, test results, observations)
   - Functional Limitations (activity restrictions, participation limitations)
-  - Risk Factors (elements that may affect prognosis)
-  - Interventions (current or past treatments)
-  - Medications (drugs, supplements)
-  - Psychosocial Factors (behavioral, social, or psychological elements)
+  - Risk Factors (elements affecting prognosis or treatment)
+  - Therapeutic Interventions (current or past treatments)
+  - Medications (drugs, supplements, dosages)
+  - Psychosocial Factors (behavioral, social, psychological elements)
+  - Anatomical Structures (specific body parts, systems involved)
+  - Physiological Parameters (vital signs, measurements)
 
 Text to analyze:
 ${text}
@@ -40,14 +42,16 @@ Only include entities that are explicitly mentioned in the text.`;
     if (!response) {
       console.error('No response from entity extraction');
       return {
-        conditions: [],
-        symptoms: [],
+        clinical_diagnoses: [],
+        signs_symptoms: [],
         physical_findings: [],
         functional_limitations: [],
         risk_factors: [],
-        interventions: [],
+        therapeutic_interventions: [],
         medications: [],
-        psychosocial_factors: []
+        psychosocial_factors: [],
+        anatomical_structures: [],
+        physiological_parameters: []
       };
     }
 
