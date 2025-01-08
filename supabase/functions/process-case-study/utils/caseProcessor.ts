@@ -40,7 +40,13 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       Focus on key medical observations, potential implications, and suggested areas for further investigation.
       
       Patient Information:
-      ${JSON.stringify(caseStudy, null, 2)}
+      ${JSON.stringify({
+        name: caseStudy.patient_name,
+        age: caseStudy.age,
+        gender: caseStudy.gender,
+        condition: caseStudy.condition,
+        complaint: caseStudy.presenting_complaint
+      }, null, 2)}
       
       Extracted Medical Entities:
       ${JSON.stringify(entities, null, 2)}`);
@@ -74,7 +80,16 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       
       const prompt = truncatePrompt(`${contextManager.getPromptContext(section.title)}
 
-${section.description}`);
+${section.description}
+
+Patient Information:
+${JSON.stringify({
+  name: caseStudy.patient_name,
+  age: caseStudy.age,
+  gender: caseStudy.gender,
+  condition: caseStudy.condition,
+  complaint: caseStudy.presenting_complaint
+}, null, 2)}`);
 
       const completion = await groq.chat.completions.create({
         messages: [
