@@ -11,7 +11,7 @@ interface CaseAnalysisProps {
   analysis: {
     analysis?: string;
     sections?: Array<{ title: string; content: string }> | any;
-    references?: any[];
+    references?: any[] | string;
     icf_codes?: string;
     medical_entities?: any;
     clinical_guidelines?: any[];
@@ -125,18 +125,7 @@ const formatEvidenceLevels = (levels: Record<string, number>): string => {
 const formatReferences = (references: any[] | string | null): string => {
   // Handle cases where references might be a string or null
   if (!references) return '';
-  if (typeof references === 'string') {
-    try {
-      const parsed = JSON.parse(references);
-      if (Array.isArray(parsed)) {
-        references = parsed;
-      } else {
-        return references; // Return as-is if can't parse into array
-      }
-    } catch {
-      return references; // Return as-is if can't parse
-    }
-  }
+  if (typeof references === 'string') return references;
   if (!Array.isArray(references)) return '';
   
   return references.map(ref => {
