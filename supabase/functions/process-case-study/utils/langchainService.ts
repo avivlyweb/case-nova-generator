@@ -14,7 +14,8 @@ export class LangChainService {
   async generateQuickAnalysis(caseStudy: CaseStudy): Promise<string> {
     console.log('Generating quick analysis for case study:', caseStudy.id);
     
-    const prompt = `You are a phd level KNGF physiotherapist analyzing case studies. 
+    const prompt = `${caseStudy.ai_role}
+
     Provide insights about the case in a concise, professional manner. 
     Focus on key medical observations, potential implications, and suggested areas for further investigation.
     Format your response using proper markdown, including tables with the | syntax when appropriate.
@@ -33,7 +34,7 @@ export class LangChainService {
         messages: [
           {
             role: "system",
-            content: "You are a medical analysis system specialized in physiotherapy case studies."
+            content: caseStudy.ai_role
           },
           {
             role: "user",
@@ -62,7 +63,9 @@ export class LangChainService {
   ): Promise<Section> {
     console.log(`Generating section: ${sectionTitle}`);
     
-    const prompt = `Generate the following section for a physiotherapy case study:
+    const prompt = `${caseStudy.ai_role}
+
+    Generate the following section for a physiotherapy case study:
 
     ${sectionTitle}
 
@@ -99,7 +102,7 @@ export class LangChainService {
         messages: [
           {
             role: "system",
-            content: "You are a medical content generation system specialized in physiotherapy case studies."
+            content: caseStudy.ai_role
           },
           {
             role: "user",
