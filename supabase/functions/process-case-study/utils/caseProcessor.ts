@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from 'npm:@supabase/supabase-js';
 import { Groq } from 'npm:groq-sdk';
 import { sections, specializedPrompts } from './sectionConfig.ts';
 import { extractMedicalEntities } from './entityExtraction.ts';
