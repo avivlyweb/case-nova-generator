@@ -13,7 +13,7 @@ export const sections = [
   },
   {
     title: "Interview and Problem List",
-    description: `Complete RPS Form including:
+    description: `write a Complete physiotherapy RPS Form which will including:
     1. Patient Information
        - Name, age, date
        - Medical diagnosis
@@ -52,7 +52,7 @@ export const sections = [
     title: "Assessment Strategy",
     description: `Detail assessment strategy aligned with clinical standards:
     1. Special Tests Selection
-       - List all tests with rationale
+       - List in a table all tests with rationale, how to preform and what to expect in the outcome
        - Sensitivity and specificity values
        - Testing sequence
        - Precautions
