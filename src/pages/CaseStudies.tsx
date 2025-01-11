@@ -21,27 +21,24 @@ const CaseStudies = () => {
     setAnalyzing(prev => ({ ...prev, [caseStudy.id]: true }));
     try {
       const { data, error } = await supabase.functions.invoke('process-case-study', {
-        body: { caseStudy, action: 'generate' },
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        body: { caseStudy, action: 'generate' }
       });
 
       if (error) {
         console.error('Error generating case:', error);
-        let errorMessage = 'Failed to generate case study';
-        
         if (error.message?.includes('rate limit')) {
-          errorMessage = "The AI service is currently at capacity. Please try again in 30 minutes.";
-        } else if (error.message?.includes('Failed to fetch')) {
-          errorMessage = "Network error. Please check your connection and try again.";
+          toast({
+            variant: "destructive",
+            title: "Rate Limit Reached",
+            description: "The AI service is currently at capacity. Please try again in 30 minutes.",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to generate case study. Please try again later.",
+          });
         }
-        
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: errorMessage,
-        });
         return;
       }
 
@@ -55,43 +52,34 @@ const CaseStudies = () => {
       const formattedICFCodes = Array.isArray(data.icf_codes) ? data.icf_codes :
         typeof data.icf_codes === 'string' ? [data.icf_codes] : [];
 
-      try {
-        await updateCaseStudy(caseStudy.id, {
-          generated_sections: formattedSections,
-          ai_analysis: data.analysis,
-          reference_list: data.references,
-          icf_codes: formattedICFCodes,
-          assessment_findings: data.assessment_findings,
-          intervention_plan: data.intervention_plan,
-          medical_entities: data.medical_entities || [],
-          smart_goals: data.smart_goals || []
-        });
+      await updateCaseStudy(caseStudy.id, {
+        generated_sections: formattedSections,
+        ai_analysis: data.analysis,
+        reference_list: data.references,
+        icf_codes: formattedICFCodes,
+        assessment_findings: data.assessment_findings,
+        intervention_plan: data.intervention_plan,
+        medical_entities: data.medical_entities || [],
+        smart_goals: data.smart_goals || []
+      });
 
-        setAnalyses(prev => ({
-          ...prev,
-          [caseStudy.id]: {
-            analysis: data.analysis,
-            sections: formattedSections,
-            references: data.references,
-            icf_codes: formattedICFCodes
-          }
-        }));
+      setAnalyses(prev => ({
+        ...prev,
+        [caseStudy.id]: {
+          analysis: data.analysis,
+          sections: formattedSections,
+          references: data.references,
+          icf_codes: formattedICFCodes
+        }
+      }));
 
-        await refetch();
+      refetch();
 
-        toast({
-          title: "Generation Complete",
-          description: "Full case study has been generated and saved.",
-        });
-      } catch (updateError: any) {
-        console.error('Error updating case study:', updateError);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Failed to save the generated case study. Please try again.",
-        });
-      }
-    } catch (error: any) {
+      toast({
+        title: "Generation Complete",
+        description: "Full case study has been generated and saved.",
+      });
+    } catch (error) {
       console.error('Error generating case:', error);
       toast({
         variant: "destructive",
@@ -107,10 +95,7 @@ const CaseStudies = () => {
     setAnalyzing(prev => ({ ...prev, [caseStudy.id]: true }));
     try {
       const { data, error } = await supabase.functions.invoke('process-case-study', {
-        body: { caseStudy, action: 'analyze' },
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        body: { caseStudy, action: 'analyze' }
       });
 
       if (error) {
@@ -131,31 +116,22 @@ const CaseStudies = () => {
         return;
       }
 
-      try {
-        await updateCaseStudy(caseStudy.id, {
-          ai_analysis: data.analysis
-        });
+      await updateCaseStudy(caseStudy.id, {
+        ai_analysis: data.analysis
+      });
 
-        setAnalyses(prev => ({
-          ...prev,
-          [caseStudy.id]: { analysis: data.analysis }
-        }));
+      setAnalyses(prev => ({
+        ...prev,
+        [caseStudy.id]: { analysis: data.analysis }
+      }));
 
-        await refetch();
+      refetch();
 
-        toast({
-          title: "Analysis Complete",
-          description: "AI analysis has been generated and saved.",
-        });
-      } catch (updateError: any) {
-        console.error('Error updating case study:', updateError);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Failed to save the analysis. Please try again.",
-        });
-      }
-    } catch (error: any) {
+      toast({
+        title: "Analysis Complete",
+        description: "AI analysis has been generated and saved.",
+      });
+    } catch (error) {
       console.error('Error analyzing case:', error);
       toast({
         variant: "destructive",

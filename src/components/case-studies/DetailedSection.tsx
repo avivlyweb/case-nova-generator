@@ -14,17 +14,8 @@ import {
   BookOpen,
   BookmarkCheck,
   ListChecks,
-  Activity,
-  Scale,
-  Ruler,
-  GraduationCap,
-  Brain,
-  ChartBar,
-  Gauge,
-  HeartPulse
+  Activity
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 
 interface DetailedSectionProps {
   title: string;
@@ -56,57 +47,9 @@ const DetailedSection = ({ title, content }: DetailedSectionProps) => {
         return <Pill className="h-5 w-5 text-primary" />;
       case "icf classification":
         return <Activity className="h-5 w-5 text-primary" />;
-      case "assessment tools":
-        return <Scale className="h-5 w-5 text-primary" />;
-      case "measurements":
-        return <Ruler className="h-5 w-5 text-primary" />;
-      case "professional frameworks":
-        return <GraduationCap className="h-5 w-5 text-primary" />;
-      case "clinical reasoning":
-        return <Brain className="h-5 w-5 text-primary" />;
-      case "outcome measures":
-        return <ChartBar className="h-5 w-5 text-primary" />;
-      case "vital signs":
-        return <HeartPulse className="h-5 w-5 text-primary" />;
-      case "functional tests":
-        return <Gauge className="h-5 w-5 text-primary" />;
       default:
         return <List className="h-5 w-5 text-primary" />;
     }
-  };
-
-  const renderMeasurement = (value: string, max: number = 100) => {
-    const numValue = parseInt(value);
-    if (!isNaN(numValue)) {
-      return (
-        <div className="mt-2">
-          <Progress value={numValue} max={max} className="h-2" />
-          <span className="text-sm text-gray-500 mt-1">{value}%</span>
-        </div>
-      );
-    }
-    return null;
-  };
-
-  const renderEvidenceLevel = (level: string) => {
-    const getColor = (level: string) => {
-      switch (level.toLowerCase()) {
-        case 'high':
-          return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100';
-        case 'moderate':
-          return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100';
-        case 'low':
-          return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-100';
-        default:
-          return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100';
-      }
-    };
-
-    return (
-      <Badge className={`${getColor(level)} ml-2`} variant="secondary">
-        {level} evidence
-      </Badge>
-    );
   };
 
   // Convert content to string if it's an array (for references)
@@ -166,19 +109,6 @@ const DetailedSection = ({ title, content }: DetailedSectionProps) => {
               td: ({ children }) => (
                 <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300 whitespace-normal break-words">{children}</td>
               ),
-              h4: ({ children }) => {
-                const text = children?.toString() || '';
-                if (text.includes('Evidence Level:')) {
-                  const level = text.split(':')[1].trim();
-                  return (
-                    <div className="flex items-center mb-2">
-                      <h4 className="text-lg font-semibold">{text.split(':')[0]}:</h4>
-                      {renderEvidenceLevel(level)}
-                    </div>
-                  );
-                }
-                return <h4 className="text-lg font-semibold mb-2">{children}</h4>;
-              },
             }}
           >
             {formattedContent}

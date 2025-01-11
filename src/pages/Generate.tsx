@@ -60,42 +60,29 @@ const Generate = () => {
 
       const newCaseStudy = await createCaseStudy(caseStudyData);
       
+      // Process the newly created case study
       if (newCaseStudy?.id) {
-        const { data, error } = await supabase.functions.invoke('process-case-study', {
+        const { error } = await supabase.functions.invoke('process-case-study', {
           body: { 
             caseStudy: newCaseStudy,
             action: 'generate'
           }
         });
 
-        if (error) {
-          console.error('Edge function error:', error);
-          let errorMessage = 'Failed to process case study';
-          
-          // Handle specific error cases
-          if (error.message?.includes('context_length_exceeded')) {
-            errorMessage = 'The case study content is too long. Please try with a shorter description.';
-          } else if (error.message?.includes('rate_limit')) {
-            errorMessage = 'Too many requests. Please try again in a few minutes.';
-          } else if (error.message?.includes('Failed to fetch')) {
-            errorMessage = 'Network error. Please check your connection and try again.';
-          }
-          
-          throw new Error(errorMessage);
-        }
-
-        toast({
-          title: "Success",
-          description: "Case study created and processed successfully",
-        });
-        navigate("/case-studies");
+        if (error) throw error;
       }
+
+      toast({
+        title: "Success",
+        description: "Case study created and processed successfully",
+      });
+      navigate("/case-studies");
     } catch (error) {
       console.error("Error creating case study:", error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.message || "Failed to create case study",
+        description: "Failed to create case study",
       });
     } finally {
       setLoading(false);
