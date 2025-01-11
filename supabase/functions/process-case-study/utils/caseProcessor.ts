@@ -26,18 +26,18 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
     const entities = await extractMedicalEntities(textForAnalysis, groq);
     console.log('Extracted entities:', entities);
 
-    // Initialize context manager with specialization
-    const contextManager = new ContextManager(
-      caseStudy.specialization,
-      specializedPrompts[caseStudy.specialization as keyof typeof specializedPrompts]
-    );
-    contextManager.setEntities(entities);
-
+    // Get specialization-specific context
+    const specializationContext = specializedPrompts[caseStudy.specialization as keyof typeof specializedPrompts];
+    
     if (action === 'analyze') {
-      const analysisPrompt = truncatePrompt(`${caseStudy.ai_role}
+      const analysisPrompt = `${caseStudy.ai_role}
       
-      Provide insights about this case in a concise, professional manner. 
-      Focus on key medical observations, potential implications, and suggested areas for further investigation.
+      Provide a comprehensive analysis of this case considering:
+      1. Primary condition and symptoms
+      2. Key medical findings and implications
+      3. Relevant evidence-based assessment strategies
+      4. Potential treatment approaches based on current guidelines
+      5. Risk factors and precautions
       
       Patient Information:
       ${JSON.stringify({
@@ -48,8 +48,11 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
         complaint: caseStudy.presenting_complaint
       }, null, 2)}
       
+      Specialization Context:
+      ${JSON.stringify(specializationContext, null, 2)}
+      
       Extracted Medical Entities:
-      ${JSON.stringify(entities, null, 2)}`);
+      ${JSON.stringify(entities, null, 2)}`;
 
       const completion = await groq.chat.completions.create({
         messages: [
@@ -78,18 +81,38 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
     for (const section of sections) {
       console.log(`Generating section: ${section.title}`);
       
-      const prompt = truncatePrompt(`${contextManager.getPromptContext(section.title)}
+      const prompt = `${caseStudy.ai_role}
 
-${section.description}
+      Generate the following section for a physiotherapy case study:
+      ${section.title}
 
-Patient Information:
-${JSON.stringify({
-  name: caseStudy.patient_name,
-  age: caseStudy.age,
-  gender: caseStudy.gender,
-  condition: caseStudy.condition,
-  complaint: caseStudy.presenting_complaint
-}, null, 2)}`);
+      Requirements:
+      ${section.description}
+
+      Specialization Context:
+      ${JSON.stringify(specializationContext, null, 2)}
+
+      Patient Information:
+      ${JSON.stringify({
+        name: caseStudy.patient_name,
+        age: caseStudy.age,
+        gender: caseStudy.gender,
+        condition: caseStudy.condition,
+        complaint: caseStudy.presenting_complaint,
+        background: caseStudy.patient_background,
+        adl_problem: caseStudy.adl_problem,
+        psychosocial_factors: caseStudy.psychosocial_factors
+      }, null, 2)}
+
+      Medical Entities:
+      ${JSON.stringify(entities, null, 2)}
+
+      Please ensure:
+      1. Use specific measurements and standardized assessment scores
+      2. Include evidence levels for recommendations
+      3. Reference clinical guidelines when applicable
+      4. Provide detailed rationale for clinical decisions
+      5. Use proper formatting for clarity`;
 
       const completion = await groq.chat.completions.create({
         messages: [
@@ -104,7 +127,7 @@ ${JSON.stringify({
         ],
         model: "gemma2-9b-it",
         temperature: 0.7,
-        max_tokens: 1000,
+        max_tokens: 2000,
       });
 
       const sectionContent = completion.choices[0]?.message?.content || '';
@@ -112,34 +135,15 @@ ${JSON.stringify({
         title: section.title,
         content: sectionContent
       });
-
-      // Add section to context for next iterations
-      contextManager.addSection(section.title, sectionContent);
     }
 
     return {
       sections: generatedSections,
       medical_entities: entities,
-      analysis: generatedSections[0]?.content // First section serves as quick analysis
+      analysis: generatedSections[0]?.content
     };
   } catch (error) {
     console.error('Error in processCaseStudy:', error);
-    
-    // Check for specific error types
-    if (error.message?.includes('context_length_exceeded')) {
-      throw new Error('The case study content is too long. Please try with a shorter description.');
-    }
-    
-    if (error.message?.includes('rate_limit')) {
-      throw new Error('Rate limit exceeded. Please try again in a few minutes.');
-    }
-    
     throw error;
   }
-}
-
-function truncatePrompt(prompt: string): string {
-  if (prompt.length <= MAX_PROMPT_LENGTH) return prompt;
-  console.warn('Prompt exceeded maximum length, truncating...');
-  return prompt.slice(0, MAX_PROMPT_LENGTH) + '...';
 }
