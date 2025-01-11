@@ -9,6 +9,45 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      assessment_tools: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          normative_data: Json | null
+          reliability_evidence: string | null
+          scoring_method: string | null
+          specialization: string | null
+          validity_evidence: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          normative_data?: Json | null
+          reliability_evidence?: string | null
+          scoring_method?: string | null
+          specialization?: string | null
+          validity_evidence?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          normative_data?: Json | null
+          reliability_evidence?: string | null
+          scoring_method?: string | null
+          specialization?: string | null
+          validity_evidence?: string | null
+        }
+        Relationships: []
+      }
       biomedical_responses: {
         Row: {
           assessment_id: string | null
@@ -93,6 +132,7 @@ export type Database = {
           ai_analysis: string | null
           ai_role: string | null
           assessment_findings: string | null
+          assessment_tools: Json | null
           clinical_guidelines: Json | null
           clinical_reasoning_path: Json | null
           comorbidities: string | null
@@ -107,16 +147,19 @@ export type Database = {
           id: string
           intervention_plan: string | null
           learning_objectives: Json | null
+          measurement_data: Json | null
           medical_entities: Json | null
           medical_history: string | null
           medications: Json | null
           patient_background: string | null
           patient_name: string
           presenting_complaint: string | null
+          professional_frameworks: Json | null
           psychosocial_factors: string | null
           reference_list: string | null
           smart_goals: Json | null
           specialization: string | null
+          standardized_tests: Json | null
           user_id: string | null
         }
         Insert: {
@@ -125,6 +168,7 @@ export type Database = {
           ai_analysis?: string | null
           ai_role?: string | null
           assessment_findings?: string | null
+          assessment_tools?: Json | null
           clinical_guidelines?: Json | null
           clinical_reasoning_path?: Json | null
           comorbidities?: string | null
@@ -139,16 +183,19 @@ export type Database = {
           id?: string
           intervention_plan?: string | null
           learning_objectives?: Json | null
+          measurement_data?: Json | null
           medical_entities?: Json | null
           medical_history?: string | null
           medications?: Json | null
           patient_background?: string | null
           patient_name: string
           presenting_complaint?: string | null
+          professional_frameworks?: Json | null
           psychosocial_factors?: string | null
           reference_list?: string | null
           smart_goals?: Json | null
           specialization?: string | null
+          standardized_tests?: Json | null
           user_id?: string | null
         }
         Update: {
@@ -157,6 +204,7 @@ export type Database = {
           ai_analysis?: string | null
           ai_role?: string | null
           assessment_findings?: string | null
+          assessment_tools?: Json | null
           clinical_guidelines?: Json | null
           clinical_reasoning_path?: Json | null
           comorbidities?: string | null
@@ -171,16 +219,19 @@ export type Database = {
           id?: string
           intervention_plan?: string | null
           learning_objectives?: Json | null
+          measurement_data?: Json | null
           medical_entities?: Json | null
           medical_history?: string | null
           medications?: Json | null
           patient_background?: string | null
           patient_name?: string
           presenting_complaint?: string | null
+          professional_frameworks?: Json | null
           psychosocial_factors?: string | null
           reference_list?: string | null
           smart_goals?: Json | null
           specialization?: string | null
+          standardized_tests?: Json | null
           user_id?: string | null
         }
         Relationships: []
@@ -535,6 +586,39 @@ export type Database = {
         }
         Relationships: []
       }
+      professional_frameworks: {
+        Row: {
+          components: Json | null
+          created_at: string
+          description: string | null
+          guidelines: string | null
+          id: string
+          name: string
+          specialization: string | null
+          type: string
+        }
+        Insert: {
+          components?: Json | null
+          created_at?: string
+          description?: string | null
+          guidelines?: string | null
+          id?: string
+          name: string
+          specialization?: string | null
+          type: string
+        }
+        Update: {
+          components?: Json | null
+          created_at?: string
+          description?: string | null
+          guidelines?: string | null
+          id?: string
+          name?: string
+          specialization?: string | null
+          type?: string
+        }
+        Relationships: []
+      }
       psychosocial_responses: {
         Row: {
           anxiety_levels: number | null
@@ -611,6 +695,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      standardized_measurements: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          interpretation_guidelines: string | null
+          measurement_type: string
+          name: string
+          normal_ranges: Json | null
+          specialization: string | null
+          units: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          id?: string
+          interpretation_guidelines?: string | null
+          measurement_type: string
+          name: string
+          normal_ranges?: Json | null
+          specialization?: string | null
+          units?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          interpretation_guidelines?: string | null
+          measurement_type?: string
+          name?: string
+          normal_ranges?: Json | null
+          specialization?: string | null
+          units?: string | null
+        }
+        Relationships: []
       }
     }
     Views: {

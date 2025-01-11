@@ -14,7 +14,10 @@ import {
   BookOpen,
   BookmarkCheck,
   ListChecks,
-  Activity
+  Activity,
+  Scale,
+  Ruler,
+  GraduationCap
 } from "lucide-react";
 
 interface DetailedSectionProps {
@@ -47,6 +50,12 @@ const DetailedSection = ({ title, content }: DetailedSectionProps) => {
         return <Pill className="h-5 w-5 text-primary" />;
       case "icf classification":
         return <Activity className="h-5 w-5 text-primary" />;
+      case "assessment tools":
+        return <Scale className="h-5 w-5 text-primary" />;
+      case "measurements":
+        return <Ruler className="h-5 w-5 text-primary" />;
+      case "professional frameworks":
+        return <GraduationCap className="h-5 w-5 text-primary" />;
       default:
         return <List className="h-5 w-5 text-primary" />;
     }
