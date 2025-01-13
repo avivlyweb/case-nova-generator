@@ -6,8 +6,6 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-const TIMEOUT_MS = 45000; // 45 seconds timeout
-
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -15,65 +13,60 @@ serve(async (req) => {
   }
 
   try {
-    // Validate that we have a request body
-    if (!req.body) {
-      throw new Error('Request body is required');
+    // Validate content type
+    const contentType = req.headers.get('content-type')
+    if (!contentType?.includes('application/json')) {
+      throw new Error('Content-Type must be application/json')
     }
 
-    let body;
+    // Get and validate request body
+    if (!req.body) {
+      throw new Error('Request body is required')
+    }
+
+    let body
     try {
-      const text = await req.text(); // Get raw text first
-      console.log('Received request body:', text); // Log raw request for debugging
-      body = JSON.parse(text);
+      const text = await req.text()
+      console.log('Raw request body:', text) // Debug log
+      body = JSON.parse(text)
     } catch (e) {
-      console.error('JSON parsing error:', e);
-      throw new Error('Invalid JSON in request body');
+      console.error('JSON parsing error:', e)
+      throw new Error('Invalid JSON in request body')
     }
 
     // Validate required fields
-    const { caseStudy, action = 'generate' } = body;
-    
-    if (!caseStudy) {
-      throw new Error('Case study data is required');
+    const { caseStudy, action = 'generate' } = body
+    if (!caseStudy || !caseStudy.id) {
+      throw new Error('Case study data with ID is required')
     }
 
-    console.log(`Processing ${action} request for case study:`, caseStudy.id);
+    console.log(`Processing ${action} request for case study:`, caseStudy.id)
     
-    // Process with timeout
-    const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('Function timed out')), TIMEOUT_MS);
-    });
+    const result = await processCaseStudy(caseStudy, action)
 
-    const result = await Promise.race([
-      processCaseStudy(caseStudy, action),
-      timeoutPromise
-    ]);
-
-    console.log('Processing completed successfully');
-    
     return new Response(
       JSON.stringify(result),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 200
       }
-    );
+    )
 
   } catch (error) {
-    console.error('Error in edge function:', error);
+    console.error('Error in edge function:', error)
     
-    let status = 500;
-    let message = error.message || 'Internal server error';
+    let status = 500
+    let message = error.message || 'Internal server error'
 
-    if (error.message?.includes('timed out')) {
-      status = 504;
-      message = 'The request took too long to process. Try with a shorter description or fewer sections.';
-    } else if (error.message?.includes('rate_limit')) {
-      status = 429;
-      message = 'Rate limit exceeded. Please try again in a few minutes.';
+    if (error.message?.includes('Content-Type')) {
+      status = 415
+      message = 'Content-Type must be application/json'
     } else if (error.message?.includes('Invalid JSON')) {
-      status = 400;
-      message = 'Invalid request format. Please check your input data.';
+      status = 400
+      message = 'Invalid request format. Please check your input data.'
+    } else if (error.message?.includes('required')) {
+      status = 400
+      message = error.message
     }
     
     return new Response(
@@ -85,6 +78,6 @@ serve(async (req) => {
         status,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
-    );
+    )
   }
 })
