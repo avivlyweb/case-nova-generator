@@ -1,10 +1,11 @@
 import { Groq } from 'npm:groq-sdk';
 import { extractMedicalEntities } from './entityExtraction.ts';
+import { extractICFCodes } from './icfExtractor.ts';
 import { sections, specializedPrompts } from './sectionConfig.ts';
 import { ContextManager } from './contextManager.ts';
 import type { CaseStudy, Section } from './types.ts';
 
-const MAX_PROMPT_LENGTH = 4000; // Groq's limit is around 4096 tokens
+const MAX_PROMPT_LENGTH = 4000;
 
 export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'generate' = 'generate') {
   console.log('Processing case study:', caseStudy.id);
@@ -13,7 +14,7 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
   });
 
   try {
-    // Extract medical entities from all text fields
+    // Extract text for analysis
     const textForAnalysis = [
       caseStudy.medical_history,
       caseStudy.presenting_complaint,
@@ -23,8 +24,14 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       caseStudy.adl_problem
     ].filter(Boolean).join(' ').slice(0, MAX_PROMPT_LENGTH);
 
-    const entities = await extractMedicalEntities(textForAnalysis, groq);
+    // Extract both medical entities and ICF codes
+    const [entities, icfCodes] = await Promise.all([
+      extractMedicalEntities(textForAnalysis, groq),
+      extractICFCodes(textForAnalysis, groq)
+    ]);
+
     console.log('Extracted entities:', entities);
+    console.log('Extracted ICF codes:', icfCodes);
 
     // Get specialization-specific context
     const specializationContext = specializedPrompts[caseStudy.specialization as keyof typeof specializedPrompts];
@@ -52,7 +59,10 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       ${JSON.stringify(specializationContext, null, 2)}
       
       Extracted Medical Entities:
-      ${JSON.stringify(entities, null, 2)}`;
+      ${JSON.stringify(entities, null, 2)}
+      
+      ICF Codes:
+      ${JSON.stringify(icfCodes, null, 2)}`;
 
       const completion = await groq.chat.completions.create({
         messages: [
@@ -72,7 +82,8 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
 
       return {
         analysis: completion.choices[0]?.message?.content,
-        medical_entities: entities
+        medical_entities: entities,
+        icf_codes: icfCodes
       };
     }
 
@@ -107,6 +118,9 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       Medical Entities:
       ${JSON.stringify(entities, null, 2)}
 
+      ICF Codes:
+      ${JSON.stringify(icfCodes, null, 2)}
+
       Please ensure:
       1. Use specific measurements and standardized assessment scores
       2. Include evidence levels for recommendations
@@ -140,6 +154,7 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
     return {
       sections: generatedSections,
       medical_entities: entities,
+      icf_codes: icfCodes,
       analysis: generatedSections[0]?.content
     };
   } catch (error) {
