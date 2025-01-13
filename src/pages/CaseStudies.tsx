@@ -7,6 +7,9 @@ import CaseStudyCard from "@/components/case-studies/CaseStudyCard";
 import CaseAnalysis from "@/components/case-studies/CaseAnalysis";
 import { getCaseStudies, updateCaseStudy } from "@/lib/db";
 
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 1000; // 1 second
+
 const CaseStudies = () => {
   const { toast } = useToast();
   const [analyzing, setAnalyzing] = useState<{ [key: string]: boolean }>({});
@@ -17,28 +20,54 @@ const CaseStudies = () => {
     queryFn: getCaseStudies,
   });
 
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+  const invokeWithRetry = async (functionName: string, body: any, retries = MAX_RETRIES) => {
+    try {
+      const { data, error } = await supabase.functions.invoke(functionName, {
+        body,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (error) throw error;
+      return { data, error: null };
+    } catch (error: any) {
+      console.error(`Attempt ${MAX_RETRIES - retries + 1} failed:`, error);
+      
+      if (retries > 1) {
+        await delay(RETRY_DELAY);
+        return invokeWithRetry(functionName, body, retries - 1);
+      }
+      
+      return { data: null, error };
+    }
+  };
+
   const generateCase = async (caseStudy: any) => {
     setAnalyzing(prev => ({ ...prev, [caseStudy.id]: true }));
     try {
-      const { data, error } = await supabase.functions.invoke('process-case-study', {
-        body: { caseStudy, action: 'generate' }
+      const { data, error } = await invokeWithRetry('process-case-study', {
+        caseStudy,
+        action: 'generate'
       });
 
       if (error) {
         console.error('Error generating case:', error);
-        if (error.message?.includes('rate limit')) {
-          toast({
-            variant: "destructive",
-            title: "Rate Limit Reached",
-            description: "The AI service is currently at capacity. Please try again in 30 minutes.",
-          });
-        } else {
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Failed to generate case study. Please try again later.",
-          });
+        let errorMessage = 'Failed to generate case study.';
+        
+        if (error.message?.includes('timeout')) {
+          errorMessage = 'The request took too long. Please try with a shorter description.';
+        } else if (error.message?.includes('rate limit')) {
+          errorMessage = 'Too many requests. Please wait a few minutes and try again.';
         }
+        
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: errorMessage,
+        });
         return;
       }
 
@@ -79,7 +108,7 @@ const CaseStudies = () => {
         title: "Generation Complete",
         description: "Full case study has been generated and saved.",
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error generating case:', error);
       toast({
         variant: "destructive",
@@ -94,25 +123,26 @@ const CaseStudies = () => {
   const analyzeCase = async (caseStudy: any) => {
     setAnalyzing(prev => ({ ...prev, [caseStudy.id]: true }));
     try {
-      const { data, error } = await supabase.functions.invoke('process-case-study', {
-        body: { caseStudy, action: 'analyze' }
+      const { data, error } = await invokeWithRetry('process-case-study', {
+        caseStudy,
+        action: 'analyze'
       });
 
       if (error) {
         console.error('Error analyzing case:', error);
-        if (error.message?.includes('rate limit')) {
-          toast({
-            variant: "destructive",
-            title: "Rate Limit Reached",
-            description: "The AI service is currently at capacity. Please try again in 30 minutes.",
-          });
-        } else {
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Failed to analyze case study. Please try again later.",
-          });
+        let errorMessage = 'Failed to analyze case study.';
+        
+        if (error.message?.includes('timeout')) {
+          errorMessage = 'The request took too long. Please try with a shorter description.';
+        } else if (error.message?.includes('rate limit')) {
+          errorMessage = 'Too many requests. Please wait a few minutes and try again.';
         }
+        
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: errorMessage,
+        });
         return;
       }
 
@@ -131,7 +161,7 @@ const CaseStudies = () => {
         title: "Analysis Complete",
         description: "AI analysis has been generated and saved.",
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error analyzing case:', error);
       toast({
         variant: "destructive",
