@@ -6,16 +6,19 @@ import DetailedSection from "./DetailedSection";
 import ICFCodes from "./ICFCodes";
 import MedicalEntities from "./MedicalEntities";
 
-// Update the interface to include new fields
 interface CaseAnalysisProps {
   analysis: {
     analysis?: string;
     sections?: Array<{ title: string; content: string }> | any;
-    references?: any[];
+    references?: any[] | string;
     icf_codes?: string;
     medical_entities?: any;
     clinical_guidelines?: any[];
     evidence_levels?: Record<string, number>;
+    assessment_tools?: any[];
+    measurement_data?: Record<string, any>;
+    professional_frameworks?: Record<string, any>;
+    standardized_tests?: any[];
   };
 }
 
@@ -29,6 +32,41 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
        title,
        content: typeof content === 'string' ? content : JSON.stringify(content)
      }))) : [];
+
+  // Format professional data sections
+  const formatProfessionalData = () => {
+    const sections = [];
+
+    if (analysis.assessment_tools?.length > 0) {
+      sections.push({
+        title: "Assessment Tools",
+        content: formatAssessmentTools(analysis.assessment_tools)
+      });
+    }
+
+    if (analysis.measurement_data && Object.keys(analysis.measurement_data).length > 0) {
+      sections.push({
+        title: "Measurements",
+        content: formatMeasurementData(analysis.measurement_data)
+      });
+    }
+
+    if (analysis.professional_frameworks && Object.keys(analysis.professional_frameworks).length > 0) {
+      sections.push({
+        title: "Professional Frameworks",
+        content: formatFrameworks(analysis.professional_frameworks)
+      });
+    }
+
+    if (analysis.standardized_tests?.length > 0) {
+      sections.push({
+        title: "Standardized Tests",
+        content: formatStandardizedTests(analysis.standardized_tests)
+      });
+    }
+
+    return sections;
+  };
 
   return (
     <Tabs defaultValue="overview" className="w-full mt-6">
@@ -67,6 +105,14 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
                 />
               ))}
 
+              {formatProfessionalData().map((section, index) => (
+                <DetailedSection
+                  key={`prof-${index}`}
+                  title={section.title}
+                  content={section.content}
+                />
+              ))}
+
               {analysis.medical_entities && (
                 <MedicalEntities entities={analysis.medical_entities} />
               )}
@@ -85,7 +131,7 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
                 />
               )}
 
-              {analysis.references && analysis.references.length > 0 && (
+              {analysis.references && (
                 <DetailedSection
                   title="Evidence-Based References"
                   content={formatReferences(analysis.references)}
@@ -104,7 +150,8 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
 };
 
 // Helper functions for formatting
-const formatGuidelines = (guidelines: any[]) => {
+const formatGuidelines = (guidelines: any[]): string => {
+  if (!Array.isArray(guidelines)) return '';
   return guidelines.map(g => (
     `### ${g.name}\n\n` +
     `**Recommendation Level:** ${g.recommendation_level}\n\n` +
@@ -113,18 +160,68 @@ const formatGuidelines = (guidelines: any[]) => {
   )).join('\n---\n\n');
 };
 
-const formatEvidenceLevels = (levels: Record<string, number>) => {
+const formatEvidenceLevels = (levels: Record<string, number>): string => {
+  if (!levels || typeof levels !== 'object') return '';
   return '### Evidence Distribution\n\n' +
     Object.entries(levels)
       .map(([level, count]) => `- ${level}: ${count} studies`)
       .join('\n');
 };
 
-const formatReferences = (references: any[]) => {
-  return references.map(ref => (
-    `- ${ref.authors.join(', ')} (${new Date(ref.publicationDate).getFullYear()}). ` +
-    `[${ref.title}](${ref.url}). ${ref.journal}. Evidence Level: ${ref.evidenceLevel}`
+const formatReferences = (references: any[] | string | null): string => {
+  if (!references) return '';
+  if (typeof references === 'string') return references;
+  if (!Array.isArray(references)) return '';
+  
+  return references.map(ref => {
+    const authors = Array.isArray(ref.authors) ? ref.authors.join(', ') : 'Unknown';
+    const year = ref.publicationDate ? new Date(ref.publicationDate).getFullYear() : 'N/A';
+    const title = ref.title || 'Untitled';
+    const url = ref.url || '#';
+    const journal = ref.journal || '';
+    const evidenceLevel = ref.evidenceLevel || 'Not specified';
+    
+    return `- ${authors} (${year}). [${title}](${url}). ${journal}. Evidence Level: ${evidenceLevel}`;
+  }).join('\n\n');
+};
+
+const formatAssessmentTools = (tools: any[]): string => {
+  return tools.map(tool => (
+    `### ${tool.name}\n\n` +
+    `**Category:** ${tool.category}\n\n` +
+    `${tool.description}\n\n` +
+    `**Scoring Method:** ${tool.scoring_method}\n\n` +
+    `**Validity:** ${tool.validity_evidence}\n`
+  )).join('\n---\n\n');
+};
+
+const formatMeasurementData = (data: Record<string, any>): string => {
+  return Object.entries(data).map(([category, measurements]) => (
+    `### ${category}\n\n` +
+    Object.entries(measurements).map(([name, value]) => (
+      `- **${name}:** ${value}`
+    )).join('\n')
   )).join('\n\n');
+};
+
+const formatFrameworks = (frameworks: Record<string, any>): string => {
+  return Object.entries(frameworks).map(([name, framework]) => (
+    `### ${name}\n\n` +
+    `${framework.description}\n\n` +
+    `**Components:**\n` +
+    framework.components.map((c: string) => `- ${c}`).join('\n') + '\n\n' +
+    `**Guidelines:** ${framework.guidelines}`
+  )).join('\n---\n\n');
+};
+
+const formatStandardizedTests = (tests: any[]): string => {
+  return tests.map(test => (
+    `### ${test.name}\n\n` +
+    `**Category:** ${test.category}\n\n` +
+    `**Type:** ${test.measurement_type}\n\n` +
+    `**Normal Ranges:** ${JSON.stringify(test.normal_ranges, null, 2)}\n\n` +
+    `**Interpretation:** ${test.interpretation_guidelines}`
+  )).join('\n---\n\n');
 };
 
 export default CaseAnalysis;
