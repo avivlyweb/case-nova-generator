@@ -1,9 +1,10 @@
 import { Groq } from 'npm:groq-sdk';
 import { extractMedicalEntities } from './entityExtraction.ts';
 import { extractICFCodes } from './icfExtractor.ts';
+import { searchPubMedArticles } from './pubmedIntegration.ts';
 import { sections, specializedPrompts } from './sectionConfig.ts';
 import { ContextManager } from './contextManager.ts';
-import type { CaseStudy, Section } from './types.ts';
+import type { CaseStudy, Section, PubMedArticle } from './types.ts';
 
 const MAX_PROMPT_LENGTH = 4000;
 
@@ -23,6 +24,11 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       caseStudy.psychosocial_factors,
       caseStudy.adl_problem
     ].filter(Boolean).join(' ').slice(0, MAX_PROMPT_LENGTH);
+
+    // Search for relevant PubMed articles
+    const searchQuery = `${caseStudy.condition} ${caseStudy.presenting_complaint} physiotherapy treatment`;
+    const pubmedArticles = await searchPubMedArticles(searchQuery);
+    console.log(`Found ${pubmedArticles.length} relevant PubMed articles`);
 
     // Extract both medical entities and ICF codes
     const [entities, icfCodes] = await Promise.all([
@@ -55,6 +61,11 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
         complaint: caseStudy.presenting_complaint
       }, null, 2)}
       
+      Evidence Base:
+      ${pubmedArticles.map(article => 
+        `- ${article.citation}: ${article.title} (${article.evidenceLevel})`
+      ).join('\n')}
+      
       Specialization Context:
       ${JSON.stringify(specializationContext, null, 2)}
       
@@ -83,7 +94,8 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       return {
         analysis: completion.choices[0]?.message?.content,
         medical_entities: entities,
-        icf_codes: icfCodes
+        icf_codes: icfCodes,
+        references: pubmedArticles
       };
     }
 
@@ -99,6 +111,11 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
 
       Requirements:
       ${section.description}
+
+      Evidence Base:
+      ${pubmedArticles.map(article => 
+        `- ${article.citation}: ${article.title} (${article.evidenceLevel})`
+      ).join('\n')}
 
       Specialization Context:
       ${JSON.stringify(specializationContext, null, 2)}
@@ -126,7 +143,8 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       2. Include evidence levels for recommendations
       3. Reference clinical guidelines when applicable
       4. Provide detailed rationale for clinical decisions
-      5. Use proper formatting for clarity`;
+      5. Use proper formatting for clarity
+      6. Cite relevant PubMed articles using [Author et al](URL) format`;
 
       const completion = await groq.chat.completions.create({
         messages: [
@@ -151,11 +169,19 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       });
     }
 
+    // Calculate evidence level distribution
+    const evidenceLevels: Record<string, number> = pubmedArticles.reduce((acc, article) => {
+      acc[article.evidenceLevel] = (acc[article.evidenceLevel] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
     return {
       sections: generatedSections,
       medical_entities: entities,
       icf_codes: icfCodes,
-      analysis: generatedSections[0]?.content
+      analysis: generatedSections[0]?.content,
+      references: pubmedArticles,
+      evidence_levels: evidenceLevels
     };
   } catch (error) {
     console.error('Error in processCaseStudy:', error);
