@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { List } from "lucide-react";
-import { Tooltip } from "@/components/ui/tooltip";
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 
 interface ICFCodesProps {
   codes: string | string[];
@@ -58,17 +58,21 @@ const ICFCodes = ({ codes }: ICFCodesProps) => {
               </h4>
               <div className="flex flex-wrap gap-2">
                 {codes.map((code, index) => (
-                  <Tooltip 
-                    key={index}
-                    content={`${ICF_CATEGORIES[category as keyof typeof ICF_CATEGORIES]?.name} code`}
-                  >
-                    <Badge 
-                      variant="secondary" 
-                      className={`text-sm ${ICF_CATEGORIES[category as keyof typeof ICF_CATEGORIES]?.color} transition-colors cursor-help`}
-                    >
-                      {code}
-                    </Badge>
-                  </Tooltip>
+                  <TooltipProvider key={index}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Badge 
+                          variant="secondary" 
+                          className={`text-sm ${ICF_CATEGORIES[category as keyof typeof ICF_CATEGORIES]?.color} transition-colors cursor-help`}
+                        >
+                          {code}
+                        </Badge>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{ICF_CATEGORIES[category as keyof typeof ICF_CATEGORIES]?.name} code</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 ))}
               </div>
             </div>
