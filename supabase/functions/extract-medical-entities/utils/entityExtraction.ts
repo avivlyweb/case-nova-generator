@@ -1,64 +1,62 @@
 import { Groq } from 'npm:groq-sdk';
 
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+export async function extractMedicalEntities(text: string, groq: Groq) {
+  const prompt = `Extract and categorize medical entities from the following clinical text. Return a JSON object with these specific categories:
 
-export async function extractEntities(text: string, groq: Groq, retryCount = 0): Promise<any> {
-  console.log('Starting entity extraction for text:', text.substring(0, 100) + '...');
-  
-  const maxRetries = 3;
-  const baseDelay = 2000;
+  - conditions: medical conditions, diseases, and diagnoses
+  - symptoms: reported symptoms and clinical manifestations
+  - findings: clinical observations and examination results
+  - treatments: medications, therapies, and interventions
+  - anatomical_sites: body parts and anatomical locations
+  - measurements: quantitative values and clinical scores
+  - procedures: medical procedures and diagnostic tests
+  - risk_factors: identified risk factors and complications
+
+  For each entity, include contextual information in parentheses and clinical significance in square brackets when relevant.
+  Format: "term (context) [significance]"
+
+  Clinical Text:
+  ${text}
+
+  Return ONLY a JSON object with the categories as keys and arrays of strings as values.`;
 
   try {
-    const prompt = `Extract and categorize medical entities from the following clinical text into these specific categories:
-    - Clinical Diagnoses (specific medical conditions, disorders, pathologies)
-    - Clinical Signs & Symptoms (objective and subjective manifestations)
-    - Therapeutic Interventions (medications, treatments, procedures)
-    - Diagnostic Procedures (tests, imaging, assessments)
-    - Anatomical Structures (specific body parts, systems)
-    - Physiological Parameters (measurements, vital signs)
-
-    Return a JSON object with these exact keys:
-    {
-      "diagnoses": [],
-      "symptoms": [],
-      "interventions": [],
-      "diagnostics": [],
-      "anatomical": [],
-      "physiological": []
-    }`;
-
     const completion = await groq.chat.completions.create({
       messages: [
         {
           role: "system",
-          content: "You are a clinical terminology expert. Extract and categorize medical terms using standardized clinical terminology."
+          content: "You are a medical entity extraction system trained to identify and categorize clinical terms using BioBERT-like precision. Extract entities with their context and clinical significance."
         },
         {
           role: "user",
-          content: `${prompt}\n\nText to analyze:\n${text}`
+          content: prompt
         }
       ],
       model: "gemma2-9b-it",
-      temperature: 0.1,
+      temperature: 0.3,
       max_tokens: 1000,
     });
 
     const response = completion.choices[0]?.message?.content;
-    if (!response) {
-      throw new Error('No response from Groq');
-    }
-
-    console.log('Raw response:', response);
-    return JSON.parse(response);
-  } catch (error) {
-    console.error(`Error in entity extraction (attempt ${retryCount + 1}):`, error);
+    console.log('Entity extraction response:', response);
     
-    if (error.message?.includes('rate_limit_exceeded') && retryCount < maxRetries) {
-      const delay = baseDelay * Math.pow(2, retryCount);
-      console.log(`Rate limit hit. Retrying in ${delay}ms...`);
-      await sleep(delay);
-      return extractEntities(text, groq, retryCount + 1);
+    try {
+      return JSON.parse(response || '{}');
+    } catch (error) {
+      console.error('Failed to parse entity extraction response:', error);
+      return {
+        conditions: [],
+        symptoms: [],
+        findings: [],
+        treatments: [],
+        anatomical_sites: [],
+        measurements: [],
+        procedures: [],
+        risk_factors: []
+      };
     }
+  } catch (error) {
+    console.error('Error in entity extraction:', error);
     throw error;
   }
 }
