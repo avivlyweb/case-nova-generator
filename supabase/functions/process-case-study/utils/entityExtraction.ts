@@ -16,16 +16,19 @@ export const extractMedicalEntities = async (text: string, groq: Groq) => {
 Text to analyze:
 ${text}
 
-Format the response as a JSON object with these exact categories as keys.
+Return ONLY a valid JSON object with these exact categories as keys.
 Each category should contain an array of unique strings.
-Only include entities that are explicitly mentioned in the text.`;
+Only include entities that are explicitly mentioned in the text.
+Do not include any markdown formatting or explanation text.`;
 
   try {
+    console.log('Sending entity extraction prompt to GROQ');
+    
     const completion = await groq.chat.completions.create({
       messages: [
         {
           role: "system",
-          content: "You are a clinical entity extraction system specialized in physiotherapy terminology."
+          content: "You are a clinical entity extraction system specialized in physiotherapy terminology. Always return valid JSON only."
         },
         {
           role: "user",
@@ -38,6 +41,7 @@ Only include entities that are explicitly mentioned in the text.`;
     });
 
     const response = completion.choices[0]?.message?.content;
+    console.log('Raw GROQ response:', response);
     
     if (!response) {
       console.error('No response from entity extraction');
@@ -55,7 +59,17 @@ Only include entities that are explicitly mentioned in the text.`;
       };
     }
 
-    return JSON.parse(response);
+    // Clean the response by removing any markdown formatting
+    const cleanedResponse = response.replace(/```json\n|\n```/g, '').trim();
+    console.log('Cleaned response:', cleanedResponse);
+
+    try {
+      return JSON.parse(cleanedResponse);
+    } catch (parseError) {
+      console.error('Error parsing JSON response:', parseError);
+      console.error('Cleaned response that failed to parse:', cleanedResponse);
+      throw new Error(`Failed to parse GROQ response: ${parseError.message}`);
+    }
   } catch (error) {
     console.error('Error in medical entity extraction:', error);
     throw error;

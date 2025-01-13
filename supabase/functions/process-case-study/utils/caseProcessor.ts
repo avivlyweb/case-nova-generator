@@ -72,7 +72,9 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
     
     const prompt = `${contextManager.getPromptContext(section.title)}
 
-${section.description}`;
+${section.description}
+
+Return the content in a clear, professional format without any markdown or special formatting.`;
 
     const completion = await groq.chat.completions.create({
       messages: [
