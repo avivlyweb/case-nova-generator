@@ -32,7 +32,7 @@ Only include entities that are explicitly mentioned in the text.`;
           content: prompt
         }
       ],
-      model: "gemma2-9b-it",
+      model: "llama-3.3-70b-versatile",
       temperature: 0.1,
       max_tokens: 1000,
     });

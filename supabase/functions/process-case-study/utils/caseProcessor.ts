@@ -1,4 +1,3 @@
-import { createClient } from '@supabase/supabase-js';
 import { Groq } from 'npm:groq-sdk';
 import { sections, specializedPrompts } from './sectionConfig.ts';
 import { extractMedicalEntities } from './entityExtraction.ts';
@@ -55,7 +54,7 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
           content: analysisPrompt
         }
       ],
-      model: "gemma2-9b-it",
+      model: "llama-3.3-70b-versatile",
       temperature: 0.7,
       max_tokens: 2000,
     });
@@ -86,7 +85,7 @@ ${section.description}`;
           content: prompt
         }
       ],
-      model: "gemma2-9b-it",
+      model: "llama-3.3-70b-versatile",
       temperature: 0.7,
       max_tokens: 2000,
     });
