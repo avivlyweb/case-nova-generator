@@ -6,6 +6,36 @@ import { ContextManager } from './contextManager.ts';
 import type { CaseStudy, Section } from './types.ts';
 
 const MAX_PROMPT_LENGTH = 4000;
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 2000; // Base delay in ms
+
+async function retryWithExponentialBackoff<T>(
+  operation: () => Promise<T>,
+  maxRetries: number = MAX_RETRIES,
+  baseDelay: number = RETRY_DELAY
+): Promise<T> {
+  let lastError;
+  
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      return await operation();
+    } catch (error) {
+      lastError = error;
+      console.error(`Attempt ${attempt + 1} failed:`, error);
+      
+      if (error.message?.includes('rate limit') || error.message?.includes('503')) {
+        const delay = baseDelay * Math.pow(2, attempt);
+        console.log(`Retrying in ${delay}ms...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        continue;
+      }
+      
+      throw error;
+    }
+  }
+  
+  throw lastError;
+}
 
 export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'generate' = 'generate') {
   console.log('Processing case study:', caseStudy.id);
@@ -24,10 +54,10 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       caseStudy.adl_problem
     ].filter(Boolean).join(' ').slice(0, MAX_PROMPT_LENGTH);
 
-    // Extract both medical entities and ICF codes
+    // Extract both medical entities and ICF codes with retry logic
     const [entities, icfCodes] = await Promise.all([
-      extractMedicalEntities(textForAnalysis, groq),
-      extractICFCodes(textForAnalysis, groq)
+      retryWithExponentialBackoff(() => extractMedicalEntities(textForAnalysis, groq)),
+      retryWithExponentialBackoff(() => extractICFCodes(textForAnalysis, groq))
     ]);
 
     console.log('Extracted entities:', entities);
@@ -64,21 +94,23 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       ICF Codes:
       ${JSON.stringify(icfCodes, null, 2)}`;
 
-      const completion = await groq.chat.completions.create({
-        messages: [
-          {
-            role: "system",
-            content: caseStudy.ai_role
-          },
-          {
-            role: "user",
-            content: analysisPrompt
-          }
-        ],
-        model: "gemma2-9b-it",
-        temperature: 0.7,
-        max_tokens: 1000,
-      });
+      const completion = await retryWithExponentialBackoff(() => 
+        groq.chat.completions.create({
+          messages: [
+            {
+              role: "system",
+              content: caseStudy.ai_role
+            },
+            {
+              role: "user",
+              content: analysisPrompt
+            }
+          ],
+          model: "gemma2-9b-it",
+          temperature: 0.7,
+          max_tokens: 1000,
+        })
+      );
 
       return {
         analysis: completion.choices[0]?.message?.content,
@@ -87,7 +119,7 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       };
     }
 
-    // Generate full case study
+    // Generate full case study with retry logic
     const generatedSections = [];
     for (const section of sections) {
       console.log(`Generating section: ${section.title}`);
@@ -128,21 +160,23 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       4. Provide detailed rationale for clinical decisions
       5. Use proper formatting for clarity`;
 
-      const completion = await groq.chat.completions.create({
-        messages: [
-          {
-            role: "system",
-            content: caseStudy.ai_role
-          },
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        model: "gemma2-9b-it",
-        temperature: 0.7,
-        max_tokens: 2000,
-      });
+      const completion = await retryWithExponentialBackoff(() =>
+        groq.chat.completions.create({
+          messages: [
+            {
+              role: "system",
+              content: caseStudy.ai_role
+            },
+            {
+              role: "user",
+              content: prompt
+            }
+          ],
+          model: "gemma2-9b-it",
+          temperature: 0.7,
+          max_tokens: 2000,
+        })
+      );
 
       const sectionContent = completion.choices[0]?.message?.content || '';
       generatedSections.push({
@@ -159,6 +193,12 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
     };
   } catch (error) {
     console.error('Error in processCaseStudy:', error);
+    
+    // Determine if it's a rate limit or service unavailable error
+    if (error.message?.includes('rate limit') || error.message?.includes('503')) {
+      throw new Error('The AI service is temporarily unavailable. Please try again in a few moments.');
+    }
+    
     throw error;
   }
 }

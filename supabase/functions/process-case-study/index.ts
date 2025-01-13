@@ -20,7 +20,10 @@ serve(async (req) => {
     if (!caseStudy) {
       console.error('No case study provided')
       return new Response(
-        JSON.stringify({ error: 'No case study provided' }),
+        JSON.stringify({ 
+          error: 'No case study provided',
+          details: 'The request must include a case study object'
+        }),
         { 
           status: 400,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -48,12 +51,11 @@ serve(async (req) => {
     let status = 500;
     let message = error.message || 'Internal server error';
 
-    if (error.message?.includes('context_length_exceeded')) {
-      status = 413; // Payload Too Large
-      message = 'The case study content is too long. Please try with a shorter description.';
-    } else if (error.message?.includes('rate_limit')) {
+    if (message.includes('rate limit')) {
       status = 429; // Too Many Requests
       message = 'Rate limit exceeded. Please try again in a few minutes.';
+    } else if (message.includes('temporarily unavailable')) {
+      status = 503; // Service Unavailable
     }
     
     return new Response(
