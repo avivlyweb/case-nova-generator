@@ -3,7 +3,6 @@ import { processCaseStudy } from './utils/caseProcessor.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
@@ -14,52 +13,57 @@ serve(async (req) => {
   }
 
   try {
-    // Get and validate request body
-    if (!req.body) {
-      throw new Error('Request body is required')
-    }
-
-    let body
-    try {
-      const text = await req.text()
-      console.log('Raw request body:', text) // Debug log
-      body = JSON.parse(text)
-    } catch (e) {
-      console.error('JSON parsing error:', e)
-      throw new Error('Invalid JSON in request body')
-    }
-
-    // Validate required fields
+    // Parse request body
+    const body = await req.json()
     const { caseStudy, action = 'generate' } = body
-    if (!caseStudy || !caseStudy.id) {
-      throw new Error('Case study data with ID is required')
+    
+    if (!caseStudy) {
+      console.error('No case study provided')
+      return new Response(
+        JSON.stringify({ error: 'No case study provided' }),
+        { 
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
     }
 
     console.log(`Processing ${action} request for case study:`, caseStudy.id)
     
     const result = await processCaseStudy(caseStudy, action)
-
+    console.log('Processing completed successfully:', result)
+    
     return new Response(
       JSON.stringify(result),
       { 
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json'
-        },
-        status: 200
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     )
 
   } catch (error) {
     console.error('Error in edge function:', error)
     
+    // Determine appropriate status code
+    let status = 500;
+    let message = error.message || 'Internal server error';
+
+    if (error.message?.includes('context_length_exceeded')) {
+      status = 413; // Payload Too Large
+      message = 'The case study content is too long. Please try with a shorter description.';
+    } else if (error.message?.includes('rate_limit')) {
+      status = 429; // Too Many Requests
+      message = 'Rate limit exceeded. Please try again in a few minutes.';
+    }
+    
     return new Response(
       JSON.stringify({ 
-        error: 'Failed to process case study',
-        details: error.message
+        error: message,
+        details: error.stack,
+        type: error.name
       }),
       { 
-        status: 400,
+        status,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     )

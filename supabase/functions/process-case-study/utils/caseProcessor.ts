@@ -1,12 +1,11 @@
 import { Groq } from 'npm:groq-sdk';
 import { extractMedicalEntities } from './entityExtraction.ts';
 import { extractICFCodes } from './icfExtractor.ts';
-import { searchPubMedArticles } from './pubmedIntegration.ts';
 import { sections, specializedPrompts } from './sectionConfig.ts';
 import { ContextManager } from './contextManager.ts';
+import type { CaseStudy, Section } from './types.ts';
 
-const MAX_PROMPT_LENGTH = 3000; // Reduced from 4000
-const CHUNK_SIZE = 3; // Process sections in chunks of 3
+const MAX_PROMPT_LENGTH = 4000;
 
 export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'generate' = 'generate') {
   console.log('Processing case study:', caseStudy.id);
@@ -15,20 +14,28 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
   });
 
   try {
-    // Extract text for analysis (shortened)
+    // Extract text for analysis
     const textForAnalysis = [
-      caseStudy.condition,
+      caseStudy.medical_history,
       caseStudy.presenting_complaint,
+      caseStudy.condition,
+      caseStudy.patient_background,
+      caseStudy.psychosocial_factors,
       caseStudy.adl_problem
     ].filter(Boolean).join(' ').slice(0, MAX_PROMPT_LENGTH);
 
-    // Parallel processing of initial data
-    const [entities, icfCodes, pubmedArticles] = await Promise.all([
+    // Extract both medical entities and ICF codes
+    const [entities, icfCodes] = await Promise.all([
       extractMedicalEntities(textForAnalysis, groq),
-      extractICFCodes(textForAnalysis, groq),
-      searchPubMedArticles(`${caseStudy.condition} ${caseStudy.presenting_complaint} physiotherapy`)
+      extractICFCodes(textForAnalysis, groq)
     ]);
 
+    console.log('Extracted entities:', entities);
+    console.log('Extracted ICF codes:', icfCodes);
+
+    // Get specialization-specific context
+    const specializationContext = specializedPrompts[caseStudy.specialization as keyof typeof specializedPrompts];
+    
     if (action === 'analyze') {
       const analysisPrompt = `${caseStudy.ai_role}
       
@@ -47,11 +54,6 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
         condition: caseStudy.condition,
         complaint: caseStudy.presenting_complaint
       }, null, 2)}
-      
-      Evidence Base:
-      ${pubmedArticles.map(article => 
-        `- ${article.citation}: ${article.title} (${article.evidenceLevel})`
-      ).join('\n')}
       
       Specialization Context:
       ${JSON.stringify(specializationContext, null, 2)}
@@ -81,80 +83,82 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       return {
         analysis: completion.choices[0]?.message?.content,
         medical_entities: entities,
-        icf_codes: icfCodes,
-        references: pubmedArticles
+        icf_codes: icfCodes
       };
     }
 
-    // Process sections in chunks
+    // Generate full case study
     const generatedSections = [];
-    for (let i = 0; i < sections.length; i += CHUNK_SIZE) {
-      const sectionChunk = sections.slice(i, i + CHUNK_SIZE);
-      const chunkPromises = sectionChunk.map(section => 
-        generateSection(groq, section, caseStudy, entities, pubmedArticles)
-      );
+    for (const section of sections) {
+      console.log(`Generating section: ${section.title}`);
       
-      const chunkResults = await Promise.all(chunkPromises);
-      generatedSections.push(...chunkResults);
-      
-      // Small delay between chunks to prevent rate limiting
-      if (i + CHUNK_SIZE < sections.length) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-      }
+      const prompt = `${caseStudy.ai_role}
+
+      Generate the following section for a physiotherapy case study:
+      ${section.title}
+
+      Requirements:
+      ${section.description}
+
+      Specialization Context:
+      ${JSON.stringify(specializationContext, null, 2)}
+
+      Patient Information:
+      ${JSON.stringify({
+        name: caseStudy.patient_name,
+        age: caseStudy.age,
+        gender: caseStudy.gender,
+        condition: caseStudy.condition,
+        complaint: caseStudy.presenting_complaint,
+        background: caseStudy.patient_background,
+        adl_problem: caseStudy.adl_problem,
+        psychosocial_factors: caseStudy.psychosocial_factors
+      }, null, 2)}
+
+      Medical Entities:
+      ${JSON.stringify(entities, null, 2)}
+
+      ICF Codes:
+      ${JSON.stringify(icfCodes, null, 2)}
+
+      Please ensure:
+      1. Use specific measurements and standardized assessment scores
+      2. Include evidence levels for recommendations
+      3. Reference clinical guidelines when applicable
+      4. Provide detailed rationale for clinical decisions
+      5. Use proper formatting for clarity`;
+
+      const completion = await groq.chat.completions.create({
+        messages: [
+          {
+            role: "system",
+            content: caseStudy.ai_role
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ],
+        model: "gemma2-9b-it",
+        temperature: 0.7,
+        max_tokens: 2000,
+      });
+
+      const sectionContent = completion.choices[0]?.message?.content || '';
+      generatedSections.push({
+        title: section.title,
+        content: sectionContent
+      });
     }
 
     return {
       sections: generatedSections,
       medical_entities: entities,
       icf_codes: icfCodes,
-      analysis: generatedSections[0]?.content,
-      references: pubmedArticles
+      analysis: generatedSections[0]?.content
     };
   } catch (error) {
     console.error('Error in processCaseStudy:', error);
     throw error;
   }
-}
-
-async function generateSection(groq: Groq, section: any, caseStudy: any, entities: any, pubmedArticles: any) {
-  const prompt = `${caseStudy.ai_role}
-
-  Generate the following section for a physiotherapy case study:
-  ${section.title}
-
-  Requirements:
-  ${section.description}
-
-  Patient Information:
-  ${JSON.stringify({
-    name: caseStudy.patient_name,
-    age: caseStudy.age,
-    gender: caseStudy.gender,
-    condition: caseStudy.condition,
-    complaint: caseStudy.presenting_complaint
-  })}
-
-  Medical Entities:
-  ${JSON.stringify(entities)}`;
-
-  const completion = await groq.chat.completions.create({
-    messages: [
-      {
-        role: "system",
-        content: caseStudy.ai_role
-      },
-      {
-        role: "user",
-        content: prompt
-      }
-    ],
-    model: "gemma2-9b-it",
-    temperature: 0.7,
-    max_tokens: 1000,
-  });
-
-  return {
-    title: section.title,
-    content: completion.choices[0]?.message?.content || ''
-  };
 }

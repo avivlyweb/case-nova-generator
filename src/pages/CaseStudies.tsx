@@ -7,9 +7,6 @@ import CaseStudyCard from "@/components/case-studies/CaseStudyCard";
 import CaseAnalysis from "@/components/case-studies/CaseAnalysis";
 import { getCaseStudies, updateCaseStudy } from "@/lib/db";
 
-const MAX_RETRIES = 3;
-const RETRY_DELAY = 1000; // 1 second
-
 const CaseStudies = () => {
   const { toast } = useToast();
   const [analyzing, setAnalyzing] = useState<{ [key: string]: boolean }>({});
@@ -20,88 +17,28 @@ const CaseStudies = () => {
     queryFn: getCaseStudies,
   });
 
-  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-  const invokeWithRetry = async (functionName: string, body: any, retries = MAX_RETRIES) => {
-    try {
-      // Clean and validate the request body
-      const cleanBody = {
-        caseStudy: {
-          id: body.caseStudy.id,
-          patient_name: body.caseStudy.patient_name,
-          age: body.caseStudy.age,
-          gender: body.caseStudy.gender,
-          condition: body.caseStudy.condition,
-          presenting_complaint: body.caseStudy.presenting_complaint,
-          specialization: body.caseStudy.specialization,
-          ai_role: body.caseStudy.ai_role
-        },
-        action: body.action
-      };
-
-      console.log('Sending request with body:', JSON.stringify(cleanBody));
-      
-      const { data, error } = await supabase.functions.invoke(functionName, {
-        body: cleanBody,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (error) throw error;
-      return { data, error: null };
-    } catch (error: any) {
-      console.error(`Attempt ${MAX_RETRIES - retries + 1} failed:`, error);
-      
-      if (retries > 1) {
-        await delay(RETRY_DELAY);
-        return invokeWithRetry(functionName, body, retries - 1);
-      }
-      
-      return { data: null, error };
-    }
-  };
-
   const generateCase = async (caseStudy: any) => {
     setAnalyzing(prev => ({ ...prev, [caseStudy.id]: true }));
     try {
-      // Prepare the request body with only necessary fields
-      const requestBody = {
-        caseStudy: {
-          id: caseStudy.id,
-          patient_name: caseStudy.patient_name,
-          age: caseStudy.age,
-          gender: caseStudy.gender,
-          medical_history: caseStudy.medical_history,
-          presenting_complaint: caseStudy.presenting_complaint,
-          condition: caseStudy.condition,
-          specialization: caseStudy.specialization,
-          ai_role: caseStudy.ai_role,
-          adl_problem: caseStudy.adl_problem,
-          patient_background: caseStudy.patient_background,
-          comorbidities: caseStudy.comorbidities,
-          psychosocial_factors: caseStudy.psychosocial_factors
-        },
-        action: 'generate'
-      };
-
-      const { data, error } = await invokeWithRetry('process-case-study', requestBody);
+      const { data, error } = await supabase.functions.invoke('process-case-study', {
+        body: { caseStudy, action: 'generate' }
+      });
 
       if (error) {
         console.error('Error generating case:', error);
-        let errorMessage = 'Failed to generate case study.';
-        
-        if (error.message?.includes('timeout')) {
-          errorMessage = 'The request took too long. Please try with a shorter description.';
-        } else if (error.message?.includes('rate limit')) {
-          errorMessage = 'Too many requests. Please wait a few minutes and try again.';
+        if (error.message?.includes('rate limit')) {
+          toast({
+            variant: "destructive",
+            title: "Rate Limit Reached",
+            description: "The AI service is currently at capacity. Please try again in 30 minutes.",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to generate case study. Please try again later.",
+          });
         }
-        
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: errorMessage,
-        });
         return;
       }
 
@@ -142,7 +79,7 @@ const CaseStudies = () => {
         title: "Generation Complete",
         description: "Full case study has been generated and saved.",
       });
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error generating case:', error);
       toast({
         variant: "destructive",
@@ -157,26 +94,25 @@ const CaseStudies = () => {
   const analyzeCase = async (caseStudy: any) => {
     setAnalyzing(prev => ({ ...prev, [caseStudy.id]: true }));
     try {
-      const { data, error } = await invokeWithRetry('process-case-study', {
-        caseStudy,
-        action: 'analyze'
+      const { data, error } = await supabase.functions.invoke('process-case-study', {
+        body: { caseStudy, action: 'analyze' }
       });
 
       if (error) {
         console.error('Error analyzing case:', error);
-        let errorMessage = 'Failed to analyze case study.';
-        
-        if (error.message?.includes('timeout')) {
-          errorMessage = 'The request took too long. Please try with a shorter description.';
-        } else if (error.message?.includes('rate limit')) {
-          errorMessage = 'Too many requests. Please wait a few minutes and try again.';
+        if (error.message?.includes('rate limit')) {
+          toast({
+            variant: "destructive",
+            title: "Rate Limit Reached",
+            description: "The AI service is currently at capacity. Please try again in 30 minutes.",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to analyze case study. Please try again later.",
+          });
         }
-        
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: errorMessage,
-        });
         return;
       }
 
@@ -195,7 +131,7 @@ const CaseStudies = () => {
         title: "Analysis Complete",
         description: "AI analysis has been generated and saved.",
       });
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error analyzing case:', error);
       toast({
         variant: "destructive",
