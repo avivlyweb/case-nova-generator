@@ -9,7 +9,7 @@ import MedicalEntities from "./MedicalEntities";
 interface CaseAnalysisProps {
   analysis: {
     analysis?: string;
-    sections?: Array<{ title: string; content: string }> | any;
+    sections?: Array<{ title: string; content: string }> | Record<string, any>;
     references?: any[] | string;
     icf_codes?: string;
     medical_entities?: any;
@@ -26,18 +26,28 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
   if (!analysis) return null;
 
   // Convert sections to array if it's stored as an object
-  const formattedSections = analysis.sections ? 
-    (Array.isArray(analysis.sections) ? analysis.sections : 
-     Object.entries(analysis.sections).map(([title, content]) => ({
-       title,
-       content: typeof content === 'string' ? content : JSON.stringify(content)
-     }))) : [];
+  const formattedSections = (() => {
+    if (!analysis.sections) return [];
+    
+    if (Array.isArray(analysis.sections)) {
+      return analysis.sections;
+    }
+    
+    if (typeof analysis.sections === 'object') {
+      return Object.entries(analysis.sections).map(([title, content]) => ({
+        title,
+        content: typeof content === 'string' ? content : JSON.stringify(content)
+      }));
+    }
+    
+    return [];
+  })();
 
   // Format professional data sections
   const formatProfessionalData = () => {
     const sections = [];
 
-    if (analysis.assessment_tools?.length > 0) {
+    if (Array.isArray(analysis.assessment_tools) && analysis.assessment_tools.length > 0) {
       sections.push({
         title: "Assessment Tools",
         content: formatAssessmentTools(analysis.assessment_tools)
@@ -58,7 +68,7 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
       });
     }
 
-    if (analysis.standardized_tests?.length > 0) {
+    if (Array.isArray(analysis.standardized_tests) && analysis.standardized_tests.length > 0) {
       sections.push({
         title: "Standardized Tests",
         content: formatStandardizedTests(analysis.standardized_tests)
@@ -117,7 +127,7 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
                 <MedicalEntities entities={analysis.medical_entities} />
               )}
 
-              {analysis.clinical_guidelines && analysis.clinical_guidelines.length > 0 && (
+              {Array.isArray(analysis.clinical_guidelines) && analysis.clinical_guidelines.length > 0 && (
                 <DetailedSection
                   title="Clinical Guidelines"
                   content={formatGuidelines(analysis.clinical_guidelines)}
@@ -186,6 +196,7 @@ const formatReferences = (references: any[] | string | null): string => {
 };
 
 const formatAssessmentTools = (tools: any[]): string => {
+  if (!Array.isArray(tools)) return '';
   return tools.map(tool => (
     `### ${tool.name}\n\n` +
     `**Category:** ${tool.category}\n\n` +
@@ -196,6 +207,7 @@ const formatAssessmentTools = (tools: any[]): string => {
 };
 
 const formatMeasurementData = (data: Record<string, any>): string => {
+  if (!data || typeof data !== 'object') return '';
   return Object.entries(data).map(([category, measurements]) => (
     `### ${category}\n\n` +
     Object.entries(measurements).map(([name, value]) => (
@@ -205,16 +217,18 @@ const formatMeasurementData = (data: Record<string, any>): string => {
 };
 
 const formatFrameworks = (frameworks: Record<string, any>): string => {
+  if (!frameworks || typeof frameworks !== 'object') return '';
   return Object.entries(frameworks).map(([name, framework]) => (
     `### ${name}\n\n` +
     `${framework.description}\n\n` +
     `**Components:**\n` +
-    framework.components.map((c: string) => `- ${c}`).join('\n') + '\n\n' +
+    (Array.isArray(framework.components) ? framework.components.map((c: string) => `- ${c}`).join('\n') : '') + '\n\n' +
     `**Guidelines:** ${framework.guidelines}`
   )).join('\n---\n\n');
 };
 
 const formatStandardizedTests = (tests: any[]): string => {
+  if (!Array.isArray(tests)) return '';
   return tests.map(test => (
     `### ${test.name}\n\n` +
     `**Category:** ${test.category}\n\n` +
