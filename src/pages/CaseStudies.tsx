@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import CaseStudyCard from "@/components/case-studies/CaseStudyCard";
 import CaseAnalysis from "@/components/case-studies/CaseAnalysis";
 import { getCaseStudies, updateCaseStudy } from "@/lib/db";
+import { importClinicalCase } from "@/lib/clinical-reasoning";
 
 const CaseStudies = () => {
   const { toast } = useToast();
@@ -140,6 +141,21 @@ const CaseStudies = () => {
       });
     } finally {
       setAnalyzing(prev => ({ ...prev, [caseStudy.id]: false }));
+    }
+  };
+
+  const importCase = async (caseText: string) => {
+    try {
+      const { sections, analysis } = await importClinicalCase(caseText);
+      
+      // Here you can save to Supabase or handle the imported case as needed
+      console.log('Imported case sections:', sections);
+      console.log('Clinical analysis:', analysis);
+      
+      return { sections, analysis };
+    } catch (error) {
+      console.error('Error importing case:', error);
+      throw error;
     }
   };
 
