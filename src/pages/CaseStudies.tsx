@@ -24,11 +24,25 @@ const CaseStudies = () => {
 
   const invokeWithRetry = async (functionName: string, body: any, retries = MAX_RETRIES) => {
     try {
-      // Ensure the body is properly structured and all fields are serializable
-      const sanitizedBody = JSON.parse(JSON.stringify(body));
+      // Clean and validate the request body
+      const cleanBody = {
+        caseStudy: {
+          id: body.caseStudy.id,
+          patient_name: body.caseStudy.patient_name,
+          age: body.caseStudy.age,
+          gender: body.caseStudy.gender,
+          condition: body.caseStudy.condition,
+          presenting_complaint: body.caseStudy.presenting_complaint,
+          specialization: body.caseStudy.specialization,
+          ai_role: body.caseStudy.ai_role
+        },
+        action: body.action
+      };
+
+      console.log('Sending request with body:', JSON.stringify(cleanBody));
       
       const { data, error } = await supabase.functions.invoke(functionName, {
-        body: sanitizedBody,
+        body: cleanBody,
         headers: {
           'Content-Type': 'application/json',
         },

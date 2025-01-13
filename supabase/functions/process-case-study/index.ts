@@ -3,6 +3,7 @@ import { processCaseStudy } from './utils/caseProcessor.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
@@ -13,12 +14,6 @@ serve(async (req) => {
   }
 
   try {
-    // Validate content type
-    const contentType = req.headers.get('content-type')
-    if (!contentType?.includes('application/json')) {
-      throw new Error('Content-Type must be application/json')
-    }
-
     // Get and validate request body
     if (!req.body) {
       throw new Error('Request body is required')
@@ -47,7 +42,10 @@ serve(async (req) => {
     return new Response(
       JSON.stringify(result),
       { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json'
+        },
         status: 200
       }
     )
@@ -55,27 +53,13 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in edge function:', error)
     
-    let status = 500
-    let message = error.message || 'Internal server error'
-
-    if (error.message?.includes('Content-Type')) {
-      status = 415
-      message = 'Content-Type must be application/json'
-    } else if (error.message?.includes('Invalid JSON')) {
-      status = 400
-      message = 'Invalid request format. Please check your input data.'
-    } else if (error.message?.includes('required')) {
-      status = 400
-      message = error.message
-    }
-    
     return new Response(
       JSON.stringify({ 
-        error: message,
+        error: error.message || 'Internal server error',
         details: error.stack
       }),
       { 
-        status,
+        status: error.message?.includes('Invalid JSON') ? 400 : 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     )
