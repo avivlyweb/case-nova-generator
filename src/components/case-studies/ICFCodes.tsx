@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { List } from "lucide-react";
-import { Tooltip } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface ICFCodesProps {
   codes: string | string[];
@@ -44,38 +44,42 @@ const ICFCodes = ({ codes }: ICFCodesProps) => {
   }, {});
 
   return (
-    <Card className="bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-all duration-200">
-      <CardContent className="pt-6">
-        <div className="flex items-center gap-3 mb-4">
-          <List className="h-5 w-5 text-primary" />
-          <h3 className="text-xl font-semibold text-primary-900 dark:text-primary-100">ICF Codes</h3>
-        </div>
-        <div className="space-y-4">
-          {Object.entries(groupedCodes).map(([category, codes]) => (
-            <div key={category} className="space-y-2">
-              <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                {ICF_CATEGORIES[category as keyof typeof ICF_CATEGORIES]?.name}
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {codes.map((code, index) => (
-                  <Tooltip 
-                    key={index}
-                    content={`${ICF_CATEGORIES[category as keyof typeof ICF_CATEGORIES]?.name} code`}
-                  >
-                    <Badge 
-                      variant="secondary" 
-                      className={`text-sm ${ICF_CATEGORIES[category as keyof typeof ICF_CATEGORIES]?.color} transition-colors cursor-help`}
-                    >
-                      {code}
-                    </Badge>
-                  </Tooltip>
-                ))}
+    <TooltipProvider>
+      <Card className="bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-all duration-200">
+        <CardContent className="pt-6">
+          <div className="flex items-center gap-3 mb-4">
+            <List className="h-5 w-5 text-primary" />
+            <h3 className="text-xl font-semibold text-primary-900 dark:text-primary-100">ICF Codes</h3>
+          </div>
+          <div className="space-y-4">
+            {Object.entries(groupedCodes).map(([category, codes]) => (
+              <div key={category} className="space-y-2">
+                <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  {ICF_CATEGORIES[category as keyof typeof ICF_CATEGORIES]?.name}
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {codes.map((code, index) => (
+                    <Tooltip key={index}>
+                      <TooltipTrigger>
+                        <Badge 
+                          variant="secondary" 
+                          className={`text-sm ${ICF_CATEGORIES[category as keyof typeof ICF_CATEGORIES]?.color} transition-colors cursor-help`}
+                        >
+                          {code}
+                        </Badge>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        {`${ICF_CATEGORIES[category as keyof typeof ICF_CATEGORIES]?.name} code`}
+                      </TooltipContent>
+                    </Tooltip>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </TooltipProvider>
   );
 };
 
