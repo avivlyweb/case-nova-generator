@@ -9,12 +9,11 @@ export const sections = [
     5. Psychosocial factors affecting condition
     6. Results from standardized screening tools
     7. Patient-Reported Outcome Measures (PROMs)
-    8. Impact on daily life and quality of life
-    Include specific details about pain patterns, intensity, and duration if relevant.`
+    8. Impact on daily life and quality of life`
   },
   {
     title: "Interview and Problem List",
-    description: `Complete physiotherapy RPS Form including:
+    description: `Complete RPS Form including:
     1. Patient Information
        - Name, age, date
        - Medical diagnosis
@@ -36,44 +35,50 @@ export const sections = [
        - Work impact
        - Social activities
        - Recreational activities
-    6. Health Seeking Questions (HSQ)
-    7. Patient Identified Problems (PIPs)
-    8. Non-Patient Identified Problems (NPIPs)
-    9. Three hypotheses with problem and target mediator
-    Include specific objective measurements and standardized assessment scores.`
+    6. Therapeutic Perspective
+       - Treatment approach
+       - Goals
+       - Planned interventions
+    7. Factors Assessment
+       - Personal factors
+       - Environmental impacts
+       - Contextual considerations
+    8. Health Seeking Questions (HSQ)
+    9. Patient Identified Problems (PIPs)
+    10. Non-Patient Identified Problems (NPIPs)
+    11. Three hypotheses with problem and target mediator`
   },
   {
     title: "Assessment Strategy",
     description: `Detail assessment strategy aligned with clinical standards:
     1. Special Tests Selection
-       - List tests with rationale and expected outcomes
-       - Include sensitivity and specificity values
-       - Document testing sequence
-       - Note precautions
+       - List all tests with rationale
+       - Sensitivity and specificity values
+       - Testing sequence
+       - Precautions
     2. Differential Diagnosis
        - Primary hypotheses
        - Alternative considerations
        - Red flags assessment
     3. Outcome Measures
-       - Selected validated tools
+       - Validated tools selection
        - Baseline measurements
        - Progress tracking plan
     4. Assessment Documentation
        - Standardized forms
        - Measurement tools
-       - Recording methods
-    Include evidence levels for each test and measurement tool.`
+       - Recording methods`
   },
   {
     title: "Assessment Findings",
     description: `Present findings with clinical reasoning:
     1. Objective Measurements
-       - ROM values (in degrees)
-       - Strength testing results (0-5 scale)
+       - ROM values
+       - Strength testing results
        - Special test outcomes
        - Functional assessments
     2. Subjective Reports
-       - Pain descriptions (0-10 scale)
+       - Pain descriptions
        - Activity limitations
        - Patient concerns
     3. Clinical Patterns
@@ -84,7 +89,10 @@ export const sections = [
        - Biomechanical analysis
        - Neural components
        - Psychosocial elements
-    Include specific measurements and standardized assessment scores.`
+    5. Red and Yellow Flags
+       - Risk factors
+       - Precautions
+       - Contraindications`
   },
   {
     title: "Goals/Actions to Take",
@@ -102,7 +110,12 @@ export const sections = [
     3. Achievable: Progressive milestones
     4. Relevant: Functional outcomes
     5. Time-bound: Achievement timeline
-    Include specific outcome measures and progress indicators.`
+
+    Include:
+    - Functional outcome measures
+    - Patient-specific objectives
+    - Progress indicators
+    - Success criteria`
   },
   {
     title: "Intervention Plan",
@@ -110,20 +123,27 @@ export const sections = [
     1. Exercise Therapy
        - Type and progression
        - Sets, reps, intensity
-       - Home program details
+       - Home program
     2. Manual Therapy
-       - Specific techniques
-       - Frequency and progression
-       - Precautions
+       - Techniques
+       - Frequency
+       - Progression criteria
     3. Patient Education
        - Key topics
        - Materials
-       - Self-management strategies
-    4. Evidence-Based Approaches
-       - Clinical practice guidelines
-       - Research support
-       - Outcome expectations
-    Include specific protocols and progression criteria.`
+       - Self-management
+    4. Behavioral Approaches
+       - Motivation strategies
+       - Adherence plan
+       - Lifestyle modifications
+    5. Technology Integration
+       - Tools and apps
+       - Monitoring devices
+       - Digital resources
+    6. Precautions
+       - Risk management
+       - Contraindications
+       - Safety measures`
   },
   {
     title: "Reassessment",
@@ -140,50 +160,51 @@ export const sections = [
        - Warning signs
        - Safety parameters
        - Emergency protocols
-    Include specific timeframes and measurement tools.`
+    4. Documentation
+       - Progress notes
+       - Outcome tracking
+       - Report formats`
   },
   {
-    title: "Clinical Reasoning",
-    description: `Apply HOAC-II Framework:
-    1. Problem Identification
-       - Primary problems
-       - Contributing factors
-       - Impact analysis
-    2. Hypothesis Generation
-       - Clinical patterns
-       - Evidence support
-       - Alternative explanations
-    3. Intervention Selection
-       - Evidence levels
-       - Risk-benefit analysis
+    title: "Explanation and Justification of Choices",
+    description: `Provide evidence-based justification:
+    1. HOAC-II Framework Application
+       - Problem identification
+       - Hypothesis generation
+       - Intervention selection
+       - Outcome evaluation
+    2. Clinical Guidelines Integration
+       - KNGF guidelines
+       - International standards
+       - Best practice recommendations
+    3. Evidence Levels
+       - Research quality
+       - Clinical relevance
+       - Implementation context
+    4. Risk-Benefit Analysis
+       - Treatment options
        - Expected outcomes
-    4. Outcome Evaluation
-       - Measurement tools
-       - Success criteria
-       - Modification triggers
-    Include references to clinical guidelines and research evidence.`
+       - Potential complications`
   }
 ];
 
 export const specializedPrompts = {
   "Orthopedic": {
-    context: "Focus on musculoskeletal assessment, biomechanical analysis, and movement dysfunction. Consider tissue healing stages and biomechanical principles.",
+    context: "Focus on musculoskeletal assessment, biomechanical analysis, and movement dysfunction.",
     assessmentCriteria: [
-      "Joint mobility and stability assessment",
-      "Muscle strength and length testing",
-      "Movement pattern analysis",
-      "Functional biomechanics evaluation",
-      "Special orthopedic tests"
+      "Joint mobility and stability",
+      "Muscle strength and length",
+      "Movement patterns",
+      "Functional biomechanics"
     ]
   },
   "Neurological": {
-    context: "Emphasize neurological examination, motor control, balance, and functional recovery strategies. Consider neuroplasticity principles.",
+    context: "Emphasize neurological examination, motor control, balance, and functional recovery strategies.",
     assessmentCriteria: [
       "Motor control and coordination",
       "Balance and postural control",
       "Sensory integration",
-      "Cognitive aspects",
-      "Functional task analysis"
+      "Cognitive aspects"
     ]
   },
   "Cardiovascular": {
@@ -231,25 +252,4 @@ export const specializedPrompts = {
       "Pain patterns"
     ]
   }
-};
-
-export const evidenceLevels = {
-  "1a": "Systematic review of RCTs",
-  "1b": "Individual RCT",
-  "2a": "Systematic review of cohort studies",
-  "2b": "Individual cohort study",
-  "3a": "Systematic review of case-control studies",
-  "3b": "Individual case-control study",
-  "4": "Case series",
-  "5": "Expert opinion"
-};
-
-export const standardizedAssessments = {
-  "Pain": ["VAS", "NPRS", "Brief Pain Inventory"],
-  "Function": ["Patient-Specific Functional Scale", "Timed Up and Go", "6-Minute Walk Test"],
-  "Quality of Life": ["SF-36", "EQ-5D", "WHO-QOL"],
-  "Disability": ["Oswestry Disability Index", "Roland-Morris Disability Questionnaire"],
-  "Balance": ["Berg Balance Scale", "Functional Reach Test"],
-  "Strength": ["Manual Muscle Testing", "Hand-held Dynamometry"],
-  "ROM": ["Goniometry", "Inclinometry"]
 };

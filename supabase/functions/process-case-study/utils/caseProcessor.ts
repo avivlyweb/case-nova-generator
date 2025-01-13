@@ -1,204 +1,109 @@
+import { createClient } from '@supabase/supabase-js';
 import { Groq } from 'npm:groq-sdk';
-import { extractMedicalEntities } from './entityExtraction.ts';
-import { extractICFCodes } from './icfExtractor.ts';
 import { sections, specializedPrompts } from './sectionConfig.ts';
+import { extractMedicalEntities } from './entityExtraction.ts';
 import { ContextManager } from './contextManager.ts';
-import type { CaseStudy, Section } from './types.ts';
 
-const MAX_PROMPT_LENGTH = 4000;
-const MAX_RETRIES = 3;
-const RETRY_DELAY = 2000; // Base delay in ms
-
-async function retryWithExponentialBackoff<T>(
-  operation: () => Promise<T>,
-  maxRetries: number = MAX_RETRIES,
-  baseDelay: number = RETRY_DELAY
-): Promise<T> {
-  let lastError;
-  
-  for (let attempt = 0; attempt < maxRetries; attempt++) {
-    try {
-      return await operation();
-    } catch (error) {
-      lastError = error;
-      console.error(`Attempt ${attempt + 1} failed:`, error);
-      
-      if (error.message?.includes('rate limit') || error.message?.includes('503')) {
-        const delay = baseDelay * Math.pow(2, attempt);
-        console.log(`Retrying in ${delay}ms...`);
-        await new Promise(resolve => setTimeout(resolve, delay));
-        continue;
-      }
-      
-      throw error;
-    }
-  }
-  
-  throw lastError;
-}
+const groq = new Groq({
+  apiKey: Deno.env.get('GROQ_API_KEY') || '',
+});
 
 export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'generate' = 'generate') {
   console.log('Processing case study:', caseStudy.id);
-  const groq = new Groq({
-    apiKey: Deno.env.get('GROQ_API_KEY') || '',
-  });
 
-  try {
-    // Extract text for analysis
-    const textForAnalysis = [
-      caseStudy.medical_history,
-      caseStudy.presenting_complaint,
-      caseStudy.condition,
-      caseStudy.patient_background,
-      caseStudy.psychosocial_factors,
-      caseStudy.adl_problem
-    ].filter(Boolean).join(' ').slice(0, MAX_PROMPT_LENGTH);
+  // Extract medical entities from all text fields
+  const textForAnalysis = [
+    caseStudy.medical_history,
+    caseStudy.presenting_complaint,
+    caseStudy.condition,
+    caseStudy.patient_background,
+    caseStudy.psychosocial_factors,
+    caseStudy.adl_problem
+  ].filter(Boolean).join(' ');
 
-    // Extract both medical entities and ICF codes with retry logic
-    const [entities, icfCodes] = await Promise.all([
-      retryWithExponentialBackoff(() => extractMedicalEntities(textForAnalysis, groq)),
-      retryWithExponentialBackoff(() => extractICFCodes(textForAnalysis, groq))
-    ]);
+  const entities = await extractMedicalEntities(textForAnalysis, groq);
+  console.log('Extracted entities:', entities);
 
-    console.log('Extracted entities:', entities);
-    console.log('Extracted ICF codes:', icfCodes);
+  // Initialize context manager with specialization
+  const contextManager = new ContextManager(
+    caseStudy.specialization,
+    specializedPrompts[caseStudy.specialization as keyof typeof specializedPrompts]
+  );
+  contextManager.setEntities(entities);
 
-    // Get specialization-specific context
-    const specializationContext = specializedPrompts[caseStudy.specialization as keyof typeof specializedPrompts];
+  if (action === 'analyze') {
+    // Generate quick analysis
+    const analysisPrompt = `${caseStudy.ai_role}
     
-    if (action === 'analyze') {
-      const analysisPrompt = `${caseStudy.ai_role}
-      
-      Provide a comprehensive analysis of this case considering:
-      1. Primary condition and symptoms
-      2. Key medical findings and implications
-      3. Relevant evidence-based assessment strategies
-      4. Potential treatment approaches based on current guidelines
-      5. Risk factors and precautions
-      
-      Patient Information:
-      ${JSON.stringify({
-        name: caseStudy.patient_name,
-        age: caseStudy.age,
-        gender: caseStudy.gender,
-        condition: caseStudy.condition,
-        complaint: caseStudy.presenting_complaint
-      }, null, 2)}
-      
-      Specialization Context:
-      ${JSON.stringify(specializationContext, null, 2)}
-      
-      Extracted Medical Entities:
-      ${JSON.stringify(entities, null, 2)}
-      
-      ICF Codes:
-      ${JSON.stringify(icfCodes, null, 2)}`;
+    Provide insights about this case in a concise, professional manner. 
+    Focus on key medical observations, potential implications, and suggested areas for further investigation.
+    
+    Patient Information:
+    ${JSON.stringify(caseStudy, null, 2)}
+    
+    Extracted Medical Entities:
+    ${JSON.stringify(entities, null, 2)}`;
 
-      const completion = await retryWithExponentialBackoff(() => 
-        groq.chat.completions.create({
-          messages: [
-            {
-              role: "system",
-              content: caseStudy.ai_role
-            },
-            {
-              role: "user",
-              content: analysisPrompt
-            }
-          ],
-          model: "gemma2-9b-it",
-          temperature: 0.7,
-          max_tokens: 1000,
-        })
-      );
-
-      return {
-        analysis: completion.choices[0]?.message?.content,
-        medical_entities: entities,
-        icf_codes: icfCodes
-      };
-    }
-
-    // Generate full case study with retry logic
-    const generatedSections = [];
-    for (const section of sections) {
-      console.log(`Generating section: ${section.title}`);
-      
-      const prompt = `${caseStudy.ai_role}
-
-      Generate the following section for a physiotherapy case study:
-      ${section.title}
-
-      Requirements:
-      ${section.description}
-
-      Specialization Context:
-      ${JSON.stringify(specializationContext, null, 2)}
-
-      Patient Information:
-      ${JSON.stringify({
-        name: caseStudy.patient_name,
-        age: caseStudy.age,
-        gender: caseStudy.gender,
-        condition: caseStudy.condition,
-        complaint: caseStudy.presenting_complaint,
-        background: caseStudy.patient_background,
-        adl_problem: caseStudy.adl_problem,
-        psychosocial_factors: caseStudy.psychosocial_factors
-      }, null, 2)}
-
-      Medical Entities:
-      ${JSON.stringify(entities, null, 2)}
-
-      ICF Codes:
-      ${JSON.stringify(icfCodes, null, 2)}
-
-      Please ensure:
-      1. Use specific measurements and standardized assessment scores
-      2. Include evidence levels for recommendations
-      3. Reference clinical guidelines when applicable
-      4. Provide detailed rationale for clinical decisions
-      5. Use proper formatting for clarity`;
-
-      const completion = await retryWithExponentialBackoff(() =>
-        groq.chat.completions.create({
-          messages: [
-            {
-              role: "system",
-              content: caseStudy.ai_role
-            },
-            {
-              role: "user",
-              content: prompt
-            }
-          ],
-          model: "gemma2-9b-it",
-          temperature: 0.7,
-          max_tokens: 2000,
-        })
-      );
-
-      const sectionContent = completion.choices[0]?.message?.content || '';
-      generatedSections.push({
-        title: section.title,
-        content: sectionContent
-      });
-    }
+    const completion = await groq.chat.completions.create({
+      messages: [
+        {
+          role: "system",
+          content: caseStudy.ai_role
+        },
+        {
+          role: "user",
+          content: analysisPrompt
+        }
+      ],
+      model: "gemma2-9b-it",
+      temperature: 0.7,
+      max_tokens: 2000,
+    });
 
     return {
-      sections: generatedSections,
-      medical_entities: entities,
-      icf_codes: icfCodes,
-      analysis: generatedSections[0]?.content
+      analysis: completion.choices[0]?.message?.content,
+      medical_entities: entities
     };
-  } catch (error) {
-    console.error('Error in processCaseStudy:', error);
-    
-    // Determine if it's a rate limit or service unavailable error
-    if (error.message?.includes('rate limit') || error.message?.includes('503')) {
-      throw new Error('The AI service is temporarily unavailable. Please try again in a few moments.');
-    }
-    
-    throw error;
   }
+
+  // Generate full case study
+  const generatedSections = [];
+  for (const section of sections) {
+    console.log(`Generating section: ${section.title}`);
+    
+    const prompt = `${contextManager.getPromptContext(section.title)}
+
+${section.description}`;
+
+    const completion = await groq.chat.completions.create({
+      messages: [
+        {
+          role: "system",
+          content: caseStudy.ai_role
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      model: "gemma2-9b-it",
+      temperature: 0.7,
+      max_tokens: 2000,
+    });
+
+    const sectionContent = completion.choices[0]?.message?.content || '';
+    generatedSections.push({
+      title: section.title,
+      content: sectionContent
+    });
+
+    // Add section to context for next iterations
+    contextManager.addSection(section.title, sectionContent);
+  }
+
+  return {
+    sections: generatedSections,
+    medical_entities: entities,
+    analysis: generatedSections[0]?.content // First section serves as quick analysis
+  };
 }

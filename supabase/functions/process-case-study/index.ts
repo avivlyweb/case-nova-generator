@@ -4,6 +4,7 @@ import { processCaseStudy } from './utils/caseProcessor.ts'
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
 }
 
 serve(async (req) => {
@@ -20,10 +21,7 @@ serve(async (req) => {
     if (!caseStudy) {
       console.error('No case study provided')
       return new Response(
-        JSON.stringify({ 
-          error: 'No case study provided',
-          details: 'The request must include a case study object'
-        }),
+        JSON.stringify({ error: 'No case study provided' }),
         { 
           status: 400,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -46,26 +44,14 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Error in edge function:', error)
-    
-    // Determine appropriate status code
-    let status = 500;
-    let message = error.message || 'Internal server error';
-
-    if (message.includes('rate limit')) {
-      status = 429; // Too Many Requests
-      message = 'Rate limit exceeded. Please try again in a few minutes.';
-    } else if (message.includes('temporarily unavailable')) {
-      status = 503; // Service Unavailable
-    }
-    
     return new Response(
       JSON.stringify({ 
-        error: message,
+        error: error.message || 'Internal server error',
         details: error.stack,
         type: error.name
       }),
       { 
-        status,
+        status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     )

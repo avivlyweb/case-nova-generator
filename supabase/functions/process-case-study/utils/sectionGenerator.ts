@@ -63,7 +63,7 @@ Requirements:
         ],
         model: "gemma2-9b-it",
         temperature: 0.7,
-        max_tokens: 3000,
+        max_tokens: 2000,
       });
 
       const content = completion.choices[0]?.message?.content || 'Error generating content';
