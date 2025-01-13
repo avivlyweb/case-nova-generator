@@ -55,11 +55,11 @@ serve(async (req) => {
     
     return new Response(
       JSON.stringify({ 
-        error: error.message || 'Internal server error',
-        details: error.stack
+        error: 'Failed to process case study',
+        details: error.message
       }),
       { 
-        status: error.message?.includes('Invalid JSON') ? 400 : 500,
+        status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     )
