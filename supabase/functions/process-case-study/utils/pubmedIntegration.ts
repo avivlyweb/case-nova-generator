@@ -1,4 +1,4 @@
-import { PubMedArticle } from './types';
+import { PubMedArticle } from './types.ts';
 
 const PUBMED_API_KEY = Deno.env.get('PUBMED_API_KEY');
 const PUBMED_BASE_URL = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils';
