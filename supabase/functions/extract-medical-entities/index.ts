@@ -1,106 +1,76 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { Groq } from 'npm:groq-sdk';
-import { extractEntities } from './utils/entityExtraction.ts';
-import { buildEntityExtractionText } from './utils/textProcessing.ts';
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import { extractMedicalEntities } from './utils/entityExtraction.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+}
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('Function timed out')), 25000) // 25 second timeout
+    })
 
-    // Only process the case study ID that was passed in the request
-    const { caseStudyId } = await req.json();
+    const { text } = await req.json()
     
-    if (!caseStudyId) {
-      throw new Error('No case study ID provided');
-    }
-
-    console.log(`Processing case study ${caseStudyId}`);
-
-    const { data: caseStudy, error: fetchError } = await supabase
-      .from('case_studies')
-      .select('*')
-      .eq('id', caseStudyId)
-      .single();
-
-    if (fetchError) {
-      throw fetchError;
-    }
-
-    if (!caseStudy) {
-      throw new Error(`Case study ${caseStudyId} not found`);
-    }
-
-    // Skip if medical entities already exist
-    if (caseStudy.medical_entities && caseStudy.medical_entities.length > 0) {
-      console.log(`Case study ${caseStudyId} already has medical entities`);
+    if (!text) {
       return new Response(
-        JSON.stringify({ 
-          message: 'Case study already has medical entities',
-          entities: caseStudy.medical_entities 
-        }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+        JSON.stringify({ error: 'No text provided' }),
+        { 
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
     }
 
-    const groq = new Groq({
-      apiKey: Deno.env.get('GROQ_API_KEY')
-    });
-
-    const textToAnalyze = buildEntityExtractionText(caseStudy);
-    console.log(`Extracting entities for case study ${caseStudyId}`);
+    console.log('Processing text for medical entities extraction')
     
-    const entities = await extractEntities(textToAnalyze, groq);
+    // Race between the processing and timeout
+    const entities = await Promise.race([
+      extractMedicalEntities(text),
+      timeoutPromise
+    ])
+
+    console.log('Extraction completed successfully:', entities)
     
-    const { error: updateError } = await supabase
-      .from('case_studies')
-      .update({ medical_entities: entities })
-      .eq('id', caseStudyId);
-
-    if (updateError) {
-      throw updateError;
-    }
-
-    console.log(`Successfully updated case study ${caseStudyId} with entities:`, entities);
-
     return new Response(
-      JSON.stringify({ 
-        message: 'Medical entities extraction completed successfully',
-        entities 
-      }),
+      JSON.stringify({ entities }),
       { 
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json' 
-        } 
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
-    );
+    )
 
   } catch (error) {
-    console.error('Error in extract-medical-entities function:', error);
+    console.error('Error in edge function:', error)
+    
+    let status = 500;
+    let message = error.message || 'Internal server error';
+
+    if (error.message?.includes('rate_limit')) {
+      status = 429;
+      message = 'Rate limit exceeded. Please try again in a few minutes.';
+    } else if (error.message?.includes('timed out')) {
+      status = 504;
+      message = 'The request took too long to process. Please try again.';
+    }
+    
     return new Response(
       JSON.stringify({ 
-        error: error.message,
-        details: error.stack
+        error: message,
+        details: error.stack,
+        type: error.name
       }),
       { 
-        status: 500,
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json' 
-        }
+        status,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
-    );
+    )
   }
-});
+})

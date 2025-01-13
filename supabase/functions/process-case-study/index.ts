@@ -13,6 +13,10 @@ serve(async (req) => {
   }
 
   try {
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('Function timed out')), 25000) // 25 second timeout
+    })
+
     // Parse request body
     const body = await req.json()
     const { caseStudy, action = 'generate' } = body
@@ -30,7 +34,12 @@ serve(async (req) => {
 
     console.log(`Processing ${action} request for case study:`, caseStudy.id)
     
-    const result = await processCaseStudy(caseStudy, action)
+    // Race between the processing and timeout
+    const result = await Promise.race([
+      processCaseStudy(caseStudy, action),
+      timeoutPromise
+    ])
+
     console.log('Processing completed successfully:', result)
     
     return new Response(
@@ -54,6 +63,9 @@ serve(async (req) => {
     } else if (error.message?.includes('rate_limit')) {
       status = 429; // Too Many Requests
       message = 'Rate limit exceeded. Please try again in a few minutes.';
+    } else if (error.message?.includes('timed out')) {
+      status = 504; // Gateway Timeout
+      message = 'The request took too long to process. Please try again.';
     }
     
     return new Response(
