@@ -16,10 +16,11 @@ export const extractMedicalEntities = async (text: string, groq: Groq) => {
 Text to analyze:
 ${text}
 
-Return ONLY a valid JSON object with these exact categories as keys.
+Return a valid JSON object with these exact categories as keys.
 Each category should contain an array of unique strings.
 Only include entities that are explicitly mentioned in the text.
-Do not include any markdown formatting or explanation text.`;
+Do not include any markdown formatting or explanation text.
+Do not wrap the response in code blocks or backticks.`;
 
   try {
     console.log('Sending entity extraction prompt to GROQ');
@@ -28,7 +29,7 @@ Do not include any markdown formatting or explanation text.`;
       messages: [
         {
           role: "system",
-          content: "You are a clinical entity extraction system specialized in physiotherapy terminology. Always return valid JSON only."
+          content: "You are a clinical entity extraction system. Return only valid JSON without any markdown formatting, code blocks, or explanatory text."
         },
         {
           role: "user",
@@ -59,8 +60,12 @@ Do not include any markdown formatting or explanation text.`;
       };
     }
 
-    // Clean the response by removing any markdown formatting
-    const cleanedResponse = response.replace(/```json\n|\n```/g, '').trim();
+    // Clean the response by removing any markdown or code block formatting
+    const cleanedResponse = response
+      .replace(/```json\n|\n```|```\n|```/g, '') // Remove code block markers
+      .replace(/^[^{]*({.*})[^}]*$/s, '$1') // Extract only the JSON object
+      .trim();
+
     console.log('Cleaned response:', cleanedResponse);
 
     try {
