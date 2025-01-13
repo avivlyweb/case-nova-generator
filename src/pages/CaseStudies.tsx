@@ -24,8 +24,11 @@ const CaseStudies = () => {
 
   const invokeWithRetry = async (functionName: string, body: any, retries = MAX_RETRIES) => {
     try {
+      // Ensure the body is properly structured and all fields are serializable
+      const sanitizedBody = JSON.parse(JSON.stringify(body));
+      
       const { data, error } = await supabase.functions.invoke(functionName, {
-        body,
+        body: sanitizedBody,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -48,10 +51,27 @@ const CaseStudies = () => {
   const generateCase = async (caseStudy: any) => {
     setAnalyzing(prev => ({ ...prev, [caseStudy.id]: true }));
     try {
-      const { data, error } = await invokeWithRetry('process-case-study', {
-        caseStudy,
+      // Prepare the request body with only necessary fields
+      const requestBody = {
+        caseStudy: {
+          id: caseStudy.id,
+          patient_name: caseStudy.patient_name,
+          age: caseStudy.age,
+          gender: caseStudy.gender,
+          medical_history: caseStudy.medical_history,
+          presenting_complaint: caseStudy.presenting_complaint,
+          condition: caseStudy.condition,
+          specialization: caseStudy.specialization,
+          ai_role: caseStudy.ai_role,
+          adl_problem: caseStudy.adl_problem,
+          patient_background: caseStudy.patient_background,
+          comorbidities: caseStudy.comorbidities,
+          psychosocial_factors: caseStudy.psychosocial_factors
+        },
         action: 'generate'
-      });
+      };
+
+      const { data, error } = await invokeWithRetry('process-case-study', requestBody);
 
       if (error) {
         console.error('Error generating case:', error);
