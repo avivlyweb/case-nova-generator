@@ -6,18 +6,18 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+const TIMEOUT_MS = 45000; // Increase timeout to 45 seconds
+
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
     const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('Function timed out')), 25000) // 25 second timeout
+      setTimeout(() => reject(new Error('Function timed out')), TIMEOUT_MS)
     })
 
-    // Parse request body
     const body = await req.json()
     const { caseStudy, action = 'generate' } = body
     
@@ -34,13 +34,13 @@ serve(async (req) => {
 
     console.log(`Processing ${action} request for case study:`, caseStudy.id)
     
-    // Race between the processing and timeout
+    // Process in chunks to avoid timeout
     const result = await Promise.race([
       processCaseStudy(caseStudy, action),
       timeoutPromise
     ])
 
-    console.log('Processing completed successfully:', result)
+    console.log('Processing completed successfully')
     
     return new Response(
       JSON.stringify(result),
@@ -53,26 +53,21 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in edge function:', error)
     
-    // Determine appropriate status code
     let status = 500;
     let message = error.message || 'Internal server error';
 
-    if (error.message?.includes('context_length_exceeded')) {
-      status = 413; // Payload Too Large
-      message = 'The case study content is too long. Please try with a shorter description.';
+    if (error.message?.includes('timed out')) {
+      status = 504;
+      message = 'The request took too long to process. Try with a shorter description or fewer sections.';
     } else if (error.message?.includes('rate_limit')) {
-      status = 429; // Too Many Requests
+      status = 429;
       message = 'Rate limit exceeded. Please try again in a few minutes.';
-    } else if (error.message?.includes('timed out')) {
-      status = 504; // Gateway Timeout
-      message = 'The request took too long to process. Please try again.';
     }
     
     return new Response(
       JSON.stringify({ 
         error: message,
-        details: error.stack,
-        type: error.name
+        details: error.stack
       }),
       { 
         status,
