@@ -11,7 +11,7 @@ interface CaseAnalysisProps {
   analysis: {
     analysis?: string;
     sections?: Array<{ title: string; content: string }> | any;
-    references?: any[] | string;
+    references?: any[];
     icf_codes?: string;
     medical_entities?: any;
     clinical_guidelines?: any[];
@@ -85,7 +85,7 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
                 />
               )}
 
-              {analysis.references && (
+              {analysis.references && analysis.references.length > 0 && (
                 <DetailedSection
                   title="Evidence-Based References"
                   content={formatReferences(analysis.references)}
@@ -104,8 +104,7 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
 };
 
 // Helper functions for formatting
-const formatGuidelines = (guidelines: any[]): string => {
-  if (!Array.isArray(guidelines)) return '';
+const formatGuidelines = (guidelines: any[]) => {
   return guidelines.map(g => (
     `### ${g.name}\n\n` +
     `**Recommendation Level:** ${g.recommendation_level}\n\n` +
@@ -114,31 +113,18 @@ const formatGuidelines = (guidelines: any[]): string => {
   )).join('\n---\n\n');
 };
 
-const formatEvidenceLevels = (levels: Record<string, number>): string => {
-  if (!levels || typeof levels !== 'object') return '';
+const formatEvidenceLevels = (levels: Record<string, number>) => {
   return '### Evidence Distribution\n\n' +
     Object.entries(levels)
       .map(([level, count]) => `- ${level}: ${count} studies`)
       .join('\n');
 };
 
-const formatReferences = (references: any[] | string | null): string => {
-  // Handle cases where references might be a string or null
-  if (!references) return '';
-  if (typeof references === 'string') return references;
-  if (!Array.isArray(references)) return '';
-  
-  return references.map(ref => {
-    // Ensure ref has all required properties
-    const authors = Array.isArray(ref.authors) ? ref.authors.join(', ') : 'Unknown';
-    const year = ref.publicationDate ? new Date(ref.publicationDate).getFullYear() : 'N/A';
-    const title = ref.title || 'Untitled';
-    const url = ref.url || '#';
-    const journal = ref.journal || '';
-    const evidenceLevel = ref.evidenceLevel || 'Not specified';
-    
-    return `- ${authors} (${year}). [${title}](${url}). ${journal}. Evidence Level: ${evidenceLevel}`;
-  }).join('\n\n');
+const formatReferences = (references: any[]) => {
+  return references.map(ref => (
+    `- ${ref.authors.join(', ')} (${new Date(ref.publicationDate).getFullYear()}). ` +
+    `[${ref.title}](${ref.url}). ${ref.journal}. Evidence Level: ${ref.evidenceLevel}`
+  )).join('\n\n');
 };
 
 export default CaseAnalysis;

@@ -1,21 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import ReactMarkdown from 'react-markdown';
-import { 
-  FileText, 
-  List, 
-  Pill, 
-  Stethoscope, 
-  Target,
-  UserCircle,
-  ClipboardList,
-  ScrollText,
-  Goal,
-  RefreshCw,
-  BookOpen,
-  BookmarkCheck,
-  ListChecks,
-  Activity
-} from "lucide-react";
+import { FileText, List, Pill, Stethoscope, Target } from "lucide-react";
 
 interface DetailedSectionProps {
   title: string;
@@ -25,28 +10,14 @@ interface DetailedSectionProps {
 const DetailedSection = ({ title, content }: DetailedSectionProps) => {
   const getSectionIcon = (title: string) => {
     switch (title.toLowerCase()) {
-      case "patient introduction":
-        return <UserCircle className="h-5 w-5 text-primary" />;
-      case "interview and problem list":
-        return <ClipboardList className="h-5 w-5 text-primary" />;
-      case "assessment strategy":
-        return <ScrollText className="h-5 w-5 text-primary" />;
+      case "medical history":
+        return <FileText className="h-5 w-5 text-primary" />;
       case "assessment findings":
         return <Stethoscope className="h-5 w-5 text-primary" />;
-      case "goals/actions to take":
-        return <Goal className="h-5 w-5 text-primary" />;
       case "intervention plan":
         return <Target className="h-5 w-5 text-primary" />;
-      case "reassessment":
-        return <RefreshCw className="h-5 w-5 text-primary" />;
-      case "explanation and justification of choices":
-        return <BookOpen className="h-5 w-5 text-primary" />;
-      case "reference list":
-        return <BookmarkCheck className="h-5 w-5 text-primary" />;
-      case "medication information":
+      case "medications":
         return <Pill className="h-5 w-5 text-primary" />;
-      case "icf classification":
-        return <Activity className="h-5 w-5 text-primary" />;
       default:
         return <List className="h-5 w-5 text-primary" />;
     }

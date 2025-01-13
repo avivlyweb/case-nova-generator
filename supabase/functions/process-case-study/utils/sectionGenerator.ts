@@ -1,6 +1,6 @@
 import { Groq } from 'npm:groq-sdk';
-import { CaseStudy, Section, PubMedArticle } from './types.ts';
-import { specializedPrompts } from './sectionConfig.ts';
+import { CaseStudy, Section } from './types';
+import { searchPubMed, fetchClinicalGuidelines } from './evidenceRetrieval';
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 5000;
@@ -13,48 +13,19 @@ export async function generateSection(
   sectionDescription: string,
   caseStudy: CaseStudy,
   entities: any,
-  pubmedReferences: PubMedArticle[]
-): Promise<Section> {
+  pubmedReferences: any[]
+) {
   console.log(`Generating section: ${sectionTitle}`);
   
   let retries = 0;
   while (retries < MAX_RETRIES) {
     try {
-      const specializedContext = specializedPrompts[caseStudy.specialization as keyof typeof specializedPrompts] || '';
-      
-      const prompt = `As a specialized ${caseStudy.specialization} physiotherapist, ${specializedContext}
-
-Generate the following section for a physiotherapy case study:
-
-${sectionTitle}
-
-Detailed requirements:
-${sectionDescription}
-
-Patient Information:
-${JSON.stringify(caseStudy, null, 2)}
-
-Extracted Medical Entities:
-${JSON.stringify(entities, null, 2)}
-
-Evidence Base:
-${formatReferences(pubmedReferences)}
-
-Requirements:
-1. Be extremely detailed and specific
-2. Use proper markdown formatting
-3. Include clinical reasoning
-4. Reference the provided literature using clickable links [Author et al](URL)
-5. Use markdown tables with | syntax for data presentation
-6. Include evidence levels for recommendations
-7. Integrate the specialized context for ${caseStudy.specialization} physiotherapy
-8. Consider the extracted medical entities in your analysis`;
-
+      const prompt = buildSectionPrompt(sectionTitle, sectionDescription, caseStudy, entities, pubmedReferences);
       const completion = await groq.chat.completions.create({
         messages: [
           {
             role: "system",
-            content: `You are an expert ${caseStudy.specialization} physiotherapist creating detailed, evidence-based case study sections.`
+            content: "You are an expert physiotherapist creating detailed case study sections with evidence-based content."
           },
           {
             role: "user",
@@ -62,7 +33,7 @@ Requirements:
           }
         ],
         model: "gemma2-9b-it",
-        temperature: 0.7,
+        temperature: 0.5,
         max_tokens: 2000,
       });
 
@@ -86,7 +57,47 @@ Requirements:
   throw new Error(`Maximum retries reached for section ${sectionTitle}`);
 }
 
-function formatReferences(references: PubMedArticle[]): string {
+function buildSectionPrompt(
+  sectionTitle: string,
+  sectionDescription: string,
+  caseStudy: CaseStudy,
+  entities: any,
+  pubmedReferences: any[]
+): string {
+  return `Generate the following section for a physiotherapy case study:
+
+${sectionTitle}
+
+Description of what to include:
+${sectionDescription}
+
+Case Information:
+Patient Name: ${caseStudy.patient_name}
+Age: ${caseStudy.age}
+Gender: ${caseStudy.gender}
+Condition: ${caseStudy.condition}
+Medical History: ${caseStudy.medical_history}
+Background: ${caseStudy.patient_background}
+Symptoms: ${caseStudy.presenting_complaint}
+Comorbidities: ${caseStudy.comorbidities}
+Psychosocial Factors: ${caseStudy.psychosocial_factors}
+
+Medical Entities Found:
+${JSON.stringify(entities, null, 2)}
+
+Evidence Base:
+${formatReferences(pubmedReferences)}
+
+Please ensure your response:
+1. Is evidence-based and suitable for PhD/university level
+2. Uses proper markdown formatting
+3. Includes clinical reasoning
+4. References the provided literature using clickable links [Author et al](URL)
+5. Uses proper markdown table syntax with | for columns when presenting data
+6. Includes evidence levels for each recommendation`;
+}
+
+function formatReferences(references: any[]): string {
   return references.map(ref => 
     `- ${ref.authors.join(', ')} (${new Date(ref.publicationDate).getFullYear()}). ${ref.title}. ${ref.journal}. Evidence Level: ${ref.evidenceLevel}`
   ).join('\n');

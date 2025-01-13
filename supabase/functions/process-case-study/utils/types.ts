@@ -6,17 +6,28 @@ export interface CaseStudy {
   medical_history?: string;
   presenting_complaint?: string;
   condition?: string;
-  specialization?: string;
-  ai_role?: string;
   adl_problem?: string;
   patient_background?: string;
   comorbidities?: string;
   psychosocial_factors?: string;
 }
 
-export interface Section {
-  title: string;
-  content: string;
+export interface ProcessedCaseStudy {
+  success: boolean;
+  analysis?: string;
+  sections?: Array<{
+    title: string;
+    content: string;
+  }>;
+  references?: any[];
+  medical_entities?: Record<string, string[]>;
+  assessment_findings?: string;
+  intervention_plan?: string;
+  clinical_guidelines?: ClinicalGuideline[];
+  learning_objectives?: string[];
+  clinical_reasoning_path?: any[];
+  evidence_levels?: Record<string, number>;
+  icf_codes?: string[];
 }
 
 export interface PubMedArticle {
@@ -28,7 +39,6 @@ export interface PubMedArticle {
   journal: string;
   evidenceLevel: string;
   url: string;
-  citation: string;
 }
 
 export interface ClinicalGuideline {
@@ -36,17 +46,4 @@ export interface ClinicalGuideline {
   url: string;
   key_points: string[];
   recommendation_level: string;
-}
-
-export interface ProcessedCaseStudy {
-  success: boolean;
-  analysis?: string;
-  sections?: Section[];
-  references?: PubMedArticle[];
-  medical_entities?: Record<string, string[]>;
-  icf_codes?: string[];
-  assessment_findings?: string;
-  intervention_plan?: string;
-  clinical_guidelines?: ClinicalGuideline[];
-  evidence_levels?: Record<string, number>;
 }

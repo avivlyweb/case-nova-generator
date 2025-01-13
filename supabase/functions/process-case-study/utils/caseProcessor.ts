@@ -1,109 +1,158 @@
-import { createClient } from '@supabase/supabase-js';
 import { Groq } from 'npm:groq-sdk';
-import { sections, specializedPrompts } from './sectionConfig.ts';
 import { extractMedicalEntities } from './entityExtraction.ts';
-import { ContextManager } from './contextManager.ts';
+import { searchPubMed, fetchClinicalGuidelines } from './evidenceRetrieval.ts';
+import { generateSection } from './sectionGenerator.ts';
+import { sections } from './sectionConfig.ts';
+import { ProcessedCaseStudy, CaseStudy } from './types.ts';
 
-const groq = new Groq({
-  apiKey: Deno.env.get('GROQ_API_KEY') || '',
-});
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 5000;
 
-export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'generate' = 'generate') {
-  console.log('Processing case study:', caseStudy.id);
+export const processCaseStudy = async (
+  caseStudy: CaseStudy, 
+  action: 'analyze' | 'generate'
+): Promise<ProcessedCaseStudy> => {
+  console.log(`Starting processCaseStudy with action: ${action} for case study ${caseStudy.id}`);
+  
+  try {
+    const groqApiKey = Deno.env.get('GROQ_API_KEY');
+    const pubmedApiKey = Deno.env.get('PUBMED_API_KEY');
+    
+    if (!groqApiKey) {
+      throw new Error('GROQ_API_KEY is not set');
+    }
 
-  // Extract medical entities from all text fields
-  const textForAnalysis = [
-    caseStudy.medical_history,
-    caseStudy.presenting_complaint,
-    caseStudy.condition,
-    caseStudy.patient_background,
-    caseStudy.psychosocial_factors,
-    caseStudy.adl_problem
-  ].filter(Boolean).join(' ');
+    const groq = new Groq({ apiKey: groqApiKey });
+    const langchainService = new LangChainService(groqApiKey);
 
-  const entities = await extractMedicalEntities(textForAnalysis, groq);
-  console.log('Extracted entities:', entities);
+    if (action === 'analyze') {
+      return await generateQuickAnalysis(langchainService, caseStudy);
+    }
 
-  // Initialize context manager with specialization
-  const contextManager = new ContextManager(
-    caseStudy.specialization,
-    specializedPrompts[caseStudy.specialization as keyof typeof specializedPrompts]
+    return await generateFullCaseStudy(groq, langchainService, caseStudy, pubmedApiKey || '');
+  } catch (error) {
+    console.error('Error in processCaseStudy:', error);
+    if (error.message?.toLowerCase().includes('rate limit')) {
+      throw new Error('The AI service is currently at capacity. Please try again in a few minutes.');
+    }
+    throw error;
+  }
+};
+
+async function generateQuickAnalysis(
+  langchainService: any,
+  caseStudy: CaseStudy
+): Promise<ProcessedCaseStudy> {
+  console.log('Performing quick analysis...');
+  let retries = 0;
+
+  while (retries < MAX_RETRIES) {
+    try {
+      const analysisContent = await langchainService.generateQuickAnalysis(caseStudy);
+      const icfCodes = extractICFCodes(analysisContent);
+      
+      return { 
+        success: true,
+        analysis: analysisContent,
+        icf_codes: icfCodes
+      };
+    } catch (error) {
+      console.error(`Attempt ${retries + 1} failed:`, error);
+      if (error.message?.toLowerCase().includes('rate limit')) {
+        await delay(RETRY_DELAY);
+        retries++;
+        continue;
+      }
+      throw error;
+    }
+  }
+  throw new Error('Maximum retries reached');
+}
+
+async function generateFullCaseStudy(
+  groq: Groq,
+  langchainService: any,
+  caseStudy: CaseStudy,
+  pubmedApiKey: string
+): Promise<ProcessedCaseStudy> {
+  console.log('Generating full case study...');
+  
+  // Extract medical entities
+  const textForEntityExtraction = buildEntityExtractionText(caseStudy);
+  console.log('Extracting medical entities...');
+  const medicalEntities = await extractMedicalEntities(textForEntityExtraction, groq);
+  
+  // Fetch evidence-based content
+  console.log('Fetching evidence-based content...');
+  const searchQuery = `${caseStudy.condition} physiotherapy treatment`;
+  const [pubmedArticles, clinicalGuidelines] = await Promise.all([
+    searchPubMed(searchQuery, pubmedApiKey),
+    fetchClinicalGuidelines(caseStudy.condition || '')
+  ]);
+
+  // Generate sections with evidence integration
+  console.log('Generating sections with evidence...');
+  const generatedSections = await Promise.all(
+    sections.map(section => 
+      generateSection(
+        groq,
+        section.title,
+        section.description,
+        caseStudy,
+        medicalEntities,
+        pubmedArticles
+      )
+    )
   );
-  contextManager.setEntities(entities);
 
-  if (action === 'analyze') {
-    // Generate quick analysis
-    const analysisPrompt = `${caseStudy.ai_role}
-    
-    Provide insights about this case in a concise, professional manner. 
-    Focus on key medical observations, potential implications, and suggested areas for further investigation.
-    
-    Patient Information:
-    ${JSON.stringify(caseStudy, null, 2)}
-    
-    Extracted Medical Entities:
-    ${JSON.stringify(entities, null, 2)}`;
-
-    const completion = await groq.chat.completions.create({
-      messages: [
-        {
-          role: "system",
-          content: caseStudy.ai_role
-        },
-        {
-          role: "user",
-          content: analysisPrompt
-        }
-      ],
-      model: "gemma2-9b-it",
-      temperature: 0.7,
-      max_tokens: 2000,
-    });
-
-    return {
-      analysis: completion.choices[0]?.message?.content,
-      medical_entities: entities
-    };
-  }
-
-  // Generate full case study
-  const generatedSections = [];
-  for (const section of sections) {
-    console.log(`Generating section: ${section.title}`);
-    
-    const prompt = `${contextManager.getPromptContext(section.title)}
-
-${section.description}`;
-
-    const completion = await groq.chat.completions.create({
-      messages: [
-        {
-          role: "system",
-          content: caseStudy.ai_role
-        },
-        {
-          role: "user",
-          content: prompt
-        }
-      ],
-      model: "gemma2-9b-it",
-      temperature: 0.7,
-      max_tokens: 2000,
-    });
-
-    const sectionContent = completion.choices[0]?.message?.content || '';
-    generatedSections.push({
-      title: section.title,
-      content: sectionContent
-    });
-
-    // Add section to context for next iterations
-    contextManager.addSection(section.title, sectionContent);
-  }
+  // Extract ICF codes from all content
+  const allContent = [
+    ...generatedSections.map(s => s.content),
+    caseStudy.medical_history,
+    caseStudy.presenting_complaint
+  ].join(' ');
+  
+  const icfCodes = extractICFCodes(allContent);
+  
+  // Aggregate evidence levels
+  const evidenceLevels = aggregateEvidenceLevels(pubmedArticles);
 
   return {
+    success: true,
     sections: generatedSections,
-    medical_entities: entities,
-    analysis: generatedSections[0]?.content // First section serves as quick analysis
+    references: pubmedArticles,
+    medical_entities: medicalEntities,
+    icf_codes: icfCodes,
+    assessment_findings: generatedSections.find(s => s.title === "Assessment Findings")?.content || '',
+    intervention_plan: generatedSections.find(s => s.title === "Intervention Plan")?.content || '',
+    clinical_guidelines: clinicalGuidelines,
+    evidence_levels: evidenceLevels
   };
+}
+
+function buildEntityExtractionText(caseStudy: CaseStudy): string {
+  return `
+    Patient Condition: ${caseStudy.condition || ''}
+    Medical History: ${caseStudy.medical_history || ''}
+    Presenting Complaint: ${caseStudy.presenting_complaint || ''}
+    Comorbidities: ${caseStudy.comorbidities || ''}
+    ADL Problem: ${caseStudy.adl_problem || ''}
+    Background: ${caseStudy.patient_background || ''}
+    Psychosocial Factors: ${caseStudy.psychosocial_factors || ''}
+  `.trim();
+}
+
+function extractICFCodes(content: string): string[] {
+  const icfPattern = /\b[bdes]\d{3}\b/gi;
+  const matches = content.match(icfPattern) || [];
+  return [...new Set(matches)];
+}
+
+function aggregateEvidenceLevels(articles: any[]): Record<string, number> {
+  const levels: Record<string, number> = {};
+  articles.forEach(article => {
+    levels[article.evidenceLevel] = (levels[article.evidenceLevel] || 0) + 1;
+  });
+  return levels;
 }
