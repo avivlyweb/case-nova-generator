@@ -60,7 +60,6 @@ const Generate = () => {
 
       const newCaseStudy = await createCaseStudy(caseStudyData);
       
-      // Process the newly created case study
       if (newCaseStudy?.id) {
         const { error } = await supabase.functions.invoke('process-case-study', {
           body: { 
@@ -108,6 +107,7 @@ const Generate = () => {
             <PatientInformation
               formData={formData}
               onChange={handleFormChange}
+              specialization={specialization}
             />
 
             <Button

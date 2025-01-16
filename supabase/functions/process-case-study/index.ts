@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { processCaseStudy } from './utils/caseProcessor.ts'
+import { generateSuggestion } from './utils/suggestionGenerator.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -7,16 +8,29 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    // Parse request body
     const body = await req.json()
-    const { caseStudy, action = 'generate' } = body
+    const { action = 'generate' } = body
     
+    if (action === 'suggest') {
+      const { field, currentValue, specialization, existingValues } = body
+      const suggestion = await generateSuggestion(field, currentValue, specialization, existingValues)
+      
+      return new Response(
+        JSON.stringify({ suggestion }),
+        { 
+          status: 200,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
+    }
+    
+    // Handle case study generation
+    const { caseStudy } = body
     if (!caseStudy) {
       console.error('No case study provided')
       return new Response(
@@ -44,15 +58,14 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in edge function:', error)
     
-    // Determine appropriate status code
     let status = 500;
     let message = error.message || 'Internal server error';
 
     if (error.message?.includes('context_length_exceeded')) {
-      status = 413; // Payload Too Large
+      status = 413;
       message = 'The case study content is too long. Please try with a shorter description.';
     } else if (error.message?.includes('rate_limit')) {
-      status = 429; // Too Many Requests
+      status = 429;
       message = 'Rate limit exceeded. Please try again in a few minutes.';
     }
     
