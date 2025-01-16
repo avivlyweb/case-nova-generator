@@ -8,7 +8,6 @@ interface ConditionsChartProps {
   conditionData: Array<{ name: string; value: number }>;
 }
 
-// Clinical categories with their related terms
 const CLINICAL_CATEGORIES = {
   Musculoskeletal: ['arthritis', 'joint', 'muscle', 'bone', 'sprain', 'strain', 'back pain'],
   Neurological: ['nerve', 'neural', 'brain', 'spine', 'sciatica'],
@@ -32,14 +31,11 @@ export const ConditionsChart = ({ conditionData }: ConditionsChartProps) => {
   useEffect(() => {
     const categorizeConditions = async () => {
       try {
-        // Initialize the zero-shot classification pipeline with a public model
         const classifier = await pipeline(
           "zero-shot-classification",
-          "facebook/bart-large-mnli",
-          { device: "cpu" }
+          "facebook/bart-large-mnli"
         );
 
-        // Group conditions by category
         const categoryCount: Record<string, number> = {
           Musculoskeletal: 0,
           Neurological: 0,
@@ -48,28 +44,27 @@ export const ConditionsChart = ({ conditionData }: ConditionsChartProps) => {
           Other: 0
         };
 
-        // Process each condition
         for (const condition of conditionData) {
-          const result = await classifier(condition.name, 
-            ["Musculoskeletal", "Neurological", "Cardiovascular", "Respiratory"], {
-            multi_label: false
-          });
-          
-          // Get the highest scoring category
-          const scores = Array.isArray(result) ? result[0].scores : result.scores;
-          const labels = Array.isArray(result) ? result[0].labels : result.labels;
-          const topCategory = labels[0];
-          const score = scores[0];
+          try {
+            const result = await classifier(condition.name, 
+              ["Musculoskeletal", "Neurological", "Cardiovascular", "Respiratory"], {
+              multi_label: false
+            });
+            
+            const topCategory = Array.isArray(result.labels) ? result.labels[0] : result.labels;
+            const score = Array.isArray(result.scores) ? result.scores[0] : result.scores;
 
-          // If the confidence is high enough, assign to that category
-          if (score > 0.3) {
-            categoryCount[topCategory] += condition.value;
-          } else {
+            if (score > 0.3) {
+              categoryCount[topCategory] += condition.value;
+            } else {
+              categoryCount.Other += condition.value;
+            }
+          } catch (error) {
+            console.error('Error classifying condition:', error);
             categoryCount.Other += condition.value;
           }
         }
 
-        // Convert to chart data format and sort by value
         const newData = Object.entries(categoryCount)
           .map(([name, value]) => ({ name, value }))
           .filter(item => item.value > 0)
@@ -78,7 +73,6 @@ export const ConditionsChart = ({ conditionData }: ConditionsChartProps) => {
         setCategorizedData(newData);
       } catch (error) {
         console.error('Error categorizing conditions:', error);
-        // Fallback to original data if categorization fails
         setCategorizedData(conditionData);
       } finally {
         setIsLoading(false);
@@ -87,6 +81,8 @@ export const ConditionsChart = ({ conditionData }: ConditionsChartProps) => {
 
     if (conditionData.length > 0) {
       categorizeConditions();
+    } else {
+      setIsLoading(false);
     }
   }, [conditionData]);
 
