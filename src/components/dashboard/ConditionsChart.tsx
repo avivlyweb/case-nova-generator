@@ -33,8 +33,7 @@ export const ConditionsChart = ({ conditionData }: ConditionsChartProps) => {
       try {
         const classifier = await pipeline(
           "zero-shot-classification",
-          "cross-encoder/nli-distilroberta-base",
-          { revision: "main" }
+          "Xenova/nli-deberta-v3-small"
         );
 
         const categoryCount: Record<string, number> = {
@@ -52,7 +51,6 @@ export const ConditionsChart = ({ conditionData }: ConditionsChartProps) => {
               multi_label: false
             }) as ZeroShotClassificationOutput;
             
-            // The output structure is simpler with this model
             const topCategory = result.labels[0];
             const score = result.scores[0];
 
