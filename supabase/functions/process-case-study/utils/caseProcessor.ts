@@ -4,7 +4,7 @@ import { sections, specializedPrompts } from './sectionConfig.ts';
 import { ContextManager } from './contextManager.ts';
 import type { CaseStudy, Section } from './types.ts';
 
-const MAX_PROMPT_LENGTH = 4000; // Groq's limit is around 4096 tokens
+const MAX_PROMPT_LENGTH = 4000;
 
 export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'generate' = 'generate') {
   console.log('Processing case study:', caseStudy.id);
@@ -13,7 +13,6 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
   });
 
   try {
-    // Extract medical entities using BiomedNLP
     const textForAnalysis = [
       caseStudy.medical_history,
       caseStudy.presenting_complaint,
@@ -23,16 +22,18 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       caseStudy.adl_problem
     ].filter(Boolean).join(' ').slice(0, MAX_PROMPT_LENGTH);
 
-    // First get biomedical entities
+    // Get environment variables
     const supabaseUrl = Deno.env.get('SUPABASE_URL');
     const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY');
     
     if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Missing required environment variables');
+      throw new Error('Missing required environment variables: SUPABASE_URL or SUPABASE_ANON_KEY');
     }
 
-    // Use the project URL instead of localhost
-    const biomedicalEntities = await fetch(
+    console.log('Calling biomedical-nlp function...');
+    
+    // Call biomedical-nlp function with proper URL
+    const biomedicalResponse = await fetch(
       `${supabaseUrl}/functions/v1/biomedical-nlp`,
       {
         method: 'POST',
@@ -45,9 +46,18 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
           task: 'ner'
         })
       }
-    ).then(res => res.json());
+    );
 
-    // Then get regular entities
+    if (!biomedicalResponse.ok) {
+      const errorText = await biomedicalResponse.text();
+      console.error('Biomedical NLP function error:', errorText);
+      throw new Error(`Biomedical NLP function failed: ${errorText}`);
+    }
+
+    const biomedicalEntities = await biomedicalResponse.json();
+    console.log('Biomedical entities:', biomedicalEntities);
+
+    // Get regular entities
     const entities = await extractMedicalEntities(textForAnalysis, groq);
     
     // Combine both entity types
