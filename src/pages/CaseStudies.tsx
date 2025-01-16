@@ -161,11 +161,11 @@ const CaseStudies = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-4 p-4">
+      <div className="space-y-6 p-6 max-w-7xl mx-auto">
         <Skeleton className="h-8 w-[200px]" />
         <div className="grid gap-6">
           {[1, 2, 3].map((n) => (
-            <Skeleton key={n} className="h-[200px] w-full" />
+            <Skeleton key={n} className="h-[200px] w-full rounded-lg" />
           ))}
         </div>
       </div>
@@ -182,27 +182,33 @@ const CaseStudies = () => {
   }
 
   return (
-    <div className="space-y-8 max-w-full overflow-x-hidden">
-      <h1 className="text-2xl md:text-3xl font-bold text-primary px-4 md:px-0">Case Studies</h1>
-      <div className="grid gap-6 px-4 md:px-0">
-        {caseStudies?.map((study) => (
-          <div key={study.id}>
-            <CaseStudyCard
-              study={study}
-              analyzing={analyzing[study.id]}
-              onAnalyze={() => analyzeCase(study)}
-              onGenerate={() => generateCase(study)}
-            />
-            {(analyses[study.id] || study.ai_analysis || study.generated_sections) && (
-              <CaseAnalysis analysis={{
-                analysis: analyses[study.id]?.analysis || study.ai_analysis,
-                sections: analyses[study.id]?.sections || study.generated_sections,
-                references: analyses[study.id]?.references || study.reference_list,
-                icf_codes: analyses[study.id]?.icf_codes || study.icf_codes
-              }} />
-            )}
-          </div>
-        ))}
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 className="text-3xl font-bold text-primary-900 dark:text-primary-100 mb-8">
+          Case Studies
+        </h1>
+        <div className="grid gap-8">
+          {caseStudies?.map((study) => (
+            <div key={study.id} className="animate-fade-in">
+              <CaseStudyCard
+                study={study}
+                analyzing={analyzing[study.id]}
+                onAnalyze={() => analyzeCase(study)}
+                onGenerate={() => generateCase(study)}
+              />
+              {(analyses[study.id] || study.ai_analysis || study.generated_sections) && (
+                <div className="mt-4">
+                  <CaseAnalysis analysis={{
+                    analysis: analyses[study.id]?.analysis || study.ai_analysis,
+                    sections: analyses[study.id]?.sections || study.generated_sections,
+                    references: analyses[study.id]?.references || study.reference_list,
+                    icf_codes: analyses[study.id]?.icf_codes || study.icf_codes
+                  }} />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

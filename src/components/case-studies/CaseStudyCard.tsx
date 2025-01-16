@@ -12,24 +12,29 @@ interface CaseStudyCardProps {
 
 const CaseStudyCard = ({ study, analyzing, onAnalyze, onGenerate }: CaseStudyCardProps) => {
   return (
-    <Card className="overflow-hidden">
-      <CardHeader>
+    <Card className="overflow-hidden hover:shadow-lg transition-all duration-200 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+      <CardHeader className="space-y-4">
         <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-          <div>
-            <CardTitle className="text-xl">
-              Patient: {study.patient_name}
+          <div className="space-y-2">
+            <CardTitle className="text-2xl font-bold text-primary-900 dark:text-primary-100">
+              {study.patient_name}
             </CardTitle>
-            <CardDescription>
-              {study.gender}, {study.age} years old | {study.condition}
+            <CardDescription className="text-base text-gray-600 dark:text-gray-300">
+              {study.gender}, {study.age} years old
             </CardDescription>
+            {study.condition && (
+              <div className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/50 dark:text-primary-100">
+                {study.condition}
+              </div>
+            )}
           </div>
-          <div className="flex flex-col sm:flex-row gap-2">
+          <div className="flex flex-col sm:flex-row gap-3">
             <Button
               variant="outline"
-              size="sm"
+              size="lg"
               onClick={onAnalyze}
               disabled={analyzing}
-              className="w-full sm:w-auto"
+              className="w-full sm:w-auto bg-white hover:bg-gray-50 border-primary-200 hover:border-primary-300 text-primary-700 hover:text-primary-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-600 dark:hover:border-gray-500 dark:text-gray-200 transition-all duration-200"
             >
               {analyzing ? (
                 <>
@@ -45,10 +50,10 @@ const CaseStudyCard = ({ study, analyzing, onAnalyze, onGenerate }: CaseStudyCar
             </Button>
             <Button
               variant="default"
-              size="sm"
+              size="lg"
               onClick={onGenerate}
               disabled={analyzing}
-              className="w-full sm:w-auto"
+              className="w-full sm:w-auto bg-primary hover:bg-primary-600 text-white shadow-sm hover:shadow-md transition-all duration-200"
             >
               {analyzing ? (
                 <>
@@ -66,11 +71,18 @@ const CaseStudyCard = ({ study, analyzing, onAnalyze, onGenerate }: CaseStudyCar
         </div>
       </CardHeader>
       <CardContent>
-        {study.condition && (
-          <p className="text-sm text-muted-foreground">
-            Primary Condition: {study.condition}
-          </p>
-        )}
+        <div className="space-y-2">
+          {study.presenting_complaint && (
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              <span className="font-medium">Presenting Complaint:</span> {study.presenting_complaint}
+            </p>
+          )}
+          {study.medical_history && (
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              <span className="font-medium">Medical History:</span> {study.medical_history}
+            </p>
+          )}
+        </div>
       </CardContent>
     </Card>
   );
