@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Loader2, Brain, BookOpen } from "lucide-react";
 import { CaseStudy } from "@/types/case-study";
+import DownloadPDFButton from "./DownloadPDFButton";
 
 interface CaseStudyCardProps {
   study: CaseStudy;
@@ -11,6 +12,8 @@ interface CaseStudyCardProps {
 }
 
 const CaseStudyCard = ({ study, analyzing, onAnalyze, onGenerate }: CaseStudyCardProps) => {
+  const hasFullCase = study.generated_sections && study.generated_sections.length > 0;
+
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-all duration-200 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
       <CardHeader className="space-y-4">
@@ -67,6 +70,9 @@ const CaseStudyCard = ({ study, analyzing, onAnalyze, onGenerate }: CaseStudyCar
                 </>
               )}
             </Button>
+            {hasFullCase && (
+              <DownloadPDFButton study={study} />
+            )}
           </div>
         </div>
       </CardHeader>
