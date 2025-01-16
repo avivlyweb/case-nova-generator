@@ -12,7 +12,7 @@ interface CaseStudyCardProps {
 }
 
 const CaseStudyCard = ({ study, analyzing, onAnalyze, onGenerate }: CaseStudyCardProps) => {
-  const hasFullCase = study.generated_sections && study.generated_sections.length > 0;
+  const hasFullCase = Array.isArray(study.generated_sections) && study.generated_sections.length > 0;
 
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-all duration-200 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">

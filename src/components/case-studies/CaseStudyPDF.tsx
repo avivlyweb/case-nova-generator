@@ -46,34 +46,45 @@ interface CaseStudyPDFProps {
   study: CaseStudy;
 }
 
-const CaseStudyPDF = ({ study }: CaseStudyPDFProps) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <View style={styles.header}>
-        <Text style={styles.title}>{study.patient_name}</Text>
-        <Text style={styles.subtitle}>
-          {study.gender}, {study.age} years old
-        </Text>
-        {study.condition && (
-          <Text style={styles.subtitle}>Condition: {study.condition}</Text>
+const CaseStudyPDF = ({ study }: CaseStudyPDFProps) => {
+  const sections = Array.isArray(study.generated_sections) 
+    ? study.generated_sections 
+    : typeof study.generated_sections === 'object' && study.generated_sections !== null
+      ? Object.entries(study.generated_sections).map(([title, content]) => ({
+          title,
+          content: typeof content === 'string' ? content : JSON.stringify(content)
+        }))
+      : [];
+
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        <View style={styles.header}>
+          <Text style={styles.title}>{study.patient_name}</Text>
+          <Text style={styles.subtitle}>
+            {study.gender}, {study.age} years old
+          </Text>
+          {study.condition && (
+            <Text style={styles.subtitle}>Condition: {study.condition}</Text>
+          )}
+        </View>
+
+        {sections.map((section: any, index: number) => (
+          <View key={index} style={styles.section}>
+            <Text style={styles.sectionTitle}>{section.title}</Text>
+            <Text style={styles.content}>{section.content}</Text>
+          </View>
+        ))}
+
+        {study.reference_list && (
+          <View style={styles.references}>
+            <Text style={styles.sectionTitle}>References</Text>
+            <Text style={styles.content}>{study.reference_list}</Text>
+          </View>
         )}
-      </View>
-
-      {study.generated_sections?.map((section: any, index: number) => (
-        <View key={index} style={styles.section}>
-          <Text style={styles.sectionTitle}>{section.title}</Text>
-          <Text style={styles.content}>{section.content}</Text>
-        </View>
-      ))}
-
-      {study.reference_list && (
-        <View style={styles.references}>
-          <Text style={styles.sectionTitle}>References</Text>
-          <Text style={styles.content}>{study.reference_list}</Text>
-        </View>
-      )}
-    </Page>
-  </Document>
-);
+      </Page>
+    </Document>
+  );
+};
 
 export default CaseStudyPDF;
