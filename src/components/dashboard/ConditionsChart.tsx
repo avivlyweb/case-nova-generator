@@ -33,7 +33,8 @@ export const ConditionsChart = ({ conditionData }: ConditionsChartProps) => {
       try {
         const classifier = await pipeline(
           "zero-shot-classification",
-          "facebook/bart-large-mnli"
+          "cross-encoder/nli-distilroberta-base",
+          { revision: "main" }
         );
 
         const categoryCount: Record<string, number> = {
@@ -51,12 +52,9 @@ export const ConditionsChart = ({ conditionData }: ConditionsChartProps) => {
               multi_label: false
             }) as ZeroShotClassificationOutput;
             
-            const topCategory = result.sequence_scores ? 
-              result.labels[result.sequence_scores.indexOf(Math.max(...result.sequence_scores))] :
-              result.labels[0];
-            const score = result.sequence_scores ? 
-              Math.max(...result.sequence_scores) :
-              result.scores[0];
+            // The output structure is simpler with this model
+            const topCategory = result.labels[0];
+            const score = result.scores[0];
 
             if (score > 0.3) {
               categoryCount[topCategory as keyof typeof categoryCount] += condition.value;
