@@ -6,11 +6,11 @@ interface ConditionsChartProps {
   conditionData: Array<{ name: string; value: number }>;
 }
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
+const COLORS = ['#0A2540', '#00B4D8', '#9b87f5', '#403E43', '#8E9196'];
 
 export const ConditionsChart = ({ conditionData }: ConditionsChartProps) => {
   return (
-    <Card>
+    <Card className="hover:shadow-lg transition-shadow">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-lg font-medium">
           <div className="flex items-center gap-2">
@@ -34,10 +34,21 @@ export const ConditionsChart = ({ conditionData }: ConditionsChartProps) => {
                 dataKey="value"
               >
                 {conditionData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  <Cell 
+                    key={`cell-${index}`} 
+                    fill={COLORS[index % COLORS.length]}
+                    className="hover:opacity-80 transition-opacity"
+                  />
                 ))}
               </Pie>
-              <Tooltip />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: 'white',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '0.5rem',
+                  padding: '0.5rem'
+                }}
+              />
             </PieChart>
           </ResponsiveContainer>
         </div>

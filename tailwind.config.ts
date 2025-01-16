@@ -39,7 +39,11 @@ export default {
         },
         secondary: {
           DEFAULT: "#00B4D8",
-          foreground: "#ffffff"
+          foreground: "#ffffff",
+          accent1: "#9b87f5",
+          accent2: "#F1F0FB",
+          accent3: "#403E43",
+          accent4: "#8E9196"
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",

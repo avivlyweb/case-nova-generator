@@ -8,7 +8,7 @@ interface TimelineChartProps {
 
 export const TimelineChart = ({ timelineData }: TimelineChartProps) => {
   return (
-    <Card>
+    <Card className="hover:shadow-lg transition-shadow">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-lg font-medium">
           <div className="flex items-center gap-2">
@@ -21,16 +21,31 @@ export const TimelineChart = ({ timelineData }: TimelineChartProps) => {
         <div className="h-[300px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={timelineData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
+              <CartesianGrid strokeDasharray="3 3" className="opacity-50" />
+              <XAxis 
+                dataKey="date"
+                tick={{ fill: '#666', fontSize: 12 }}
+              />
+              <YAxis
+                tick={{ fill: '#666', fontSize: 12 }}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: 'white',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '0.5rem',
+                  padding: '0.5rem'
+                }}
+              />
               <Legend />
               <Line 
                 type="monotone" 
                 dataKey="cases" 
-                stroke="#0A2540" 
+                stroke="#0A2540"
+                strokeWidth={2}
+                dot={{ fill: '#0A2540', strokeWidth: 2 }}
                 name="Number of Cases"
+                className="hover:opacity-80 transition-opacity"
               />
             </LineChart>
           </ResponsiveContainer>
