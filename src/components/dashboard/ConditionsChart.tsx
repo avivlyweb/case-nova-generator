@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { ListChecks } from "lucide-react";
 import { useEffect, useState } from "react";
-import { pipeline } from "@huggingface/transformers";
+import { pipeline, ZeroShotClassificationOutput } from "@huggingface/transformers";
 
 interface ConditionsChartProps {
   conditionData: Array<{ name: string; value: number }>;
@@ -49,13 +49,17 @@ export const ConditionsChart = ({ conditionData }: ConditionsChartProps) => {
             const result = await classifier(condition.name, 
               ["Musculoskeletal", "Neurological", "Cardiovascular", "Respiratory"], {
               multi_label: false
-            });
+            }) as ZeroShotClassificationOutput;
             
-            const topCategory = Array.isArray(result.labels) ? result.labels[0] : result.labels;
-            const score = Array.isArray(result.scores) ? result.scores[0] : result.scores;
+            const topCategory = result.sequence_scores ? 
+              result.labels[result.sequence_scores.indexOf(Math.max(...result.sequence_scores))] :
+              result.labels[0];
+            const score = result.sequence_scores ? 
+              Math.max(...result.sequence_scores) :
+              result.scores[0];
 
             if (score > 0.3) {
-              categoryCount[topCategory] += condition.value;
+              categoryCount[topCategory as keyof typeof categoryCount] += condition.value;
             } else {
               categoryCount.Other += condition.value;
             }
