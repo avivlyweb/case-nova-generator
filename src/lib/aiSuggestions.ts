@@ -21,10 +21,15 @@ export async function getAISuggestions(
       }
     });
 
-    if (error) throw error;
-    return data.suggestion || '';
+    if (error) {
+      console.error('Error invoking function:', error);
+      throw error;
+    }
+
+    console.log('Received suggestion response:', data);
+    return data?.suggestion || '';
   } catch (error) {
     console.error('Error getting AI suggestions:', error);
-    return '';
+    throw error;
   }
 }

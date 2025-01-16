@@ -63,12 +63,15 @@ const Generate = () => {
       if (newCaseStudy?.id) {
         const { error } = await supabase.functions.invoke('process-case-study', {
           body: { 
-            caseStudy: newCaseStudy,
-            action: 'generate'
+            action: 'generate',
+            caseStudy: newCaseStudy
           }
         });
 
-        if (error) throw error;
+        if (error) {
+          console.error('Error processing case study:', error);
+          throw error;
+        }
       }
 
       toast({
