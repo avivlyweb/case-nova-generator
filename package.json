@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
+    "@huggingface/transformers": "^3.3.1",
     "@langchain/community": "^0.3.22",
     "@langchain/groq": "^0.1.2",
     "@langchain/openai": "^0.3.16",
