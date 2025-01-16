@@ -32,10 +32,10 @@ export const ConditionsChart = ({ conditionData }: ConditionsChartProps) => {
   useEffect(() => {
     const categorizeConditions = async () => {
       try {
-        // Initialize the zero-shot classification pipeline
+        // Initialize the zero-shot classification pipeline with a public model
         const classifier = await pipeline(
           "zero-shot-classification",
-          "onnx-community/clinical-bert-base-uncased",
+          "facebook/bart-large-mnli",
           { device: "cpu" }
         );
 
@@ -51,11 +51,15 @@ export const ConditionsChart = ({ conditionData }: ConditionsChartProps) => {
         // Process each condition
         for (const condition of conditionData) {
           const result = await classifier(condition.name, 
-            ["Musculoskeletal", "Neurological", "Cardiovascular", "Respiratory"]);
+            ["Musculoskeletal", "Neurological", "Cardiovascular", "Respiratory"], {
+            multi_label: false
+          });
           
           // Get the highest scoring category
-          const topCategory = result.labels[0];
-          const score = result.scores[0];
+          const scores = Array.isArray(result) ? result[0].scores : result.scores;
+          const labels = Array.isArray(result) ? result[0].labels : result.labels;
+          const topCategory = labels[0];
+          const score = scores[0];
 
           // If the confidence is high enough, assign to that category
           if (score > 0.3) {
