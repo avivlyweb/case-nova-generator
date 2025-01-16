@@ -1,5 +1,5 @@
-import { serve } from "https://deno.land/std@0.177.0/http/server.ts"
-import { generateSuggestion } from './utils/suggestionGenerator.ts'
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import { processCaseStudy } from './utils/caseProcessor.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -13,47 +13,57 @@ serve(async (req) => {
   }
 
   try {
-    const { action, field, currentValue, specialization, existingValues, caseStudy } = await req.json()
-    console.log('Received request with action:', action)
+    // Parse request body
+    const body = await req.json()
+    const { caseStudy, action = 'generate' } = body
     
-    if (action === 'suggest') {
-      console.log('Processing suggestion request:', { field, specialization })
-      
-      const suggestion = await generateSuggestion(
-        field,
-        currentValue,
-        specialization,
-        existingValues
-      )
-      
+    if (!caseStudy) {
+      console.error('No case study provided')
       return new Response(
-        JSON.stringify({ suggestion }),
+        JSON.stringify({ error: 'No case study provided' }),
         { 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        }
-      )
-    } else if (action === 'generate') {
-      console.log('Processing case study generation:', caseStudy)
-      // For now, just return success since we're focusing on the suggestion feature
-      return new Response(
-        JSON.stringify({ success: true }),
-        { 
+          status: 400,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         }
       )
     }
+
+    console.log(`Processing ${action} request for case study:`, caseStudy.id)
     
-    throw new Error(`Invalid action specified: ${action}`)
+    const result = await processCaseStudy(caseStudy, action)
+    console.log('Processing completed successfully:', result)
+    
+    return new Response(
+      JSON.stringify(result),
+      { 
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      }
+    )
 
   } catch (error) {
     console.error('Error in edge function:', error)
+    
+    // Determine appropriate status code
+    let status = 500;
+    let message = error.message || 'Internal server error';
+
+    if (error.message?.includes('context_length_exceeded')) {
+      status = 413; // Payload Too Large
+      message = 'The case study content is too long. Please try with a shorter description.';
+    } else if (error.message?.includes('rate_limit')) {
+      status = 429; // Too Many Requests
+      message = 'Rate limit exceeded. Please try again in a few minutes.';
+    }
+    
     return new Response(
       JSON.stringify({ 
-        error: error.message,
-        details: error.stack
+        error: message,
+        details: error.stack,
+        type: error.name
       }),
       { 
-        status: 500,
+        status,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     )
