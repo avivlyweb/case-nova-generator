@@ -24,12 +24,20 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
     ].filter(Boolean).join(' ').slice(0, MAX_PROMPT_LENGTH);
 
     // First get biomedical entities
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY');
+    
+    if (!supabaseUrl || !supabaseKey) {
+      throw new Error('Missing required environment variables');
+    }
+
+    // Use the project URL instead of localhost
     const biomedicalEntities = await fetch(
-      'http://localhost:54321/functions/v1/biomedical-nlp',
+      `${supabaseUrl}/functions/v1/biomedical-nlp`,
       {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${Deno.env.get('SUPABASE_ANON_KEY')}`,
+          'Authorization': `Bearer ${supabaseKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
