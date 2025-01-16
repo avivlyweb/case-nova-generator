@@ -13,7 +13,7 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
   });
 
   try {
-    // Extract medical entities from all text fields
+    // Extract medical entities using BiomedNLP
     const textForAnalysis = [
       caseStudy.medical_history,
       caseStudy.presenting_complaint,
@@ -23,8 +23,32 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       caseStudy.adl_problem
     ].filter(Boolean).join(' ').slice(0, MAX_PROMPT_LENGTH);
 
+    // First get biomedical entities
+    const biomedicalEntities = await fetch(
+      'http://localhost:54321/functions/v1/biomedical-nlp',
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${Deno.env.get('SUPABASE_ANON_KEY')}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          text: textForAnalysis,
+          task: 'ner'
+        })
+      }
+    ).then(res => res.json());
+
+    // Then get regular entities
     const entities = await extractMedicalEntities(textForAnalysis, groq);
-    console.log('Extracted entities:', entities);
+    
+    // Combine both entity types
+    const enhancedEntities = {
+      ...entities,
+      biomedical_entities: biomedicalEntities?.result || []
+    };
+
+    console.log('Enhanced entities:', enhancedEntities);
 
     // Get specialization-specific context
     const specializationContext = specializedPrompts[caseStudy.specialization as keyof typeof specializedPrompts];
