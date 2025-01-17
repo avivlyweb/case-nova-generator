@@ -27,8 +27,6 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
       console.log('Initializing TTS...');
       const tts = await KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-ONNX", {
         dtype: "q8",
-        threads: 1, // Disable threading to avoid SharedArrayBuffer issues
-        wasmPath: 'https://cdn.jsdelivr.net/npm/kokoro-js/dist/wasm/', // Use CDN for WASM files
       });
       
       console.log('TTS initialized successfully');
@@ -43,9 +41,12 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
       console.log('Audio generated, raw data:', audio);
 
       // Convert audio data to a format we can play
-      const audioData = new Float32Array(audio.data);
+      const audioData = new Float32Array(audio.buffer);
       const sampleRate = 22050; // Standard sample rate for Kokoro
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      
+      // Create AudioContext with proper type handling
+      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      const audioContext = new AudioContextClass();
       const audioBuffer = audioContext.createBuffer(1, audioData.length, sampleRate);
       
       // Fill the buffer with our audio data
