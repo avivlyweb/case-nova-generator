@@ -14,13 +14,24 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
   const [generating, setGenerating] = useState(false);
   const { toast } = useToast();
 
+  const getTextToConvert = (study: CaseStudy, sectionId: string): string => {
+    // If it's the summary section, use the AI analysis
+    if (sectionId === 'summary') {
+      return study.ai_analysis || 'No analysis available.';
+    }
+
+    // Otherwise, find the specific section
+    const section = study.generated_sections?.find(
+      (section: any) => section.title.toLowerCase() === sectionId.toLowerCase()
+    );
+    return section?.content || 'No content available for this section.';
+  };
+
   const handleGenerate = async () => {
     try {
       setGenerating(true);
       
-      // Use a very short test text to minimize processing requirements
-      const textToConvert = 'Test.';
-      
+      const textToConvert = getTextToConvert(study, sectionId);
       console.log('Starting audio generation with text:', textToConvert);
 
       // Initialize Kokoro TTS with minimal configuration
