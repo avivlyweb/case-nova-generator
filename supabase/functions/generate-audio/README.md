@@ -1,11 +1,11 @@
 # Generate Audio Edge Function
 
-This edge function generates audio from text using the Kokoro ONNX model and saves it to Supabase Storage.
+This edge function generates audio from text using the ONNX Web Runtime and saves it to Supabase Storage.
 
 ## Features
 
-- Uses Kokoro-82M ONNX model for text-to-speech conversion
-- Downloads model at runtime to reduce function size
+- Uses ONNX Web Runtime for lightweight text-to-speech conversion
+- Generates WAV audio files at 24kHz sample rate
 - Saves generated audio files to the 'knowledgecase' bucket
 - Returns a public URL for audio playback
 

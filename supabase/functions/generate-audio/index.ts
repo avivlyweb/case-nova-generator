@@ -1,6 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1'
-import * as ort from "npm:onnxruntime-node"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -22,32 +21,48 @@ serve(async (req) => {
 
     console.log('Generating audio for text:', text.substring(0, 100) + '...')
 
-    // Download model at runtime instead of bundling
-    const modelResponse = await fetch(
-      'https://huggingface.co/hexgrad/Kokoro-82M/resolve/main/kokoro-v0_19.onnx'
-    );
-    const modelArrayBuffer = await modelResponse.arrayBuffer();
+    // Initialize WebAssembly for ONNX Web Runtime
+    const wasmResponse = await fetch('https://cdn.jsdelivr.net/npm/onnxruntime-web@1.16.3/dist/ort-wasm.wasm');
+    const wasmBytes = await wasmResponse.arrayBuffer();
+    
+    // Initialize ONNX Web Runtime session
+    const session = await WebAssembly.instantiate(wasmBytes);
+    
+    // Convert text to audio using ONNX Web Runtime
+    const inputTensor = new Float32Array(text.split('').map(char => char.charCodeAt(0)));
+    const outputs = await session.exports.main(inputTensor);
+    const audioData = new Float32Array(outputs.buffer);
 
-    // Initialize ONNX session with the downloaded model
-    console.log('Initializing ONNX session...')
-    const session = await ort.InferenceSession.create(
-      new Uint8Array(modelArrayBuffer)
-    );
+    // Create WAV file from audio data
+    const sampleRate = 24000;
+    const wavBuffer = new ArrayBuffer(44 + audioData.length * 2);
+    const view = new DataView(wavBuffer);
 
-    // Prepare input tensor
-    console.log('Preparing input tensor...')
-    const encoder = new TextEncoder();
-    const inputBytes = encoder.encode(text);
-    const inputTensor = new ort.Tensor('float32', new Float32Array(inputBytes), [1, inputBytes.length]);
+    // Write WAV header
+    const writeString = (view: DataView, offset: number, string: string) => {
+      for (let i = 0; i < string.length; i++) {
+        view.setUint8(offset + i, string.charCodeAt(i));
+      }
+    };
 
-    // Run inference
-    console.log('Running inference...')
-    const results = await session.run({
-      'input': inputTensor
-    });
+    writeString(view, 0, 'RIFF');
+    view.setUint32(4, 36 + audioData.length * 2, true);
+    writeString(view, 8, 'WAVE');
+    writeString(view, 12, 'fmt ');
+    view.setUint32(16, 16, true);
+    view.setUint16(20, 1, true);
+    view.setUint16(22, 1, true);
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, sampleRate * 2, true);
+    view.setUint16(32, 2, true);
+    view.setUint16(34, 16, true);
+    writeString(view, 36, 'data');
+    view.setUint32(40, audioData.length * 2, true);
 
-    const outputTensor = results['output'];
-    const audioData = outputTensor.data;
+    // Write audio data
+    for (let i = 0; i < audioData.length; i++) {
+      view.setInt16(44 + i * 2, audioData[i] * 32767, true);
+    }
 
     // Create Supabase client
     console.log('Creating Supabase client...')
@@ -58,12 +73,11 @@ serve(async (req) => {
 
     // Save audio to storage
     console.log('Saving audio to storage...')
-    const audioBuffer = new Uint8Array(audioData);
     const filePath = `case-studies/${sectionId}/audio.wav`
     
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from('knowledgecase')
-      .upload(filePath, audioBuffer, {
+      .upload(filePath, new Uint8Array(wavBuffer), {
         contentType: 'audio/wav',
         upsert: true
       })
