@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Brain, BookOpen } from "lucide-react";
 import { CaseStudy } from "@/types/case-study";
 import DownloadPDFButton from "./DownloadPDFButton";
+import GenerateAudioButton from "./GenerateAudioButton";
 
 interface CaseStudyCardProps {
   study: CaseStudy;
@@ -71,7 +72,10 @@ const CaseStudyCard = ({ study, analyzing, onAnalyze, onGenerate }: CaseStudyCar
               )}
             </Button>
             {hasFullCase && (
-              <DownloadPDFButton study={study} />
+              <>
+                <DownloadPDFButton study={study} />
+                <GenerateAudioButton study={study} />
+              </>
             )}
           </div>
         </div>
