@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { AudioLines, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { KokoroTTS } from 'kokoro-js';
 import { CaseStudy } from '@/types/case-study';
 
 interface GenerateAudioButtonProps {
@@ -38,29 +38,32 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
         return;
       }
 
-      const { data, error } = await supabase.functions.invoke('generate-audio', {
-        body: { 
-          text: textToConvert,
-          sectionId: `${study.id}/${sectionId}`
-        }
+      // Initialize Kokoro TTS
+      const tts = await KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-ONNX", {
+        dtype: "q8", // Use quantized model for better performance
       });
 
-      if (error) {
-        console.error('Error generating audio:', error);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Failed to generate audio. Please try again.",
-        });
-        return;
-      }
+      // Generate audio
+      const audio = await tts.generate(textToConvert, {
+        voice: "af_bella", // Use Bella voice (American Female)
+      });
 
-      // Open the audio URL in a new tab
-      window.open(data.url, '_blank');
+      // Create an audio blob and URL
+      const audioBlob = new Blob([audio.buffer], { type: 'audio/wav' });
+      const audioUrl = URL.createObjectURL(audioBlob);
+
+      // Create an audio element and play it
+      const audioElement = new Audio(audioUrl);
+      audioElement.play();
+
+      // Clean up the URL when the audio is done playing
+      audioElement.onended = () => {
+        URL.revokeObjectURL(audioUrl);
+      };
       
       toast({
         title: "Success",
-        description: "Audio has been generated successfully.",
+        description: "Audio has been generated and is now playing.",
       });
     } catch (error) {
       console.error('Error generating audio:', error);
