@@ -3,6 +3,7 @@ import { extractMedicalEntities } from './entityExtraction.ts';
 import { sections, specializedPrompts } from './sectionConfig.ts';
 import { ContextManager } from './contextManager.ts';
 import type { CaseStudy, Section } from './types.ts';
+import { generateClinicalReasoning } from './clinicalReasoningGenerator.ts';
 
 const MAX_PROMPT_LENGTH = 4000;
 
@@ -178,6 +179,16 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
         content: sectionContent
       });
     }
+
+    // Generate clinical reasoning with KNGF guidelines integration
+    const queryEmbedding = {}; // Assume this is defined or obtained from somewhere
+    const clinicalReasoning = await generateClinicalReasoning(groq, caseStudy, queryEmbedding);
+    
+    // Add the clinical reasoning to the sections
+    generatedSections.push({
+      title: "Clinical Reasoning",
+      content: clinicalReasoning
+    });
 
     return {
       sections: generatedSections,
