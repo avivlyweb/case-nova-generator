@@ -10,12 +10,10 @@ interface ProcessedGuideline {
   title: string;
   condition: string;
   url: string;
-  content: {
-    sections: ProcessedSection[];
-  };
-  interventions: any[];
+  content: Record<string, any>;
+  interventions: Record<string, any>[];
   evidence_levels: Record<string, any>;
-  protocols: any[];
+  protocols: Record<string, any>[];
   embedding: number[];
 }
 
@@ -42,8 +40,13 @@ export async function processPDFGuideline(file: File): Promise<ProcessedGuidelin
     const guideline: ProcessedGuideline = {
       title: extractTitle(data.text),
       condition: extractCondition(data.text),
-      url: URL.createObjectURL(file), // Create a temporary URL for the file
-      content: { sections },
+      url: URL.createObjectURL(file),
+      content: { 
+        sections: sections.map(s => ({
+          title: s.title,
+          content: s.content
+        }))
+      },
       interventions: extractInterventions(data.text),
       evidence_levels: extractEvidenceLevels(data.text),
       protocols: extractProtocols(data.text),
@@ -53,7 +56,16 @@ export async function processPDFGuideline(file: File): Promise<ProcessedGuidelin
     // Store in Supabase
     const { data: savedGuideline, error } = await supabase
       .from('dutch_guidelines')
-      .insert(guideline)
+      .insert({
+        title: guideline.title,
+        condition: guideline.condition,
+        url: guideline.url,
+        content: guideline.content,
+        interventions: guideline.interventions,
+        evidence_levels: guideline.evidence_levels,
+        protocols: guideline.protocols,
+        embedding: guideline.embedding
+      })
       .select()
       .single();
 
@@ -111,9 +123,9 @@ function extractCondition(text: string): string {
   return match ? match[1].trim() : '';
 }
 
-function extractInterventions(text: string): any[] {
+function extractInterventions(text: string): Record<string, any>[] {
   // Extract interventions from specific section
-  const interventions: any[] = [];
+  const interventions: Record<string, any>[] = [];
   const interventionRegex = /Intervention:\s*(.+?)(?=Intervention:|$)/gs;
   let match;
   
@@ -144,9 +156,9 @@ function extractEvidenceLevels(text: string): Record<string, any> {
   return evidenceLevels;
 }
 
-function extractProtocols(text: string): any[] {
+function extractProtocols(text: string): Record<string, any>[] {
   // Extract protocols from specific section
-  const protocols: any[] = [];
+  const protocols: Record<string, any>[] = [];
   const protocolRegex = /Protocol:\s*(.+?)(?=Protocol:|$)/gs;
   let match;
 
