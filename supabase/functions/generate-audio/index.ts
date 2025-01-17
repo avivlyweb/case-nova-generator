@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1'
+import * as ort from "npm:onnxruntime-node"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -21,44 +22,49 @@ serve(async (req) => {
 
     console.log('Generating audio for text:', text.substring(0, 100) + '...')
 
-    // Call Google Cloud Text-to-Speech API
-    const response = await fetch('https://texttospeech.googleapis.com/v1/text:synthesize', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${Deno.env.get('GOOGLE_CLOUD_API_KEY')}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        input: { text },
-        voice: { languageCode: 'en-US', name: 'en-US-Neural2-D' },
-        audioConfig: { audioEncoding: 'MP3' },
-      }),
+    // Download ONNX model
+    console.log('Downloading ONNX model...')
+    const modelResponse = await fetch('https://huggingface.co/hexgrad/Kokoro-82M/resolve/main/kokoro-v0_19.onnx');
+    if (!modelResponse.ok) {
+      throw new Error('Failed to download model: ' + await modelResponse.text());
+    }
+    const modelArrayBuffer = await modelResponse.arrayBuffer();
+
+    // Initialize ONNX session
+    console.log('Initializing ONNX session...')
+    const session = await ort.InferenceSession.create(new Uint8Array(modelArrayBuffer));
+
+    // Prepare input tensor
+    console.log('Preparing input tensor...')
+    const encoder = new TextEncoder();
+    const inputBytes = encoder.encode(text);
+    const inputTensor = new ort.Tensor('float32', new Float32Array(inputBytes), [1, inputBytes.length]);
+
+    // Run inference
+    console.log('Running inference...')
+    const results = await session.run({
+      'input': inputTensor
     });
 
-    if (!response.ok) {
-      const error = await response.text();
-      console.error('Google TTS API error:', error);
-      throw new Error('Failed to generate audio');
-    }
-
-    const { audioContent } = await response.json();
-
-    // Decode base64 audio content
-    const audioBuffer = Uint8Array.from(atob(audioContent), c => c.charCodeAt(0));
+    const outputTensor = results['output'];
+    const audioData = outputTensor.data;
 
     // Create Supabase client
+    console.log('Creating Supabase client...')
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
     // Save audio to storage
-    const filePath = `case-studies/${sectionId}/audio.mp3`
+    console.log('Saving audio to storage...')
+    const audioBuffer = new Uint8Array(audioData);
+    const filePath = `case-studies/${sectionId}/audio.wav`
     
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from('knowledgecase')
       .upload(filePath, audioBuffer, {
-        contentType: 'audio/mp3',
+        contentType: 'audio/wav',
         upsert: true
       })
 
