@@ -1,20 +1,22 @@
-import { createClient } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import * as pdfParse from 'pdf-parse';
 
 interface ProcessedSection {
   title: string;
   content: string;
-  embedding?: number[];
 }
 
 interface ProcessedGuideline {
   title: string;
   condition: string;
-  sections: ProcessedSection[];
+  url: string;
+  content: {
+    sections: ProcessedSection[];
+  };
   interventions: any[];
   evidence_levels: Record<string, any>;
   protocols: any[];
+  embedding: number[];
 }
 
 export async function processPDFGuideline(file: File): Promise<ProcessedGuideline | null> {
@@ -26,39 +28,32 @@ export async function processPDFGuideline(file: File): Promise<ProcessedGuidelin
     // Split into sections based on headers
     const sections = splitIntoSections(data.text);
     
-    // Process each section
-    const processedSections = await Promise.all(
-      sections.map(async (section) => {
-        const embedding = await generateEmbedding(section.content);
-        return {
-          ...section,
-          embedding
-        };
-      })
-    );
+    // Generate embedding using Supabase's vector operations
+    const { data: embeddingData, error: embeddingError } = await supabase.functions.invoke('generate-embedding', {
+      body: { text: data.text }
+    });
 
-    // Structure the data
+    if (embeddingError) {
+      console.error('Error generating embedding:', embeddingError);
+      throw embeddingError;
+    }
+
+    // Structure the guideline data
     const guideline: ProcessedGuideline = {
       title: extractTitle(data.text),
       condition: extractCondition(data.text),
-      sections: processedSections,
+      url: URL.createObjectURL(file), // Create a temporary URL for the file
+      content: { sections },
       interventions: extractInterventions(data.text),
       evidence_levels: extractEvidenceLevels(data.text),
-      protocols: extractProtocols(data.text)
+      protocols: extractProtocols(data.text),
+      embedding: embeddingData.embedding
     };
 
     // Store in Supabase
     const { data: savedGuideline, error } = await supabase
       .from('dutch_guidelines')
-      .insert([{
-        title: guideline.title,
-        condition: guideline.condition,
-        content: { sections: guideline.sections },
-        interventions: guideline.interventions,
-        evidence_levels: guideline.evidence_levels,
-        protocols: guideline.protocols,
-        embedding: processedSections[0]?.embedding // Store main section embedding
-      }])
+      .insert(guideline)
       .select()
       .single();
 
@@ -101,28 +96,6 @@ function splitIntoSections(text: string): ProcessedSection[] {
   }
 
   return sections;
-}
-
-async function generateEmbedding(text: string): Promise<number[]> {
-  try {
-    const response = await fetch('https://api.openai.com/v1/embeddings', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        input: text,
-        model: 'text-embedding-3-small'
-      })
-    });
-
-    const data = await response.json();
-    return data.data[0].embedding;
-  } catch (error) {
-    console.error('Error generating embedding:', error);
-    return [];
-  }
 }
 
 function extractTitle(text: string): string {
