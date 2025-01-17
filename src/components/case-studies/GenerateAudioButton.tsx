@@ -21,10 +21,18 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
     }
 
     // Otherwise, find the specific section
-    const section = study.generated_sections?.find(
-      (section: any) => section.title.toLowerCase() === sectionId.toLowerCase()
+    // First ensure generated_sections is an array and cast it properly
+    const sections = Array.isArray(study.generated_sections) 
+      ? study.generated_sections 
+      : [];
+
+    const section = sections.find(
+      (section) => section.title?.toLowerCase() === sectionId.toLowerCase()
     );
-    return section?.content || 'No content available for this section.';
+    
+    return typeof section?.content === 'string' 
+      ? section.content 
+      : 'No content available for this section.';
   };
 
   const handleGenerate = async () => {
