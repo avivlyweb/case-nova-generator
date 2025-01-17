@@ -10,6 +10,12 @@ interface GenerateAudioButtonProps {
   sectionId?: string;
 }
 
+// Define the shape of a section
+interface Section {
+  title: string;
+  content: string;
+}
+
 const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButtonProps) => {
   const [generating, setGenerating] = useState(false);
   const { toast } = useToast();
@@ -23,16 +29,14 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
     // Otherwise, find the specific section
     // First ensure generated_sections is an array and cast it properly
     const sections = Array.isArray(study.generated_sections) 
-      ? study.generated_sections 
+      ? (study.generated_sections as Section[])
       : [];
 
     const section = sections.find(
       (section) => section.title?.toLowerCase() === sectionId.toLowerCase()
     );
     
-    return typeof section?.content === 'string' 
-      ? section.content 
-      : 'No content available for this section.';
+    return section?.content || 'No content available for this section.';
   };
 
   const handleGenerate = async () => {
