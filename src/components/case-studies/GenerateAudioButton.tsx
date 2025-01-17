@@ -19,9 +19,15 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
       setGenerating(true);
       
       // Get the text to convert to audio
-      const textToConvert = sectionId === 'summary' 
-        ? study.ai_analysis || ''
-        : study.generated_sections?.find(s => s.id === sectionId)?.content || '';
+      let textToConvert = '';
+      if (sectionId === 'summary') {
+        textToConvert = study.ai_analysis || '';
+      } else {
+        // Safely type check and cast the generated_sections
+        const sections = study.generated_sections as Array<{ id: string; content: string }> || [];
+        const section = sections.find(s => s.id === sectionId);
+        textToConvert = section?.content || '';
+      }
 
       if (!textToConvert) {
         toast({
@@ -74,7 +80,7 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
       disabled={generating}
       variant="outline"
       size="lg"
-      className="w-full sm:w-auto bg-white hover:bg-gray-50 border-primary-200 hover:border-primary-300 text-primary-700 hover:text-primary-800"
+      className="w-full sm:w-auto bg-white hover:bg-gray-50 border-primary-200 hover:border-primary-300 text-primary-700 hover:text-primary-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-600 dark:hover:border-gray-500 dark:text-gray-200"
     >
       {generating ? (
         <>
