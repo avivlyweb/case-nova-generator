@@ -40,16 +40,25 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
       
       console.log('Audio generated, raw data:', audio);
 
+      // Ensure we have valid audio data
+      if (!audio || !audio.audio || audio.audio.length === 0) {
+        throw new Error('No audio data generated');
+      }
+
       // Convert audio data to a format we can play
-      const audioData = new Float32Array(audio.buffer);
-      const sampleRate = 22050; // Standard sample rate for Kokoro
+      const audioData = new Float32Array(audio.audio);
+      const sampleRate = audio.sampling_rate || 24000; // Use the provided sampling rate or default to 24000
       
-      // Create AudioContext with proper type handling
-      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-      const audioContext = new AudioContextClass();
+      // Create AudioContext
+      const audioContext = new AudioContext();
+      
+      // Ensure we have valid audio data length
+      if (audioData.length === 0) {
+        throw new Error('Audio data is empty');
+      }
+
+      // Create and fill the audio buffer
       const audioBuffer = audioContext.createBuffer(1, audioData.length, sampleRate);
-      
-      // Fill the buffer with our audio data
       audioBuffer.getChannelData(0).set(audioData);
       
       // Create audio source and play
