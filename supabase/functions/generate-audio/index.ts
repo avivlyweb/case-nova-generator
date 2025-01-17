@@ -22,19 +22,23 @@ serve(async (req) => {
 
     console.log('Generating audio for text:', text.substring(0, 100) + '...')
 
-    // Initialize ONNX session
-    const session = await InferenceSession.create('kokoro-v0_19.onnx', {
+    // Download ONNX model if not already in cache
+    const modelResponse = await fetch('https://huggingface.co/hexgrad/Kokoro-82M/resolve/main/kokoro-v0_19.onnx');
+    const modelArrayBuffer = await modelResponse.arrayBuffer();
+
+    // Initialize ONNX session with the downloaded model
+    const session = await InferenceSession.create(new Uint8Array(modelArrayBuffer), {
       executionProviders: ['wasm']
     });
 
-    // Generate audio using ONNX model
-    const inputTensor = new Float32Array(text.length);
-    text.split('').forEach((char, i) => {
-      inputTensor[i] = char.charCodeAt(0);
-    });
+    // Prepare input tensor
+    const encoder = new TextEncoder();
+    const inputBytes = encoder.encode(text);
+    const inputTensor = new Float32Array(inputBytes);
 
+    // Run inference
     const results = await session.run({
-      input: inputTensor
+      'input': new Float32Array(inputTensor)
     });
 
     const audioData = results.output.data;
