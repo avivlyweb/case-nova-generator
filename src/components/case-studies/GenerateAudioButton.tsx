@@ -18,49 +18,56 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
     try {
       setGenerating(true);
       
-      // Get a shorter text sample for testing
-      let textToConvert = 'Testing audio generation.';
+      // Use a very short test text to minimize processing requirements
+      const textToConvert = 'Test.';
       
       console.log('Starting audio generation with text:', textToConvert);
 
-      // Initialize Kokoro TTS
+      // Initialize Kokoro TTS with minimal configuration
       console.log('Initializing TTS...');
       const tts = await KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-ONNX", {
-        dtype: "q8", // Use quantized model for better performance
+        dtype: "q8",
+        threads: 1, // Disable threading to avoid SharedArrayBuffer issues
+        wasmPath: 'https://cdn.jsdelivr.net/npm/kokoro-js/dist/wasm/', // Use CDN for WASM files
       });
+      
       console.log('TTS initialized successfully');
 
-      // Generate audio
+      // Generate audio with basic settings
       console.log('Generating audio...');
       const audio = await tts.generate(textToConvert, {
-        voice: "af_bella", // Use Bella voice (American Female)
+        voice: "af_bella",
+        speed: 1.0,
       });
-      console.log('Audio generated:', audio);
+      
+      console.log('Audio generated, raw data:', audio);
 
-      if (!audio || !audio.buffer) {
-        throw new Error('Generated audio is invalid');
-      }
+      // Convert audio data to a format we can play
+      const audioData = new Float32Array(audio.data);
+      const sampleRate = 22050; // Standard sample rate for Kokoro
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const audioBuffer = audioContext.createBuffer(1, audioData.length, sampleRate);
+      
+      // Fill the buffer with our audio data
+      audioBuffer.getChannelData(0).set(audioData);
+      
+      // Create audio source and play
+      const source = audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(audioContext.destination);
+      source.start(0);
+      
+      console.log('Audio playback started');
 
-      // Convert the audio data to a format that can be played
-      console.log('Creating audio blob...');
-      const blob = new Blob([audio.buffer], { type: 'audio/wav' });
-      const audioUrl = URL.createObjectURL(blob);
-      console.log('Audio URL created:', audioUrl);
-
-      // Create an audio element and play it
-      const audioElement = new Audio(audioUrl);
-      console.log('Playing audio...');
-      audioElement.play();
-
-      // Clean up the URL when the audio is done playing
-      audioElement.onended = () => {
+      // Clean up when done
+      source.onended = () => {
         console.log('Audio playback completed');
-        URL.revokeObjectURL(audioUrl);
+        audioContext.close();
       };
       
       toast({
         title: "Success",
-        description: "Audio has been generated and is now playing.",
+        description: "Audio is now playing.",
       });
     } catch (error) {
       console.error('Error generating audio:', error);
