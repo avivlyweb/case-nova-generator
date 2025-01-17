@@ -19,53 +19,33 @@ serve(async (req) => {
       throw new Error('No text provided')
     }
 
-    console.log('Starting audio generation process...')
+    console.log('Starting audio generation process with Kokoro-82M...')
     console.log('Input text length:', text.length)
     console.log('Section ID:', sectionId)
 
-    // Create a simple audio signal (sine wave)
-    const sampleRate = 44100
-    const duration = text.length * 0.1 // 100ms per character
-    const frequency = 440 // A4 note
-    const amplitude = 0.5
+    // Call Kokoro API
+    const response = await fetch('https://api.kokoro.ai/v1/tts', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${Deno.env.get('KOKORO_API_KEY')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        text: text,
+        model: 'kokoro-82m',
+        voice: 'en-US-1', // You can change this to other available voices
+        format: 'wav',
+        speed: 1.0,
+      }),
+    });
 
-    const numSamples = Math.floor(sampleRate * duration)
-    const audioData = new Float32Array(numSamples)
-
-    for (let i = 0; i < numSamples; i++) {
-      const t = i / sampleRate
-      audioData[i] = amplitude * Math.sin(2 * Math.PI * frequency * t)
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Kokoro API error:', errorText);
+      throw new Error(`Failed to generate audio: ${errorText}`);
     }
 
-    // Create WAV file
-    const wavBuffer = new ArrayBuffer(44 + audioData.length * 2)
-    const view = new DataView(wavBuffer)
-
-    // Write WAV header
-    const writeString = (view: DataView, offset: number, string: string) => {
-      for (let i = 0; i < string.length; i++) {
-        view.setUint8(offset + i, string.charCodeAt(i))
-      }
-    }
-
-    writeString(view, 0, 'RIFF')
-    view.setUint32(4, 36 + audioData.length * 2, true)
-    writeString(view, 8, 'WAVE')
-    writeString(view, 12, 'fmt ')
-    view.setUint32(16, 16, true)
-    view.setUint16(20, 1, true)
-    view.setUint16(22, 1, true)
-    view.setUint32(24, sampleRate, true)
-    view.setUint32(28, sampleRate * 2, true)
-    view.setUint16(32, 2, true)
-    view.setUint16(34, 16, true)
-    writeString(view, 36, 'data')
-    view.setUint32(40, audioData.length * 2, true)
-
-    // Write audio data
-    for (let i = 0; i < audioData.length; i++) {
-      view.setInt16(44 + i * 2, audioData[i] * 32767, true)
-    }
+    const audioBuffer = await response.arrayBuffer();
 
     // Create Supabase client
     console.log('Initializing Supabase client...')
@@ -80,7 +60,7 @@ serve(async (req) => {
     
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from('knowledgecase')
-      .upload(filePath, new Uint8Array(wavBuffer), {
+      .upload(filePath, new Uint8Array(audioBuffer), {
         contentType: 'audio/wav',
         upsert: true
       })
