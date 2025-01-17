@@ -22,17 +22,11 @@ serve(async (req) => {
 
     console.log('Generating audio for text:', text.substring(0, 100) + '...')
 
-    // Download ONNX model
-    console.log('Downloading ONNX model...')
-    const modelResponse = await fetch('https://huggingface.co/hexgrad/Kokoro-82M/resolve/main/kokoro-v0_19.onnx');
-    if (!modelResponse.ok) {
-      throw new Error('Failed to download model: ' + await modelResponse.text());
-    }
-    const modelArrayBuffer = await modelResponse.arrayBuffer();
-
-    // Initialize ONNX session
+    // Initialize ONNX session with remote model
     console.log('Initializing ONNX session...')
-    const session = await ort.InferenceSession.create(new Uint8Array(modelArrayBuffer));
+    const session = await ort.InferenceSession.create(
+      'https://huggingface.co/hexgrad/Kokoro-82M/resolve/main/kokoro-v0_19.onnx'
+    );
 
     // Prepare input tensor
     console.log('Preparing input tensor...')

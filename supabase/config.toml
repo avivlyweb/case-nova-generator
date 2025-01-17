@@ -2,3 +2,6 @@ project_id = "gmlpzjtnmxwojejnugej"
 
 [functions.generate-audio]
 verify_jwt = false
+
+[functions.process-case-study]
+verify_jwt = false
