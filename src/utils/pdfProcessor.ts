@@ -14,7 +14,7 @@ interface ProcessedGuideline {
   interventions: Record<string, any>[];
   evidence_levels: Record<string, any>;
   protocols: Record<string, any>[];
-  embedding: number[];
+  embedding: string;
 }
 
 export async function processPDFGuideline(file: File): Promise<ProcessedGuideline | null> {
@@ -50,7 +50,7 @@ export async function processPDFGuideline(file: File): Promise<ProcessedGuidelin
       interventions: extractInterventions(data.text),
       evidence_levels: extractEvidenceLevels(data.text),
       protocols: extractProtocols(data.text),
-      embedding: embeddingData.embedding
+      embedding: JSON.stringify(embeddingData.embedding) // Convert embedding array to string
     };
 
     // Store in Supabase

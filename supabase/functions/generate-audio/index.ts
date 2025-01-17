@@ -1,7 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1'
-import { load } from "npm:@onnxruntime/node"
-import { kokoro } from "npm:kokoro_onnx"
+import { InferenceSession } from "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.16.3/dist/esm/ort.min.js"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -23,15 +22,22 @@ serve(async (req) => {
 
     console.log('Generating audio for text:', text.substring(0, 100) + '...')
 
-    // Initialize Kokoro model
-    const model = await load('kokoro-v0_19.onnx')
-    const voicepack = await load('voices/af.pt') // Default voice (Bella & Sarah mix)
+    // Initialize ONNX session
+    const session = await InferenceSession.create('kokoro-v0_19.onnx', {
+      executionProviders: ['wasm']
+    });
 
-    // Generate audio using Kokoro
-    const { audio, phonemes } = await kokoro.generate(model, text, voicepack, {
-      language: 'en-us',
-      sampleRate: 24000
-    })
+    // Generate audio using ONNX model
+    const inputTensor = new Float32Array(text.length);
+    text.split('').forEach((char, i) => {
+      inputTensor[i] = char.charCodeAt(0);
+    });
+
+    const results = await session.run({
+      input: inputTensor
+    });
+
+    const audioData = results.output.data;
 
     // Create Supabase client
     const supabase = createClient(
@@ -40,7 +46,7 @@ serve(async (req) => {
     )
 
     // Save audio to storage
-    const audioBuffer = new Uint8Array(audio)
+    const audioBuffer = new Uint8Array(audioData);
     const filePath = `case-studies/${sectionId}/audio.wav`
 
     const { data: uploadData, error: uploadError } = await supabase.storage
@@ -64,7 +70,6 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({
         url: publicUrl,
-        phonemes,
         message: 'Audio generated successfully'
       }),
       { 
