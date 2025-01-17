@@ -48,10 +48,10 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
         voice: "af_bella", // Use Bella voice (American Female)
       });
 
-      // Convert the RawAudio to an ArrayBuffer and create a blob
-      const audioBuffer = await audio.arrayBuffer();
-      const audioBlob = new Blob([audioBuffer], { type: 'audio/wav' });
-      const audioUrl = URL.createObjectURL(audioBlob);
+      // Convert the audio data to a format that can be played
+      const audioData = new Float32Array(audio.data);
+      const blob = new Blob([audioData.buffer], { type: 'audio/wav' });
+      const audioUrl = URL.createObjectURL(blob);
 
       // Create an audio element and play it
       const audioElement = new Audio(audioUrl);
