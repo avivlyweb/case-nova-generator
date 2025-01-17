@@ -22,10 +22,16 @@ serve(async (req) => {
 
     console.log('Generating audio for text:', text.substring(0, 100) + '...')
 
-    // Initialize ONNX session with remote model
+    // Download model at runtime instead of bundling
+    const modelResponse = await fetch(
+      'https://huggingface.co/hexgrad/Kokoro-82M/resolve/main/kokoro-v0_19.onnx'
+    );
+    const modelArrayBuffer = await modelResponse.arrayBuffer();
+
+    // Initialize ONNX session with the downloaded model
     console.log('Initializing ONNX session...')
     const session = await ort.InferenceSession.create(
-      'https://huggingface.co/hexgrad/Kokoro-82M/resolve/main/kokoro-v0_19.onnx'
+      new Uint8Array(modelArrayBuffer)
     );
 
     // Prepare input tensor

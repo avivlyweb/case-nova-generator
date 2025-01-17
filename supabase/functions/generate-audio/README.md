@@ -5,6 +5,7 @@ This edge function generates audio from text using the Kokoro ONNX model and sav
 ## Features
 
 - Uses Kokoro-82M ONNX model for text-to-speech conversion
+- Downloads model at runtime to reduce function size
 - Saves generated audio files to the 'knowledgecase' bucket
 - Returns a public URL for audio playback
 
