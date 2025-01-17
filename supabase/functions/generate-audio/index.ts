@@ -23,23 +23,25 @@ serve(async (req) => {
     console.log('Input text length:', text.length)
     console.log('Section ID:', sectionId)
 
-    // Create a simple audio file using Web Audio API concepts
-    const sampleRate = 24000
-    const duration = Math.min(text.length * 0.1, 30) // 0.1 seconds per character, max 30 seconds
-    const numSamples = Math.floor(sampleRate * duration)
-    
-    // Generate a simple sine wave
-    const audioData = new Float32Array(numSamples)
+    // Create a simple audio signal (sine wave)
+    const sampleRate = 44100
+    const duration = text.length * 0.1 // 100ms per character
     const frequency = 440 // A4 note
+    const amplitude = 0.5
+
+    const numSamples = Math.floor(sampleRate * duration)
+    const audioData = new Float32Array(numSamples)
+
     for (let i = 0; i < numSamples; i++) {
-      audioData[i] = Math.sin((2 * Math.PI * frequency * i) / sampleRate)
+      const t = i / sampleRate
+      audioData[i] = amplitude * Math.sin(2 * Math.PI * frequency * t)
     }
 
-    // Convert to WAV format
-    const wavData = new ArrayBuffer(44 + audioData.length * 2)
-    const view = new DataView(wavData)
-    
-    // WAV header
+    // Create WAV file
+    const wavBuffer = new ArrayBuffer(44 + audioData.length * 2)
+    const view = new DataView(wavBuffer)
+
+    // Write WAV header
     const writeString = (view: DataView, offset: number, string: string) => {
       for (let i = 0; i < string.length; i++) {
         view.setUint8(offset + i, string.charCodeAt(i))
@@ -62,8 +64,7 @@ serve(async (req) => {
 
     // Write audio data
     for (let i = 0; i < audioData.length; i++) {
-      const s = Math.max(-1, Math.min(1, audioData[i]))
-      view.setInt16(44 + i * 2, s < 0 ? s * 0x8000 : s * 0x7FFF, true)
+      view.setInt16(44 + i * 2, audioData[i] * 32767, true)
     }
 
     // Create Supabase client
@@ -79,7 +80,7 @@ serve(async (req) => {
     
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from('knowledgecase')
-      .upload(filePath, new Uint8Array(wavData), {
+      .upload(filePath, new Uint8Array(wavBuffer), {
         contentType: 'audio/wav',
         upsert: true
       })
