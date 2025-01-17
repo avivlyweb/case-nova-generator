@@ -49,7 +49,7 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
       });
 
       // Create an audio blob and URL
-      const audioBlob = new Blob([audio.buffer], { type: 'audio/wav' });
+      const audioBlob = new Blob([audio], { type: 'audio/wav' });
       const audioUrl = URL.createObjectURL(audioBlob);
 
       // Create an audio element and play it
