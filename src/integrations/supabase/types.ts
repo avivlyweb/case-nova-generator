@@ -750,6 +750,12 @@ export type Database = {
             }
             Returns: unknown
           }
+      generate_embedding: {
+        Args: {
+          input_text: string
+        }
+        Returns: string
+      }
       gtrgm_compress: {
         Args: {
           "": unknown
