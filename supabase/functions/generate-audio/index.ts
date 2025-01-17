@@ -54,7 +54,7 @@ serve(async (req) => {
     const filePath = `case-studies/${sectionId}/audio.wav`
 
     const { data: uploadData, error: uploadError } = await supabase.storage
-      .from('audio_files')
+      .from('knowledgecase')
       .upload(filePath, audioBuffer, {
         contentType: 'audio/wav',
         upsert: true
@@ -66,7 +66,7 @@ serve(async (req) => {
 
     // Get public URL
     const { data: { publicUrl } } = supabase.storage
-      .from('audio_files')
+      .from('knowledgecase')
       .getPublicUrl(filePath)
 
     console.log('Audio generated and uploaded successfully:', publicUrl)

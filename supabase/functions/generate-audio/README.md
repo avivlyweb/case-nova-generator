@@ -1,20 +1,17 @@
 # Generate Audio Edge Function
 
-This edge function uses the Kokoro-82M ONNX model to generate audio from text for case studies.
+This edge function generates audio from text using the Kokoro ONNX model and saves it to Supabase Storage.
 
 ## Features
-- Converts text to speech using Kokoro-82M ONNX model
-- Uses default voice (50-50 mix of Bella & Sarah)
-- Generates 24khz audio output
-- Stores generated audio in Supabase Storage
-- Returns public URL for immediate playback
 
-## Environment Variables Required
-- SUPABASE_URL
-- SUPABASE_SERVICE_ROLE_KEY
+- Uses Kokoro-82M ONNX model for text-to-speech conversion
+- Saves generated audio files to the 'knowledgecase' bucket
+- Returns a public URL for audio playback
 
 ## Usage
-Send a POST request with:
+
+Send a POST request to the function with:
+
 ```json
 {
   "text": "Text to convert to speech",
@@ -22,11 +19,21 @@ Send a POST request with:
 }
 ```
 
-Response:
+The function will return:
+
 ```json
 {
-  "url": "https://...audio.wav",
-  "phonemes": [...],
+  "url": "https://...public-url-to-audio-file...",
   "message": "Audio generated successfully"
+}
+```
+
+## Error Handling
+
+If an error occurs, the function will return a 500 status code with:
+
+```json
+{
+  "error": "Error message describing what went wrong"
 }
 ```
