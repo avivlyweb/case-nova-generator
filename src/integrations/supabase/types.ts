@@ -892,6 +892,24 @@ export type Database = {
           similarity: number
         }[]
       }
+      search_guidelines_for_case: {
+        Args: {
+          query_text: string
+          query_embedding: string
+          match_count?: number
+          min_similarity?: number
+        }
+        Returns: {
+          id: string
+          title: string
+          condition: string
+          content: Json
+          sections: Json
+          interventions: Json
+          evidence_levels: Json
+          similarity: number
+        }[]
+      }
       search_lifestyle_tips: {
         Args: {
           query_text: string
