@@ -18,47 +18,43 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
     try {
       setGenerating(true);
       
-      // Get the text to convert to audio
-      let textToConvert = '';
-      if (sectionId === 'summary') {
-        textToConvert = study.ai_analysis || '';
-      } else {
-        // Safely type check and cast the generated_sections
-        const sections = study.generated_sections as Array<{ id: string; content: string }> || [];
-        const section = sections.find(s => s.id === sectionId);
-        textToConvert = section?.content || '';
-      }
-
-      if (!textToConvert) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "No text content available to generate audio.",
-        });
-        return;
-      }
+      // Get a shorter text sample for testing
+      let textToConvert = 'Testing audio generation.';
+      
+      console.log('Starting audio generation with text:', textToConvert);
 
       // Initialize Kokoro TTS
+      console.log('Initializing TTS...');
       const tts = await KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-ONNX", {
         dtype: "q8", // Use quantized model for better performance
       });
+      console.log('TTS initialized successfully');
 
       // Generate audio
+      console.log('Generating audio...');
       const audio = await tts.generate(textToConvert, {
         voice: "af_bella", // Use Bella voice (American Female)
       });
+      console.log('Audio generated:', audio);
+
+      if (!audio || !audio.buffer) {
+        throw new Error('Generated audio is invalid');
+      }
 
       // Convert the audio data to a format that can be played
-      const audioData = new Float32Array(audio.data);
-      const blob = new Blob([audioData.buffer], { type: 'audio/wav' });
+      console.log('Creating audio blob...');
+      const blob = new Blob([audio.buffer], { type: 'audio/wav' });
       const audioUrl = URL.createObjectURL(blob);
+      console.log('Audio URL created:', audioUrl);
 
       // Create an audio element and play it
       const audioElement = new Audio(audioUrl);
+      console.log('Playing audio...');
       audioElement.play();
 
       // Clean up the URL when the audio is done playing
       audioElement.onended = () => {
+        console.log('Audio playback completed');
         URL.revokeObjectURL(audioUrl);
       };
       
@@ -71,7 +67,7 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to generate audio. Please try again.",
+        description: error.message || "Failed to generate audio. Please try again.",
       });
     } finally {
       setGenerating(false);
