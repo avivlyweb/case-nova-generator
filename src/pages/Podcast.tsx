@@ -8,11 +8,62 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Mic, Play, Download, Settings } from "lucide-react";
+import { Mic, Play, Download, Settings, Loader2 } from "lucide-react";
+import { convertTextToSpeech, ELEVEN_LABS_VOICES } from "@/services/elevenlabs";
+import { useToast } from "@/components/ui/use-toast";
 
 const Podcast = () => {
   const [selectedCase, setSelectedCase] = useState<string>("");
   const [selectedVoice, setSelectedVoice] = useState<string>("");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const { toast } = useToast();
+
+  const handleGeneratePodcast = async () => {
+    if (!selectedCase || !selectedVoice) {
+      toast({
+        title: "Missing Information",
+        description: "Please select both a case study and a voice before generating.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsGenerating(true);
+    try {
+      // For now, we'll use a placeholder text. Later, we'll get the actual case study content
+      const dummyText = "This is a sample case study podcast. We'll replace this with actual content from the selected case study.";
+      
+      const audioBuffer = await convertTextToSpeech(dummyText, selectedVoice);
+      const blob = new Blob([audioBuffer], { type: "audio/mpeg" });
+      const url = URL.createObjectURL(blob);
+      setAudioUrl(url);
+      
+      toast({
+        title: "Success",
+        description: "Podcast generated successfully!",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to generate podcast. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleDownload = () => {
+    if (audioUrl) {
+      const link = document.createElement("a");
+      link.href = audioUrl;
+      link.download = `podcast-${selectedCase}.mp3`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
 
   return (
     <div className="container mx-auto py-8 px-4">
@@ -65,17 +116,28 @@ const Podcast = () => {
                   <SelectValue placeholder="Choose a voice" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="charlie">Dr. Charlie (Narrator)</SelectItem>
-                  <SelectItem value="sarah">Dr. Sarah (Clinical)</SelectItem>
-                  <SelectItem value="george">Dr. George (Medical)</SelectItem>
+                  {ELEVEN_LABS_VOICES.map((voice) => (
+                    <SelectItem key={voice.id} value={voice.id}>
+                      {voice.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
 
             <div className="flex gap-4">
-              <Button className="w-full gap-2" size="lg">
-                <Mic className="w-4 h-4" />
-                Generate Podcast
+              <Button 
+                className="w-full gap-2" 
+                size="lg"
+                onClick={handleGeneratePodcast}
+                disabled={isGenerating || !selectedCase || !selectedVoice}
+              >
+                {isGenerating ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Mic className="w-4 h-4" />
+                )}
+                {isGenerating ? "Generating..." : "Generate Podcast"}
               </Button>
             </div>
           </div>
@@ -84,19 +146,40 @@ const Podcast = () => {
         <Card className="p-6">
           <h2 className="text-xl font-semibold mb-4">Preview</h2>
           <div className="bg-secondary/10 rounded-lg p-6 flex items-center justify-center min-h-[200px]">
-            <div className="text-center">
-              <p className="text-muted-foreground mb-4">
-                Generate a podcast to preview it here
-              </p>
-              <div className="flex gap-4 justify-center">
-                <Button variant="outline" size="icon" disabled>
-                  <Play className="w-4 h-4" />
-                </Button>
-                <Button variant="outline" size="icon" disabled>
-                  <Download className="w-4 h-4" />
-                </Button>
+            {audioUrl ? (
+              <div className="w-full space-y-4">
+                <audio 
+                  controls 
+                  className="w-full" 
+                  src={audioUrl}
+                />
+                <div className="flex justify-center">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2"
+                    onClick={handleDownload}
+                  >
+                    <Download className="w-4 h-4" />
+                    Download
+                  </Button>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="text-center">
+                <p className="text-muted-foreground mb-4">
+                  Generate a podcast to preview it here
+                </p>
+                <div className="flex gap-4 justify-center">
+                  <Button variant="outline" size="icon" disabled>
+                    <Play className="w-4 h-4" />
+                  </Button>
+                  <Button variant="outline" size="icon" disabled>
+                    <Download className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
         </Card>
       </div>
