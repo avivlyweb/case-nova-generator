@@ -1,4 +1,4 @@
-const ELEVEN_LABS_API_URL = "https://api.elevenlabs.io/v1";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface TextToSpeechRequest {
   text: string;
@@ -13,13 +13,24 @@ export const convertTextToSpeech = async (
   text: string,
   voiceId: string
 ): Promise<ArrayBuffer> => {
+  // Get the API key from Supabase
+  const { data: { secret: apiKey } } = await supabase.rpc('get_secret', { 
+    name: 'ELEVEN_LABS_API_KEY'
+  });
+
+  if (!apiKey) {
+    throw new Error("ElevenLabs API key not found. Please set it in Supabase secrets.");
+  }
+
+  console.log("Making request to ElevenLabs API...");
+  
   const response = await fetch(
-    `${ELEVEN_LABS_API_URL}/text-to-speech/${voiceId}`,
+    `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "xi-api-key": import.meta.env.VITE_ELEVEN_LABS_API_KEY || "",
+        "xi-api-key": apiKey,
       },
       body: JSON.stringify({
         text,
@@ -37,6 +48,7 @@ export const convertTextToSpeech = async (
     console.error("ElevenLabs API error:", errorData);
     throw new Error(
       errorData.detail?.[0]?.message || 
+      errorData.detail?.message ||
       errorData.detail || 
       "Failed to convert text to speech"
     );

@@ -7,6 +7,7 @@ interface ProcessedSection {
 }
 
 interface ProcessedGuideline {
+  title: string;
   condition: string;
   url: string;
   content: Record<string, any>;
@@ -21,6 +22,9 @@ export async function processPDFGuideline(file: File): Promise<ProcessedGuidelin
     // Read the PDF file
     const buffer = await file.arrayBuffer();
     const data = await pdfParse(buffer);
+    
+    // Extract title from the first line or specific pattern
+    const title = extractTitle(data.text);
     
     // Split into sections based on headers
     const sections = splitIntoSections(data.text);
@@ -37,6 +41,7 @@ export async function processPDFGuideline(file: File): Promise<ProcessedGuidelin
 
     // Structure the guideline data
     const guideline: ProcessedGuideline = {
+      title: title, // Add the title field
       condition: extractCondition(data.text),
       url: URL.createObjectURL(file),
       content: { 
@@ -48,13 +53,14 @@ export async function processPDFGuideline(file: File): Promise<ProcessedGuidelin
       interventions: extractInterventions(data.text),
       evidence_levels: extractEvidenceLevels(data.text),
       protocols: extractProtocols(data.text),
-      embedding: JSON.stringify(embeddingData.embedding) // Convert embedding array to string
+      embedding: JSON.stringify(embeddingData.embedding)
     };
 
     // Store in Supabase
     const { data: savedGuideline, error } = await supabase
       .from('dutch_guidelines')
       .insert({
+        title: guideline.title,
         condition: guideline.condition,
         url: guideline.url,
         content: guideline.content,
