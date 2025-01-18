@@ -21,7 +21,7 @@ serve(async (req) => {
   }
 
   try {
-    console.log('Starting generate-podcast function...')
+    console.log('Starting generate-podcast function with timestamp:', new Date().toISOString())
     
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -47,13 +47,14 @@ serve(async (req) => {
       throw new Error('ElevenLabs API key not found in secrets table')
     }
 
-    console.log('Successfully retrieved ElevenLabs API key')
+    console.log('Successfully retrieved ElevenLabs API key (first 4 chars):', secretData.value.substring(0, 4))
 
     const { caseStudy, voiceId } = await req.json() as PodcastRequest
+    console.log('Received request for voice ID:', voiceId)
 
     // Create podcast script with proper transitions and structure
     const script = generatePodcastScript(caseStudy)
-    console.log('Generated podcast script:', script.slice(0, 100) + '...')
+    console.log('Generated podcast script (first 100 chars):', script.slice(0, 100))
 
     // Convert text to speech using ElevenLabs
     console.log('Calling ElevenLabs API...')
@@ -81,8 +82,10 @@ serve(async (req) => {
 
     if (!audioResponse.ok) {
       const errorText = await audioResponse.text()
-      console.error('ElevenLabs API error:', errorText)
-      throw new Error(`ElevenLabs API error: ${errorText}`)
+      console.error('ElevenLabs API error response:', errorText)
+      console.error('ElevenLabs API error status:', audioResponse.status)
+      console.error('ElevenLabs API error statusText:', audioResponse.statusText)
+      throw new Error(`ElevenLabs API error (${audioResponse.status}): ${errorText}`)
     }
 
     console.log('Successfully received audio from ElevenLabs')
@@ -92,6 +95,8 @@ serve(async (req) => {
     const audioBase64 = btoa(
       String.fromCharCode(...new Uint8Array(audioBuffer))
     )
+
+    console.log('Successfully converted audio to base64')
 
     return new Response(
       JSON.stringify({ 
@@ -108,6 +113,7 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Error in generate-podcast function:', error)
+    console.error('Error stack trace:', error.stack)
     return new Response(
       JSON.stringify({ 
         error: error.message,
