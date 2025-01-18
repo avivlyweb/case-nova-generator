@@ -1,5 +1,5 @@
 import { Groq } from 'npm:groq-sdk';
-import { supabase } from '../../../utils/supabaseClient.ts';
+import { supabase } from '../../_shared/supabaseClient.ts';
 import { CaseStudy } from '../types.ts';
 
 export async function generateClinicalReasoning(
