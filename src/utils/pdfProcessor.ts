@@ -14,7 +14,7 @@ interface ProcessedGuideline {
   interventions: Record<string, any>[];
   evidence_levels: Record<string, any>;
   protocols: Record<string, any>[];
-  embedding: number[];
+  embedding: string;
 }
 
 export async function processPDFGuideline(file: File): Promise<ProcessedGuideline | null> {
@@ -50,21 +50,21 @@ export async function processPDFGuideline(file: File): Promise<ProcessedGuidelin
       interventions: extractInterventions(data.text),
       evidence_levels: extractEvidenceLevels(data.text),
       protocols: extractProtocols(data.text),
-      embedding: embeddingData.embedding
+      embedding: JSON.stringify(embeddingData.embedding) // Convert embedding array to string
     };
 
     // Store in Supabase
     const { data: savedGuideline, error } = await supabase
       .from('dutch_guidelines')
       .insert({
-        title: guideline.title,
         condition: guideline.condition,
         url: guideline.url,
         content: guideline.content,
         interventions: guideline.interventions,
         evidence_levels: guideline.evidence_levels,
         protocols: guideline.protocols,
-        embedding: guideline.embedding
+        embedding: guideline.embedding,
+        title: guideline.title
       })
       .select()
       .single();
