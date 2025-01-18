@@ -15,6 +15,32 @@ interface PodcastRequest {
   voiceId: string;
 }
 
+async function getElevenLabsApiKey(supabaseClient: any) {
+  console.log('Fetching ElevenLabs API key...')
+  
+  // First try to get the most recent API key
+  const { data, error } = await supabaseClient
+    .from('secrets')
+    .select('value')
+    .eq('name', 'ELEVEN_LABS_API_KEY')
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .single()
+
+  if (error) {
+    console.error('Error fetching ElevenLabs API key:', error)
+    throw new Error(`Database error when fetching ElevenLabs API key: ${error.message}`)
+  }
+
+  if (!data?.value) {
+    console.error('No ElevenLabs API key found')
+    throw new Error('ElevenLabs API key not found')
+  }
+
+  console.log('Successfully retrieved ElevenLabs API key (first 4 chars):', data.value.substring(0, 4))
+  return data.value
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -31,28 +57,7 @@ serve(async (req) => {
         Deno.env.get('SUPABASE_ANON_KEY') ?? ''
       )
 
-      console.log('Fetching ElevenLabs API key for test...')
-      
-      // Updated query to get the most recent secret value
-      const { data: secretData, error: secretError } = await supabaseClient
-        .from('secrets')
-        .select('value')
-        .eq('name', 'ELEVEN_LABS_API_KEY')
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .single()
-
-      if (secretError) {
-        console.error('Database error when fetching ElevenLabs API key:', secretError)
-        throw new Error(`Database error when fetching ElevenLabs API key: ${secretError.message}`)
-      }
-
-      if (!secretData?.value) {
-        console.error('ElevenLabs API key not found in secrets table')
-        throw new Error('ElevenLabs API key not found in secrets table')
-      }
-
-      console.log('Successfully retrieved ElevenLabs API key (first 4 chars):', secretData.value.substring(0, 4))
+      const apiKey = await getElevenLabsApiKey(supabaseClient)
 
       // Test the ElevenLabs API with a minimal request
       console.log('Testing ElevenLabs API connection...')
@@ -61,7 +66,7 @@ serve(async (req) => {
         {
           headers: {
             'Accept': 'application/json',
-            'xi-api-key': secretData.value,
+            'xi-api-key': apiKey,
           },
         }
       )
@@ -117,28 +122,7 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_ANON_KEY') ?? ''
     )
 
-    console.log('Fetching ElevenLabs API key...')
-    
-    // Updated query to get the most recent secret value
-    const { data: secretData, error: secretError } = await supabaseClient
-      .from('secrets')
-      .select('value')
-      .eq('name', 'ELEVEN_LABS_API_KEY')
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single()
-
-    if (secretError) {
-      console.error('Database error when fetching ElevenLabs API key:', secretError)
-      throw new Error(`Database error when fetching ElevenLabs API key: ${secretError.message}`)
-    }
-
-    if (!secretData?.value) {
-      console.error('ElevenLabs API key not found in secrets table')
-      throw new Error('ElevenLabs API key not found in secrets table')
-    }
-
-    console.log('Successfully retrieved ElevenLabs API key (first 4 chars):', secretData.value.substring(0, 4))
+    const apiKey = await getElevenLabsApiKey(supabaseClient)
 
     const { caseStudy, voiceId } = await req.json() as PodcastRequest
     console.log('Received request for voice ID:', voiceId)
@@ -156,7 +140,7 @@ serve(async (req) => {
         headers: {
           'Accept': 'audio/mpeg',
           'Content-Type': 'application/json',
-          'xi-api-key': secretData.value,
+          'xi-api-key': apiKey,
         },
         body: JSON.stringify({
           text: script,
