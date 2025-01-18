@@ -20,6 +20,92 @@ serve(async (req) => {
     return new Response('ok', { headers: corsHeaders })
   }
 
+  // Check if this is a test request
+  const url = new URL(req.url);
+  if (url.searchParams.get('test') === 'true') {
+    try {
+      console.log('Starting API test with timestamp:', new Date().toISOString())
+      
+      const supabaseClient = createClient(
+        Deno.env.get('SUPABASE_URL') ?? '',
+        Deno.env.get('SUPABASE_ANON_KEY') ?? ''
+      )
+
+      console.log('Fetching ElevenLabs API key for test...')
+      
+      const { data: secretData, error: secretError } = await supabaseClient
+        .from('secrets')
+        .select('value')
+        .eq('name', 'ELEVEN_LABS_API_KEY')
+        .single()
+
+      if (secretError) {
+        console.error('Database error when fetching ElevenLabs API key:', secretError)
+        throw new Error(`Database error when fetching ElevenLabs API key: ${secretError.message}`)
+      }
+
+      if (!secretData?.value) {
+        console.error('ElevenLabs API key not found in secrets table')
+        throw new Error('ElevenLabs API key not found in secrets table')
+      }
+
+      console.log('Successfully retrieved ElevenLabs API key (first 4 chars):', secretData.value.substring(0, 4))
+
+      // Test the ElevenLabs API with a minimal request
+      console.log('Testing ElevenLabs API connection...')
+      const testResponse = await fetch(
+        'https://api.elevenlabs.io/v1/voices',
+        {
+          headers: {
+            'Accept': 'application/json',
+            'xi-api-key': secretData.value,
+          },
+        }
+      )
+
+      if (!testResponse.ok) {
+        const errorText = await testResponse.text()
+        console.error('ElevenLabs API test failed:', errorText)
+        throw new Error(`ElevenLabs API test failed (${testResponse.status}): ${errorText}`)
+      }
+
+      const voices = await testResponse.json()
+      console.log('ElevenLabs API test successful! Number of voices available:', voices.voices?.length)
+
+      return new Response(
+        JSON.stringify({ 
+          success: true,
+          message: 'API test successful',
+          voicesCount: voices.voices?.length
+        }),
+        { 
+          headers: { 
+            ...corsHeaders,
+            'Content-Type': 'application/json'
+          } 
+        }
+      )
+
+    } catch (error) {
+      console.error('Error in API test:', error)
+      console.error('Error stack trace:', error.stack)
+      return new Response(
+        JSON.stringify({ 
+          success: false,
+          error: error.message,
+          details: 'Check the function logs for more information'
+        }),
+        { 
+          status: 500,
+          headers: { 
+            ...corsHeaders,
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+    }
+  }
+
   try {
     console.log('Starting generate-podcast function with timestamp:', new Date().toISOString())
     
