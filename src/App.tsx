@@ -10,6 +10,7 @@ import CaseStudies from "./pages/CaseStudies";
 import Generate from "./pages/Generate";
 import Feedback from "./pages/Feedback";
 import About from "./pages/About";
+import Podcast from "./pages/Podcast";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/generate" element={<Generate />} />
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/about" element={<About />} />
+            <Route path="/podcast" element={<Podcast />} />
           </Routes>
         </Layout>
       </BrowserRouter>
