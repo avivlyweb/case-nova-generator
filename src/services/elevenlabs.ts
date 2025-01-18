@@ -13,13 +13,15 @@ export const convertTextToSpeech = async (
   text: string,
   voiceId: string
 ): Promise<ArrayBuffer> => {
-  // Get the API key from Supabase
-  const { data: { secret: apiKey } } = await supabase.rpc('get_secret', { 
-    name: 'ELEVEN_LABS_API_KEY'
-  });
+  // Get the API key from Supabase secrets
+  const { data, error } = await supabase
+    .functions.invoke('get-secret', {
+      body: { name: 'ELEVEN_LABS_API_KEY' }
+    });
 
-  if (!apiKey) {
-    throw new Error("ElevenLabs API key not found. Please set it in Supabase secrets.");
+  if (error || !data?.secret) {
+    console.error("Error fetching API key:", error);
+    throw new Error("Failed to retrieve ElevenLabs API key. Please ensure it's set in Supabase secrets.");
   }
 
   console.log("Making request to ElevenLabs API...");
@@ -30,7 +32,7 @@ export const convertTextToSpeech = async (
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "xi-api-key": apiKey,
+        "xi-api-key": data.secret,
       },
       body: JSON.stringify({
         text,
