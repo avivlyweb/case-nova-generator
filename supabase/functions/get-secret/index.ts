@@ -32,6 +32,8 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
+    console.log('Fetching secret:', name);
+
     // Get the secret from Supabase
     const { data: secret, error: secretError } = await supabaseClient
       .from('secrets')
@@ -44,9 +46,14 @@ serve(async (req) => {
       throw new Error('Failed to retrieve secret')
     }
 
+    if (!secret?.value) {
+      console.error('Secret not found or value is null');
+      throw new Error('Secret not found or value is null');
+    }
+
     // Return the secret
     return new Response(
-      JSON.stringify({ secret: secret?.value }),
+      JSON.stringify({ secret: secret.value }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 200 
