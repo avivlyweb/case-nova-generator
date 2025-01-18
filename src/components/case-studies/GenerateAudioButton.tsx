@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { AudioLines, Loader2 } from 'lucide-react';
+import { AudioLines, Download, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { KokoroTTS } from 'kokoro-js';
 import { CaseStudy } from '@/types/case-study';
@@ -19,6 +19,7 @@ interface DialogueLine {
 
 const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButtonProps) => {
   const [generating, setGenerating] = useState(false);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const { toast } = useToast();
 
   const createPodcastScript = (study: CaseStudy): DialogueLine[] => {
@@ -75,6 +76,22 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
     return dialogue;
   };
 
+  const handleDownload = () => {
+    if (audioUrl) {
+      const link = document.createElement('a');
+      link.href = audioUrl;
+      link.download = `case-study-${study.patient_name.toLowerCase().replace(/\s+/g, '-')}.wav`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      toast({
+        title: "Success",
+        description: "Podcast has been downloaded.",
+      });
+    }
+  };
+
   const handleGenerate = async () => {
     try {
       setGenerating(true);
@@ -118,11 +135,17 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
         offset += buffer.length;
       }
 
-      // Create AudioContext and play combined audio
+      // Create AudioContext and create WAV blob
       const audioContext = new AudioContext();
       const audioBuffer = audioContext.createBuffer(1, combinedBuffer.length, sampleRate);
       audioBuffer.getChannelData(0).set(combinedBuffer);
+
+      // Convert AudioBuffer to WAV format
+      const wavBlob = await audioBufferToWav(audioBuffer);
+      const url = URL.createObjectURL(wavBlob);
+      setAudioUrl(url);
       
+      // Play the audio
       const source = audioContext.createBufferSource();
       source.buffer = audioBuffer;
       source.connect(audioContext.destination);
@@ -138,7 +161,7 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
       
       toast({
         title: "Success",
-        description: "Your podcast is now playing.",
+        description: "Your podcast is now playing. Click the download button to save it.",
       });
     } catch (error) {
       console.error('Error generating podcast:', error);
@@ -152,26 +175,89 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
     }
   };
 
+  // Helper function to convert AudioBuffer to WAV format
+  const audioBufferToWav = (buffer: AudioBuffer): Promise<Blob> => {
+    const numChannels = buffer.numberOfChannels;
+    const sampleRate = buffer.sampleRate;
+    const format = 1; // PCM
+    const bitDepth = 16;
+    
+    const bytesPerSample = bitDepth / 8;
+    const blockAlign = numChannels * bytesPerSample;
+    
+    const dataLength = buffer.length * numChannels * bytesPerSample;
+    const bufferLength = 44 + dataLength;
+    
+    const arrayBuffer = new ArrayBuffer(bufferLength);
+    const view = new DataView(arrayBuffer);
+    
+    // Write WAV header
+    const writeString = (offset: number, string: string) => {
+      for (let i = 0; i < string.length; i++) {
+        view.setUint8(offset + i, string.charCodeAt(i));
+      }
+    };
+    
+    writeString(0, 'RIFF');
+    view.setUint32(4, 36 + dataLength, true);
+    writeString(8, 'WAVE');
+    writeString(12, 'fmt ');
+    view.setUint32(16, 16, true);
+    view.setUint16(20, format, true);
+    view.setUint16(22, numChannels, true);
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, sampleRate * blockAlign, true);
+    view.setUint16(32, blockAlign, true);
+    view.setUint16(34, bitDepth, true);
+    writeString(36, 'data');
+    view.setUint32(40, dataLength, true);
+    
+    // Write audio data
+    const channelData = buffer.getChannelData(0);
+    let offset = 44;
+    for (let i = 0; i < channelData.length; i++) {
+      const sample = Math.max(-1, Math.min(1, channelData[i]));
+      view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+      offset += 2;
+    }
+    
+    return Promise.resolve(new Blob([arrayBuffer], { type: 'audio/wav' }));
+  };
+
   return (
-    <Button
-      onClick={handleGenerate}
-      disabled={generating}
-      variant="outline"
-      size="lg"
-      className="w-full sm:w-auto bg-white hover:bg-gray-50 border-primary-200 hover:border-primary-300 text-primary-700 hover:text-primary-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-600 dark:hover:border-gray-500 dark:text-gray-200"
-    >
-      {generating ? (
-        <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Generating Podcast...
-        </>
-      ) : (
-        <>
-          <AudioLines className="mr-2 h-4 w-4" />
-          Generate Podcast
-        </>
+    <div className="flex flex-col sm:flex-row gap-2">
+      <Button
+        onClick={handleGenerate}
+        disabled={generating}
+        variant="outline"
+        size="lg"
+        className="w-full sm:w-auto bg-white hover:bg-gray-50 border-primary-200 hover:border-primary-300 text-primary-700 hover:text-primary-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-600 dark:hover:border-gray-500 dark:text-gray-200"
+      >
+        {generating ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Generating Podcast...
+          </>
+        ) : (
+          <>
+            <AudioLines className="mr-2 h-4 w-4" />
+            Generate Podcast
+          </>
+        )}
+      </Button>
+      
+      {audioUrl && (
+        <Button
+          onClick={handleDownload}
+          variant="outline"
+          size="lg"
+          className="w-full sm:w-auto bg-white hover:bg-gray-50 border-primary-200 hover:border-primary-300 text-primary-700 hover:text-primary-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-600 dark:hover:border-gray-500 dark:text-gray-200"
+        >
+          <Download className="mr-2 h-4 w-4" />
+          Download Podcast
+        </Button>
       )}
-    </Button>
+    </div>
   );
 };
 
