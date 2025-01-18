@@ -10,13 +10,10 @@ interface GenerateAudioButtonProps {
   sectionId?: string;
 }
 
-interface Section {
-  title: string;
-  content: string;
-}
+type KokoroVoice = "am_michael" | "af_sarah" | "af" | "af_bella" | "af_nicole" | "af_sky" | "am_adam" | "bf_emma" | "bf_isabella" | "bm_george" | "bm_lewis";
 
 interface DialogueLine {
-  voice: string;
+  voice: KokoroVoice;
   text: string;
 }
 
