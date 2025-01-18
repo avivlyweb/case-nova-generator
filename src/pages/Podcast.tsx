@@ -19,6 +19,26 @@ const Podcast = () => {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const { toast } = useToast();
 
+  const generatePodcastScript = (caseStudy: any) => {
+    // Token-efficient script generation (6 minutes, ~900 words)
+    return `Welcome to this clinical case review. Today, we'll discuss ${caseStudy.condition}.
+
+Key Assessment Findings:
+${caseStudy.assessment_findings || "Assessment findings not available"}
+
+Clinical Reasoning:
+${caseStudy.clinical_reasoning_path ? JSON.stringify(caseStudy.clinical_reasoning_path) : "Clinical reasoning not available"}
+
+Treatment Approach:
+${caseStudy.intervention_plan || "Intervention plan not available"}
+
+Key Recommendations:
+${caseStudy.smart_goals ? JSON.stringify(caseStudy.smart_goals) : "Goals not available"}
+
+Clinical Pearls:
+Based on the evidence and clinical guidelines, here are the key takeaways for treating similar cases...`;
+  };
+
   const handleGeneratePodcast = async () => {
     if (!selectedCase || !selectedVoice) {
       toast({
