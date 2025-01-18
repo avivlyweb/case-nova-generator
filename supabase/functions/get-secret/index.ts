@@ -17,6 +17,7 @@ serve(async (req) => {
     const { name } = await req.json()
 
     if (!name) {
+      console.error('Secret name is required');
       return new Response(
         JSON.stringify({ error: 'Secret name is required' }),
         { 
@@ -26,13 +27,13 @@ serve(async (req) => {
       )
     }
 
+    console.log('Attempting to fetch secret:', name);
+
     // Create Supabase client
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
-
-    console.log('Fetching secret:', name);
 
     // Get the secret from Supabase
     const { data: secret, error: secretError } = await supabaseClient
@@ -42,14 +43,22 @@ serve(async (req) => {
       .single()
 
     if (secretError) {
-      console.error('Error fetching secret:', secretError)
-      throw new Error('Failed to retrieve secret')
+      console.error('Database error fetching secret:', secretError);
+      throw new Error(`Failed to retrieve secret: ${secretError.message}`);
     }
 
     if (!secret?.value) {
-      console.error('Secret not found or value is null');
-      throw new Error('Secret not found or value is null');
+      console.error(`Secret '${name}' not found or value is null`);
+      return new Response(
+        JSON.stringify({ error: `Secret '${name}' not found` }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 404
+        }
+      )
     }
+
+    console.log(`Successfully retrieved secret: ${name}`);
 
     // Return the secret
     return new Response(
@@ -60,9 +69,12 @@ serve(async (req) => {
       }
     )
   } catch (error) {
-    console.error('Error:', error.message)
+    console.error('Error in get-secret function:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message,
+        details: error.stack
+      }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 500
