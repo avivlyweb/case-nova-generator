@@ -14,7 +14,8 @@ export const convertTextToSpeech = async (
   voiceId: string
 ): Promise<ArrayBuffer> => {
   try {
-    // Get the API key from Supabase secrets
+    console.log("Fetching ElevenLabs API key from secrets...");
+    
     const { data, error } = await supabase
       .functions.invoke('get-secret', {
         body: { name: 'ELEVEN_LABS_API_KEY' }
@@ -26,10 +27,11 @@ export const convertTextToSpeech = async (
     }
 
     if (!data?.secret) {
-      throw new Error("ElevenLabs API key not found in secrets");
+      console.error("API key not found in response:", data);
+      throw new Error("ElevenLabs API key not found in response");
     }
 
-    console.log("Making request to ElevenLabs API...");
+    console.log("Successfully retrieved API key, making request to ElevenLabs...");
     
     const response = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
@@ -52,15 +54,16 @@ export const convertTextToSpeech = async (
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      console.error("ElevenLabs API error:", errorData);
+      console.error("ElevenLabs API error response:", errorData);
       throw new Error(
         errorData.detail?.[0]?.message || 
         errorData.detail?.message ||
         errorData.detail || 
-        "Failed to convert text to speech"
+        `Failed to convert text to speech (Status: ${response.status})`
       );
     }
 
+    console.log("Successfully generated audio from ElevenLabs API");
     return await response.arrayBuffer();
   } catch (error) {
     console.error("Error in convertTextToSpeech:", error);
