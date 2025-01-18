@@ -11,6 +11,9 @@ import {
 import { Mic, Play, Download, Settings, Loader2 } from "lucide-react";
 import { convertTextToSpeech, ELEVEN_LABS_VOICES } from "@/services/elevenlabs";
 import { useToast } from "@/components/ui/use-toast";
+import { useQuery } from "@tanstack/react-query";
+import { getCaseStudies } from "@/lib/db";
+import type { CaseStudy } from "@/types/case-study";
 
 const Podcast = () => {
   const [selectedCase, setSelectedCase] = useState<string>("");
@@ -19,23 +22,33 @@ const Podcast = () => {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const { toast } = useToast();
 
-  const generatePodcastScript = (caseStudy: any) => {
-    // Token-efficient script generation (6 minutes, ~900 words)
-    return `Welcome to this clinical case review. Today, we'll discuss ${caseStudy.condition}.
+  const { data: caseStudies, isLoading: isLoadingCases } = useQuery({
+    queryKey: ['case-studies'],
+    queryFn: getCaseStudies
+  });
+
+  const generatePodcastScript = (caseStudy: CaseStudy) => {
+    return `Welcome to this clinical case review. Today, we'll discuss a case of ${caseStudy.condition}.
+
+Patient Background:
+${caseStudy.patient_background || "No background information available."}
 
 Key Assessment Findings:
-${caseStudy.assessment_findings || "Assessment findings not available"}
+${caseStudy.assessment_findings || "Assessment findings not available."}
 
 Clinical Reasoning:
-${caseStudy.clinical_reasoning_path ? JSON.stringify(caseStudy.clinical_reasoning_path) : "Clinical reasoning not available"}
+${caseStudy.clinical_reasoning_path ? JSON.stringify(caseStudy.clinical_reasoning_path, null, 2) : "Clinical reasoning not available."}
 
 Treatment Approach:
-${caseStudy.intervention_plan || "Intervention plan not available"}
+${caseStudy.intervention_plan || "Intervention plan not available."}
 
 Key Recommendations:
-${caseStudy.smart_goals ? JSON.stringify(caseStudy.smart_goals) : "Goals not available"}
+${caseStudy.smart_goals ? JSON.stringify(caseStudy.smart_goals, null, 2) : "Goals not available."}
 
-Clinical Pearls:
+Evidence Base:
+${caseStudy.evidence_sources ? JSON.stringify(caseStudy.evidence_sources, null, 2) : "Evidence sources not available."}
+
+Clinical Guidelines:
 Based on the evidence and clinical guidelines, here are the key takeaways for treating similar cases...`;
   };
 
@@ -51,10 +64,15 @@ Based on the evidence and clinical guidelines, here are the key takeaways for tr
 
     setIsGenerating(true);
     try {
-      // For now, we'll use a placeholder text. Later, we'll get the actual case study content
-      const dummyText = "This is a sample case study podcast. We'll replace this with actual content from the selected case study.";
+      const selectedCaseStudy = caseStudies?.find(cs => cs.id === selectedCase);
+      if (!selectedCaseStudy) {
+        throw new Error("Case study not found");
+      }
+
+      const script = generatePodcastScript(selectedCaseStudy);
+      console.log("Generating podcast with script:", script);
       
-      const audioBuffer = await convertTextToSpeech(dummyText, selectedVoice);
+      const audioBuffer = await convertTextToSpeech(script, selectedVoice);
       const blob = new Blob([audioBuffer], { type: "audio/mpeg" });
       const url = URL.createObjectURL(blob);
       setAudioUrl(url);
@@ -64,6 +82,7 @@ Based on the evidence and clinical guidelines, here are the key takeaways for tr
         description: "Podcast generated successfully!",
       });
     } catch (error) {
+      console.error("Error generating podcast:", error);
       toast({
         title: "Error",
         description: "Failed to generate podcast. Please try again.",
@@ -117,9 +136,15 @@ Based on the evidence and clinical guidelines, here are the key takeaways for tr
                   <SelectValue placeholder="Choose a case study" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="case1">Case Study #1</SelectItem>
-                  <SelectItem value="case2">Case Study #2</SelectItem>
-                  <SelectItem value="case3">Case Study #3</SelectItem>
+                  {isLoadingCases ? (
+                    <SelectItem value="loading" disabled>Loading cases...</SelectItem>
+                  ) : (
+                    caseStudies?.map((study) => (
+                      <SelectItem key={study.id} value={study.id}>
+                        {study.patient_name} - {study.condition}
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
             </div>
