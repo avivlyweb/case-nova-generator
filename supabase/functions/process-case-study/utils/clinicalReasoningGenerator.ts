@@ -1,6 +1,9 @@
 import { Groq } from 'npm:groq-sdk';
-import { supabase } from '../../../utils/supabaseClient.ts';
-import { CaseStudy } from '../types.ts';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function generateClinicalReasoning(
   groq: Groq,

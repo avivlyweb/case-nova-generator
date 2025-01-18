@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +18,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { CaseStudy } from "@/types/case-study";
 
 const VOICE_OPTIONS = [
   { id: "IKne3meq5aSn9XLyUdCD", name: "Dr. Charlie", style: "Professional Narrator" },
@@ -32,8 +33,32 @@ const Podcast = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [script, setScript] = useState<string | null>(null);
+  const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchCaseStudies = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('case_studies')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        setCaseStudies(data || []);
+      } catch (error) {
+        console.error('Error fetching case studies:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load case studies. Please try again.",
+          variant: "destructive",
+        });
+      }
+    };
+
+    fetchCaseStudies();
+  }, [toast]);
 
   const handleGenerate = async () => {
     if (!selectedCase || !selectedVoice) {
@@ -160,9 +185,11 @@ const Podcast = () => {
                   <SelectValue placeholder="Choose a case study" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="case1">Case Study #1</SelectItem>
-                  <SelectItem value="case2">Case Study #2</SelectItem>
-                  <SelectItem value="case3">Case Study #3</SelectItem>
+                  {caseStudies.map((study) => (
+                    <SelectItem key={study.id} value={study.id}>
+                      {study.patient_name} - {study.condition}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
