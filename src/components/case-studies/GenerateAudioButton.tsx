@@ -10,43 +10,82 @@ interface GenerateAudioButtonProps {
   sectionId?: string;
 }
 
-// Define the shape of a section
 interface Section {
   title: string;
   content: string;
+}
+
+interface DialogueLine {
+  voice: string;
+  text: string;
 }
 
 const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButtonProps) => {
   const [generating, setGenerating] = useState(false);
   const { toast } = useToast();
 
-  const getTextToConvert = (study: CaseStudy, sectionId: string): string => {
-    // If it's the summary section, use the AI analysis
-    if (sectionId === 'summary') {
-      return study.ai_analysis || 'No analysis available.';
+  const createPodcastScript = (study: CaseStudy): DialogueLine[] => {
+    const dialogue: DialogueLine[] = [];
+    
+    // Introduction
+    dialogue.push({
+      voice: "am_michael",
+      text: `Welcome to today's case study discussion. I'm Dr. Michael, and I'll be presenting an interesting case about ${study.patient_name}.`
+    });
+
+    dialogue.push({
+      voice: "af_sarah",
+      text: `Hello Dr. Michael, I'm Dr. Sarah. I'm looking forward to analyzing this case with you.`
+    });
+
+    // Patient Overview
+    dialogue.push({
+      voice: "am_michael",
+      text: `Our patient is ${study.patient_name}, a ${study.age}-year-old ${study.gender}. They presented with ${study.presenting_complaint}.`
+    });
+
+    if (study.medical_history) {
+      dialogue.push({
+        voice: "af_sarah",
+        text: `That's interesting. Looking at their medical history, I notice ${study.medical_history}. What are your thoughts on how this affects their current condition?`
+      });
     }
 
-    // Otherwise, find the specific section
-    // First ensure generated_sections is an array and cast it properly
-    const sections = Array.isArray(study.generated_sections) 
-      ? (study.generated_sections as Section[])
-      : [];
+    // Analysis Discussion
+    if (study.ai_analysis) {
+      const analysisPoints = study.ai_analysis.split('\n\n');
+      analysisPoints.forEach((point, index) => {
+        if (point.trim()) {
+          dialogue.push({
+            voice: index % 2 === 0 ? "am_michael" : "af_sarah",
+            text: point.replace(/[#*]/g, '').trim()
+          });
+        }
+      });
+    }
 
-    const section = sections.find(
-      (section) => section.title?.toLowerCase() === sectionId.toLowerCase()
-    );
-    
-    return section?.content || 'No content available for this section.';
+    // Conclusion
+    dialogue.push({
+      voice: "am_michael",
+      text: "Those are excellent observations. Is there anything else you'd like to add to this case?"
+    });
+
+    dialogue.push({
+      voice: "af_sarah",
+      text: "I think we've covered the key aspects of this case. Thank you for this interesting discussion."
+    });
+
+    return dialogue;
   };
 
   const handleGenerate = async () => {
     try {
       setGenerating(true);
       
-      const textToConvert = getTextToConvert(study, sectionId);
-      console.log('Starting audio generation with text:', textToConvert);
+      const dialogue = createPodcastScript(study);
+      console.log('Starting podcast generation with dialogue:', dialogue);
 
-      // Initialize Kokoro TTS with minimal configuration
+      // Initialize Kokoro TTS
       console.log('Initializing TTS...');
       const tts = await KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-ONNX", {
         dtype: "q8",
@@ -54,60 +93,62 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
       
       console.log('TTS initialized successfully');
 
-      // Generate audio with basic settings
-      console.log('Generating audio...');
-      const audio = await tts.generate(textToConvert, {
-        voice: "af_bella",
-        speed: 1.0,
-      });
-      
-      console.log('Audio generated, raw data:', audio);
+      // Generate audio for each dialogue line
+      const audioBuffers: Float32Array[] = [];
+      const sampleRate = 24000;
 
-      // Ensure we have valid audio data
-      if (!audio || !audio.audio || audio.audio.length === 0) {
-        throw new Error('No audio data generated');
+      for (const line of dialogue) {
+        console.log(`Generating audio for voice ${line.voice}:`, line.text);
+        const audio = await tts.generate(line.text, {
+          voice: line.voice,
+          speed: 1.0,
+        });
+
+        if (!audio || !audio.audio || audio.audio.length === 0) {
+          throw new Error('No audio data generated');
+        }
+
+        audioBuffers.push(new Float32Array(audio.audio));
       }
 
-      // Convert audio data to a format we can play
-      const audioData = new Float32Array(audio.audio);
-      const sampleRate = audio.sampling_rate || 24000; // Use the provided sampling rate or default to 24000
+      // Combine all audio buffers
+      const totalLength = audioBuffers.reduce((sum, buffer) => sum + buffer.length, 0);
+      const combinedBuffer = new Float32Array(totalLength);
       
-      // Create AudioContext
+      let offset = 0;
+      for (const buffer of audioBuffers) {
+        combinedBuffer.set(buffer, offset);
+        offset += buffer.length;
+      }
+
+      // Create AudioContext and play combined audio
       const audioContext = new AudioContext();
+      const audioBuffer = audioContext.createBuffer(1, combinedBuffer.length, sampleRate);
+      audioBuffer.getChannelData(0).set(combinedBuffer);
       
-      // Ensure we have valid audio data length
-      if (audioData.length === 0) {
-        throw new Error('Audio data is empty');
-      }
-
-      // Create and fill the audio buffer
-      const audioBuffer = audioContext.createBuffer(1, audioData.length, sampleRate);
-      audioBuffer.getChannelData(0).set(audioData);
-      
-      // Create audio source and play
       const source = audioContext.createBufferSource();
       source.buffer = audioBuffer;
       source.connect(audioContext.destination);
       source.start(0);
       
-      console.log('Audio playback started');
+      console.log('Podcast playback started');
 
       // Clean up when done
       source.onended = () => {
-        console.log('Audio playback completed');
+        console.log('Podcast playback completed');
         audioContext.close();
       };
       
       toast({
         title: "Success",
-        description: "Audio is now playing.",
+        description: "Your podcast is now playing.",
       });
     } catch (error) {
-      console.error('Error generating audio:', error);
+      console.error('Error generating podcast:', error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.message || "Failed to generate audio. Please try again.",
+        description: error.message || "Failed to generate podcast. Please try again.",
       });
     } finally {
       setGenerating(false);
@@ -125,12 +166,12 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
       {generating ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Generating Audio...
+          Generating Podcast...
         </>
       ) : (
         <>
           <AudioLines className="mr-2 h-4 w-4" />
-          Generate Audio
+          Generate Podcast
         </>
       )}
     </Button>
