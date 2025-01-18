@@ -1,1 +1,16 @@
 project_id = "gmlpzjtnmxwojejnugej"
+
+[functions.process-case-study]
+verify_jwt = false
+
+[functions.generate-podcast]
+verify_jwt = false
+
+[functions.extract-medical-entities]
+verify_jwt = false
+
+[functions.generate-embedding]
+verify_jwt = false
+
+[functions.generate-suggestions]
+verify_jwt = false
