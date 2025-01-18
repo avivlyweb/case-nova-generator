@@ -26,7 +26,7 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_ANON_KEY') ?? ''
     )
 
-    console.log('Fetching ElevenLabs API key from secrets...')
+    console.log('Fetching ElevenLabs API key...')
     
     // Get ElevenLabs API key with better error handling
     const { data: secretData, error: secretError } = await supabaseClient
@@ -36,14 +36,16 @@ serve(async (req) => {
       .single()
 
     if (secretError) {
-      console.error('Failed to retrieve ElevenLabs API key:', secretError)
-      throw new Error('Failed to retrieve ElevenLabs API key')
+      console.error('Database error when fetching ElevenLabs API key:', secretError)
+      throw new Error('Database error when fetching ElevenLabs API key')
     }
 
     if (!secretData?.value) {
-      console.error('ElevenLabs API key not found in secrets')
-      throw new Error('ElevenLabs API key not found')
+      console.error('ElevenLabs API key not found in secrets table')
+      throw new Error('ElevenLabs API key not found in secrets table')
     }
+
+    console.log('Successfully retrieved ElevenLabs API key')
 
     const { caseStudy, voiceId } = await req.json() as PodcastRequest
 
@@ -81,6 +83,8 @@ serve(async (req) => {
       throw new Error(`ElevenLabs API error: ${errorText}`)
     }
 
+    console.log('Successfully received audio from ElevenLabs')
+
     // Get audio data and convert to base64
     const audioBuffer = await audioResponse.arrayBuffer()
     const audioBase64 = btoa(
@@ -101,9 +105,12 @@ serve(async (req) => {
     )
 
   } catch (error) {
-    console.error('Error generating podcast:', error)
+    console.error('Error in generate-podcast function:', error)
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message,
+        details: 'Check the function logs for more information'
+      }),
       { 
         status: 500,
         headers: { 
