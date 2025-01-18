@@ -4,22 +4,19 @@ import { AudioLines, Download, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { KokoroTTS } from 'kokoro-js';
 import { CaseStudy } from '@/types/case-study';
+import { DialogueLine, GenerationProgress } from '@/types/audio';
+import { processAudioChunk, combineAudioBuffers, audioBufferToWav } from '@/utils/audioProcessing';
+import { Progress } from '@/components/ui/progress';
 
 interface GenerateAudioButtonProps {
   study: CaseStudy;
   sectionId?: string;
 }
 
-type KokoroVoice = "am_michael" | "af_sarah" | "af" | "af_bella" | "af_nicole" | "af_sky" | "am_adam" | "bf_emma" | "bf_isabella" | "bm_george" | "bm_lewis";
-
-interface DialogueLine {
-  voice: KokoroVoice;
-  text: string;
-}
-
 const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButtonProps) => {
   const [generating, setGenerating] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [progress, setProgress] = useState<GenerationProgress | null>(null);
   const { toast } = useToast();
 
   const createPodcastScript = (study: CaseStudy): DialogueLine[] => {
@@ -95,12 +92,13 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
   const handleGenerate = async () => {
     try {
       setGenerating(true);
+      setProgress({ currentChunk: 0, totalChunks: 0, status: 'Initializing...' });
       
       const dialogue = createPodcastScript(study);
       console.log('Starting podcast generation with dialogue:', dialogue);
 
       // Initialize Kokoro TTS
-      console.log('Initializing TTS...');
+      setProgress(prev => ({ ...prev!, status: 'Initializing TTS engine...' }));
       const tts = await KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-ONNX", {
         dtype: "q8",
       });
@@ -110,50 +108,43 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
       // Generate audio for each dialogue line
       const audioBuffers: Float32Array[] = [];
       const sampleRate = 24000;
+      setProgress({ currentChunk: 0, totalChunks: dialogue.length, status: 'Generating audio...' });
 
-      for (const line of dialogue) {
+      for (let i = 0; i < dialogue.length; i++) {
+        const line = dialogue[i];
         console.log(`Generating audio for voice ${line.voice}:`, line.text);
-        const audio = await tts.generate(line.text, {
-          voice: line.voice,
-          speed: 1.0,
-        });
+        
+        setProgress(prev => ({
+          ...prev!,
+          currentChunk: i + 1,
+          status: `Generating voice ${i + 1} of ${dialogue.length}...`
+        }));
 
-        if (!audio || !audio.audio || audio.audio.length === 0) {
-          throw new Error('No audio data generated');
-        }
-
-        audioBuffers.push(new Float32Array(audio.audio));
+        const audioBuffer = await processAudioChunk(tts, line);
+        audioBuffers.push(audioBuffer);
       }
+
+      setProgress(prev => ({ ...prev!, status: 'Combining audio...' }));
 
       // Combine all audio buffers
-      const totalLength = audioBuffers.reduce((sum, buffer) => sum + buffer.length, 0);
-      const combinedBuffer = new Float32Array(totalLength);
+      const combinedBuffer = combineAudioBuffers(audioBuffers, sampleRate);
       
-      let offset = 0;
-      for (const buffer of audioBuffers) {
-        combinedBuffer.set(buffer, offset);
-        offset += buffer.length;
-      }
+      setProgress(prev => ({ ...prev!, status: 'Converting to WAV...' }));
 
-      // Create AudioContext and create WAV blob
-      const audioContext = new AudioContext();
-      const audioBuffer = audioContext.createBuffer(1, combinedBuffer.length, sampleRate);
-      audioBuffer.getChannelData(0).set(combinedBuffer);
-
-      // Convert AudioBuffer to WAV format
-      const wavBlob = await audioBufferToWav(audioBuffer);
+      // Convert to WAV and create URL
+      const wavBlob = await audioBufferToWav(combinedBuffer);
       const url = URL.createObjectURL(wavBlob);
       setAudioUrl(url);
       
-      // Play the audio
+      // Create AudioContext for playback
+      const audioContext = new AudioContext();
       const source = audioContext.createBufferSource();
-      source.buffer = audioBuffer;
+      source.buffer = combinedBuffer;
       source.connect(audioContext.destination);
       source.start(0);
       
       console.log('Podcast playback started');
 
-      // Clean up when done
       source.onended = () => {
         console.log('Podcast playback completed');
         audioContext.close();
@@ -172,91 +163,55 @@ const GenerateAudioButton = ({ study, sectionId = 'summary' }: GenerateAudioButt
       });
     } finally {
       setGenerating(false);
+      setProgress(null);
     }
-  };
-
-  // Helper function to convert AudioBuffer to WAV format
-  const audioBufferToWav = (buffer: AudioBuffer): Promise<Blob> => {
-    const numChannels = buffer.numberOfChannels;
-    const sampleRate = buffer.sampleRate;
-    const format = 1; // PCM
-    const bitDepth = 16;
-    
-    const bytesPerSample = bitDepth / 8;
-    const blockAlign = numChannels * bytesPerSample;
-    
-    const dataLength = buffer.length * numChannels * bytesPerSample;
-    const bufferLength = 44 + dataLength;
-    
-    const arrayBuffer = new ArrayBuffer(bufferLength);
-    const view = new DataView(arrayBuffer);
-    
-    // Write WAV header
-    const writeString = (offset: number, string: string) => {
-      for (let i = 0; i < string.length; i++) {
-        view.setUint8(offset + i, string.charCodeAt(i));
-      }
-    };
-    
-    writeString(0, 'RIFF');
-    view.setUint32(4, 36 + dataLength, true);
-    writeString(8, 'WAVE');
-    writeString(12, 'fmt ');
-    view.setUint32(16, 16, true);
-    view.setUint16(20, format, true);
-    view.setUint16(22, numChannels, true);
-    view.setUint32(24, sampleRate, true);
-    view.setUint32(28, sampleRate * blockAlign, true);
-    view.setUint16(32, blockAlign, true);
-    view.setUint16(34, bitDepth, true);
-    writeString(36, 'data');
-    view.setUint32(40, dataLength, true);
-    
-    // Write audio data
-    const channelData = buffer.getChannelData(0);
-    let offset = 44;
-    for (let i = 0; i < channelData.length; i++) {
-      const sample = Math.max(-1, Math.min(1, channelData[i]));
-      view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
-      offset += 2;
-    }
-    
-    return Promise.resolve(new Blob([arrayBuffer], { type: 'audio/wav' }));
   };
 
   return (
-    <div className="flex flex-col sm:flex-row gap-2">
-      <Button
-        onClick={handleGenerate}
-        disabled={generating}
-        variant="outline"
-        size="lg"
-        className="w-full sm:w-auto bg-white hover:bg-gray-50 border-primary-200 hover:border-primary-300 text-primary-700 hover:text-primary-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-600 dark:hover:border-gray-500 dark:text-gray-200"
-      >
-        {generating ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Generating Podcast...
-          </>
-        ) : (
-          <>
-            <AudioLines className="mr-2 h-4 w-4" />
-            Generate Podcast
-          </>
-        )}
-      </Button>
+    <div className="flex flex-col gap-4">
+      {progress && (
+        <div className="space-y-2">
+          <div className="flex justify-between text-sm text-gray-500">
+            <span>{progress.status}</span>
+            <span>{progress.currentChunk}/{progress.totalChunks}</span>
+          </div>
+          <Progress value={(progress.currentChunk / progress.totalChunks) * 100} />
+        </div>
+      )}
       
-      {audioUrl && (
+      <div className="flex flex-col sm:flex-row gap-2">
         <Button
-          onClick={handleDownload}
+          onClick={handleGenerate}
+          disabled={generating}
           variant="outline"
           size="lg"
           className="w-full sm:w-auto bg-white hover:bg-gray-50 border-primary-200 hover:border-primary-300 text-primary-700 hover:text-primary-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-600 dark:hover:border-gray-500 dark:text-gray-200"
         >
-          <Download className="mr-2 h-4 w-4" />
-          Download Podcast
+          {generating ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Generating Podcast...
+            </>
+          ) : (
+            <>
+              <AudioLines className="mr-2 h-4 w-4" />
+              Generate Podcast
+            </>
+          )}
         </Button>
-      )}
+        
+        {audioUrl && (
+          <Button
+            onClick={handleDownload}
+            variant="outline"
+            size="lg"
+            className="w-full sm:w-auto bg-white hover:bg-gray-50 border-primary-200 hover:border-primary-300 text-primary-700 hover:text-primary-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-600 dark:hover:border-gray-500 dark:text-gray-200"
+          >
+            <Download className="mr-2 h-4 w-4" />
+            Download Podcast
+          </Button>
+        )}
+      </div>
     </div>
   );
 };
