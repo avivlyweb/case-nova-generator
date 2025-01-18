@@ -19,7 +19,7 @@ export const convertTextToSpeech = async (
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "xi-api-key": process.env.ELEVEN_LABS_API_KEY || "",
+        "xi-api-key": import.meta.env.VITE_ELEVEN_LABS_API_KEY || "",
       },
       body: JSON.stringify({
         text,
@@ -33,7 +33,13 @@ export const convertTextToSpeech = async (
   );
 
   if (!response.ok) {
-    throw new Error("Failed to convert text to speech");
+    const errorData = await response.json().catch(() => ({}));
+    console.error("ElevenLabs API error:", errorData);
+    throw new Error(
+      errorData.detail?.[0]?.message || 
+      errorData.detail || 
+      "Failed to convert text to speech"
+    );
   }
 
   return await response.arrayBuffer();
