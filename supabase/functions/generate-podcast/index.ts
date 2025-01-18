@@ -26,16 +26,23 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_ANON_KEY') ?? ''
     )
 
-    // Get ElevenLabs API key
+    console.log('Fetching ElevenLabs API key from secrets...')
+    
+    // Get ElevenLabs API key with better error handling
     const { data: secretData, error: secretError } = await supabaseClient
       .from('secrets')
       .select('value')
       .eq('name', 'ELEVEN_LABS_API_KEY')
       .single()
 
-    if (secretError || !secretData) {
+    if (secretError) {
       console.error('Failed to retrieve ElevenLabs API key:', secretError)
       throw new Error('Failed to retrieve ElevenLabs API key')
+    }
+
+    if (!secretData?.value) {
+      console.error('ElevenLabs API key not found in secrets')
+      throw new Error('ElevenLabs API key not found')
     }
 
     const { caseStudy, voiceId } = await req.json() as PodcastRequest
@@ -45,6 +52,7 @@ serve(async (req) => {
     console.log('Generated podcast script:', script.slice(0, 100) + '...')
 
     // Convert text to speech using ElevenLabs
+    console.log('Calling ElevenLabs API...')
     const audioResponse = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
       {
