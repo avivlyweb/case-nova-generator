@@ -21,6 +21,8 @@ serve(async (req) => {
   }
 
   try {
+    console.log('Starting generate-podcast function...')
+    
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? ''
@@ -37,7 +39,7 @@ serve(async (req) => {
 
     if (secretError) {
       console.error('Database error when fetching ElevenLabs API key:', secretError)
-      throw new Error('Database error when fetching ElevenLabs API key')
+      throw new Error(`Database error when fetching ElevenLabs API key: ${secretError.message}`)
     }
 
     if (!secretData?.value) {
