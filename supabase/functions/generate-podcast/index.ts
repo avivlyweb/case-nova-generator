@@ -25,16 +25,16 @@ async function getElevenLabsApiKey(supabaseClient: any) {
     .eq('name', 'ELEVEN_LABS_API_KEY')
     .order('created_at', { ascending: false })
     .limit(1)
-    .single()
+    .maybeSingle() // Changed from single() to maybeSingle()
 
   if (error) {
     console.error('Error fetching ElevenLabs API key:', error)
     throw new Error(`Database error when fetching ElevenLabs API key: ${error.message}`)
   }
 
-  if (!data?.value) {
+  if (!data) {
     console.error('No ElevenLabs API key found')
-    throw new Error('ElevenLabs API key not found')
+    throw new Error('No ElevenLabs API key found in the secrets table. Please add one via the Supabase dashboard.')
   }
 
   console.log('Successfully retrieved ElevenLabs API key (first 4 chars):', data.value.substring(0, 4))
