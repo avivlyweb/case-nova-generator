@@ -1,5 +1,5 @@
 import { Groq } from 'npm:groq-sdk';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { supabase } from '../../../utils/supabaseClient.ts';
 import { CaseStudy } from '../types.ts';
 
 export async function generateClinicalReasoning(
@@ -7,11 +7,6 @@ export async function generateClinicalReasoning(
   caseStudy: CaseStudy,
   queryEmbedding: any
 ) {
-  const supabase = createClient(
-    Deno.env.get('SUPABASE_URL') ?? '',
-    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-  );
-
   // First, search for relevant KNGF guidelines
   const { data: guidelines, error } = await supabase.rpc('search_guidelines_for_case', {
     query_text: `${caseStudy.condition} ${caseStudy.presenting_complaint}`,

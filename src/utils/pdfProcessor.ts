@@ -14,7 +14,7 @@ interface ProcessedGuideline {
   interventions: Record<string, any>[];
   evidence_levels: Record<string, any>;
   protocols: Record<string, any>[];
-  embedding: string;
+  embedding: number[];
 }
 
 export async function processPDFGuideline(file: File): Promise<ProcessedGuideline | null> {
@@ -22,9 +22,6 @@ export async function processPDFGuideline(file: File): Promise<ProcessedGuidelin
     // Read the PDF file
     const buffer = await file.arrayBuffer();
     const data = await pdfParse(buffer);
-    
-    // Extract title from the first line or specific pattern
-    const title = extractTitle(data.text);
     
     // Split into sections based on headers
     const sections = splitIntoSections(data.text);
@@ -41,7 +38,7 @@ export async function processPDFGuideline(file: File): Promise<ProcessedGuidelin
 
     // Structure the guideline data
     const guideline: ProcessedGuideline = {
-      title: title, // Add the title field
+      title: extractTitle(data.text),
       condition: extractCondition(data.text),
       url: URL.createObjectURL(file),
       content: { 
@@ -53,7 +50,7 @@ export async function processPDFGuideline(file: File): Promise<ProcessedGuidelin
       interventions: extractInterventions(data.text),
       evidence_levels: extractEvidenceLevels(data.text),
       protocols: extractProtocols(data.text),
-      embedding: JSON.stringify(embeddingData.embedding)
+      embedding: embeddingData.embedding
     };
 
     // Store in Supabase
@@ -67,11 +64,7 @@ export async function processPDFGuideline(file: File): Promise<ProcessedGuidelin
         interventions: guideline.interventions,
         evidence_levels: guideline.evidence_levels,
         protocols: guideline.protocols,
-        embedding: guideline.embedding,
-        assessment_criteria: [],
-        exercise_recommendations: [],
-        sections: {},
-        grade_evidence: {}
+        embedding: guideline.embedding
       })
       .select()
       .single();
