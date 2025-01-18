@@ -33,10 +33,13 @@ serve(async (req) => {
 
       console.log('Fetching ElevenLabs API key for test...')
       
+      // Updated query to get the most recent secret value
       const { data: secretData, error: secretError } = await supabaseClient
         .from('secrets')
         .select('value')
         .eq('name', 'ELEVEN_LABS_API_KEY')
+        .order('created_at', { ascending: false })
+        .limit(1)
         .single()
 
       if (secretError) {
@@ -116,11 +119,13 @@ serve(async (req) => {
 
     console.log('Fetching ElevenLabs API key...')
     
-    // Get ElevenLabs API key with better error handling
+    // Updated query to get the most recent secret value
     const { data: secretData, error: secretError } = await supabaseClient
       .from('secrets')
       .select('value')
       .eq('name', 'ELEVEN_LABS_API_KEY')
+      .order('created_at', { ascending: false })
+      .limit(1)
       .single()
 
     if (secretError) {
