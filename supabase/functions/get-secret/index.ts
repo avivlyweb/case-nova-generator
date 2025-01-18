@@ -15,9 +15,12 @@ serve(async (req) => {
   try {
     // Get the request body
     const { name } = await req.json()
-
+    
+    console.log('Request received for secret:', name)
+    console.log('SUPABASE_URL:', Deno.env.get('SUPABASE_URL'))
+    
     if (!name) {
-      console.error('Secret name is required');
+      console.error('Secret name is required')
       return new Response(
         JSON.stringify({ error: 'Secret name is required' }),
         { 
@@ -27,53 +30,66 @@ serve(async (req) => {
       )
     }
 
-    console.log('Attempting to fetch secret:', name);
-
     // Create Supabase client
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
+    console.log('Attempting to fetch secret from database:', name)
+    
     // Get the secret from Supabase
-    const { data: secret, error: secretError } = await supabaseClient
+    const { data, error } = await supabaseClient
       .from('secrets')
       .select('value')
       .eq('name', name)
       .single()
 
-    if (secretError) {
-      console.error('Database error fetching secret:', secretError);
-      throw new Error(`Failed to retrieve secret: ${secretError.message}`);
-    }
-
-    if (!secret?.value) {
-      console.error(`Secret '${name}' not found or value is null`);
+    if (error) {
+      console.error('Database error:', error)
       return new Response(
-        JSON.stringify({ error: `Secret '${name}' not found` }),
+        JSON.stringify({ 
+          error: 'Failed to retrieve secret from database',
+          details: error.message 
+        }),
         { 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 404
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         }
       )
     }
 
-    console.log(`Successfully retrieved secret: ${name}`);
+    if (!data) {
+      console.error(`No secret found with name: ${name}`)
+      return new Response(
+        JSON.stringify({ 
+          error: `Secret '${name}' not found in database`,
+          details: 'Please ensure the secret is properly set in Supabase'
+        }),
+        { 
+          status: 404,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
+    }
 
-    // Return the secret
+    console.log(`Successfully retrieved secret: ${name}`)
+    
     return new Response(
-      JSON.stringify({ secret: secret.value }),
+      JSON.stringify({ secret: data.value }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 200 
       }
     )
+
   } catch (error) {
-    console.error('Error in get-secret function:', error);
+    console.error('Unexpected error in get-secret function:', error)
     return new Response(
       JSON.stringify({ 
-        error: error.message,
-        details: error.stack
+        error: 'Internal server error',
+        details: error.message,
+        stack: error.stack
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
