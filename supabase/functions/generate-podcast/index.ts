@@ -34,6 +34,7 @@ serve(async (req) => {
       .single()
 
     if (secretError || !secretData) {
+      console.error('Failed to retrieve ElevenLabs API key:', secretError)
       throw new Error('Failed to retrieve ElevenLabs API key')
     }
 
