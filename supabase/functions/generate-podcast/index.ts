@@ -8,61 +8,73 @@ const corsHeaders = {
 const MAX_TEXT_LENGTH = 4000;
 
 function truncateText(text: string): string {
+  console.log('Truncating text of length:', text?.length || 0);
   if (!text) return '';
   if (text.length <= MAX_TEXT_LENGTH) return text;
   return text.substring(0, MAX_TEXT_LENGTH) + "... [Content truncated for length]";
 }
 
 function generatePodcastScript(caseStudy: any): string {
+  console.log('Starting script generation for case study:', caseStudy?.id);
+  
   try {
+    // Input validation
     if (!caseStudy || typeof caseStudy !== 'object') {
       throw new Error('Invalid case study data');
     }
 
+    // Initialize sections array
     const sections: string[] = [];
     
-    // Add intro (static text, no recursion risk)
+    // Add static intro
     sections.push("Welcome to PhysioCase, your premium source for in-depth physiotherapy case studies and analysis. Today, we'll be exploring an interesting case that highlights key aspects of clinical reasoning and evidence-based practice.");
 
-    // Safely add patient info
-    const patientInfo = [
+    // Add patient info (no recursion, simple string concatenation)
+    const patientDetails = [
       caseStudy.patient_name,
       caseStudy.age ? `${caseStudy.age}-year-old` : '',
       caseStudy.gender,
       caseStudy.condition ? `presenting with ${caseStudy.condition}` : ''
-    ].filter(Boolean).join(' ');
+    ].filter(Boolean);
 
-    if (patientInfo.trim()) {
-      sections.push(`Our patient is ${patientInfo}.`);
+    if (patientDetails.length > 0) {
+      sections.push(`Our patient is ${patientDetails.join(' ')}.`);
     }
 
-    // Safely add analysis
+    // Safely add analysis (no recursion)
     if (typeof caseStudy.ai_analysis === 'string' && caseStudy.ai_analysis.trim()) {
+      console.log('Adding AI analysis section');
       sections.push(truncateText(caseStudy.ai_analysis));
     }
 
-    // Safely add generated sections
+    // Safely process generated sections (limit to prevent stack issues)
     if (Array.isArray(caseStudy.generated_sections)) {
+      console.log('Processing generated sections');
       const validSections = caseStudy.generated_sections
-        .slice(0, 2) // Limit to 2 sections
+        .slice(0, 3) // Limit to 3 sections to prevent stack overflow
         .filter(section => 
           section && 
           typeof section === 'object' && 
           typeof section.title === 'string' &&
           typeof section.content === 'string'
         )
-        .map(section => 
-          `Next, let's discuss ${section.title}. ${truncateText(section.content)}`
-        );
+        .map(section => {
+          console.log('Processing section:', section.title);
+          return `Next, let's discuss ${section.title}. ${truncateText(section.content)}`;
+        });
       
       sections.push(...validSections);
     }
 
-    // Add outro (static text, no recursion risk)
+    // Add static outro
     sections.push("Thank you for listening to this PhysioCase study analysis. Remember to apply these insights in your clinical practice and stay tuned for more evidence-based case studies.");
 
-    // Join sections with proper spacing and return
-    return sections.filter(Boolean).join('\n\n');
+    // Join sections with proper spacing
+    console.log('Finalizing script with', sections.length, 'sections');
+    const finalScript = sections.filter(Boolean).join('\n\n');
+    console.log('Final script length:', finalScript.length);
+    
+    return finalScript;
   } catch (error) {
     console.error('Error generating podcast script:', error);
     throw new Error(`Failed to generate podcast script: ${error.message}`);
