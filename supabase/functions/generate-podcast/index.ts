@@ -30,50 +30,45 @@ function generatePodcastScript(caseStudy: any): string {
     validateCaseStudy(caseStudy);
     const sections: string[] = [];
     
-    // Static intro
-    sections.push("Welcome to PhysioCase, your premium source for in-depth physiotherapy case studies and analysis. Today, we'll be exploring an interesting case that highlights key aspects of clinical reasoning and evidence-based practice.");
+    // Static intro - keep it simple and direct
+    sections.push("Welcome to PhysioCase, your premium source for in-depth physiotherapy case studies and analysis.");
 
-    // Patient details - simple string operations only
-    const patientDetails = [];
-    if (caseStudy.patient_name) patientDetails.push(caseStudy.patient_name);
-    if (caseStudy.age) patientDetails.push(`${caseStudy.age}-year-old`);
-    if (caseStudy.gender) patientDetails.push(caseStudy.gender);
-    if (caseStudy.condition) patientDetails.push(`presenting with ${caseStudy.condition}`);
+    // Patient details - simple string concatenation
+    const patientInfo = [
+      caseStudy.patient_name && `Patient ${caseStudy.patient_name}`,
+      caseStudy.age && `${caseStudy.age} years old`,
+      caseStudy.gender,
+      caseStudy.condition && `presenting with ${caseStudy.condition}`
+    ].filter(Boolean).join(', ');
 
-    if (patientDetails.length > 0) {
-      sections.push(`Our patient is ${patientDetails.join(' ')}.`);
+    if (patientInfo) {
+      sections.push(`Today's case study involves ${patientInfo}.`);
     }
 
-    // AI Analysis - direct string handling
-    if (typeof caseStudy.ai_analysis === 'string' && caseStudy.ai_analysis.trim()) {
+    // AI Analysis - direct string handling with truncation
+    if (caseStudy.ai_analysis) {
       console.log('Adding AI analysis section');
       sections.push(truncateText(caseStudy.ai_analysis));
     }
 
-    // Generated sections - limited processing
+    // Generated sections - limited processing with early exit
     if (Array.isArray(caseStudy.generated_sections)) {
       console.log('Processing generated sections');
       
       for (let i = 0; i < Math.min(caseStudy.generated_sections.length, MAX_SECTIONS); i++) {
         const section = caseStudy.generated_sections[i];
-        
-        if (section && typeof section === 'object' && 
-            typeof section.title === 'string' && 
-            typeof section.content === 'string') {
-          
-          console.log(`Processing section ${i + 1}:`, section.title);
-          sections.push(`Next, let's discuss ${section.title}. ${truncateText(section.content)}`);
+        if (section?.title && section?.content) {
+          sections.push(`${section.title}. ${truncateText(section.content)}`);
         }
       }
     }
 
     // Static outro
-    sections.push("Thank you for listening to this PhysioCase study analysis. Remember to apply these insights in your clinical practice and stay tuned for more evidence-based case studies.");
+    sections.push("Thank you for listening to this PhysioCase study analysis.");
 
     const finalScript = sections.filter(Boolean).join('\n\n');
-    console.log('Final script generated, length:', finalScript.length);
+    console.log('Script generated successfully, length:', finalScript.length);
     return finalScript;
-    
   } catch (error) {
     console.error('Error in generatePodcastScript:', error);
     throw error;
