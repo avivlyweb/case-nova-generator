@@ -10,7 +10,6 @@ const MAX_SECTIONS = 3;
 
 function truncateText(text: string): string {
   if (!text) return '';
-  console.log('Truncating text of length:', text.length);
   return text.length <= MAX_TEXT_LENGTH ? text : text.substring(0, MAX_TEXT_LENGTH) + "... [Content truncated for length]";
 }
 
