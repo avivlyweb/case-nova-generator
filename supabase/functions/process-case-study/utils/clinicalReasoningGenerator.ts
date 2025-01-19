@@ -26,9 +26,14 @@ export async function generateClinicalReasoning(
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     console.log('Searching for guidelines...');
+    
+    // Create a default embedding if none provided
+    const searchText = `${caseStudy.condition} ${caseStudy.presenting_complaint}`;
+    const defaultEmbedding = Array(384).fill(0); // Create a zero vector with 384 dimensions
+    
     const { data: guidelines, error } = await supabase.rpc('search_guidelines_for_case', {
-      query_text: `${caseStudy.condition} ${caseStudy.presenting_complaint}`,
-      query_embedding: queryEmbedding,
+      query_text: searchText,
+      query_embedding: queryEmbedding || defaultEmbedding,
       match_count: 3,
       min_similarity: 0.5
     });
