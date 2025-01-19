@@ -10,8 +10,42 @@ const corsHeaders = {
 const MAX_TEXT_LENGTH = 4000;
 
 function truncateText(text: string): string {
+  if (!text) return '';
   if (text.length <= MAX_TEXT_LENGTH) return text;
   return text.substring(0, MAX_TEXT_LENGTH) + "... [Content truncated for length]";
+}
+
+function generatePodcastScript(caseStudy: any): string {
+  const sections = [];
+
+  // Add intro
+  sections.push(`Welcome to PhysioCase, your premium source for in-depth physiotherapy case studies and analysis. Today, we'll be exploring an interesting case that highlights key aspects of clinical reasoning and evidence-based practice.`);
+
+  // Add patient info if available
+  if (caseStudy.patient_name && caseStudy.age && caseStudy.gender && caseStudy.condition) {
+    sections.push(`Our patient is ${caseStudy.patient_name}, a ${caseStudy.age}-year-old ${caseStudy.gender} presenting with ${caseStudy.condition}.`);
+  }
+
+  // Add main analysis if available
+  if (caseStudy.ai_analysis) {
+    sections.push(caseStudy.ai_analysis);
+  }
+
+  // Add up to 2 sections from generated_sections if available
+  if (Array.isArray(caseStudy.generated_sections)) {
+    const limitedSections = caseStudy.generated_sections.slice(0, 2);
+    for (const section of limitedSections) {
+      if (section.title && section.content) {
+        sections.push(`Next, let's discuss ${section.title}. ${section.content}`);
+      }
+    }
+  }
+
+  // Add outro
+  sections.push(`Thank you for listening to this PhysioCase study analysis. Remember to apply these insights in your clinical practice and stay tuned for more evidence-based case studies.`);
+
+  // Join all sections with proper spacing and return
+  return sections.filter(Boolean).join('\n\n');
 }
 
 serve(async (req) => {
@@ -21,30 +55,32 @@ serve(async (req) => {
   }
 
   try {
-    console.log('Starting generate-podcast function with timestamp:', new Date().toISOString());
+    console.log('Starting generate-podcast function');
     
     const apiKey = Deno.env.get('ELEVEN_LABS_API_KEY');
     if (!apiKey) {
-      throw new Error('ELEVEN_LABS_API_KEY is not set in the environment variables');
+      throw new Error('ELEVEN_LABS_API_KEY is not set');
     }
 
     const { caseStudy, voiceId } = await req.json();
-    console.log('Received request for voice ID:', voiceId);
-
+    
     if (!caseStudy || !voiceId) {
       return new Response(
-        JSON.stringify({ error: 'Missing required parameters: caseStudy or voiceId' }),
+        JSON.stringify({ error: 'Missing required parameters' }),
         { status: 400, headers: corsHeaders }
       );
     }
 
-    // Generate podcast script with length limits
+    console.log('Generating script for case study:', caseStudy.id);
+    
+    // Generate and truncate script
     const script = generatePodcastScript(caseStudy);
     const truncatedScript = truncateText(script);
-    console.log('Generated podcast script length:', truncatedScript.length);
+    
+    console.log('Script length:', truncatedScript.length);
 
-    // Convert text to speech using ElevenLabs
-    console.log('Calling ElevenLabs API...');
+    // Call ElevenLabs API
+    console.log('Calling ElevenLabs API with voice ID:', voiceId);
     const audioResponse = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
       {
@@ -69,19 +105,13 @@ serve(async (req) => {
 
     if (!audioResponse.ok) {
       const errorText = await audioResponse.text();
-      console.error('ElevenLabs API error response:', errorText);
+      console.error('ElevenLabs API error:', errorText);
       throw new Error(`ElevenLabs API error (${audioResponse.status}): ${errorText}`);
     }
 
-    console.log('Successfully received audio from ElevenLabs');
-
     // Get audio data and convert to base64
     const audioBuffer = await audioResponse.arrayBuffer();
-    const audioBase64 = btoa(
-      String.fromCharCode(...new Uint8Array(audioBuffer))
-    );
-
-    console.log('Successfully converted audio to base64');
+    const audioBase64 = btoa(String.fromCharCode(...new Uint8Array(audioBuffer)));
 
     return new Response(
       JSON.stringify({ 
@@ -93,9 +123,7 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Error in generate-podcast function:', error);
-    console.error('Error stack trace:', error.stack);
     
-    // Return a properly formatted error response
     return new Response(
       JSON.stringify({ 
         error: error.message,
@@ -108,22 +136,3 @@ serve(async (req) => {
     );
   }
 })
-
-function generatePodcastScript(caseStudy: any): string {
-  const intro = `Welcome to PhysioCase, your premium source for in-depth physiotherapy case studies and analysis. Today, we'll be exploring an interesting case that highlights key aspects of clinical reasoning and evidence-based practice.`;
-
-  const patientInfo = `Our patient is ${caseStudy.patient_name}, a ${caseStudy.age}-year-old ${caseStudy.gender} presenting with ${caseStudy.condition}.`;
-
-  const mainContent = caseStudy.ai_analysis || 'No detailed analysis available.';
-
-  const sections = (caseStudy.generated_sections || [])
-    .slice(0, 3) // Limit to first 3 sections
-    .map((section: any) => {
-      return `Next, let's discuss ${section.title}. ${section.content}`;
-    })
-    .join('\n\nMoving on.\n\n');
-
-  const outro = `Thank you for listening to this PhysioCase study analysis. Remember to apply these insights in your clinical practice and stay tuned for more evidence-based case studies.`;
-
-  return [intro, patientInfo, mainContent, sections, outro].join('\n\n');
-}
