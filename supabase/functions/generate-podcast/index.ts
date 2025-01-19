@@ -16,36 +16,41 @@ function truncateText(text: string): string {
 }
 
 function generatePodcastScript(caseStudy: any): string {
-  const sections = [];
+  try {
+    const sections = [];
 
-  // Add intro
-  sections.push(`Welcome to PhysioCase, your premium source for in-depth physiotherapy case studies and analysis. Today, we'll be exploring an interesting case that highlights key aspects of clinical reasoning and evidence-based practice.`);
+    // Add intro
+    sections.push(`Welcome to PhysioCase, your premium source for in-depth physiotherapy case studies and analysis. Today, we'll be exploring an interesting case that highlights key aspects of clinical reasoning and evidence-based practice.`);
 
-  // Add patient info if available
-  if (caseStudy.patient_name && caseStudy.age && caseStudy.gender && caseStudy.condition) {
-    sections.push(`Our patient is ${caseStudy.patient_name}, a ${caseStudy.age}-year-old ${caseStudy.gender} presenting with ${caseStudy.condition}.`);
-  }
+    // Add patient info if available
+    if (caseStudy.patient_name && caseStudy.age && caseStudy.gender && caseStudy.condition) {
+      sections.push(`Our patient is ${caseStudy.patient_name}, a ${caseStudy.age}-year-old ${caseStudy.gender} presenting with ${caseStudy.condition}.`);
+    }
 
-  // Add main analysis if available
-  if (caseStudy.ai_analysis) {
-    sections.push(caseStudy.ai_analysis);
-  }
+    // Add main analysis if available
+    if (typeof caseStudy.ai_analysis === 'string' && caseStudy.ai_analysis.trim()) {
+      sections.push(caseStudy.ai_analysis);
+    }
 
-  // Add up to 2 sections from generated_sections if available
-  if (Array.isArray(caseStudy.generated_sections)) {
-    const limitedSections = caseStudy.generated_sections.slice(0, 2);
-    for (const section of limitedSections) {
-      if (section.title && section.content) {
-        sections.push(`Next, let's discuss ${section.title}. ${section.content}`);
+    // Add up to 2 sections from generated_sections if available
+    if (Array.isArray(caseStudy.generated_sections)) {
+      const limitedSections = caseStudy.generated_sections.slice(0, 2);
+      for (const section of limitedSections) {
+        if (section.title && section.content) {
+          sections.push(`Next, let's discuss ${section.title}. ${section.content}`);
+        }
       }
     }
+
+    // Add outro
+    sections.push(`Thank you for listening to this PhysioCase study analysis. Remember to apply these insights in your clinical practice and stay tuned for more evidence-based case studies.`);
+
+    // Join all sections with proper spacing and return
+    return sections.filter(Boolean).join('\n\n');
+  } catch (error) {
+    console.error('Error generating podcast script:', error);
+    throw new Error('Failed to generate podcast script');
   }
-
-  // Add outro
-  sections.push(`Thank you for listening to this PhysioCase study analysis. Remember to apply these insights in your clinical practice and stay tuned for more evidence-based case studies.`);
-
-  // Join all sections with proper spacing and return
-  return sections.filter(Boolean).join('\n\n');
 }
 
 serve(async (req) => {
