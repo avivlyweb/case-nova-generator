@@ -3,52 +3,19 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Content-Type': 'application/json'
 }
 
-interface PodcastRequest {
-  caseStudy: {
-    id: string;
-    sections?: Array<{ title: string; content: string }>;
-    analysis?: string;
-  };
-  voiceId: string;
-}
-
-const MAX_CHUNK_LENGTH = 4000; // Safe limit well below the 10,000 credit limit
+const MAX_TEXT_LENGTH = 4000;
 
 function truncateText(text: string): string {
-  if (text.length <= MAX_CHUNK_LENGTH) return text;
-  return text.substring(0, MAX_CHUNK_LENGTH) + "... [Content truncated for length]";
-}
-
-function generatePodcastScript(caseStudy: PodcastRequest['caseStudy']): string {
-  const intro = `Welcome to PhysioCase, your premium source for in-depth physiotherapy case studies and analysis. Today, we'll be exploring an interesting case that highlights key aspects of clinical reasoning and evidence-based practice.`;
-
-  const analysis = caseStudy.analysis ? 
-    `Let's start with an overview of the case. ${truncateText(caseStudy.analysis)}` : 
-    '';
-
-  // Take only the first few most important sections to stay within limits
-  const sections = (caseStudy.sections || [])
-    .slice(0, 3) // Limit to first 3 sections
-    .map(section => {
-      return `Now, let's discuss ${section.title}. ${truncateText(section.content)}`;
-    })
-    .join('\n\nMoving on.\n\n');
-
-  const outro = `Thank you for listening to this PhysioCase study analysis. Remember to apply these insights in your clinical practice and stay tuned for more evidence-based case studies.`;
-
-  const fullScript = [
-    intro,
-    analysis,
-    sections,
-    outro
-  ].join('\n\n');
-
-  return truncateText(fullScript);
+  if (text.length <= MAX_TEXT_LENGTH) return text;
+  return text.substring(0, MAX_TEXT_LENGTH) + "... [Content truncated for length]";
 }
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
@@ -61,12 +28,20 @@ serve(async (req) => {
       throw new Error('ELEVEN_LABS_API_KEY is not set in the environment variables');
     }
 
-    const { caseStudy, voiceId } = await req.json() as PodcastRequest;
+    const { caseStudy, voiceId } = await req.json();
     console.log('Received request for voice ID:', voiceId);
+
+    if (!caseStudy || !voiceId) {
+      return new Response(
+        JSON.stringify({ error: 'Missing required parameters: caseStudy or voiceId' }),
+        { status: 400, headers: corsHeaders }
+      );
+    }
 
     // Generate podcast script with length limits
     const script = generatePodcastScript(caseStudy);
-    console.log('Generated podcast script length:', script.length);
+    const truncatedScript = truncateText(script);
+    console.log('Generated podcast script length:', truncatedScript.length);
 
     // Convert text to speech using ElevenLabs
     console.log('Calling ElevenLabs API...');
@@ -80,7 +55,7 @@ serve(async (req) => {
           'xi-api-key': apiKey,
         },
         body: JSON.stringify({
-          text: script,
+          text: truncatedScript,
           model_id: "eleven_multilingual_v2",
           voice_settings: {
             stability: 0.5,
@@ -111,19 +86,16 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         audio: audioBase64,
-        script: script 
+        script: truncatedScript 
       }),
-      { 
-        headers: { 
-          ...corsHeaders,
-          'Content-Type': 'application/json'
-        } 
-      }
+      { headers: corsHeaders }
     );
 
   } catch (error) {
     console.error('Error in generate-podcast function:', error);
     console.error('Error stack trace:', error.stack);
+    
+    // Return a properly formatted error response
     return new Response(
       JSON.stringify({ 
         error: error.message,
@@ -131,11 +103,27 @@ serve(async (req) => {
       }),
       { 
         status: 500,
-        headers: { 
-          ...corsHeaders,
-          'Content-Type': 'application/json'
-        }
+        headers: corsHeaders
       }
     );
   }
 })
+
+function generatePodcastScript(caseStudy: any): string {
+  const intro = `Welcome to PhysioCase, your premium source for in-depth physiotherapy case studies and analysis. Today, we'll be exploring an interesting case that highlights key aspects of clinical reasoning and evidence-based practice.`;
+
+  const patientInfo = `Our patient is ${caseStudy.patient_name}, a ${caseStudy.age}-year-old ${caseStudy.gender} presenting with ${caseStudy.condition}.`;
+
+  const mainContent = caseStudy.ai_analysis || 'No detailed analysis available.';
+
+  const sections = (caseStudy.generated_sections || [])
+    .slice(0, 3) // Limit to first 3 sections
+    .map((section: any) => {
+      return `Next, let's discuss ${section.title}. ${section.content}`;
+    })
+    .join('\n\nMoving on.\n\n');
+
+  const outro = `Thank you for listening to this PhysioCase study analysis. Remember to apply these insights in your clinical practice and stay tuned for more evidence-based case studies.`;
+
+  return [intro, patientInfo, mainContent, sections, outro].join('\n\n');
+}
