@@ -7,6 +7,12 @@ import { generateClinicalReasoning } from './clinicalReasoningGenerator.ts';
 
 const MAX_PROMPT_LENGTH = 4000;
 
+// Create a default embedding vector
+const createDefaultEmbedding = () => {
+  // Initialize a 384-dimensional vector with zeros (standard dimension for text embeddings)
+  return Array(384).fill(0);
+};
+
 export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'generate' = 'generate') {
   console.log('Processing case study:', caseStudy.id);
   const groq = new Groq({
@@ -22,6 +28,10 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       caseStudy.psychosocial_factors,
       caseStudy.adl_problem
     ].filter(Boolean).join(' ').slice(0, MAX_PROMPT_LENGTH);
+
+    // Initialize embedding vector
+    const queryEmbedding = createDefaultEmbedding();
+    console.log('Created default embedding vector');
 
     // Get environment variables
     const supabaseUrl = Deno.env.get('SUPABASE_URL');
@@ -119,6 +129,9 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       };
     }
 
+    // Generate clinical reasoning with proper embedding
+    const clinicalReasoning = await generateClinicalReasoning(groq, caseStudy, queryEmbedding);
+
     // Generate full case study
     const generatedSections = [];
     for (const section of sections) {
@@ -180,10 +193,6 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       });
     }
 
-    // Generate clinical reasoning with KNGF guidelines integration
-    const queryEmbedding = {}; // Assume this is defined or obtained from somewhere
-    const clinicalReasoning = await generateClinicalReasoning(groq, caseStudy, queryEmbedding);
-    
     // Add the clinical reasoning to the sections
     generatedSections.push({
       title: "Clinical Reasoning",
