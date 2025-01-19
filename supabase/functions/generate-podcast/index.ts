@@ -6,78 +6,78 @@ const corsHeaders = {
 }
 
 const MAX_TEXT_LENGTH = 4000;
+const MAX_SECTIONS = 3;
 
 function truncateText(text: string): string {
-  console.log('Truncating text of length:', text?.length || 0);
   if (!text) return '';
-  if (text.length <= MAX_TEXT_LENGTH) return text;
-  return text.substring(0, MAX_TEXT_LENGTH) + "... [Content truncated for length]";
+  console.log('Truncating text of length:', text.length);
+  return text.length <= MAX_TEXT_LENGTH ? text : text.substring(0, MAX_TEXT_LENGTH) + "... [Content truncated for length]";
+}
+
+function validateCaseStudy(caseStudy: any): void {
+  if (!caseStudy || typeof caseStudy !== 'object') {
+    throw new Error('Invalid case study data');
+  }
+  
+  if (!caseStudy.id) {
+    throw new Error('Case study ID is required');
+  }
 }
 
 function generatePodcastScript(caseStudy: any): string {
   console.log('Starting script generation for case study:', caseStudy?.id);
   
   try {
-    // Input validation
-    if (!caseStudy || typeof caseStudy !== 'object') {
-      throw new Error('Invalid case study data');
-    }
-
-    // Initialize sections array
+    validateCaseStudy(caseStudy);
     const sections: string[] = [];
     
-    // Add static intro
+    // Static intro
     sections.push("Welcome to PhysioCase, your premium source for in-depth physiotherapy case studies and analysis. Today, we'll be exploring an interesting case that highlights key aspects of clinical reasoning and evidence-based practice.");
 
-    // Add patient info (no recursion, simple string concatenation)
-    const patientDetails = [
-      caseStudy.patient_name,
-      caseStudy.age ? `${caseStudy.age}-year-old` : '',
-      caseStudy.gender,
-      caseStudy.condition ? `presenting with ${caseStudy.condition}` : ''
-    ].filter(Boolean);
+    // Patient details - simple string operations only
+    const patientDetails = [];
+    if (caseStudy.patient_name) patientDetails.push(caseStudy.patient_name);
+    if (caseStudy.age) patientDetails.push(`${caseStudy.age}-year-old`);
+    if (caseStudy.gender) patientDetails.push(caseStudy.gender);
+    if (caseStudy.condition) patientDetails.push(`presenting with ${caseStudy.condition}`);
 
     if (patientDetails.length > 0) {
       sections.push(`Our patient is ${patientDetails.join(' ')}.`);
     }
 
-    // Safely add analysis (no recursion)
+    // AI Analysis - direct string handling
     if (typeof caseStudy.ai_analysis === 'string' && caseStudy.ai_analysis.trim()) {
       console.log('Adding AI analysis section');
       sections.push(truncateText(caseStudy.ai_analysis));
     }
 
-    // Safely process generated sections (limit to prevent stack issues)
+    // Generated sections - limited processing
     if (Array.isArray(caseStudy.generated_sections)) {
       console.log('Processing generated sections');
-      const validSections = caseStudy.generated_sections
-        .slice(0, 3) // Limit to 3 sections to prevent stack overflow
-        .filter(section => 
-          section && 
-          typeof section === 'object' && 
-          typeof section.title === 'string' &&
-          typeof section.content === 'string'
-        )
-        .map(section => {
-          console.log('Processing section:', section.title);
-          return `Next, let's discuss ${section.title}. ${truncateText(section.content)}`;
-        });
       
-      sections.push(...validSections);
+      for (let i = 0; i < Math.min(caseStudy.generated_sections.length, MAX_SECTIONS); i++) {
+        const section = caseStudy.generated_sections[i];
+        
+        if (section && typeof section === 'object' && 
+            typeof section.title === 'string' && 
+            typeof section.content === 'string') {
+          
+          console.log(`Processing section ${i + 1}:`, section.title);
+          sections.push(`Next, let's discuss ${section.title}. ${truncateText(section.content)}`);
+        }
+      }
     }
 
-    // Add static outro
+    // Static outro
     sections.push("Thank you for listening to this PhysioCase study analysis. Remember to apply these insights in your clinical practice and stay tuned for more evidence-based case studies.");
 
-    // Join sections with proper spacing
-    console.log('Finalizing script with', sections.length, 'sections');
     const finalScript = sections.filter(Boolean).join('\n\n');
-    console.log('Final script length:', finalScript.length);
-    
+    console.log('Final script generated, length:', finalScript.length);
     return finalScript;
+    
   } catch (error) {
-    console.error('Error generating podcast script:', error);
-    throw new Error(`Failed to generate podcast script: ${error.message}`);
+    console.error('Error in generatePodcastScript:', error);
+    throw error;
   }
 }
 
@@ -106,11 +106,11 @@ serve(async (req) => {
 
     console.log('Generating script for case study:', caseStudy.id);
     
-    // Generate and truncate script
+    // Generate script with better error handling
     const script = generatePodcastScript(caseStudy);
     const truncatedScript = truncateText(script);
     
-    console.log('Script length:', truncatedScript.length);
+    console.log('Script generated, length:', truncatedScript.length);
 
     // Call ElevenLabs API
     console.log('Calling ElevenLabs API with voice ID:', voiceId);
@@ -142,7 +142,6 @@ serve(async (req) => {
       throw new Error(`ElevenLabs API error (${audioResponse.status}): ${errorText}`);
     }
 
-    // Get audio data and convert to base64
     const audioBuffer = await audioResponse.arrayBuffer();
     const audioBase64 = btoa(String.fromCharCode(...new Uint8Array(audioBuffer)));
 
