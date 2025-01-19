@@ -1,5 +1,4 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -26,26 +25,12 @@ serve(async (req) => {
     try {
       console.log('Starting API test with timestamp:', new Date().toISOString())
       
-      // Initialize Supabase client
-      const supabaseClient = createClient(
-        Deno.env.get('SUPABASE_URL') ?? '',
-        Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-        { auth: { persistSession: false } }
-      )
-
-      // Fetch API key from secrets table
-      const { data: secretData, error: secretError } = await supabaseClient
-        .from('secrets')
-        .select('value')
-        .eq('name', 'ELEVEN_LABS_API_KEY')
-        .single()
-
-      if (secretError || !secretData) {
-        throw new Error('Failed to fetch ELEVEN_LABS_API_KEY from secrets')
+      const apiKey = Deno.env.get('ELEVEN_LABS_API_KEY')
+      if (!apiKey) {
+        throw new Error('ELEVEN_LABS_API_KEY is not set in the environment variables')
       }
 
-      const apiKey = secretData.value
-      console.log('API Key retrieved from secrets (first 4 chars):', apiKey.substring(0, 4))
+      console.log('API Key retrieved from environment (first 4 chars):', apiKey.substring(0, 4))
 
       // Test the ElevenLabs API with a minimal request
       console.log('Testing ElevenLabs API connection...')
@@ -105,26 +90,12 @@ serve(async (req) => {
   try {
     console.log('Starting generate-podcast function with timestamp:', new Date().toISOString())
     
-    // Initialize Supabase client
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      { auth: { persistSession: false } }
-    )
-
-    // Fetch API key from secrets table
-    const { data: secretData, error: secretError } = await supabaseClient
-      .from('secrets')
-      .select('value')
-      .eq('name', 'ELEVEN_LABS_API_KEY')
-      .single()
-
-    if (secretError || !secretData) {
-      throw new Error('Failed to fetch ELEVEN_LABS_API_KEY from secrets')
+    const apiKey = Deno.env.get('ELEVEN_LABS_API_KEY')
+    if (!apiKey) {
+      throw new Error('ELEVEN_LABS_API_KEY is not set in the environment variables')
     }
 
-    const apiKey = secretData.value
-    console.log('API Key retrieved from secrets (first 4 chars):', apiKey.substring(0, 4))
+    console.log('API Key retrieved from environment (first 4 chars):', apiKey.substring(0, 4))
 
     const { caseStudy, voiceId } = await req.json() as PodcastRequest
     console.log('Received request for voice ID:', voiceId)
