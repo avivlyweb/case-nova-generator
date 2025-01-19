@@ -1,5 +1,4 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -30,6 +29,8 @@ serve(async (req) => {
       if (!apiKey) {
         throw new Error('ELEVEN_LABS_API_KEY is not set in the environment variables')
       }
+
+      console.log('API Key retrieved from environment (first 4 chars):', apiKey.substring(0, 4))
 
       // Test the ElevenLabs API with a minimal request
       console.log('Testing ElevenLabs API connection...')
@@ -93,6 +94,8 @@ serve(async (req) => {
     if (!apiKey) {
       throw new Error('ELEVEN_LABS_API_KEY is not set in the environment variables')
     }
+
+    console.log('API Key retrieved from environment (first 4 chars):', apiKey.substring(0, 4))
 
     const { caseStudy, voiceId } = await req.json() as PodcastRequest
     console.log('Received request for voice ID:', voiceId)
