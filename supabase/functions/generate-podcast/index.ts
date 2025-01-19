@@ -3,8 +3,6 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Content-Type': 'application/json'
 }
 
 const MAX_TEXT_LENGTH = 4000;
@@ -17,46 +15,64 @@ function truncateText(text: string): string {
 
 function generatePodcastScript(caseStudy: any): string {
   try {
-    const sections = [];
-
-    // Add intro
-    sections.push(`Welcome to PhysioCase, your premium source for in-depth physiotherapy case studies and analysis. Today, we'll be exploring an interesting case that highlights key aspects of clinical reasoning and evidence-based practice.`);
-
-    // Add patient info if available
-    if (caseStudy.patient_name && caseStudy.age && caseStudy.gender && caseStudy.condition) {
-      sections.push(`Our patient is ${caseStudy.patient_name}, a ${caseStudy.age}-year-old ${caseStudy.gender} presenting with ${caseStudy.condition}.`);
+    if (!caseStudy || typeof caseStudy !== 'object') {
+      throw new Error('Invalid case study data');
     }
 
-    // Add main analysis if available
+    const sections: string[] = [];
+    
+    // Add intro (static text, no recursion risk)
+    sections.push("Welcome to PhysioCase, your premium source for in-depth physiotherapy case studies and analysis. Today, we'll be exploring an interesting case that highlights key aspects of clinical reasoning and evidence-based practice.");
+
+    // Safely add patient info
+    const patientInfo = [
+      caseStudy.patient_name,
+      caseStudy.age ? `${caseStudy.age}-year-old` : '',
+      caseStudy.gender,
+      caseStudy.condition ? `presenting with ${caseStudy.condition}` : ''
+    ].filter(Boolean).join(' ');
+
+    if (patientInfo.trim()) {
+      sections.push(`Our patient is ${patientInfo}.`);
+    }
+
+    // Safely add analysis
     if (typeof caseStudy.ai_analysis === 'string' && caseStudy.ai_analysis.trim()) {
-      sections.push(caseStudy.ai_analysis);
+      sections.push(truncateText(caseStudy.ai_analysis));
     }
 
-    // Add up to 2 sections from generated_sections if available
+    // Safely add generated sections
     if (Array.isArray(caseStudy.generated_sections)) {
-      const limitedSections = caseStudy.generated_sections.slice(0, 2);
-      for (const section of limitedSections) {
-        if (section.title && section.content) {
-          sections.push(`Next, let's discuss ${section.title}. ${section.content}`);
-        }
-      }
+      const validSections = caseStudy.generated_sections
+        .slice(0, 2) // Limit to 2 sections
+        .filter(section => 
+          section && 
+          typeof section === 'object' && 
+          typeof section.title === 'string' &&
+          typeof section.content === 'string'
+        )
+        .map(section => 
+          `Next, let's discuss ${section.title}. ${truncateText(section.content)}`
+        );
+      
+      sections.push(...validSections);
     }
 
-    // Add outro
-    sections.push(`Thank you for listening to this PhysioCase study analysis. Remember to apply these insights in your clinical practice and stay tuned for more evidence-based case studies.`);
+    // Add outro (static text, no recursion risk)
+    sections.push("Thank you for listening to this PhysioCase study analysis. Remember to apply these insights in your clinical practice and stay tuned for more evidence-based case studies.");
 
-    // Join all sections with proper spacing and return
+    // Join sections with proper spacing and return
     return sections.filter(Boolean).join('\n\n');
   } catch (error) {
     console.error('Error generating podcast script:', error);
-    throw new Error('Failed to generate podcast script');
+    throw new Error(`Failed to generate podcast script: ${error.message}`);
   }
 }
 
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    return new Response('ok', { headers: corsHeaders });
   }
 
   try {
@@ -72,7 +88,7 @@ serve(async (req) => {
     if (!caseStudy || !voiceId) {
       return new Response(
         JSON.stringify({ error: 'Missing required parameters' }),
-        { status: 400, headers: corsHeaders }
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
@@ -123,7 +139,7 @@ serve(async (req) => {
         audio: audioBase64,
         script: truncatedScript 
       }),
-      { headers: corsHeaders }
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
   } catch (error) {
@@ -136,7 +152,7 @@ serve(async (req) => {
       }),
       { 
         status: 500,
-        headers: corsHeaders
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     );
   }
