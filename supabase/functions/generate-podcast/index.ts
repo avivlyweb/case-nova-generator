@@ -15,32 +15,6 @@ interface PodcastRequest {
   voiceId: string;
 }
 
-async function getElevenLabsApiKey(supabaseClient: any) {
-  console.log('Fetching ElevenLabs API key...')
-  
-  // First try to get the most recent API key
-  const { data, error } = await supabaseClient
-    .from('secrets')
-    .select('value')
-    .eq('name', 'ELEVEN_LABS_API_KEY')
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .maybeSingle() // Changed from single() to maybeSingle()
-
-  if (error) {
-    console.error('Error fetching ElevenLabs API key:', error)
-    throw new Error(`Database error when fetching ElevenLabs API key: ${error.message}`)
-  }
-
-  if (!data) {
-    console.error('No ElevenLabs API key found')
-    throw new Error('No ElevenLabs API key found in the secrets table. Please add one via the Supabase dashboard.')
-  }
-
-  console.log('Successfully retrieved ElevenLabs API key (first 4 chars):', data.value.substring(0, 4))
-  return data.value
-}
-
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -52,12 +26,10 @@ serve(async (req) => {
     try {
       console.log('Starting API test with timestamp:', new Date().toISOString())
       
-      const supabaseClient = createClient(
-        Deno.env.get('SUPABASE_URL') ?? '',
-        Deno.env.get('SUPABASE_ANON_KEY') ?? ''
-      )
-
-      const apiKey = await getElevenLabsApiKey(supabaseClient)
+      const apiKey = Deno.env.get('ELEVEN_LABS_API_KEY')
+      if (!apiKey) {
+        throw new Error('ELEVEN_LABS_API_KEY is not set in the environment variables')
+      }
 
       // Test the ElevenLabs API with a minimal request
       console.log('Testing ElevenLabs API connection...')
@@ -117,12 +89,10 @@ serve(async (req) => {
   try {
     console.log('Starting generate-podcast function with timestamp:', new Date().toISOString())
     
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? ''
-    )
-
-    const apiKey = await getElevenLabsApiKey(supabaseClient)
+    const apiKey = Deno.env.get('ELEVEN_LABS_API_KEY')
+    if (!apiKey) {
+      throw new Error('ELEVEN_LABS_API_KEY is not set in the environment variables')
+    }
 
     const { caseStudy, voiceId } = await req.json() as PodcastRequest
     console.log('Received request for voice ID:', voiceId)
