@@ -14,6 +14,13 @@ interface CaseStudyCardProps {
 const CaseStudyCard = ({ study, analyzing, onAnalyze, onGenerate }: CaseStudyCardProps) => {
   const hasFullCase = Array.isArray(study.generated_sections) && study.generated_sections.length > 0;
 
+  const analysis = {
+    analysis: study.ai_analysis,
+    sections: study.generated_sections,
+    references: study.reference_list ? [study.reference_list] : undefined,
+    icf_codes: Array.isArray(study.icf_codes) ? study.icf_codes : undefined
+  };
+
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-all duration-200 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
       <CardHeader className="space-y-4">
@@ -71,7 +78,7 @@ const CaseStudyCard = ({ study, analyzing, onAnalyze, onGenerate }: CaseStudyCar
               )}
             </Button>
             {hasFullCase && (
-              <DownloadPDFButton study={study} />
+              <DownloadPDFButton caseStudy={study} analysis={analysis} />
             )}
           </div>
         </div>
