@@ -1,18 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { Download, Loader2 } from "lucide-react";
+import { Download } from "lucide-react";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import CaseStudyPDF from "./CaseStudyPDF";
 import { useToast } from "@/hooks/use-toast";
-import type { CaseStudy } from "@/types/case-study";
-import { ReactNode } from "react";
 
 interface DownloadPDFButtonProps {
-  caseStudy: CaseStudy;
-  analysis?: {
+  caseStudy: any;
+  analysis: {
     analysis?: string;
     sections?: Array<{ title: string; content: string }>;
-    references?: string[];
-    icf_codes?: string[];
+    references?: any[];
+    icf_codes?: string;
   };
 }
 
@@ -20,18 +18,17 @@ const DownloadPDFButton = ({ caseStudy, analysis }: DownloadPDFButtonProps) => {
   console.log('DownloadPDFButton - Received props:', { caseStudy, analysis });
   const { toast } = useToast();
 
-  const handleError = (event: React.SyntheticEvent<HTMLAnchorElement, Event>) => {
-    const error = event.currentTarget.getAttribute('data-error');
+  const handleError = (error: Error) => {
     console.error('PDF Generation Error:', error);
     toast({
       variant: "destructive",
       title: "PDF Generation Failed",
-      description: error || "Failed to generate PDF. Please try again.",
+      description: error.message || "Failed to generate PDF. Please try again.",
     });
   };
 
-  if (!caseStudy) {
-    console.log('DownloadPDFButton - Missing required data:', { caseStudy });
+  if (!caseStudy || !analysis) {
+    console.log('DownloadPDFButton - Missing required data:', { caseStudy, analysis });
     return null;
   }
 
@@ -39,11 +36,11 @@ const DownloadPDFButton = ({ caseStudy, analysis }: DownloadPDFButtonProps) => {
     <PDFDownloadLink
       document={<CaseStudyPDF caseStudy={caseStudy} analysis={analysis} />}
       fileName={`case-study-${caseStudy.id}.pdf`}
-      className="w-full sm:w-auto"
+      className="w-full"
       onClick={() => console.log('DownloadPDFButton - Download initiated')}
       onError={handleError}
     >
-      {({ loading, error }): ReactNode => {
+      {({ loading, error }) => {
         console.log('PDFDownloadLink state:', { loading, error });
         
         if (error) {
@@ -52,22 +49,11 @@ const DownloadPDFButton = ({ caseStudy, analysis }: DownloadPDFButtonProps) => {
 
         return (
           <Button 
-            variant="outline"
-            size="lg"
-            className="w-full sm:w-auto" 
+            className="w-full" 
             disabled={loading}
           >
-            {loading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Generating PDF...
-              </>
-            ) : (
-              <>
-                <Download className="mr-2 h-4 w-4" />
-                Download PDF
-              </>
-            )}
+            <Download className="mr-2 h-4 w-4" />
+            {loading ? 'Generating PDF...' : 'Download PDF'}
           </Button>
         );
       }}
