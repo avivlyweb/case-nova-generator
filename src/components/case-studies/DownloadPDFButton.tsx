@@ -1,68 +1,63 @@
-import { useState } from 'react';
-import { pdf } from '@react-pdf/renderer';
-import { Button } from '@/components/ui/button';
-import { FileDown, Loader2 } from 'lucide-react';
-import { useToast } from '@/components/ui/use-toast';
-import CaseStudyPDF from './CaseStudyPDF';
-import { CaseStudy } from '@/types/case-study';
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import CaseStudyPDF from "./CaseStudyPDF";
+import { useToast } from "@/hooks/use-toast";
 
 interface DownloadPDFButtonProps {
-  study: CaseStudy;
+  caseStudy: any;
+  analysis: {
+    analysis?: string;
+    sections?: Array<{ title: string; content: string }>;
+    references?: any[];
+    icf_codes?: string;
+  };
 }
 
-const DownloadPDFButton = ({ study }: DownloadPDFButtonProps) => {
-  const [downloading, setDownloading] = useState(false);
+const DownloadPDFButton = ({ caseStudy, analysis }: DownloadPDFButtonProps) => {
+  console.log('DownloadPDFButton - Received props:', { caseStudy, analysis });
   const { toast } = useToast();
 
-  const handleDownload = async () => {
-    try {
-      setDownloading(true);
-      const blob = await pdf(<CaseStudyPDF study={study} />).toBlob();
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `case-study-${study.patient_name.toLowerCase().replace(/\s+/g, '-')}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-      
-      toast({
-        title: "Success",
-        description: "Case study PDF has been downloaded.",
-      });
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to generate PDF. Please try again.",
-      });
-    } finally {
-      setDownloading(false);
-    }
+  const handleError = (error: Error) => {
+    console.error('PDF Generation Error:', error);
+    toast({
+      variant: "destructive",
+      title: "PDF Generation Failed",
+      description: error.message || "Failed to generate PDF. Please try again.",
+    });
   };
 
+  if (!caseStudy || !analysis) {
+    console.log('DownloadPDFButton - Missing required data:', { caseStudy, analysis });
+    return null;
+  }
+
   return (
-    <Button
-      onClick={handleDownload}
-      disabled={downloading}
-      variant="outline"
-      size="lg"
-      className="w-full sm:w-auto bg-white hover:bg-gray-50 border-primary-200 hover:border-primary-300 text-primary-700 hover:text-primary-800"
+    <PDFDownloadLink
+      document={<CaseStudyPDF caseStudy={caseStudy} analysis={analysis} />}
+      fileName={`case-study-${caseStudy.id}.pdf`}
+      className="w-full"
+      onClick={() => console.log('DownloadPDFButton - Download initiated')}
+      onError={handleError}
     >
-      {downloading ? (
-        <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Generating PDF...
-        </>
-      ) : (
-        <>
-          <FileDown className="mr-2 h-4 w-4" />
-          Download PDF
-        </>
-      )}
-    </Button>
+      {({ loading, error }) => {
+        console.log('PDFDownloadLink state:', { loading, error });
+        
+        if (error) {
+          console.error('PDFDownloadLink error:', error);
+        }
+
+        return (
+          <Button 
+            className="w-full" 
+            disabled={loading}
+          >
+            <Download className="mr-2 h-4 w-4" />
+            {loading ? 'Generating PDF...' : 'Download PDF'}
+          </Button>
+        );
+      }}
+    </PDFDownloadLink>
   );
 };
 
