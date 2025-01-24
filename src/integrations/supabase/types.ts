@@ -9,6 +9,74 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      assessment_responses: {
+        Row: {
+          created_at: string | null
+          id: string
+          question: string
+          question_type: string
+          response: Json
+          session_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          question: string
+          question_type: string
+          response: Json
+          session_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          question?: string
+          question_type?: string
+          response?: Json
+          session_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessment_responses_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "assessment_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assessment_sessions: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          current_step: string | null
+          id: string
+          progress_percentage: number | null
+          started_at: string | null
+          status: string | null
+          user_id: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          current_step?: string | null
+          id?: string
+          progress_percentage?: number | null
+          started_at?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          current_step?: string | null
+          id?: string
+          progress_percentage?: number | null
+          started_at?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       assessment_tools: {
         Row: {
           category: string
