@@ -44,7 +44,7 @@ Respond with ONLY the suggested text, no explanations or additional formatting.`
           content: prompt
         }
       ],
-      model: "gemma2-9b-it",
+      model: "deepseek-r1-distill-llama-70b",
       temperature: 0.7,
       max_tokens: 150,
     });
