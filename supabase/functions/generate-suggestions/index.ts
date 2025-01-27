@@ -28,7 +28,7 @@ Generate a single, specific suggestion that:
 1. Is clinically relevant to neurological physiotherapy
 2. Builds upon the previous form data
 3. Uses appropriate medical terminology
-4. Is concise (max 1-2 sentences)
+4. Is concise (max 1-3 sentences)
 5. Maintains professional documentation standards
 
 Respond with ONLY the suggested text, no explanations or additional formatting.`
@@ -44,9 +44,9 @@ Respond with ONLY the suggested text, no explanations or additional formatting.`
           content: prompt
         }
       ],
-      model: "deepseek-r1-distill-llama-70b",
+      model: "gemma2-9b-it",
       temperature: 0.7,
-      max_tokens: 150,
+      max_tokens: 300,
     });
 
     const suggestion = completion.choices[0]?.message?.content || '';
