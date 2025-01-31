@@ -3,51 +3,44 @@ import { Download } from "lucide-react";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import CaseStudyPDF from "./CaseStudyPDF";
 import { useToast } from "@/hooks/use-toast";
-import { SyntheticEvent } from "react";
+import type { CaseStudy } from "@/types/case-study";
 
 interface DownloadPDFButtonProps {
-  caseStudy: any;
-  analysis: {
-    analysis?: string;
-    sections?: Array<{ title: string; content: string }>;
-    references?: any[];
-    icf_codes?: string;
-  };
+  caseStudy: CaseStudy;
 }
 
-const DownloadPDFButton = ({ caseStudy, analysis }: DownloadPDFButtonProps) => {
-  console.log('DownloadPDFButton - Received props:', { caseStudy, analysis });
+const DownloadPDFButton = ({ caseStudy }: DownloadPDFButtonProps) => {
   const { toast } = useToast();
 
-  const handleError = (event: SyntheticEvent<HTMLAnchorElement, Event>) => {
-    console.error('PDF Generation Error:', event);
+  const handleError = () => {
     toast({
       variant: "destructive",
-      title: "PDF Generation Failed",
+      title: "Error",
       description: "Failed to generate PDF. Please try again.",
     });
   };
 
-  if (!caseStudy || !analysis) {
-    console.log('DownloadPDFButton - Missing required data:', { caseStudy, analysis });
-    return null;
-  }
-
   return (
     <PDFDownloadLink
-      document={<CaseStudyPDF caseStudy={caseStudy} analysis={analysis} />}
+      document={<CaseStudyPDF caseStudy={caseStudy} />}
       fileName={`case-study-${caseStudy.id}.pdf`}
-      className="w-full"
-      onClick={() => console.log('DownloadPDFButton - Download initiated')}
-      onError={handleError}
     >
-      {({ loading, error }) => (
+      {({ loading }) => (
         <Button 
-          className="w-full" 
-          disabled={loading || !!error}
+          variant="outline" 
+          size="sm"
+          disabled={loading}
+          onClick={() => {
+            if (!loading) {
+              toast({
+                title: "Success",
+                description: "PDF downloaded successfully.",
+              });
+            }
+          }}
         >
           <Download className="mr-2 h-4 w-4" />
-          {loading ? 'Generating PDF...' : 'Download PDF'}
+          {loading ? "Generating PDF..." : "Download PDF"}
         </Button>
       )}
     </PDFDownloadLink>
