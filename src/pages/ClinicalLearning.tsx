@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,9 +9,12 @@ import { CaseContext } from "@/components/learning/CaseContext";
 import { ClinicalInquiry } from "@/components/learning/ClinicalInquiry";
 import { LearningPath } from "@/components/learning/LearningPath";
 import { LearningOverview } from "@/components/learning/LearningOverview";
+import { useToast } from "@/hooks/use-toast";
 
 const ClinicalLearning = () => {
   const { id } = useParams();
+  const { toast } = useToast();
+  const [isAsking, setIsAsking] = useState(false);
 
   // Fetch case study details
   const { data: caseStudy, isLoading: loadingCase } = useQuery({
@@ -44,12 +48,28 @@ const ClinicalLearning = () => {
     enabled: !!caseStudy,
   });
 
-  const [isAsking, setIsAsking] = useState(false);
-
   const handleAskQuestion = async (question: string) => {
     setIsAsking(true);
     try {
-      await onAskQuestion(question);
+      const response = await fetch('/api/clinical-reasoning', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question, caseStudy }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to process question');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error asking question:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to process your question. Please try again.",
+      });
     } finally {
       setIsAsking(false);
     }
