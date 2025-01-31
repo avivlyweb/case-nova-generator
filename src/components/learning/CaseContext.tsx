@@ -22,13 +22,31 @@ export function CaseContext({ initialContext, loading }: CaseContextProps) {
     );
   }
 
+  // Format the initial context to show only essential information
+  const formatInitialContext = (context: string) => {
+    const lines = context.split('\n');
+    const basicInfo = lines.filter(line => 
+      line.includes('age') || 
+      line.includes('chief complaint') || 
+      line.includes('presenting') ||
+      line.includes('main concern')
+    ).join('\n');
+    
+    return basicInfo || context;
+  };
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Initial Case Presentation</CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-muted-foreground whitespace-pre-wrap">{initialContext}</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">
+          {formatInitialContext(initialContext)}
+        </p>
+        <p className="mt-4 text-sm text-muted-foreground italic">
+          Ask questions to gather more information about the case.
+        </p>
       </CardContent>
     </Card>
   );
