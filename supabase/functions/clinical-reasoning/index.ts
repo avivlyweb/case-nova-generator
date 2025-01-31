@@ -16,12 +16,12 @@ serve(async (req) => {
   }
 
   try {
-    const { question, caseContext, learningHistory } = await req.json();
+    const { question, caseStudy, learningHistory } = await req.json();
 
     const systemPrompt = `You are an expert physiotherapy clinical educator. Your role is to guide students through clinical reasoning using the HOAC II framework.
 
 Current case context:
-${caseContext}
+${JSON.stringify(caseStudy)}
 
 Previous interactions:
 ${JSON.stringify(learningHistory)}
