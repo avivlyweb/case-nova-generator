@@ -3,6 +3,7 @@ import { Download } from "lucide-react";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import CaseStudyPDF from "./CaseStudyPDF";
 import { useToast } from "@/hooks/use-toast";
+import { SyntheticEvent } from "react";
 
 interface DownloadPDFButtonProps {
   caseStudy: any;
@@ -18,12 +19,12 @@ const DownloadPDFButton = ({ caseStudy, analysis }: DownloadPDFButtonProps) => {
   console.log('DownloadPDFButton - Received props:', { caseStudy, analysis });
   const { toast } = useToast();
 
-  const handleError = (error: Error) => {
-    console.error('PDF Generation Error:', error);
+  const handleError = (event: SyntheticEvent<HTMLAnchorElement, Event>) => {
+    console.error('PDF Generation Error:', event);
     toast({
       variant: "destructive",
       title: "PDF Generation Failed",
-      description: error.message || "Failed to generate PDF. Please try again.",
+      description: "Failed to generate PDF. Please try again.",
     });
   };
 

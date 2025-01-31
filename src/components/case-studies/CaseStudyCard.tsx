@@ -39,7 +39,7 @@ const CaseStudyCard = ({ study, analyzing, onAnalyze, onGenerate }: CaseStudyCar
       <CardContent>
         <div className="space-y-2">
           <p className="text-sm text-muted-foreground">
-            {study.description || "No description available."}
+            {study.patient_background || "No background information available."}
           </p>
           <p className="text-sm text-muted-foreground">
             Created at: {new Date(study.created_at).toLocaleDateString()}
