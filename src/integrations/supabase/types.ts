@@ -304,6 +304,47 @@ export type Database = {
         }
         Relationships: []
       }
+      clinical_reasoning_steps: {
+        Row: {
+          content: string | null
+          created_at: string | null
+          evidence_used: Json | null
+          feedback: string | null
+          id: string
+          score: number | null
+          session_id: string | null
+          step_type: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string | null
+          evidence_used?: Json | null
+          feedback?: string | null
+          id?: string
+          score?: number | null
+          session_id?: string | null
+          step_type: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string | null
+          evidence_used?: Json | null
+          feedback?: string | null
+          id?: string
+          score?: number | null
+          session_id?: string | null
+          step_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clinical_reasoning_steps_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "learning_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dutch_guidelines: {
         Row: {
           assessment_criteria: Json
@@ -468,6 +509,50 @@ export type Database = {
           unit?: string | null
         }
         Relationships: []
+      }
+      learning_sessions: {
+        Row: {
+          case_study_id: string | null
+          completed_at: string | null
+          created_at: string | null
+          current_step: string | null
+          hoac_progress: Json | null
+          id: string
+          metrics: Json | null
+          started_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          case_study_id?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          current_step?: string | null
+          hoac_progress?: Json | null
+          id?: string
+          metrics?: Json | null
+          started_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          case_study_id?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          current_step?: string | null
+          hoac_progress?: Json | null
+          id?: string
+          metrics?: Json | null
+          started_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "learning_sessions_case_study_id_fkey"
+            columns: ["case_study_id"]
+            isOneToOne: false
+            referencedRelation: "case_studies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       lifestyle_tips: {
         Row: {
@@ -820,6 +905,54 @@ export type Database = {
           units?: string | null
         }
         Relationships: []
+      }
+      student_responses: {
+        Row: {
+          ai_feedback: string | null
+          created_at: string | null
+          evidence_quality: number | null
+          id: string
+          reasoning_score: number | null
+          response: string
+          session_id: string | null
+          step_id: string | null
+        }
+        Insert: {
+          ai_feedback?: string | null
+          created_at?: string | null
+          evidence_quality?: number | null
+          id?: string
+          reasoning_score?: number | null
+          response: string
+          session_id?: string | null
+          step_id?: string | null
+        }
+        Update: {
+          ai_feedback?: string | null
+          created_at?: string | null
+          evidence_quality?: number | null
+          id?: string
+          reasoning_score?: number | null
+          response?: string
+          session_id?: string | null
+          step_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_responses_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "learning_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_responses_step_id_fkey"
+            columns: ["step_id"]
+            isOneToOne: false
+            referencedRelation: "clinical_reasoning_steps"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
