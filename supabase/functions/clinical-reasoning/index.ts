@@ -16,8 +16,8 @@ serve(async (req) => {
   }
 
   try {
-    const { question, caseStudy, learningHistory } = await req.json();
-    console.log('Processing clinical reasoning request:', { question, caseStudy });
+    const { question, messages } = await req.json();
+    console.log('Processing clinical reasoning request:', { question, messages });
 
     if (!question) {
       throw new Error('Question is required');
@@ -26,11 +26,8 @@ serve(async (req) => {
     const systemPrompt = `You are an expert physiotherapy clinical educator guiding a student through a case study. 
     Your role is to simulate a realistic patient interaction while providing educational guidance.
 
-    Case Context:
-    ${JSON.stringify(caseStudy || {})}
-
-    Previous Interactions:
-    ${JSON.stringify(learningHistory || [])}
+    Previous Messages:
+    ${JSON.stringify(messages || [])}
 
     Guidelines:
     1. Respond as the patient would in a clinical setting
@@ -45,10 +42,9 @@ serve(async (req) => {
     - Ignores psychosocial factors: Prompt consideration of these aspects
     - Makes vague statements: Request specific, measurable criteria
     - Skips important tests: Ask why certain tests weren't considered
-    - Provides incomplete treatment plans: Question about missing components
+    - Provides incomplete treatment plans: Question about missing components`;
 
-    Current learning phase: ${learningHistory?.currentPhase || 'initial_assessment'}
-    Learning objectives: ${JSON.stringify(caseStudy?.learning_objectives || [])}`;
+    console.log('Sending request to Groq with system prompt:', systemPrompt);
 
     const completion = await groq.chat.completions.create({
       messages: [
@@ -61,7 +57,7 @@ serve(async (req) => {
           content: question
         }
       ],
-      model: "gemma-7b-it",
+      model: "gemma2-9b-it",
       temperature: 0.7,
       max_tokens: 1000,
     });
