@@ -1,16 +1,30 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Progress } from "@/components/ui/progress";
 import { GraduationCap, BookOpen, MessageSquare, Brain, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { LearningOverview } from "@/components/learning/LearningOverview";
+import { LearningPath } from "@/components/learning/LearningPath";
 
 const ClinicalLearning = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Auth check
+  const { data: user } = useQuery({
+    queryKey: ['user'],
+    queryFn: async () => {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error || !user) {
+        navigate('/auth');
+        throw new Error('Authentication required');
+      }
+      return user;
+    },
+  });
 
   // Fetch case study details
   const { data: caseStudy, isLoading: loadingCase } = useQuery({
@@ -42,22 +56,18 @@ const ClinicalLearning = () => {
 
       return data;
     },
+    enabled: !!user,
   });
 
   // Fetch or create learning session
   const { data: session, isLoading: loadingSession } = useQuery({
     queryKey: ['learning-session', id],
     queryFn: async () => {
-      const { data: user } = await supabase.auth.getUser();
-      if (!user.user) {
-        throw new Error("Not authenticated");
-      }
-
       const { data: existingSession, error: fetchError } = await supabase
         .from('learning_sessions')
         .select('*')
         .eq('case_study_id', id)
-        .eq('user_id', user.user.id)
+        .eq('user_id', user!.id)
         .maybeSingle();
 
       if (fetchError && fetchError.code !== 'PGRST116') {
@@ -66,22 +76,18 @@ const ClinicalLearning = () => {
 
       return existingSession;
     },
+    enabled: !!user && !!caseStudy,
   });
 
-  // Start or resume learning session
+  // Start learning session
   const startSessionMutation = useMutation({
     mutationFn: async () => {
-      const { data: user } = await supabase.auth.getUser();
-      if (!user.user) {
-        throw new Error("Not authenticated");
-      }
-
       const { data, error } = await supabase
         .from('learning_sessions')
         .insert([
           {
             case_study_id: id,
-            user_id: user.user.id,
+            user_id: user!.id,
             current_step: 'introduction',
             hoac_progress: {
               pattern_recognition: 0,
@@ -128,23 +134,7 @@ const ClinicalLearning = () => {
     );
   }
 
-  const renderProgress = () => {
-    if (!session?.hoac_progress) return null;
-    
-    const totalSteps = Object.keys(session.hoac_progress).length;
-    const completedSteps = Object.values(session.hoac_progress).filter(v => v === 100).length;
-    const progressPercentage = (completedSteps / totalSteps) * 100;
-
-    return (
-      <div className="space-y-2 mt-4">
-        <div className="flex justify-between text-sm">
-          <span>Overall Progress</span>
-          <span>{Math.round(progressPercentage)}%</span>
-        </div>
-        <Progress value={progressPercentage} className="h-2" />
-      </div>
-    );
-  };
+  if (!caseStudy) return null;
 
   return (
     <div className="p-8">
@@ -154,7 +144,6 @@ const ClinicalLearning = () => {
             <GraduationCap className="h-6 w-6" />
             Clinical Learning Module
           </CardTitle>
-          {renderProgress()}
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="overview" className="w-full">
@@ -173,58 +162,16 @@ const ClinicalLearning = () => {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="overview" className="mt-6">
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold">
-                  {caseStudy?.condition}
-                </h3>
-                <p className="text-muted-foreground">
-                  This interactive learning module will guide you through the clinical reasoning process
-                  using the HOAC II framework. You'll analyze the case, form hypotheses, and develop
-                  intervention strategies based on evidence-based practice.
-                </p>
-                {!session && (
-                  <Button 
-                    onClick={() => startSessionMutation.mutate()}
-                    disabled={startSessionMutation.isPending}
-                  >
-                    {startSessionMutation.isPending ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Starting...
-                      </>
-                    ) : (
-                      'Start Learning Session'
-                    )}
-                  </Button>
-                )}
-                {session && (
-                  <Button onClick={() => null} variant="outline">
-                    Resume Session
-                  </Button>
-                )}
-              </div>
+              <LearningOverview 
+                caseStudy={caseStudy}
+                hasSession={!!session}
+                isStarting={startSessionMutation.isPending}
+                onStartSession={() => startSessionMutation.mutate()}
+                onResumeSession={() => null} // TODO: Implement resume functionality
+              />
             </TabsContent>
             <TabsContent value="learning" className="mt-6">
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold">Learning Path</h3>
-                {session ? (
-                  <div className="space-y-6">
-                    {Object.entries(session.hoac_progress).map(([step, progress]) => (
-                      <div key={step} className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="capitalize">{step.replace(/_/g, ' ')}</span>
-                          <span>{progress}%</span>
-                        </div>
-                        <Progress value={progress} className="h-2" />
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-muted-foreground">
-                    Start a learning session to begin your personalized learning path.
-                  </p>
-                )}
-              </div>
+              <LearningPath session={session} />
             </TabsContent>
             <TabsContent value="discussion" className="mt-6">
               <div className="space-y-4">
