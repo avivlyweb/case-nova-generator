@@ -41,10 +41,10 @@ const DownloadPDFButton = ({ caseStudy, analysis }: DownloadPDFButtonProps) => {
       onClick={() => console.log('DownloadPDFButton - Download initiated')}
       onError={handleError}
     >
-      {({ loading }) => (
+      {({ loading, error }) => (
         <Button 
           className="w-full" 
-          disabled={loading}
+          disabled={loading || !!error}
         >
           <Download className="mr-2 h-4 w-4" />
           {loading ? 'Generating PDF...' : 'Download PDF'}
