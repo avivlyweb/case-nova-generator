@@ -11,7 +11,6 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
@@ -28,7 +27,7 @@ serve(async (req) => {
     Your role is to simulate a realistic patient interaction while providing educational guidance.
 
     Case Context:
-    ${JSON.stringify(caseStudy)}
+    ${JSON.stringify(caseStudy || {})}
 
     Previous Interactions:
     ${JSON.stringify(learningHistory || [])}
@@ -49,7 +48,7 @@ serve(async (req) => {
     - Provides incomplete treatment plans: Question about missing components
 
     Current learning phase: ${learningHistory?.currentPhase || 'initial_assessment'}
-    Learning objectives: ${JSON.stringify(caseStudy.learning_objectives)}`;
+    Learning objectives: ${JSON.stringify(caseStudy?.learning_objectives || [])}`;
 
     const completion = await groq.chat.completions.create({
       messages: [
