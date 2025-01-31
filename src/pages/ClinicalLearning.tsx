@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { useToast } from "@/components/ui/use-toast";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { GraduationCap, BookOpen, MessageSquare, Brain } from "lucide-react";
+import { GraduationCap, BookOpen, MessageSquare, Brain, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 const ClinicalLearning = () => {
@@ -20,7 +20,7 @@ const ClinicalLearning = () => {
         .from('case_studies')
         .select('*')
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
       if (error) {
         toast({
@@ -31,6 +31,15 @@ const ClinicalLearning = () => {
         throw error;
       }
 
+      if (!data) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Case study not found",
+        });
+        throw new Error("Case study not found");
+      }
+
       return data;
     },
   });
@@ -39,30 +48,40 @@ const ClinicalLearning = () => {
   const { data: session, isLoading: loadingSession } = useQuery({
     queryKey: ['learning-session', id],
     queryFn: async () => {
+      const { data: user } = await supabase.auth.getUser();
+      if (!user.user) {
+        throw new Error("Not authenticated");
+      }
+
       const { data: existingSession, error: fetchError } = await supabase
         .from('learning_sessions')
         .select('*')
         .eq('case_study_id', id)
-        .single();
-
-      if (existingSession) return existingSession;
+        .eq('user_id', user.user.id)
+        .maybeSingle();
 
       if (fetchError && fetchError.code !== 'PGRST116') {
         throw fetchError;
       }
 
-      return null;
+      return existingSession;
     },
   });
 
   // Start or resume learning session
-  const startLearningSession = async () => {
-    try {
+  const startSessionMutation = useMutation({
+    mutationFn: async () => {
+      const { data: user } = await supabase.auth.getUser();
+      if (!user.user) {
+        throw new Error("Not authenticated");
+      }
+
       const { data, error } = await supabase
         .from('learning_sessions')
         .insert([
           {
             case_study_id: id,
+            user_id: user.user.id,
             current_step: 'introduction',
             hoac_progress: {
               pattern_recognition: 0,
@@ -74,24 +93,25 @@ const ClinicalLearning = () => {
           },
         ])
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
-
+      return data;
+    },
+    onSuccess: () => {
       toast({
         title: "Session Started",
         description: "Your learning session has begun",
       });
-
-      return data;
-    } catch (error) {
+    },
+    onError: (error) => {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to start learning session",
+        description: "Failed to start learning session: " + error.message,
       });
-    }
-  };
+    },
+  });
 
   if (loadingCase || loadingSession) {
     return (
@@ -99,7 +119,7 @@ const ClinicalLearning = () => {
         <Card className="w-full max-w-4xl mx-auto">
           <CardContent className="p-6">
             <div className="flex items-center space-x-4">
-              <div className="w-4 h-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+              <Loader2 className="h-4 w-4 animate-spin" />
               <span>Loading...</span>
             </div>
           </CardContent>
@@ -163,8 +183,18 @@ const ClinicalLearning = () => {
                   intervention strategies based on evidence-based practice.
                 </p>
                 {!session && (
-                  <Button onClick={startLearningSession}>
-                    Start Learning Session
+                  <Button 
+                    onClick={() => startSessionMutation.mutate()}
+                    disabled={startSessionMutation.isPending}
+                  >
+                    {startSessionMutation.isPending ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Starting...
+                      </>
+                    ) : (
+                      'Start Learning Session'
+                    )}
                   </Button>
                 )}
                 {session && (
