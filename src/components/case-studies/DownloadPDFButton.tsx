@@ -20,9 +20,17 @@ const DownloadPDFButton = ({ caseStudy }: DownloadPDFButtonProps) => {
     });
   };
 
+  // Prepare analysis data from case study
+  const analysis = {
+    analysis: caseStudy.ai_analysis,
+    sections: caseStudy.generated_sections,
+    references: caseStudy.reference_list,
+    icf_codes: caseStudy.icf_codes
+  };
+
   return (
     <PDFDownloadLink
-      document={<CaseStudyPDF caseStudy={caseStudy} />}
+      document={<CaseStudyPDF caseStudy={caseStudy} analysis={analysis} />}
       fileName={`case-study-${caseStudy.id}.pdf`}
     >
       {({ loading }) => (

@@ -34,12 +34,19 @@ export function ClinicalInquiry({ caseContext, onAskQuestion, isLoading }: Clini
 
     try {
       const { data, error } = await supabase.functions.invoke('clinical-reasoning', {
-        body: { question: newQuestion, messages }
+        body: { 
+          question: newQuestion, 
+          messages: messages.map(m => ({ role: m.role, content: m.content }))
+        }
       });
 
       if (error) throw error;
 
-      setMessages(prev => [...prev, { role: "assistant", content: data.response }]);
+      if (data?.response) {
+        setMessages(prev => [...prev, { role: "assistant", content: data.response }]);
+      } else {
+        throw new Error('No response received from the AI');
+      }
     } catch (error) {
       console.error('Error asking question:', error);
       toast({
@@ -47,6 +54,8 @@ export function ClinicalInquiry({ caseContext, onAskQuestion, isLoading }: Clini
         title: "Error",
         description: "Failed to process your question. Please try again.",
       });
+      // Remove the user's question if it failed
+      setMessages(prev => prev.slice(0, -1));
     }
   };
 

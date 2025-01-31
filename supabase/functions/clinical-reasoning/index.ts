@@ -11,12 +11,18 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
 
   try {
     const { question, caseStudy, learningHistory } = await req.json();
+    console.log('Processing clinical reasoning request:', { question, caseStudy });
+
+    if (!question) {
+      throw new Error('Question is required');
+    }
 
     const systemPrompt = `You are an expert physiotherapy clinical educator guiding a student through a case study. 
     Your role is to simulate a realistic patient interaction while providing educational guidance.
@@ -25,7 +31,7 @@ serve(async (req) => {
     ${JSON.stringify(caseStudy)}
 
     Previous Interactions:
-    ${JSON.stringify(learningHistory)}
+    ${JSON.stringify(learningHistory || [])}
 
     Guidelines:
     1. Respond as the patient would in a clinical setting
@@ -61,16 +67,33 @@ serve(async (req) => {
       max_tokens: 1000,
     });
 
-    const response = completion.choices[0]?.message?.content || '';
+    const response = completion.choices[0]?.message?.content || 'I apologize, but I am unable to process your question at the moment.';
+    console.log('Generated response:', response);
 
-    return new Response(JSON.stringify({ response }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ response }),
+      { 
+        headers: { 
+          ...corsHeaders,
+          'Content-Type': 'application/json'
+        } 
+      }
+    );
+
   } catch (error) {
     console.error('Error in clinical-reasoning function:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ 
+        error: error.message || 'Failed to process question',
+        details: error.toString()
+      }),
+      { 
+        status: 500,
+        headers: { 
+          ...corsHeaders,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
   }
 });
