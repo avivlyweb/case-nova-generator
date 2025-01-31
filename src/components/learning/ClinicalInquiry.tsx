@@ -1,63 +1,47 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { MessageSquare, Send } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { useToast } from "@/hooks/use-toast";
+import { Card } from "@/components/ui/card";
+import { Loader2, Send } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface Message {
-  role: 'student' | 'ai';
+  role: "user" | "assistant";
   content: string;
-  timestamp: Date;
 }
 
 interface ClinicalInquiryProps {
-  onAskQuestion: (question: string) => Promise<void>;
-  isLoading: boolean;
   caseContext: string;
+  onAskQuestion: (question: string) => Promise<any>;
+  isLoading: boolean;
 }
 
-export function ClinicalInquiry({ onAskQuestion, isLoading, caseContext }: ClinicalInquiryProps) {
+export function ClinicalInquiry({ caseContext, onAskQuestion, isLoading }: ClinicalInquiryProps) {
   const [question, setQuestion] = useState("");
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+    { role: "assistant", content: caseContext }
+  ]);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!question.trim()) return;
+    if (!question.trim() || isLoading) return;
+
+    const newQuestion = question;
+    setQuestion("");
+    setMessages(prev => [...prev, { role: "user", content: newQuestion }]);
 
     try {
-      // Add student's question to messages
-      const newMessage: Message = {
-        role: 'student',
-        content: question,
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, newMessage]);
-
-      // Call Supabase Edge Function
       const { data, error } = await supabase.functions.invoke('clinical-reasoning', {
-        body: {
-          question,
-          caseStudy: caseContext,
-          learningHistory: messages
-        }
+        body: { question: newQuestion, messages }
       });
 
       if (error) throw error;
-      
-      // Add AI's response to messages
-      setMessages(prev => [...prev, {
-        role: 'ai',
-        content: data.response,
-        timestamp: new Date()
-      }]);
 
-      setQuestion("");
+      setMessages(prev => [...prev, { role: "assistant", content: data.response }]);
     } catch (error) {
-      console.error('Error in clinical inquiry:', error);
+      console.error('Error asking question:', error);
       toast({
         variant: "destructive",
         title: "Error",
@@ -68,48 +52,31 @@ export function ClinicalInquiry({ onAskQuestion, isLoading, caseContext }: Clini
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <MessageSquare className="h-5 w-5" />
-        <h3 className="text-lg font-semibold">Clinical Inquiry</h3>
-      </div>
-
-      <ScrollArea className="h-[400px] rounded-md border p-4">
+      <div className="space-y-4 h-[400px] overflow-y-auto p-4 rounded-lg border">
         {messages.map((message, index) => (
-          <Card key={index} className={`mb-4 ${message.role === 'ai' ? 'bg-muted' : ''}`}>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="font-semibold">
-                  {message.role === 'student' ? 'You' : 'Clinical Educator'}
-                </span>
-                <span className="text-xs text-muted-foreground">
-                  {message.timestamp.toLocaleTimeString()}
-                </span>
-              </div>
-              <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-            </CardContent>
+          <Card key={index} className={`p-4 ${
+            message.role === "assistant" ? "bg-primary-50 dark:bg-primary-900/10" : "bg-white dark:bg-gray-800"
+          }`}>
+            <p className="text-sm">
+              {message.content}
+            </p>
           </Card>
         ))}
-      </ScrollArea>
-      
-      <form onSubmit={handleSubmit} className="space-y-4">
+      </div>
+
+      <form onSubmit={handleSubmit} className="flex gap-2">
         <Textarea
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           placeholder="Ask a question about the case..."
-          className="min-h-[100px]"
+          className="flex-1"
+          disabled={isLoading}
         />
-        <Button 
-          type="submit" 
-          disabled={!question.trim() || isLoading}
-          className="w-full"
-        >
+        <Button type="submit" disabled={isLoading || !question.trim()}>
           {isLoading ? (
-            "Processing..."
+            <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
-            <>
-              <Send className="mr-2 h-4 w-4" />
-              Ask Question
-            </>
+            <Send className="h-4 w-4" />
           )}
         </Button>
       </form>
