@@ -5,6 +5,7 @@ import { MessageSquare, Send } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Message {
   role: 'student' | 'ai';
@@ -37,19 +38,15 @@ export function ClinicalInquiry({ onAskQuestion, isLoading, caseContext }: Clini
       setMessages(prev => [...prev, newMessage]);
 
       // Call Supabase Edge Function
-      const response = await fetch('/api/clinical-reasoning', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      const { data, error } = await supabase.functions.invoke('clinical-reasoning', {
+        body: {
           question,
-          caseContext,
+          caseStudy: caseContext,
           learningHistory: messages
-        })
+        }
       });
 
-      if (!response.ok) throw new Error('Failed to get AI response');
-      
-      const data = await response.json();
+      if (error) throw error;
       
       // Add AI's response to messages
       setMessages(prev => [...prev, {
