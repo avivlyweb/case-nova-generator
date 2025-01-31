@@ -41,23 +41,15 @@ const DownloadPDFButton = ({ caseStudy, analysis }: DownloadPDFButtonProps) => {
       onClick={() => console.log('DownloadPDFButton - Download initiated')}
       onError={handleError}
     >
-      {({ loading, error }) => {
-        console.log('PDFDownloadLink state:', { loading, error });
-        
-        if (error) {
-          console.error('PDFDownloadLink error:', error);
-        }
-
-        return (
-          <Button 
-            className="w-full" 
-            disabled={loading}
-          >
-            <Download className="mr-2 h-4 w-4" />
-            {loading ? 'Generating PDF...' : 'Download PDF'}
-          </Button>
-        );
-      }}
+      {({ loading }) => (
+        <Button 
+          className="w-full" 
+          disabled={loading}
+        >
+          <Download className="mr-2 h-4 w-4" />
+          {loading ? 'Generating PDF...' : 'Download PDF'}
+        </Button>
+      )}
     </PDFDownloadLink>
   );
 };
