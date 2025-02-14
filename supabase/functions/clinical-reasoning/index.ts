@@ -66,7 +66,7 @@ serve(async (req) => {
     const completion = await groq.chat.completions.create({
       messages: [
         {
-          role: "system",
+          role: "system", 
           content: systemPrompt
         },
         {
