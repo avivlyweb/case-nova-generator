@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from '../components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { toast } from "../components/ui/use-toast";
