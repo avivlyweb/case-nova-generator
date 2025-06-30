@@ -1,20 +1,36 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { Groq } from 'npm:groq-sdk';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
 }
 
-serve(async (req) => {
+Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
+    // Check for required environment variable
+    const groqApiKey = Deno.env.get('GROQ_API_KEY');
+    if (!groqApiKey) {
+      console.error('GROQ_API_KEY environment variable is not set');
+      return new Response(
+        JSON.stringify({ 
+          error: 'GROQ_API_KEY environment variable is not configured. Please set up the API key in your Supabase project settings.' 
+        }),
+        { 
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      );
+    }
+
     const { currentField, formData } = await req.json()
+    
     const groq = new Groq({
-      apiKey: Deno.env.get('GROQ_API_KEY'),
+      apiKey: groqApiKey,
     });
 
     console.log('Generating suggestions for:', currentField, 'with data:', formData)
@@ -61,8 +77,18 @@ Respond with ONLY the suggested text, no explanations or additional formatting.`
 
   } catch (error) {
     console.error('Error in generate-suggestions:', error)
+    
+    // Provide more specific error messages
+    let errorMessage = 'An unexpected error occurred';
+    if (error.message) {
+      errorMessage = error.message;
+    }
+    
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: errorMessage,
+        details: 'Please check the function logs for more information'
+      }),
       { 
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
