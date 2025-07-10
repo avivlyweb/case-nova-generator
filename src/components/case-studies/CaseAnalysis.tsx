@@ -117,7 +117,7 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
 
               {formatProfessionalData().map((section, index) => (
                 <DetailedSection
-                  key={`prof-${index}`}
+                  key={`professional-${index}`}
                   title={section.title}
                   content={section.content}
                 />
@@ -130,7 +130,7 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
               {Array.isArray(analysis.clinical_guidelines) && analysis.clinical_guidelines.length > 0 && (
                 <DetailedSection
                   title="Clinical Guidelines"
-                  content={formatGuidelines(analysis.clinical_guidelines)}
+                  content={formatClinicalGuidelines(analysis.clinical_guidelines)}
                 />
               )}
 
@@ -160,13 +160,17 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
 };
 
 // Helper functions for formatting
-const formatGuidelines = (guidelines: any[]): string => {
+const formatClinicalGuidelines = (guidelines: any[]): string => {
   if (!Array.isArray(guidelines)) return '';
-  return guidelines.map(g => (
-    `### ${g.name}\n\n` +
-    `**Recommendation Level:** ${g.recommendation_level}\n\n` +
-    `**Key Points:**\n${g.key_points.map(p => `- ${p}`).join('\n')}\n\n` +
-    `[View Guideline](${g.url})\n`
+  return guidelines.map(g => {
+    if (typeof g === 'string') return g;
+    return (
+      `### ${g.name || 'Clinical Guideline'}\n\n` +
+      `**Evidence Level:** ${g.evidence_level || 'Not specified'}\n\n` +
+      `**Source:** ${g.source || 'Professional Guidelines'}\n\n` +
+      `**Content:**\n${g.content || ''}\n\n` +
+      (g.url ? `[View Full Guideline](${g.url})\n` : '')
+    );
   )).join('\n---\n\n');
 };
 
@@ -197,12 +201,14 @@ const formatReferences = (references: any[] | string | null): string => {
 
 const formatAssessmentTools = (tools: any[]): string => {
   if (!Array.isArray(tools)) return '';
-  return tools.map(tool => (
-    `### ${tool.name}\n\n` +
-    `**Category:** ${tool.category}\n\n` +
-    `${tool.description}\n\n` +
-    `**Scoring Method:** ${tool.scoring_method}\n\n` +
-    `**Validity:** ${tool.validity_evidence}\n`
+  return tools.map(tool => {
+    if (typeof tool === 'string') return tool;
+    return (
+      `### ${tool.category || 'Assessment Tools'}\n\n` +
+      `**Reliability:** ${tool.reliability || 'Not specified'}\n\n` +
+      `**Validity:** ${tool.validity || 'Not specified'}\n\n` +
+      `**Content:**\n${tool.content || ''}\n`
+    );
   )).join('\n---\n\n');
 };
 
@@ -229,13 +235,21 @@ const formatFrameworks = (frameworks: Record<string, any>): string => {
 
 const formatStandardizedTests = (tests: any[]): string => {
   if (!Array.isArray(tests)) return '';
-  return tests.map(test => (
-    `### ${test.name}\n\n` +
-    `**Category:** ${test.category}\n\n` +
-    `**Type:** ${test.measurement_type}\n\n` +
-    `**Normal Ranges:** ${JSON.stringify(test.normal_ranges, null, 2)}\n\n` +
-    `**Interpretation:** ${test.interpretation_guidelines}`
+  return tests.map(test => {
+    if (typeof test === 'string') return test;
+    return (
+      `### ${test.name || 'Standardized Test'}\n\n` +
+      `**Category:** ${test.category || 'Not specified'}\n\n` +
+      `**Measurement Type:** ${test.measurement_type || 'Not specified'}\n\n` +
+      `**Normal Ranges:**\n${formatNormalRanges(test.normal_ranges)}\n\n` +
+      `**Interpretation Guidelines:** ${test.interpretation_guidelines || 'Not provided'}\n`
+    );
   )).join('\n---\n\n');
+};
+
+const formatNormalRanges = (ranges: any): string => {
+  if (!ranges || typeof ranges !== 'object') return 'Not specified';
+  return Object.entries(ranges).map(([key, value]) => `- **${key}:** ${value}`).join('\n');
 };
 
 export default CaseAnalysis;
