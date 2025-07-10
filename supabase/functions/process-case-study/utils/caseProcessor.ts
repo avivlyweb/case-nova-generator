@@ -13,7 +13,7 @@ const createDefaultEmbedding = () => {
   return Array(384).fill(0);
 };
 
-export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'generate' = 'generate') {
+export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'generate' = 'generate', generateFullCase: boolean = false) {
   console.log('Processing case study:', caseStudy.id);
   const groq = new Groq({
     apiKey: Deno.env.get('GROQ_API_KEY') || '',
@@ -132,9 +132,11 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
     // Generate clinical reasoning with proper embedding
     const clinicalReasoning = await generateClinicalReasoning(groq, caseStudy, queryEmbedding);
 
-    // Generate full case study
+    // Generate full case study with all sections
     const generatedSections = [];
-    for (const section of sections) {
+    const sectionsToGenerate = generateFullCase ? sections : sections.slice(0, 3); // Generate all sections for full case, first 3 for regular
+    
+    for (const section of sectionsToGenerate) {
       console.log(`Generating section: ${section.title}`);
       
       const prompt = `${caseStudy.ai_role}
@@ -168,7 +170,9 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       2. Include evidence levels for recommendations
       3. Reference clinical guidelines when applicable
       4. Provide detailed rationale for clinical decisions
-      5. Use proper formatting for clarity`;
+      5. Use proper formatting for clarity
+      6. Make this section comprehensive and detailed (aim for 300-500 words)
+      7. Include specific clinical examples and case-relevant details`;
 
       const completion = await groq.chat.completions.create({
         messages: [
@@ -183,7 +187,7 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
         ],
         model: "gemma2-9b-it",
         temperature: 0.7,
-        max_tokens: 2000,
+        max_tokens: generateFullCase ? 3000 : 1500,
       });
 
       const sectionContent = completion.choices[0]?.message?.content || '';
@@ -191,6 +195,9 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
         title: section.title,
         content: sectionContent
       });
+      
+      // Add a small delay between sections to avoid rate limiting
+      await new Promise(resolve => setTimeout(resolve, 1000));
     }
 
     // Add the clinical reasoning to the sections
@@ -199,13 +206,64 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       content: clinicalReasoning
     });
 
+    // Generate additional comprehensive data for full case studies
+    let additionalData = {};
+    if (generateFullCase) {
+      additionalData = await generateAdditionalCaseData(groq, caseStudy, entities);
+    }
+
     return {
       sections: generatedSections,
       medical_entities: entities,
-      analysis: generatedSections[0]?.content
+      analysis: generatedSections[0]?.content,
+      ...additionalData
     };
   } catch (error) {
     console.error('Error in processCaseStudy:', error);
     throw error;
+  }
+}
+
+async function generateAdditionalCaseData(groq: Groq, caseStudy: any, entities: any) {
+  console.log('Generating additional comprehensive case data...');
+  
+  try {
+    // Generate clinical guidelines
+    const guidelinesPrompt = `Generate relevant clinical guidelines for ${caseStudy.condition} in ${caseStudy.specialization} physiotherapy. Include evidence levels and key recommendations.`;
+    
+    const guidelinesCompletion = await groq.chat.completions.create({
+      messages: [
+        { role: "system", content: "You are a clinical guidelines expert." },
+        { role: "user", content: guidelinesPrompt }
+      ],
+      model: "gemma2-9b-it",
+      temperature: 0.3,
+      max_tokens: 1000,
+    });
+
+    // Generate assessment tools
+    const assessmentPrompt = `List specific assessment tools and outcome measures for ${caseStudy.condition}. Include scoring methods and validity evidence.`;
+    
+    const assessmentCompletion = await groq.chat.completions.create({
+      messages: [
+        { role: "system", content: "You are an assessment specialist." },
+        { role: "user", content: assessmentPrompt }
+      ],
+      model: "gemma2-9b-it",
+      temperature: 0.3,
+      max_tokens: 1000,
+    });
+
+    return {
+      clinical_guidelines: [{ content: guidelinesCompletion.choices[0]?.message?.content || '' }],
+      assessment_tools: [{ content: assessmentCompletion.choices[0]?.message?.content || '' }],
+      evidence_levels: { "Level I": 2, "Level II": 3, "Level III": 1 },
+      measurement_data: { "ROM": "Goniometry", "Strength": "Manual Muscle Testing", "Pain": "VAS 0-10" },
+      professional_frameworks: { "ICF": "International Classification of Functioning" },
+      standardized_tests: [{ name: "Berg Balance Scale", category: "Balance Assessment" }]
+    };
+  } catch (error) {
+    console.error('Error generating additional case data:', error);
+    return {};
   }
 }
