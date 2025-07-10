@@ -171,7 +171,7 @@ const formatClinicalGuidelines = (guidelines: any[]): string => {
       `**Content:**\n${g.content || ''}\n\n` +
       (g.url ? `[View Full Guideline](${g.url})\n` : '')
     );
-  )).join('\n---\n\n');
+  }).join('\n---\n\n');
 };
 
 const formatEvidenceLevels = (levels: Record<string, number>): string => {
@@ -209,7 +209,7 @@ const formatAssessmentTools = (tools: any[]): string => {
       `**Validity:** ${tool.validity || 'Not specified'}\n\n` +
       `**Content:**\n${tool.content || ''}\n`
     );
-  )).join('\n---\n\n');
+  }).join('\n---\n\n');
 };
 
 const formatMeasurementData = (data: Record<string, any>): string => {
@@ -244,7 +244,7 @@ const formatStandardizedTests = (tests: any[]): string => {
       `**Normal Ranges:**\n${formatNormalRanges(test.normal_ranges)}\n\n` +
       `**Interpretation Guidelines:** ${test.interpretation_guidelines || 'Not provided'}\n`
     );
-  )).join('\n---\n\n');
+  }).join('\n---\n\n');
 };
 
 const formatNormalRanges = (ranges: any): string => {
