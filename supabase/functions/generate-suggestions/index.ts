@@ -12,6 +12,8 @@ Deno.serve(async (req) => {
   }
 
   try {
+    console.log('Function invoked, checking environment variables...');
+    
     // Check for required environment variable
     const groqApiKey = Deno.env.get('GROQ_API_KEY');
     if (!groqApiKey) {
@@ -27,7 +29,9 @@ Deno.serve(async (req) => {
       );
     }
 
+    console.log('Environment variables OK, parsing request body...');
     const { currentField, formData } = await req.json()
+    console.log('Request parsed successfully');
     
     const groq = new Groq({
       apiKey: groqApiKey,
@@ -49,6 +53,7 @@ Generate a single, specific suggestion that:
 
 Respond with ONLY the suggested text, no explanations or additional formatting.`
 
+    console.log('Making Groq API call...');
     const completion = await groq.chat.completions.create({
       messages: [
         {
@@ -77,20 +82,39 @@ Respond with ONLY the suggested text, no explanations or additional formatting.`
 
   } catch (error) {
     console.error('Error in generate-suggestions:', error)
+    console.error('Error stack:', error.stack)
+    console.error('Error name:', error.name)
+    console.error('Error message:', error.message)
     
     // Provide more specific error messages
-    let errorMessage = 'An unexpected error occurred';
-    if (error.message) {
+    let errorMessage = 'An unexpected error occurred while generating suggestions';
+    let statusCode = 500;
+    
+    if (error instanceof Error) {
       errorMessage = error.message;
+      
+      // Handle specific error types
+      if (error.message.includes('fetch')) {
+        errorMessage = 'Network error: Unable to connect to AI service. Please check your internet connection.';
+      } else if (error.message.includes('API key')) {
+        errorMessage = 'Authentication error: Invalid or missing API key configuration.';
+        statusCode = 401;
+      } else if (error.message.includes('rate limit')) {
+        errorMessage = 'Rate limit exceeded. Please try again in a few moments.';
+        statusCode = 429;
+      }
+    } else if (typeof error === 'string') {
+      errorMessage = error;
     }
     
     return new Response(
       JSON.stringify({ 
         error: errorMessage,
-        details: 'Please check the function logs for more information'
+        details: 'Please check the function logs for more information',
+        timestamp: new Date().toISOString()
       }),
       { 
-        status: 500,
+        status: statusCode,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     )
