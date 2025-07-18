@@ -165,6 +165,7 @@ const Generate = () => {
           <Step2PatientInfo
             formData={formData}
             onChange={handleFormChange}
+            specialization={specialization}
           />
         );
       case 2:

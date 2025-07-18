@@ -4,6 +4,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { User, Calendar, Users2, FileText } from "lucide-react";
+import MagicWandButton from "../MagicWandButton";
+import type { AutoFillData } from "@/services/autoFillService";
 
 export interface PatientFormData {
   patientName: string;
@@ -21,9 +23,23 @@ export interface PatientFormData {
 interface Step2PatientInfoProps {
   formData: PatientFormData;
   onChange: (field: string, value: string | number) => void;
+  specialization?: string;
 }
 
-export const Step2PatientInfo = ({ formData, onChange }: Step2PatientInfoProps) => {
+export const Step2PatientInfo = ({ formData, onChange, specialization }: Step2PatientInfoProps) => {
+  const handleAutoFill = (autoFillData: AutoFillData) => {
+    // Apply all the auto-filled data to the form
+    onChange("patientName", autoFillData.patientName);
+    onChange("age", autoFillData.age);
+    onChange("gender", autoFillData.gender);
+    onChange("condition", autoFillData.condition);
+    onChange("symptoms", autoFillData.symptoms);
+    onChange("background", autoFillData.background);
+    onChange("history", autoFillData.history);
+    onChange("adlProblem", autoFillData.adlProblem);
+    onChange("comorbidities", autoFillData.comorbidities);
+    onChange("psychosocialFactors", autoFillData.psychosocialFactors);
+  };
   return (
     <div className="space-y-6">
       <div className="text-center mb-8">
@@ -31,6 +47,11 @@ export const Step2PatientInfo = ({ formData, onChange }: Step2PatientInfoProps) 
         <p className="text-medical-body max-w-2xl mx-auto">
           Provide basic patient demographics and background information to create a realistic case study scenario.
         </p>
+        <div className="mt-4 p-3 bg-purple-50 border border-purple-200 rounded-lg max-w-2xl mx-auto">
+          <p className="text-sm text-purple-700">
+            💡 <strong>Pro Tip:</strong> Enter a primary condition and click the Magic Wand to auto-fill realistic patient data!
+          </p>
+        </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
@@ -88,9 +109,18 @@ export const Step2PatientInfo = ({ formData, onChange }: Step2PatientInfoProps) 
         {/* Clinical Information */}
         <Card className="card-medical">
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2 text-lg">
-              <FileText className="w-5 h-5 text-primary" />
-              <span>Primary Condition</span>
+            <CardTitle className="flex items-center justify-between text-lg">
+              <div className="flex items-center space-x-2">
+                <FileText className="w-5 h-5 text-primary" />
+                <span>Primary Condition</span>
+              </div>
+              <MagicWandButton
+                primaryCondition={formData.condition}
+                specialization={specialization}
+                onAutoFill={handleAutoFill}
+                size="sm"
+                variant="outline"
+              />
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
