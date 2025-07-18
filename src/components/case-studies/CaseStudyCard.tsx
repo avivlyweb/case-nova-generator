@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, GraduationCap } from "lucide-react";
-import { Link } from "react-router-dom";
+import { FileText, GraduationCap, BookOpen } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import type { CaseStudy } from "@/types/case-study";
 
 interface CaseStudyCardProps {
@@ -12,6 +12,12 @@ interface CaseStudyCardProps {
 }
 
 const CaseStudyCard = ({ study, analyzing, onAnalyze, onGenerate }: CaseStudyCardProps) => {
+  const navigate = useNavigate();
+  
+  const handleGenerateFullCase = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigate(`/generate-full-case/${study.id}`);
+  };
   return (
     <Card className="w-full bg-white shadow-sm hover:shadow-md transition-all duration-200">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -34,6 +40,15 @@ const CaseStudyCard = ({ study, analyzing, onAnalyze, onGenerate }: CaseStudyCar
               Learn
             </Button>
           </Link>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleGenerateFullCase}
+            className="bg-blue-50 hover:bg-blue-100 text-blue-700 hover:text-blue-800 border-blue-200"
+          >
+            <BookOpen className="h-4 w-4 mr-2" />
+            Full Case
+          </Button>
         </div>
       </CardHeader>
       <CardContent>

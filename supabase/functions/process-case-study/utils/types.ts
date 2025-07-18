@@ -49,4 +49,15 @@ export interface ProcessedCaseStudy {
   intervention_plan?: string;
   clinical_guidelines?: ClinicalGuideline[];
   evidence_levels?: Record<string, number>;
+  
+  // New fields for comprehensive case study
+  treatment_progression?: string;
+  evidence_based_context?: string;
+  outcome_measures_data?: string;
+  clinical_decision_points?: string;
+  diagnostic_reasoning?: string;
+  problem_prioritization?: string;
+  intervention_rationale?: string;
+  reassessment_rationale?: string;
+  treatment_approach?: string;
 }

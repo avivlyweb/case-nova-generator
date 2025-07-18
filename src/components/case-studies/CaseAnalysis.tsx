@@ -147,6 +147,16 @@ const CaseAnalysis = ({ analysis }: CaseAnalysisProps) => {
                   content={formatReferences(analysis.references)}
                 />
               )}
+              
+              {/* Debug: Show raw references data */}
+              {process.env.NODE_ENV === 'development' && (
+                <div className="mt-4 p-4 bg-gray-100 rounded">
+                  <h4 className="font-bold">Debug - References Data:</h4>
+                  <pre className="text-xs overflow-auto">
+                    {JSON.stringify(analysis.references, null, 2)}
+                  </pre>
+                </div>
+              )}
 
               {analysis.icf_codes && (
                 <ICFCodes codes={analysis.icf_codes} />
@@ -183,15 +193,29 @@ const formatReferences = (references: any[] | string | null): string => {
   if (typeof references === 'string') return references;
   if (!Array.isArray(references)) return '';
   
-  return references.map(ref => {
+  return references.map((ref, index) => {
     const authors = Array.isArray(ref.authors) ? ref.authors.join(', ') : 'Unknown';
     const year = ref.publicationDate ? new Date(ref.publicationDate).getFullYear() : 'N/A';
     const title = ref.title || 'Untitled';
     const url = ref.url || '#';
     const journal = ref.journal || '';
     const evidenceLevel = ref.evidenceLevel || 'Not specified';
+    const abstract = ref.abstract || '';
+    const citation = ref.citation || `${authors} (${year}). ${title}. ${journal}.`;
     
-    return `- ${authors} (${year}). [${title}](${url}). ${journal}. Evidence Level: ${evidenceLevel}`;
+    return `### ${index + 1}. ${title}
+
+**Authors:** ${authors}  
+**Journal:** ${journal} (${year})  
+**Evidence Level:** ${evidenceLevel}
+
+${abstract ? `**Abstract:** ${abstract.substring(0, 300)}${abstract.length > 300 ? '...' : ''}
+
+` : ''}**Citation:** ${citation}
+
+**PubMed Link:** [View Article](${url})
+
+---`;
   }).join('\n\n');
 };
 

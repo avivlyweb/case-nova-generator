@@ -49,6 +49,7 @@
     "@supabase/auth-ui-shared": "^0.1.8",
     "@supabase/supabase-js": "^2.47.10",
     "@tanstack/react-query": "^5.56.2",
+    "caniuse-lite": "^1.0.30001727",
     "cheerio": "^1.0.0",
     "chromadb": "^1.10.0",
     "class-variance-authority": "^0.7.1",

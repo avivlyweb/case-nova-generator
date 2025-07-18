@@ -15,9 +15,6 @@ import ClinicalLearning from "./pages/ClinicalLearning";
 // Import the new page
 import GenerateFullCasePage from './pages/GenerateFullCasePage';
 
-// In your Routes component, add a new route:
-<Route path="/generate-full-case" element={<GenerateFullCasePage />} />
-
 // Don't forget to add a link to this page from your CaseStudiesPage.tsx:
 // <Button onClick={() => navigate('/generate-full-case')}>Create Full Case Study</Button>
 
@@ -37,6 +34,7 @@ const App = () => (
             <Route path="/case-studies" element={<CaseStudies />} />
             <Route path="/case-studies/:id/learn" element={<ClinicalLearning />} />
             <Route path="/generate" element={<Generate />} />
+            <Route path="/generate-full-case/:id" element={<GenerateFullCasePage />} />
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/about" element={<About />} />
           </Routes>

@@ -9,6 +9,8 @@ import { InterventionChart } from "@/components/dashboard/InterventionChart";
 import { RecentCasesTable } from "@/components/dashboard/RecentCasesTable";
 import { ICFClassificationChart } from "@/components/dashboard/ICFClassificationChart";
 import { Skeleton } from "@/components/ui/skeleton";
+import MetricsCards from "@/components/dashboard/MetricsCards";
+import QuickActions from "@/components/dashboard/QuickActions";
 
 const Dashboard = () => {
   const { toast } = useToast();
@@ -85,12 +87,23 @@ const Dashboard = () => {
     ).length || 0,
   }));
 
+  // Get recent cases for quick actions
+  const recentCases = caseStudies
+    ?.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 5) || [];
+
   return (
-    <div className="p-8 space-y-8 max-w-[1600px] mx-auto bg-background">
+    <div className="p-8 space-y-8 max-w-[1600px] mx-auto">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold text-primary">Analytics Dashboard</h1>
-        <p className="text-muted-foreground">Overview of your case studies and clinical data</p>
+        <h1 className="text-medical-heading">Analytics Dashboard</h1>
+        <p className="text-medical-body">Overview of your case studies and clinical data</p>
       </div>
+
+      {/* Metrics Cards */}
+      <MetricsCards caseStudies={caseStudies || []} />
+
+      {/* Quick Actions */}
+      <QuickActions recentCases={recentCases} />
       
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <div className="col-span-1 lg:col-span-2">
