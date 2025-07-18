@@ -1,8 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle, User, FileText, Activity, Brain, Heart, Baby, Users, Building2, Stethoscope } from "lucide-react";
+import { CheckCircle, User, FileText, Activity, Brain, Heart, Baby, Users, Building2, Stethoscope, ChartBar, ClipboardList } from "lucide-react";
 import { PatientFormData } from "./Step2PatientInfo";
+import { autoFillService, AssessmentScore } from "@/services/autoFillService";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Progress } from "@/components/ui/progress";
 
 interface Step3ReviewProps {
   specialization: string;
@@ -35,6 +38,11 @@ const getSpecializationColor = (specialization: string) => {
 
 export const Step3Review = ({ specialization, formData }: Step3ReviewProps) => {
   const specializationColor = getSpecializationColor(specialization);
+  
+  // Check if we have enhanced data from the magic wand
+  const enhancedData = autoFillService.lastGeneratedProfile?.formattedData;
+  const assessmentScores = autoFillService.lastGeneratedProfile?.assessmentScores || [];
+  const avatarUrl = autoFillService.lastGeneratedProfile?.avatarUrl;
   
   return (
     <div className="space-y-6">
@@ -74,7 +82,15 @@ export const Step3Review = ({ specialization, formData }: Step3ReviewProps) => {
               <span>Patient Demographics</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-2">
+          <CardContent className="space-y-4">
+            {avatarUrl && (
+              <div className="flex justify-center mb-2">
+                <Avatar className="w-20 h-20 border-2 border-gray-200">
+                  <AvatarImage src={avatarUrl} alt={formData.patientName} />
+                  <AvatarFallback>{formData.patientName?.substring(0, 2) || "PT"}</AvatarFallback>
+                </Avatar>
+              </div>
+            )}
             <div className="flex justify-between">
               <span className="text-muted-foreground">Name:</span>
               <span className="font-medium">{formData.patientName || "Not specified"}</span>
@@ -112,7 +128,15 @@ export const Step3Review = ({ specialization, formData }: Step3ReviewProps) => {
               <Separator />
               <div>
                 <h4 className="font-semibold text-sm text-muted-foreground mb-1">Presenting Symptoms</h4>
-                <p className="text-sm">{formData.symptoms}</p>
+                {enhancedData?.clinicalPresentation?.keySymptoms ? (
+                  <ul className="list-disc pl-5 text-sm space-y-1">
+                    {enhancedData.clinicalPresentation.keySymptoms.map((symptom: string, index: number) => (
+                      <li key={index}>{symptom}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-sm">{formData.symptoms}</p>
+                )}
               </div>
             </>
           )}
@@ -168,6 +192,67 @@ export const Step3Review = ({ specialization, formData }: Step3ReviewProps) => {
           )}
         </CardContent>
       </Card>
+
+      {/* Assessment Scores */}
+      {assessmentScores && assessmentScores.length > 0 && (
+        <Card className="card-medical">
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <ChartBar className="w-5 h-5 text-primary" />
+              <span>Standardized Screening Tools</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {assessmentScores.map((assessment: AssessmentScore, index: number) => {
+              // Calculate percentage for progress bar if maxScore exists
+              const percentage = assessment.maxScore 
+                ? (Number(assessment.score) / assessment.maxScore) * 100 
+                : null;
+              
+              // Determine color based on interpretation
+              const getColorClass = (interpretation: string) => {
+                if (interpretation.toLowerCase().includes('minimal') || 
+                    interpretation.toLowerCase().includes('good')) return 'bg-green-500';
+                if (interpretation.toLowerCase().includes('mild')) return 'bg-blue-500';
+                if (interpretation.toLowerCase().includes('moderate')) return 'bg-yellow-500';
+                if (interpretation.toLowerCase().includes('significant') || 
+                    interpretation.toLowerCase().includes('severe')) return 'bg-red-500';
+                return 'bg-gray-500';
+              };
+              
+              return (
+                <div key={index} className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h4 className="font-medium text-sm">{assessment.name}</h4>
+                      <p className="text-xs text-muted-foreground">{assessment.description}</p>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-lg font-bold">
+                        {assessment.score}
+                        {assessment.maxScore && <span className="text-sm text-muted-foreground">/{assessment.maxScore}</span>}
+                        {assessment.unit && <span className="text-sm text-muted-foreground"> {assessment.unit}</span>}
+                      </span>
+                      <p className="text-xs">{assessment.interpretation}</p>
+                    </div>
+                  </div>
+                  
+                  {percentage !== null && (
+                    <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div 
+                        className={`h-full ${getColorClass(assessment.interpretation)}`}
+                        style={{ width: `${percentage}%` }}
+                      ></div>
+                    </div>
+                  )}
+                  
+                  {index < assessmentScores.length - 1 && <Separator className="my-2" />}
+                </div>
+              );
+            })}
+          </CardContent>
+        </Card>
+      )}
 
       {/* Generation Preview */}
       <Card className="card-medical bg-soft-gradient">

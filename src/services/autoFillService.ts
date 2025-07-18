@@ -1,5 +1,39 @@
 import { supabase } from '@/integrations/supabase/client';
 
+export interface AssessmentScore {
+  name: string;
+  score: number | string;
+  maxScore: number | null;
+  unit: string | null;
+  range: string | null;
+  interpretation: string;
+  description: string;
+}
+
+export interface FormattedPatientData {
+  patientInfo: {
+    name: string;
+    age: number;
+    gender: string;
+    avatarUrl: string;
+  };
+  clinicalPresentation: {
+    primaryCondition: string;
+    presentingComplaint: string;
+    keySymptoms: string[];
+  };
+  medicalHistory: {
+    background: string;
+    history: string;
+    comorbidities: string;
+  };
+  functionalStatus: {
+    adlProblems: string;
+    psychosocialFactors: string;
+  };
+  assessmentScores: AssessmentScore[];
+}
+
 export interface AutoFillData {
   patientName: string;
   age: number;
@@ -11,6 +45,10 @@ export interface AutoFillData {
   adlProblem: string;
   comorbidities: string;
   psychosocialFactors: string;
+  // New fields for enhanced UI
+  avatarUrl?: string;
+  assessmentScores?: AssessmentScore[];
+  formattedData?: FormattedPatientData;
 }
 
 interface ConditionProfile {
@@ -47,6 +85,9 @@ interface ClinicalProfile {
 }
 
 class AutoFillService {
+  // Store the last generated profile for access by other components
+  public lastGeneratedProfile: any = null;
+  
   private clinicalProfiles: Record<string, ClinicalProfile> = {
     'parkinson disease': {
       anatomicalRegion: 'Neurological',
@@ -919,6 +960,9 @@ class AutoFillService {
       if (!error && data?.success && data?.patientProfile) {
         console.log('✨ AI Magic Wand successful:', data.patientProfile);
 
+        // Store the full formatted data for later use
+        this.lastGeneratedProfile = data.patientProfile;
+
         // Use AI-generated data
         return {
           patientName: data.patientProfile.patientName,
@@ -930,7 +974,11 @@ class AutoFillService {
           history: data.patientProfile.history,
           adlProblem: data.patientProfile.adlProblem,
           comorbidities: data.patientProfile.comorbidities,
-          psychosocialFactors: data.patientProfile.psychosocialFactors
+          psychosocialFactors: data.patientProfile.psychosocialFactors,
+          // Add new fields for enhanced UI
+          avatarUrl: data.patientProfile.avatarUrl,
+          assessmentScores: data.patientProfile.assessmentScores,
+          formattedData: data.patientProfile.formattedData
         };
       } else {
         console.log('🔄 AI failed, falling back to clinical templates:', error);
