@@ -15,7 +15,7 @@ serve(async (req) => {
   try {
     // Parse request body
     const body = await req.json()
-    const { caseStudy, action = 'generate' } = body
+    const { caseStudy, action = 'generate', generateFullCase = false } = body
     
     if (!caseStudy) {
       console.error('No case study provided')
@@ -28,9 +28,9 @@ serve(async (req) => {
       )
     }
 
-    console.log(`Processing ${action} request for case study:`, caseStudy.id)
+    console.log(`Processing ${action} request for case study:`, caseStudy.id, 'Full case:', generateFullCase)
     
-    const result = await processCaseStudy(caseStudy, action)
+    const result = await processCaseStudy(caseStudy, action, generateFullCase)
     console.log('Processing completed successfully:', result)
     
     return new Response(

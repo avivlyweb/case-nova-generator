@@ -34,6 +34,15 @@ const CaseStudyCard = ({ study, analyzing, onAnalyze, onGenerate }: CaseStudyCar
             <FileText className="h-4 w-4 mr-2" />
             {analyzing ? "Analyzing..." : "Analyze"}
           </Button>
+          <Button
+            variant="default"
+            size="sm"
+            onClick={onGenerate}
+            disabled={analyzing}
+          >
+            <FileText className="h-4 w-4 mr-2" />
+            {analyzing ? "Generating..." : "Generate Full Case"}
+          </Button>
           <Link to={`/case-studies/${study.id}/learn`}>
             <Button variant="default" size="sm">
               <GraduationCap className="h-4 w-4 mr-2" />

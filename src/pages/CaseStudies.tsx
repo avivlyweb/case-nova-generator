@@ -22,7 +22,11 @@ const CaseStudies = () => {
     setAnalyzing(prev => ({ ...prev, [caseStudy.id]: true }));
     try {
       const { data, error } = await supabase.functions.invoke('process-case-study', {
-        body: { caseStudy, action: 'generate' }
+        body: { 
+          caseStudy, 
+          action: 'generate',
+          generateFullCase: true 
+        }
       });
 
       if (error) {
@@ -61,7 +65,13 @@ const CaseStudies = () => {
         assessment_findings: data.assessment_findings,
         intervention_plan: data.intervention_plan,
         medical_entities: data.medical_entities || [],
-        smart_goals: data.smart_goals || []
+        smart_goals: data.smart_goals || [],
+        clinical_guidelines: data.clinical_guidelines || [],
+        evidence_levels: data.evidence_levels || {},
+        assessment_tools: data.assessment_tools || [],
+        measurement_data: data.measurement_data || {},
+        professional_frameworks: data.professional_frameworks || {},
+        standardized_tests: data.standardized_tests || []
       });
 
       setAnalyses(prev => ({
@@ -70,7 +80,14 @@ const CaseStudies = () => {
           analysis: data.analysis,
           sections: formattedSections,
           references: data.references,
-          icf_codes: formattedICFCodes
+          icf_codes: formattedICFCodes,
+          clinical_guidelines: data.clinical_guidelines,
+          evidence_levels: data.evidence_levels,
+          assessment_tools: data.assessment_tools,
+          measurement_data: data.measurement_data,
+          professional_frameworks: data.professional_frameworks,
+          standardized_tests: data.standardized_tests,
+          medical_entities: data.medical_entities
         }
       }));
 
@@ -202,7 +219,14 @@ const CaseStudies = () => {
                     analysis: analyses[study.id]?.analysis || study.ai_analysis,
                     sections: analyses[study.id]?.sections || study.generated_sections,
                     references: analyses[study.id]?.references || study.reference_list,
-                    icf_codes: analyses[study.id]?.icf_codes || study.icf_codes
+                    icf_codes: analyses[study.id]?.icf_codes || study.icf_codes,
+                    clinical_guidelines: analyses[study.id]?.clinical_guidelines || study.clinical_guidelines,
+                    evidence_levels: analyses[study.id]?.evidence_levels || study.evidence_levels,
+                    assessment_tools: analyses[study.id]?.assessment_tools || study.assessment_tools,
+                    measurement_data: analyses[study.id]?.measurement_data || study.measurement_data,
+                    professional_frameworks: analyses[study.id]?.professional_frameworks || study.professional_frameworks,
+                    standardized_tests: analyses[study.id]?.standardized_tests || study.standardized_tests,
+                    medical_entities: analyses[study.id]?.medical_entities || study.medical_entities
                   }} />
                 </div>
               )}

@@ -59,10 +59,24 @@ const PatientInformation = ({ formData, onChange }: PatientInformationProps) => 
       }
     } catch (error) {
       console.error('Error getting suggestion:', error);
+      
+      let errorMessage = "Failed to generate suggestion. Please try again.";
+      
+      // Handle different types of errors
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === 'object' && error !== null) {
+        if ('message' in error) {
+          errorMessage = String(error.message);
+        } else if ('error' in error) {
+          errorMessage = String(error.error);
+        }
+      }
+      
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to generate suggestion. Please try again.",
+        description: errorMessage,
       });
     } finally {
       setLoading(null);
