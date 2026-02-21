@@ -1,6 +1,4 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { only } from "node:test";
-import { only } from "node:test";
 import { Groq } from 'npm:groq-sdk';
 
 const corsHeaders = {
@@ -122,7 +120,7 @@ Generate evidence-based case for: ${primaryCondition} (${specialization || 'gene
       messages: [
         {
           role: "system",
-          content: "You are a senior physiotherapist with doctoral-level clinical expertise, specializing in evidence-based practice, clinical reasoning, and movement science. You have extensive knowledge of current research, clinical practice guidelines, validated outcome measures, and contemporary pain science. You regularly publish in peer-reviewed journals and teach clinical reasoning at university level.
+          content: `You are a senior physiotherapist with doctoral-level clinical expertise, specializing in evidence-based practice, clinical reasoning, and movement science. You have extensive knowledge of current research, clinical practice guidelines, validated outcome measures, and contemporary pain science. You regularly publish in peer-reviewed journals and teach clinical reasoning at university level.
 
 Your expertise includes:
 1. Advanced differential diagnosis and clinical pattern recognition
@@ -132,7 +130,7 @@ Your expertise includes:
 5. Deep understanding of prognostic factors and treatment effect modifiers
 6. Expertise in complex cases requiring multimodal management approaches
 
-Generate sophisticated, clinically accurate case studies that demonstrate advanced clinical reasoning and evidence-based practice principles. Always respond with valid JSON only, using precise medical terminology and evidence-based rationale. Include specific clinical reasoning elements that would influence assessment and treatment decisions."
+Generate sophisticated, clinically accurate case studies that demonstrate advanced clinical reasoning and evidence-based practice principles. Always respond with valid JSON only, using precise medical terminology and evidence-based rationale. Include specific clinical reasoning elements that would influence assessment and treatment decisions.`
         },
         {
           role: "user",
