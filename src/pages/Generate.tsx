@@ -84,7 +84,12 @@ const Generate = () => {
   };
 
   const handleStepClick = (stepIndex: number) => {
-    setCurrentStep(stepIndex);
+    // Only allow navigating back, or forward if current step validation passes
+    if (stepIndex < currentStep) {
+      setCurrentStep(stepIndex);
+    } else if (stepIndex > currentStep && canProceed()) {
+      setCurrentStep(stepIndex);
+    }
   };
 
   const canProceed = () => {
@@ -124,7 +129,7 @@ const Generate = () => {
       
       // Process the newly created case study
       if (newCaseStudy?.id) {
-        const { error } = await supabase.functions.invoke('process-case-study', {
+        const { data, error } = await supabase.functions.invoke('process-case-study', {
           body: { 
             caseStudy: newCaseStudy,
             action: 'generate'
@@ -132,6 +137,46 @@ const Generate = () => {
         });
 
         if (error) throw error;
+
+        // Save the generated content back to the database
+        if (data?.success) {
+          const formattedSections = Array.isArray(data.sections) ? data.sections : 
+            Object.entries(data.sections || {}).map(([title, content]) => ({
+              title,
+              content: typeof content === 'string' ? content : JSON.stringify(content)
+            }));
+
+          const formattedICFCodes = Array.isArray(data.icf_codes) ? data.icf_codes :
+            typeof data.icf_codes === 'string' ? [data.icf_codes] : [];
+
+          const { error: updateError } = await supabase
+            .from('case_studies')
+            .update({
+              generated_sections: formattedSections,
+              ai_analysis: data.analysis,
+              reference_list: data.references,
+              icf_codes: formattedICFCodes,
+              assessment_findings: data.assessment_findings,
+              intervention_plan: data.intervention_plan,
+              clinical_guidelines: data.clinical_guidelines,
+              evidence_levels: data.evidence_levels,
+              medical_entities: data.medical_entities,
+              treatment_progression: data.treatment_progression,
+              evidence_based_context: data.evidence_based_context,
+              outcome_measures_data: data.outcome_measures_data,
+              clinical_decision_points: data.clinical_decision_points,
+              diagnostic_reasoning: data.diagnostic_reasoning,
+              problem_prioritization: data.problem_prioritization,
+              intervention_rationale: data.intervention_rationale,
+              reassessment_rationale: data.reassessment_rationale,
+              treatment_approach: data.treatment_approach
+            })
+            .eq('id', newCaseStudy.id);
+
+          if (updateError) {
+            console.error('Error saving generated content:', updateError);
+          }
+        }
       }
 
       toast({
@@ -207,7 +252,7 @@ const Generate = () => {
       </Card>
 
       {/* Navigation Buttons */}
-      <div className="flex justify-between items-center mt-8">
+      <div className="flex flex-wrap justify-between items-center mt-8 gap-4">
         <Button
           variant="outline"
           onClick={handlePrevious}
