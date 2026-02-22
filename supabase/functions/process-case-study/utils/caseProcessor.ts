@@ -436,16 +436,12 @@ Generate a comprehensive, detailed section that matches the quality and depth of
         content: sectionContent
       });
       
-      // Add a small delay between sections to avoid rate limiting
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Small delay to avoid rate limiting (reduced for faster models)
+      await new Promise(resolve => setTimeout(resolve, 300));
     }
 
     // Generate clinical reasoning section
-    const clinicalReasoningContent = await generateClinicalReasoning(
-      groq,
-      caseStudy,
-      queryEmbedding
-    );
+    const clinicalReasoningContent = clinicalReasoning;
 
     // Add clinical reasoning as a section
     generatedSections.push({
@@ -516,8 +512,42 @@ The evidence levels range from systematic reviews and meta-analyses (Level I) to
       additionalData = await generateAdditionalCaseData(groq, caseStudy, entities);
     }
 
-    // Process ICF codes and other additional data
-    const additionalFields = {
+    // Process ICF codes and other additional data - consolidated into ONE call to avoid rate limits
+    const systemRole = caseStudy.ai_role || "You are an expert physiotherapist providing comprehensive clinical case analysis based on current evidence-based practice guidelines.";
+    
+    const patientContext = JSON.stringify({
+      name: caseStudy.patient_name,
+      age: caseStudy.age,
+      gender: caseStudy.gender,
+      condition: caseStudy.condition,
+      complaint: caseStudy.presenting_complaint,
+      background: caseStudy.patient_background,
+      adl_problem: caseStudy.adl_problem,
+      psychosocial_factors: caseStudy.psychosocial_factors
+    }, null, 2);
+
+    const entitiesContext = JSON.stringify(entities, null, 2);
+
+    const consolidatedPrompt = `Generate the following 5 sections for this physiotherapy case study. Return ONLY valid JSON with these exact keys.
+
+Patient Info:
+${patientContext}
+
+Medical Entities:
+${entitiesContext}
+
+Return a JSON object with these 5 keys:
+{
+  "icf_codes": "ICF codes with descriptions for this case",
+  "assessment_findings": "Specific assessment scores and findings",
+  "intervention_plan": "Detailed intervention plan with specific interventions",
+  "clinical_guidelines": "Relevant clinical guidelines with descriptions",
+  "evidence_levels": "Evidence levels supporting treatment decisions"
+}
+
+Each value should be a detailed markdown string (200-400 words). Return ONLY the JSON object, no other text.`;
+
+    let additionalFields = {
       icf_codes: '',
       assessment_findings: '',
       intervention_plan: '',
@@ -525,165 +555,38 @@ The evidence levels range from systematic reviews and meta-analyses (Level I) to
       evidence_levels: ''
     };
 
-    const icfCodesPrompt = `${caseStudy.ai_role}
+    try {
+      const consolidatedCompletion = await groq.chat.completions.create({
+        messages: [
+          { role: "system", content: systemRole },
+          { role: "user", content: consolidatedPrompt }
+        ],
+        model: "llama-3.1-8b-instant",
+        temperature: 0.7,
+        max_tokens: 4000,
+      });
 
-    Generate ICF codes for this case study:
-    ${JSON.stringify({
-      name: caseStudy.patient_name,
-      age: caseStudy.age,
-      gender: caseStudy.gender,
-      condition: caseStudy.condition,
-      complaint: caseStudy.presenting_complaint,
-      background: caseStudy.patient_background,
-      adl_problem: caseStudy.adl_problem,
-      psychosocial_factors: caseStudy.psychosocial_factors
-    }, null, 2)}
-
-    Medical Entities:
-    ${JSON.stringify(entities, null, 2)}
-
-    Please ensure:
-    1. Use specific ICF codes
-    2. Include detailed descriptions for each code`;
-
-    const icfCodesCompletion = await groq.chat.completions.create({
-      messages: [
-        { role: "system", content: caseStudy.ai_role },
-        { role: "user", content: icfCodesPrompt }
-      ],
-      model: "llama-3.1-8b-instant",
-      temperature: 0.7,
-      max_tokens: 1000,
-    });
-    additionalFields.icf_codes = icfCodesCompletion.choices[0]?.message?.content || '';
-
-    const assessmentFindingsPrompt = `${caseStudy.ai_role}
-
-    Generate assessment findings for this case study:
-    ${JSON.stringify({
-      name: caseStudy.patient_name,
-      age: caseStudy.age,
-      gender: caseStudy.gender,
-      condition: caseStudy.condition,
-      complaint: caseStudy.presenting_complaint,
-      background: caseStudy.patient_background,
-      adl_problem: caseStudy.adl_problem,
-      psychosocial_factors: caseStudy.psychosocial_factors
-    }, null, 2)}
-
-    Medical Entities:
-    ${JSON.stringify(entities, null, 2)}
-
-    Please ensure:
-    1. Use specific assessment scores
-    2. Include detailed descriptions for each finding`;
-
-    const assessmentFindingsCompletion = await groq.chat.completions.create({
-      messages: [
-        { role: "system", content: caseStudy.ai_role },
-        { role: "user", content: assessmentFindingsPrompt }
-      ],
-      model: "llama-3.1-8b-instant",
-      temperature: 0.7,
-      max_tokens: 1000,
-    });
-    additionalFields.assessment_findings = assessmentFindingsCompletion.choices[0]?.message?.content || '';
-
-    const interventionPlanPrompt = `${caseStudy.ai_role}
-
-    Generate an intervention plan for this case study:
-    ${JSON.stringify({
-      name: caseStudy.patient_name,
-      age: caseStudy.age,
-      gender: caseStudy.gender,
-      condition: caseStudy.condition,
-      complaint: caseStudy.presenting_complaint,
-      background: caseStudy.patient_background,
-      adl_problem: caseStudy.adl_problem,
-      psychosocial_factors: caseStudy.psychosocial_factors
-    }, null, 2)}
-
-    Medical Entities:
-    ${JSON.stringify(entities, null, 2)}
-
-    Please ensure:
-    1. Use specific interventions
-    2. Include detailed descriptions for each intervention`;
-
-    const interventionPlanCompletion = await groq.chat.completions.create({
-      messages: [
-        { role: "system", content: caseStudy.ai_role },
-        { role: "user", content: interventionPlanPrompt }
-      ],
-      model: "llama-3.1-8b-instant",
-      temperature: 0.7,
-      max_tokens: 1000,
-    });
-    additionalFields.intervention_plan = interventionPlanCompletion.choices[0]?.message?.content || '';
-
-    const clinicalGuidelinesPrompt = `${caseStudy.ai_role}
-
-    Generate clinical guidelines for this case study:
-    ${JSON.stringify({
-      name: caseStudy.patient_name,
-      age: caseStudy.age,
-      gender: caseStudy.gender,
-      condition: caseStudy.condition,
-      complaint: caseStudy.presenting_complaint,
-      background: caseStudy.patient_background,
-      adl_problem: caseStudy.adl_problem,
-      psychosocial_factors: caseStudy.psychosocial_factors
-    }, null, 2)}
-
-    Medical Entities:
-    ${JSON.stringify(entities, null, 2)}
-
-    Please ensure:
-    1. Use specific guidelines
-    2. Include detailed descriptions for each guideline`;
-
-    const clinicalGuidelinesCompletion = await groq.chat.completions.create({
-      messages: [
-        { role: "system", content: caseStudy.ai_role },
-        { role: "user", content: clinicalGuidelinesPrompt }
-      ],
-      model: "llama-3.1-8b-instant",
-      temperature: 0.7,
-      max_tokens: 1000,
-    });
-    additionalFields.clinical_guidelines = clinicalGuidelinesCompletion.choices[0]?.message?.content || '';
-
-    const evidenceLevelsPrompt = `${caseStudy.ai_role}
-
-    Generate evidence levels for this case study:
-    ${JSON.stringify({
-      name: caseStudy.patient_name,
-      age: caseStudy.age,
-      gender: caseStudy.gender,
-      condition: caseStudy.condition,
-      complaint: caseStudy.presenting_complaint,
-      background: caseStudy.patient_background,
-      adl_problem: caseStudy.adl_problem,
-      psychosocial_factors: caseStudy.psychosocial_factors
-    }, null, 2)}
-
-    Medical Entities:
-    ${JSON.stringify(entities, null, 2)}
-
-    Please ensure:
-    1. Use specific evidence levels
-    2. Include detailed descriptions for each level`;
-
-    const evidenceLevelsCompletion = await groq.chat.completions.create({
-      messages: [
-        { role: "system", content: caseStudy.ai_role },
-        { role: "user", content: evidenceLevelsPrompt }
-      ],
-      model: "llama-3.1-8b-instant",
-      temperature: 0.7,
-      max_tokens: 1000,
-    });
-    additionalFields.evidence_levels = evidenceLevelsCompletion.choices[0]?.message?.content || '';
+      const responseText = consolidatedCompletion.choices[0]?.message?.content || '{}';
+      try {
+        // Try to parse the JSON response
+        const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          const parsed = JSON.parse(jsonMatch[0]);
+          additionalFields = {
+            icf_codes: parsed.icf_codes || '',
+            assessment_findings: parsed.assessment_findings || '',
+            intervention_plan: parsed.intervention_plan || '',
+            clinical_guidelines: parsed.clinical_guidelines || '',
+            evidence_levels: parsed.evidence_levels || ''
+          };
+        }
+      } catch (parseError) {
+        console.error('Failed to parse consolidated response as JSON, using raw text');
+        additionalFields.icf_codes = responseText;
+      }
+    } catch (error) {
+      console.error('Error generating additional fields:', error);
+    }
 
     return {
       success: true,
