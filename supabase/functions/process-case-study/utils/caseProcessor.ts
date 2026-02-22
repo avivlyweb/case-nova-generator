@@ -110,7 +110,7 @@ ${JSON.stringify({
             Please reference the provided evidence-based literature where appropriate and include proper citations.`
           }
         ],
-        model: "gemma2-9b-it",
+        model: "llama-3.1-8b-instant",
         temperature: 0.7,
         max_tokens: 1000,
       });
@@ -332,14 +332,14 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
         messages: [
           {
             role: "system",
-            content: caseStudy.ai_role
+            content: caseStudy.ai_role || "You are an expert physiotherapist providing comprehensive clinical case analysis based on current evidence-based practice guidelines."
           },
           {
             role: "user",
             content: analysisPrompt
           }
         ],
-        model: "gemma2-9b-it",
+        model: "llama-3.1-8b-instant",
         temperature: 0.7,
         max_tokens: 1000,
       });
@@ -425,7 +425,7 @@ Generate a comprehensive, detailed section that matches the quality and depth of
             content: prompt
           }
         ],
-        model: "gemma2-9b-it",
+        model: "llama-3.1-8b-instant",
         temperature: 0.7,
         max_tokens: generateFullCase ? 4000 : 2000,
       });
@@ -551,7 +551,7 @@ The evidence levels range from systematic reviews and meta-analyses (Level I) to
         { role: "system", content: caseStudy.ai_role },
         { role: "user", content: icfCodesPrompt }
       ],
-      model: "gemma2-9b-it",
+      model: "llama-3.1-8b-instant",
       temperature: 0.7,
       max_tokens: 1000,
     });
@@ -583,7 +583,7 @@ The evidence levels range from systematic reviews and meta-analyses (Level I) to
         { role: "system", content: caseStudy.ai_role },
         { role: "user", content: assessmentFindingsPrompt }
       ],
-      model: "gemma2-9b-it",
+      model: "llama-3.1-8b-instant",
       temperature: 0.7,
       max_tokens: 1000,
     });
@@ -615,7 +615,7 @@ The evidence levels range from systematic reviews and meta-analyses (Level I) to
         { role: "system", content: caseStudy.ai_role },
         { role: "user", content: interventionPlanPrompt }
       ],
-      model: "gemma2-9b-it",
+      model: "llama-3.1-8b-instant",
       temperature: 0.7,
       max_tokens: 1000,
     });
@@ -647,7 +647,7 @@ The evidence levels range from systematic reviews and meta-analyses (Level I) to
         { role: "system", content: caseStudy.ai_role },
         { role: "user", content: clinicalGuidelinesPrompt }
       ],
-      model: "gemma2-9b-it",
+      model: "llama-3.1-8b-instant",
       temperature: 0.7,
       max_tokens: 1000,
     });
@@ -679,7 +679,7 @@ The evidence levels range from systematic reviews and meta-analyses (Level I) to
         { role: "system", content: caseStudy.ai_role },
         { role: "user", content: evidenceLevelsPrompt }
       ],
-      model: "gemma2-9b-it",
+      model: "llama-3.1-8b-instant",
       temperature: 0.7,
       max_tokens: 1000,
     });
@@ -725,7 +725,7 @@ async function generateAdditionalCaseData(groq: Groq, caseStudy: any, entities: 
         { role: "system", content: "You are a clinical guidelines expert specializing in evidence-based physiotherapy practice." },
         { role: "user", content: guidelinesPrompt }
       ],
-      model: "gemma2-9b-it",
+      model: "llama-3.1-8b-instant",
       temperature: 0.3,
       max_tokens: 1500,
     });
@@ -747,7 +747,7 @@ async function generateAdditionalCaseData(groq: Groq, caseStudy: any, entities: 
         { role: "system", content: "You are an assessment and outcome measurement specialist in physiotherapy." },
         { role: "user", content: assessmentPrompt }
       ],
-      model: "gemma2-9b-it",
+      model: "llama-3.1-8b-instant",
       temperature: 0.3,
       max_tokens: 1500,
     });

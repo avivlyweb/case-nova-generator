@@ -137,7 +137,7 @@ Generate sophisticated, clinically accurate case studies that demonstrate advanc
           content: prompt
         }
       ],
-      model: "gemma2-9b-it",
+      model: "llama-3.1-8b-instant",
       temperature: 0.7,
       max_tokens: 1500,
     });
@@ -412,8 +412,9 @@ function getConditionSeverity(condition: string): 'mild' | 'moderate' | 'severe'
   
   // Default to moderate if no severity indicators
   return 'moderate';
-}//
- Generate a consistent avatar URL based on patient demographics
+}
+
+// Generate a consistent avatar URL based on patient demographics
 function generateAvatarUrl(name: string, gender: string, age: number): string {
   // Use a service like DiceBear for consistent avatar generation
   // This ensures the same patient always gets the same avatar

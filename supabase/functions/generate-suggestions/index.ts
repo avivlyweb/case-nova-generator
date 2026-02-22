@@ -65,7 +65,7 @@ Respond with ONLY the suggested text, no explanations or additional formatting.`
           content: prompt
         }
       ],
-      model: "gemma2-9b-it",
+      model: "llama-3.1-8b-instant",
       temperature: 0.7,
       max_tokens: 300,
     });

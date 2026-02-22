@@ -38,7 +38,7 @@ export async function extractEntities(text: string, groq: Groq, retryCount = 0):
           content: `${prompt}\n\nText to analyze:\n${text}`
         }
       ],
-      model: "gemma2-9b-it",
+      model: "llama-3.1-8b-instant",
       temperature: 0.1,
       max_tokens: 1000,
     });
