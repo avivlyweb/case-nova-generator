@@ -1,0 +1,468 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "case_id": "sports_001_acl",
+    "case_name": "ACL Reconstruction - Return to Sport",
+    "category": "Sports",
+    "difficulty": "Intermediate",
+    "hoac_steps_covered": ["step_1", "step_2", "step_3", "step_4", "step_5", "step_6", "step_7"],
+    "icf_domains_covered": ["body_function", "activity", "participation", "personal_factors"],
+    "clinical_reasoning_focus": ["phase-based rehabilitation", "return-to-sport criteria", "psychological readiness", "re-injury prevention"],
+    "estimated_session_time": "45-60 minutes",
+    "guideline_reference": "MOON Group Guidelines, Sports Medicine Australia ACL Guidelines"
+  },
+  "patient_profile": {
+    "name": "Thomas Bakker",
+    "age": 23,
+    "gender": "Male",
+    "occupation": "University student (Business)",
+    "sport": "Football (soccer) - amateur club, plays central midfielder",
+    "competition_level": "Amateur competitive (2nd division regional league)",
+    "living_situation": "Shared apartment with two roommates",
+    "referral_source": "Orthopedic surgeon post-ACL reconstruction",
+    "surgery_date": "8 weeks ago",
+    "current_phase": "Early-to-mid rehabilitation (Phase 2)"
+  },
+  "injury_and_surgery": {
+    "mechanism_of_injury": "Non-contact pivot during football match - planted left foot, rotated to pass, felt 'pop' and immediate instability",
+    "date_of_injury": "10 weeks ago",
+    "initial_presentation": "Immediate swelling, unable to weight-bear, positive Lachman",
+    "imaging": "MRI confirmed complete ACL rupture, no meniscal or other ligament damage",
+    "time_to_surgery": "2 weeks post-injury (prehabilitation completed)",
+    "surgical_procedure": {
+      "type": "ACL reconstruction",
+      "graft": "Bone-patellar tendon-bone (BTB) autograft",
+      "additional_procedures": "None - isolated ACL",
+      "surgeon_notes": "Uncomplicated procedure, good graft fixation"
+    },
+    "post_op_protocol": "Surgeon protocol - weight-bearing as tolerated, brace locked in extension for 2 weeks, ROM progression per PT"
+  },
+  "current_status_8_weeks_post_op": {
+    "patient_narrative": "The surgery went well and I've been doing my exercises every day. The knee feels stable now, not like before surgery. But it's still stiff and weak, and I'm worried about how long until I can play again. My teammates are doing well this season and I'm missing it. My coach keeps asking when I'll be back. I'm doing everything the physio says but I just want to get back on the pitch.",
+    "current_complaints": [
+      "Knee stiffness, especially in morning",
+      "Weakness in left leg",
+      "Anterior knee pain with prolonged kneeling (graft site)",
+      "Frustrated with slow progress"
+    ],
+    "pain_status": {
+      "nprs_current": 2,
+      "nprs_worst": 4,
+      "location": "Anterior knee (patellar tendon donor site)",
+      "aggravating": "Kneeling, prolonged sitting with knee bent, stairs down",
+      "easing": "Movement, ice after exercise"
+    }
+  },
+  "physical_examination": {
+    "observation": {
+      "gait": "Mild antalgic pattern, slightly reduced stance time on left, minimal limp",
+      "swelling": "Trace effusion only (significant improvement from earlier weeks)",
+      "muscle_bulk": "Visible quadriceps atrophy left vs right",
+      "scar": "Well-healed patellar tendon and tibial incision scars"
+    },
+    "range_of_motion": {
+      "left_knee_flexion": {
+        "active": 125,
+        "passive": 130,
+        "comparison_right": 145,
+        "deficit": "15-20 degrees"
+      },
+      "left_knee_extension": {
+        "active": 0,
+        "passive": 0,
+        "comparison_right": 0,
+        "status": "Full - critical milestone achieved"
+      },
+      "patella_mobility": "Slightly reduced inferior glide (compared to right)"
+    },
+    "strength_assessment": {
+      "quadriceps": {
+        "method": "Isometric HHD at 60° flexion",
+        "left": "45% of right",
+        "lsi": "45%",
+        "interpretation": "Significant deficit - priority for rehabilitation"
+      },
+      "hamstrings": {
+        "method": "Isometric HHD",
+        "left": "70% of right",
+        "lsi": "70%",
+        "interpretation": "Moderate deficit"
+      },
+      "hip_abductors": {
+        "left": "85% of right",
+        "interpretation": "Mild deficit"
+      },
+      "calf": {
+        "left": "90% of right",
+        "interpretation": "Minimal deficit"
+      }
+    },
+    "laxity_testing": {
+      "lachman": "Negative (Grade 0) - good graft integrity",
+      "anterior_drawer": "Negative",
+      "pivot_shift": "Negative - not performed, graft too early",
+      "clinical_note": "Ligamentous stability restored"
+    },
+    "special_tests": {
+      "patellofemoral_assessment": {
+        "patellar_grind": "Mild crepitus, minimal pain",
+        "palpation_donor_site": "Tender at inferior pole patella"
+      },
+      "meniscal_tests": "Negative (no meniscal injury)"
+    },
+    "functional_tests": {
+      "single_leg_stance": {
+        "left": "30 seconds with mild wobble",
+        "right": "30 seconds stable"
+      },
+      "single_leg_squat": {
+        "left": "Can perform to 45° with knee valgus tendency and trunk lean",
+        "right": "Full depth with good control"
+      },
+      "step_down_test": {
+        "left": "Moderate difficulty, compensatory hip drop",
+        "interpretation": "Poor neuromuscular control"
+      },
+      "hop_tests": "Not yet indicated - criteria not met"
+    },
+    "outcome_measures": {
+      "knee_flexion_rom": 125,
+      "knee_extension_rom": 0,
+      "quad_lsi": 45,
+      "ikdc_subjective": 52,
+      "acl_rsi": {
+        "score": 48,
+        "interpretation": "Low psychological readiness (cutoff for safe RTS is typically >56)"
+      },
+      "lysholm_knee_score": 68
+    }
+  },
+  "phase_criteria_assessment": {
+    "phase_1_criteria_acute_0_2_weeks": {
+      "status": "Completed",
+      "criteria": ["Control swelling", "Protect graft", "Achieve full extension", "Quad activation"]
+    },
+    "phase_2_criteria_early_rehab_2_8_weeks": {
+      "status": "Current - nearing completion",
+      "criteria_met": [
+        "Full extension ✓",
+        "Flexion >120° ✓",
+        "Minimal effusion ✓",
+        "Good quad activation ✓",
+        "Normal gait ✓"
+      ],
+      "criteria_not_met": [
+        "Quad LSI still only 45% (goal >60% for phase 3)"
+      ]
+    },
+    "phase_3_criteria_strength_8_16_weeks": {
+      "status": "Ready to progress with focus on quadriceps",
+      "goals": ["Full ROM", "Quad LSI >80%", "Single leg squat with good control", "Begin running program (if criteria met)"]
+    },
+    "running_criteria": {
+      "required": [
+        "Quad LSI >70%",
+        "Full ROM",
+        "No effusion after exercise",
+        "Single leg squat without dynamic valgus",
+        "12+ weeks post-op typically"
+      ],
+      "current_status": "Not ready - quad LSI 45%, neuromuscular control insufficient"
+    }
+  },
+  "icf_mapping": {
+    "body_functions": [
+      {"code": "b7100", "description": "Mobility of single joint (knee flexion)", "qualifier": 1, "qualifier_description": "Mild problem - near full ROM"},
+      {"code": "b730", "description": "Muscle power functions (quadriceps)", "qualifier": 3, "qualifier_description": "Severe problem - 45% LSI"},
+      {"code": "b730", "description": "Muscle power functions (hamstrings)", "qualifier": 2, "qualifier_description": "Moderate problem - 70% LSI"},
+      {"code": "b280", "description": "Sensation of pain (anterior knee)", "qualifier": 1, "qualifier_description": "Mild problem"},
+      {"code": "b760", "description": "Control of voluntary movement (neuromuscular)", "qualifier": 2, "qualifier_description": "Moderate problem - dynamic valgus"}
+    ],
+    "activity_limitations": [
+      {"code": "d4551", "description": "Climbing (stairs)", "qualifier": 1, "qualifier_description": "Mild problem"},
+      {"code": "d4552", "description": "Running", "qualifier": 4, "qualifier_description": "Complete problem - not cleared"},
+      {"code": "d4553", "description": "Jumping", "qualifier": 4, "qualifier_description": "Complete problem - not cleared"},
+      {"code": "d9201", "description": "Sports", "qualifier": 4, "qualifier_description": "Complete problem - not cleared for football"}
+    ],
+    "participation_restrictions": [
+      {"code": "d920", "description": "Recreation and leisure (football)", "qualifier": 4, "qualifier_description": "Complete problem - unable to participate"},
+      {"code": "d9100", "description": "Informal associations (teammates)", "qualifier": 2, "qualifier_description": "Moderate problem - less social contact"}
+    ],
+    "personal_factors": {
+      "motivation": "Very high - wants to return ASAP",
+      "impatience": "Present - risk for pushing too hard",
+      "psychological_readiness": "Low (ACL-RSI 48) - fear of re-injury present despite not expressing it openly",
+      "support_system": "Good - teammates supportive, parents involved",
+      "re_injury_fear": "Present but may be masked by desire to return"
+    }
+  },
+  "problem_statements": {
+    "problems": [
+      {
+        "problem_number": 1,
+        "activity_limitation": "Unable to run due to insufficient strength and neuromuscular control",
+        "underlying_impairments": [
+          "Quadriceps LSI 45%",
+          "Dynamic knee valgus during single leg activities",
+          "Reduced proprioception"
+        ],
+        "participation_impact": "Cannot progress toward football return"
+      },
+      {
+        "problem_number": 2,
+        "activity_limitation": "Unable to perform single leg squat with good alignment",
+        "underlying_impairments": [
+          "Quadriceps weakness",
+          "Hip abductor weakness",
+          "Poor neuromuscular control"
+        ],
+        "participation_impact": "Indicates high re-injury risk if return to sport attempted"
+      },
+      {
+        "problem_number": 3,
+        "activity_limitation": "Unable to participate in football training or matches",
+        "underlying_impairments": [
+          "Insufficient strength (quad LSI 45%)",
+          "Not cleared for running, jumping, cutting",
+          "Low psychological readiness (ACL-RSI 48)"
+        ],
+        "participation_impact": "Missing competitive season, social isolation from team"
+      },
+      {
+        "problem_number": 4,
+        "activity_limitation": "Anterior knee pain limits kneeling and prolonged knee flexion",
+        "underlying_impairments": [
+          "Patellar tendon donor site sensitivity",
+          "Possible residual patellar tendon irritation"
+        ],
+        "participation_impact": "Affects daily activities, may limit certain exercises"
+      }
+    ]
+  },
+  "goals": {
+    "long_term_goal": {
+      "timeframe": "6-9 months post-op",
+      "goal": "Safe return to competitive football with <10% re-injury risk, meeting all return-to-sport criteria",
+      "outcome_measures": ["Pass return-to-sport battery", "Quad LSI >90%", "Hop LSI >90%", "ACL-RSI >56", "Physician clearance"]
+    },
+    "medium_term_goals": [
+      {
+        "goal_number": 1,
+        "timeframe": "12 weeks post-op",
+        "goal": "Initiate running program with Quad LSI >70%, no effusion, good single leg squat mechanics",
+        "criteria": ["Quad LSI 70%", "Full ROM", "Single leg squat without dynamic valgus", "No swelling post-exercise"]
+      },
+      {
+        "goal_number": 2,
+        "timeframe": "16 weeks post-op",
+        "goal": "Running 20 minutes continuously without pain or swelling",
+        "outcome_measure": "Running log, effusion check"
+      },
+      {
+        "goal_number": 3,
+        "timeframe": "20 weeks post-op",
+        "goal": "Begin agility and sport-specific drills",
+        "criteria": ["Quad LSI >80%", "Running 30 min", "Hop progression initiated"]
+      }
+    ],
+    "short_term_goals": [
+      {
+        "goal_number": 1,
+        "timeframe": "2 weeks (10 weeks post-op)",
+        "goal": "Achieve full knee flexion ROM equal to right side (145°)",
+        "linked_to_problem": 4,
+        "interventions": "Flexion mobilization, heel slides, stationary bike with progression"
+      },
+      {
+        "goal_number": 2,
+        "timeframe": "4 weeks (12 weeks post-op)",
+        "goal": "Improve quad LSI from 45% to 70%",
+        "linked_to_problem": 1,
+        "interventions": "Progressive resistance training, emphasis on quad hypertrophy and strength"
+      },
+      {
+        "goal_number": 3,
+        "timeframe": "4 weeks (12 weeks post-op)",
+        "goal": "Perform 10 single leg squats to 60° without dynamic knee valgus",
+        "linked_to_problem": 2,
+        "interventions": "Neuromuscular training, visual feedback, hip strengthening"
+      },
+      {
+        "goal_number": 4,
+        "timeframe": "2 weeks",
+        "goal": "Manage anterior knee pain to NPRS ≤1 with activity modification and patellar tendon loading program",
+        "linked_to_problem": 4,
+        "interventions": "Isometric quad loading, avoid aggravating positions, ice PRN"
+      }
+    ]
+  },
+  "intervention_plan": {
+    "treatment_approach": "Criteria-based progression, not time-based. Focus on quadriceps strength, neuromuscular control, and addressing psychological readiness alongside physical rehabilitation.",
+    "current_phase": "Phase 2/3 - Strength and neuromuscular control",
+    "interventions": [
+      {
+        "category": "Quadriceps strengthening",
+        "intervention": "Progressive resistance training",
+        "exercises": [
+          "Leg press (double leg progressing to single leg bias)",
+          "Knee extensions (limited range progressing to full per protocol)",
+          "Step-ups and step-downs",
+          "Squats (double leg to single leg progression)",
+          "Bulgarian split squats"
+        ],
+        "dosage": "3-4x/week, 3-4 sets x 8-12 reps, progressive overload",
+        "progression_criteria": "Increase load when can complete 12 reps with good form, no increased swelling",
+        "evidence": "Strong - quad strength is primary predictor of function and re-injury risk"
+      },
+      {
+        "category": "Hamstring strengthening",
+        "intervention": "Nordic curls, RDLs, bridges",
+        "rationale": "Hamstrings are ACL agonist, protect graft during deceleration",
+        "dosage": "3x/week, progressive loading",
+        "evidence": "Strong"
+      },
+      {
+        "category": "Hip strengthening",
+        "intervention": "Hip abduction, external rotation, extension exercises",
+        "rationale": "Hip weakness contributes to dynamic knee valgus (re-injury risk factor)",
+        "exercises": ["Side-lying abduction", "Clamshells", "Monster walks", "Single leg bridges"],
+        "dosage": "3x/week",
+        "evidence": "Moderate-strong"
+      },
+      {
+        "category": "Neuromuscular training",
+        "intervention": "Progressive balance and movement quality training",
+        "exercises": [
+          "Single leg stance progressions",
+          "Single leg squat with mirror/video feedback",
+          "Perturbation training",
+          "Landing mechanics (when cleared for jumping)"
+        ],
+        "focus": "Eliminate dynamic knee valgus, improve knee control",
+        "evidence": "Strong - neuromuscular training reduces ACL re-injury risk"
+      },
+      {
+        "category": "ROM maintenance and flexion improvement",
+        "intervention": "Stretching, mobilization, bike",
+        "exercises": ["Stationary bike (seat progressively lower)", "Heel slides", "Prone knee flexion hang"],
+        "dosage": "Daily",
+        "goal": "Achieve full flexion equal to contralateral"
+      },
+      {
+        "category": "Cardiovascular maintenance",
+        "intervention": "Non-impact cardio",
+        "options": ["Stationary bike", "Swimming (if incisions healed)", "Elliptical", "Rowing"],
+        "dosage": "3-5x/week, 20-30 min",
+        "rationale": "Maintain fitness while not cleared for running"
+      },
+      {
+        "category": "Psychological readiness",
+        "intervention": "Address fear of re-injury and psychological readiness",
+        "strategies": [
+          "Discuss fears openly - normalize them",
+          "Graded exposure to challenging movements",
+          "Use ACL-RSI to track and discuss progress",
+          "Visualization and mental rehearsal",
+          "Emphasize criteria-based approach (reduces uncertainty)",
+          "Consider sports psychology referral if needed"
+        ],
+        "evidence": "Moderate - psychological factors predict RTS and re-injury",
+        "coaching_note": "ACL-RSI of 48 is concerning. Don't ignore this - high fear of re-injury is associated with both failure to return AND actual re-injury."
+      },
+      {
+        "category": "Education",
+        "intervention": "Manage expectations and involve in decision-making",
+        "topics": [
+          "Why criteria-based progression is safer than time-based",
+          "Re-injury risk statistics (5-25% depending on factors)",
+          "Why quad strength matters for knee protection",
+          "Timeline expectations - honest but hopeful"
+        ]
+      }
+    ],
+    "return_to_sport_testing_battery": {
+      "when": "Before clearance for full sport return (typically 9+ months)",
+      "components": [
+        {"test": "Isokinetic quad/hamstring strength", "criterion": "LSI ≥90%"},
+        {"test": "Single leg hop for distance", "criterion": "LSI ≥90%"},
+        {"test": "Triple hop for distance", "criterion": "LSI ≥90%"},
+        {"test": "Crossover hop for distance", "criterion": "LSI ≥90%"},
+        {"test": "6m timed hop", "criterion": "LSI ≥90%"},
+        {"test": "Single leg squat quality", "criterion": "Good alignment, no dynamic valgus"},
+        {"test": "Y-balance test", "criterion": "LSI ≥90%"},
+        {"test": "ACL-RSI", "criterion": ">56 (psychological readiness)"},
+        {"test": "Sport-specific movement assessment", "criterion": "Pass coach/PT assessment"},
+        {"test": "Completed sport-specific training progression", "criterion": "Full training x 2-4 weeks"}
+      ]
+    }
+  },
+  "reasoning_traps_for_this_case": [
+    {
+      "trap": "Time-based progression",
+      "description": "Clearing for running at 12 weeks just because 'that's when protocols say' despite not meeting criteria",
+      "coaching_response": "What are the criteria for running progression? Does this patient meet them? What are the risks of progressing before criteria are met?"
+    },
+    {
+      "trap": "Ignoring psychological readiness",
+      "description": "Focusing only on physical criteria and missing the low ACL-RSI score",
+      "coaching_response": "The patient's ACL-RSI is 48. What does this tell you? How does psychological readiness affect return to sport outcomes?"
+    },
+    {
+      "trap": "Yielding to patient pressure",
+      "description": "Clearing patient for sport return early because they're eager and pressuring you",
+      "coaching_response": "The patient wants to return for the end of season. How do you balance patient goals with safety? What would you say to him about timing?"
+    },
+    {
+      "trap": "Neglecting hip and trunk",
+      "description": "Focusing only on knee exercises when hip weakness is contributing to valgus",
+      "coaching_response": "You've noticed dynamic knee valgus. What muscle groups control knee position during single leg activities? Is this purely a knee problem?"
+    },
+    {
+      "trap": "Not addressing donor site pain",
+      "description": "Ignoring the patellar tendon pain as 'normal' without management",
+      "coaching_response": "The patient has donor site pain with kneeling and certain exercises. How might you address this while continuing to strengthen the quadriceps?"
+    },
+    {
+      "trap": "Single test for RTS decision",
+      "description": "Clearing for sport based on single hop test without comprehensive battery",
+      "coaching_response": "The patient passed the single leg hop test. Is he ready to return to football? What other criteria should be met?"
+    }
+  ],
+  "coaching_questions_by_hoac_step": {
+    "step_1_data_collection": [
+      "What criteria would you assess to determine if this patient is ready to progress to running?",
+      "Why is the quad LSI important? What's the current value and what does it mean?",
+      "What does the ACL-RSI score tell you? Why is this relevant?",
+      "What graft was used and does this affect your rehabilitation approach?"
+    ],
+    "step_2_problem_statements": [
+      "You've identified 'weak quadriceps' as a problem. How would you reframe this as an activity limitation?",
+      "How does the inability to run connect to the participation restriction of not playing football?",
+      "What's the relationship between dynamic knee valgus and re-injury risk?"
+    ],
+    "step_3_goal_setting": [
+      "Your goal is 'return to football.' Is this SMART? How would you make it more specific?",
+      "What specific criteria define 'safe return to sport'?",
+      "How do you set goals with a patient who wants to return faster than is safe?"
+    ],
+    "step_4_intervention_selection": [
+      "Why are you prioritizing quadriceps strengthening?",
+      "How will you address the dynamic knee valgus?",
+      "What's your plan for the low psychological readiness score?",
+      "How will you maintain cardiovascular fitness while he can't run?"
+    ],
+    "step_7_reevaluation": [
+      "When will you reassess quad LSI?",
+      "What criteria must be met before initiating a running program?",
+      "How will you know if the patient is ready for sport-specific training?"
+    ]
+  },
+  "key_education_messages": [
+    "Re-injury risk is real (15-25% for young athletes returning to pivoting sports) - we want to minimize this",
+    "Criteria-based rehabilitation is safer than time-based - your knee tells us when you're ready, not the calendar",
+    "Quad strength is protective - every 1% increase in quad symmetry reduces re-injury risk",
+    "Psychological readiness matters - fear of re-injury affects performance and may actually increase injury risk",
+    "The process takes 9-12 months typically - this is frustrating but protective",
+    "You're not just waiting - you're actively preparing your knee to handle the demands of football"
+  ]
+}

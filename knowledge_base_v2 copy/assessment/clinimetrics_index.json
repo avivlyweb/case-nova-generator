@@ -1,0 +1,1382 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "description": "Clinimetric tools database for physiotherapy assessment",
+    "source": "ESP Amsterdam Clinimetrics curriculum",
+    "last_updated": "2025-01-29",
+    "total_tools": 93,
+    "usage_note": "Tools are organized by ICF domain and include HOAC step relevance for clinical reasoning integration"
+  },
+  "icf_domain_legend": {
+    "body_function": "Physiological functions of body systems (including psychological)",
+    "body_structure": "Anatomical parts of the body",
+    "activity": "Execution of a task or action by an individual",
+    "participation": "Involvement in a life situation",
+    "environmental_factors": "Physical, social, attitudinal environment",
+    "personal_factors": "Individual background of life and living (not classified in ICF)"
+  },
+  "hoac_step_legend": {
+    "step_1": "Collect Initial Data - history, subjective exam",
+    "step_2": "Generate Problem Statements - identify activity limitations, participation restrictions",
+    "step_3": "Establish Goals - SMART goals linked to problems",
+    "step_4": "Select Interventions - evidence-based treatment selection",
+    "step_5": "Develop Plan of Care - frequency, duration, progression",
+    "step_6": "Implement & Document - execution and documentation",
+    "step_7": "Re-evaluate - outcome measurement and clinical reasoning"
+  },
+  "tools": [
+    {
+      "id": "bmi",
+      "name": "Body Mass Index",
+      "abbreviation": "BMI",
+      "category": ["Musculoskeletal", "Neurological", "Cardiac", "Pulmonary", "Geriatric"],
+      "icf_domain": ["body_function"],
+      "outcome_measured": "Body composition",
+      "outcome_unit": "Ratio (kg/m2)",
+      "hoac_relevance": ["step_1", "step_7"],
+      "curriculum": ["Clinimetrics 1", "Clinimetrics 4", "Physiology 2", "Physiology 3", "Physiology 4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "When body composition may influence treatment planning or outcomes",
+        "clinical_reasoning_question": "How might this patient's BMI affect their exercise tolerance, joint loading, or intervention selection?",
+        "common_student_error": "Using BMI as sole indicator of health without considering muscle mass, fitness level, or functional capacity"
+      },
+      "resources": {
+        "protocol_url": "https://drive.google.com/file/d/0B_3MSu1Aedr_MWZIWWFUOFYzVlk/view",
+        "key_article": "Nuttall FQ. Body Mass Index: Obesity, BMI, and Health: A Critical Review. Nutr Today. 2015",
+        "video_url": "https://www.youtube.com/watch?v=5RXRr8PKunk"
+      },
+      "interpretation": {
+        "underweight": "<18.5",
+        "normal": "18.5-24.9",
+        "overweight": "25-29.9",
+        "obese_class_1": "30-34.9",
+        "obese_class_2": "35-39.9",
+        "obese_class_3": ">=40"
+      }
+    },
+    {
+      "id": "psfs",
+      "name": "Patient Specific Functional Scale",
+      "abbreviation": "PSFS",
+      "category": ["Musculoskeletal", "Neurological", "Cardiac", "Pulmonary", "Complex", "Geriatric"],
+      "icf_domain": ["activity"],
+      "outcome_measured": "Activities of Daily Living, Patient-identified activities",
+      "outcome_unit": "Score (0-10 per activity)",
+      "hoac_relevance": ["step_1", "step_2", "step_3", "step_7"],
+      "curriculum": ["Clinimetrics 1", "Clinimetrics 4", "Assessment 1-4", "Case Study 1-4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "At initial assessment and re-evaluation to track patient-centered outcomes",
+        "clinical_reasoning_question": "Are the activities the patient identified truly reflecting their main participation restrictions?",
+        "common_student_error": "Leading the patient to select activities rather than letting them identify what matters most to them"
+      },
+      "resources": {
+        "protocol_url": "http://www.tac.vic.gov.au/__data/assets/pdf_file/0020/27317/Patient-specific.pdf",
+        "key_article": "Horn KK et al. The Patient-Specific Functional Scale: Psychometrics, Clinimetrics, and Application. JOSPT 2012",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/patient-specific-functional-scale"
+      },
+      "clinimetric_properties": {
+        "mcid": "2-3 points",
+        "reliability": "Good to excellent (ICC 0.84-0.92)"
+      }
+    },
+    {
+      "id": "bp",
+      "name": "Blood Pressure",
+      "abbreviation": "BP",
+      "category": ["General", "Cardiac", "Pulmonary"],
+      "icf_domain": ["body_function"],
+      "outcome_measured": "Blood pressure systolic and diastolic",
+      "outcome_unit": "mmHg",
+      "hoac_relevance": ["step_1", "step_4", "step_6", "step_7"],
+      "curriculum": ["Clinimetrics 1", "Clinimetrics 4", "Physiology 2-4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Before exercise testing, during cardiovascular conditions, medication monitoring",
+        "clinical_reasoning_question": "How does this blood pressure reading influence your exercise prescription or intervention intensity?",
+        "common_student_error": "Not considering orthostatic changes or exercise response patterns"
+      },
+      "resources": {
+        "protocol_url": "https://www.ahajournals.org/doi/full/10.1161/HYP.0000000000000087"
+      },
+      "interpretation": {
+        "normal": "<120/80",
+        "elevated": "120-129/<80",
+        "hypertension_stage1": "130-139/80-89",
+        "hypertension_stage2": ">=140/>=90",
+        "hypertensive_crisis": ">180/>120"
+      }
+    },
+    {
+      "id": "rom",
+      "name": "Goniometer",
+      "abbreviation": "ROM",
+      "category": ["Musculoskeletal", "Neurological", "Cardiac", "Pulmonary", "Complex", "Geriatric"],
+      "icf_domain": ["body_function"],
+      "outcome_measured": "Range of motion",
+      "outcome_unit": "Degrees",
+      "hoac_relevance": ["step_1", "step_2", "step_7"],
+      "curriculum": ["Clinimetrics 1", "Clinimetrics 3", "Assessment 1-4", "Case Study 1-4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "When joint mobility is relevant to the patient's activity limitations",
+        "clinical_reasoning_question": "Is this ROM limitation a primary impairment causing the activity limitation, or a secondary finding?",
+        "common_student_error": "Measuring ROM without connecting it to functional relevance or activity limitations"
+      },
+      "resources": {
+        "protocol_url": "https://www.ncbi.nlm.nih.gov/books/NBK558985/",
+        "key_article": "Gajdosik RL, Bohannon RW. Clinical measurement of range of motion. Phys Ther. 1987"
+      }
+    },
+    {
+      "id": "hhd",
+      "name": "Hand Held Dynamometry",
+      "abbreviation": "HHD",
+      "category": ["Musculoskeletal", "Neurological", "Geriatric"],
+      "icf_domain": ["body_function"],
+      "outcome_measured": "Muscle strength",
+      "outcome_unit": "Newton/Kg/Pound",
+      "hoac_relevance": ["step_1", "step_2", "step_7"],
+      "curriculum": ["Clinimetrics 1", "Clinimetrics 2", "Biomechanics 1", "Assessment 1-4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "When objective strength measurement is needed for goal setting or progress monitoring",
+        "clinical_reasoning_question": "Is the strength deficit you measured contributing to the patient's functional limitations?",
+        "common_student_error": "Not standardizing testing position or stabilization across measurements"
+      },
+      "resources": {
+        "protocol_url": "https://www.prohealthcareproducts.com/blog/a-user-guide-to-the-microfet-2-hand-held-dynamometer",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/hand-held-myometry-dynamometry"
+      }
+    },
+    {
+      "id": "mrc",
+      "name": "Medical Research Council Scale",
+      "abbreviation": "MRC",
+      "category": ["Musculoskeletal", "Neurological", "Complex", "Geriatric"],
+      "icf_domain": ["body_function"],
+      "outcome_measured": "Muscle strength",
+      "outcome_unit": "Score (0-5)",
+      "hoac_relevance": ["step_1", "step_2", "step_7"],
+      "curriculum": ["Clinimetrics 1", "Assessment 1-4", "Case Study 1-4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Quick clinical strength assessment, neurological screening",
+        "clinical_reasoning_question": "What is the pattern of weakness telling you about the underlying pathology?",
+        "common_student_error": "Not recognizing the ordinal nature of the scale (difference between grades is not equal)"
+      },
+      "resources": {
+        "protocol_url": "https://www.ncbi.nlm.nih.gov/books/NBK436008/",
+        "video_url": "https://www.youtube.com/watch?v=LjlqP1uMUo0"
+      },
+      "interpretation": {
+        "grade_0": "No contraction",
+        "grade_1": "Flicker or trace of contraction",
+        "grade_2": "Active movement with gravity eliminated",
+        "grade_3": "Active movement against gravity",
+        "grade_4": "Active movement against gravity and resistance",
+        "grade_5": "Normal power"
+      }
+    },
+    {
+      "id": "nprs",
+      "name": "Numeric Pain Rating Scale",
+      "abbreviation": "NPRS",
+      "category": ["Musculoskeletal", "Neurological", "Cardiac", "Pulmonary", "Complex", "Geriatric"],
+      "icf_domain": ["body_function"],
+      "outcome_measured": "Pain intensity",
+      "outcome_unit": "Score (0-10)",
+      "hoac_relevance": ["step_1", "step_2", "step_7"],
+      "curriculum": ["Clinimetrics 1", "Assessment 1-4", "Case Study 1-4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Pain assessment at each session, before/after interventions",
+        "clinical_reasoning_question": "What does the pain pattern tell you about tissue irritability and appropriate intervention intensity?",
+        "common_student_error": "Focusing only on pain reduction without addressing underlying causes or functional impact"
+      },
+      "resources": {
+        "protocol_url": "https://www.sralab.org/sites/default/files/2017-07/Numeric%20Pain%20Rating%20Scale%20Instructions.pdf",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/numeric-pain-rating-scale"
+      },
+      "clinimetric_properties": {
+        "mcid": "2 points or 30% reduction"
+      }
+    },
+    {
+      "id": "psc",
+      "name": "Patient Specific Complaints",
+      "abbreviation": "PSC",
+      "category": ["Musculoskeletal", "Neurological", "Cardiac", "Pulmonary", "Complex", "Geriatric"],
+      "icf_domain": ["activity"],
+      "outcome_measured": "Activities of Daily Living",
+      "outcome_unit": "Score",
+      "hoac_relevance": ["step_1", "step_2", "step_3", "step_7"],
+      "curriculum": ["Clinimetrics 1", "Assessment 1-4", "Case Study 1-4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Initial assessment to identify patient's main activity limitations",
+        "clinical_reasoning_question": "Are these complaints truly activity limitations (ICF) or are they impairments or participation restrictions?",
+        "common_student_error": "Confusing impairments (pain, stiffness) with activity limitations (cannot walk 500m)"
+      }
+    },
+    {
+      "id": "vas",
+      "name": "Visual Analogue Scale",
+      "abbreviation": "VAS",
+      "category": ["Musculoskeletal", "Neurological", "Cardiac", "Pulmonary", "Complex", "Geriatric"],
+      "icf_domain": ["body_function"],
+      "outcome_measured": "Pain intensity",
+      "outcome_unit": "Millimeters (0-100)",
+      "hoac_relevance": ["step_1", "step_2", "step_7"],
+      "curriculum": ["Clinimetrics 1", "Assessment 1-4", "Case Study 1-4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Research settings or when continuous scale is preferred over discrete NPRS",
+        "clinical_reasoning_question": "Why did you choose VAS over NPRS for this patient?",
+        "common_student_error": "Not using a standardized 100mm line or measuring imprecisely"
+      },
+      "resources": {
+        "protocol_url": "http://www.blackwellpublishing.com/specialarticles/jcn_10_706.pdf"
+      }
+    },
+    {
+      "id": "slht",
+      "name": "Single Leg Hop Test",
+      "abbreviation": "SLHT",
+      "category": ["Musculoskeletal"],
+      "icf_domain": ["body_function"],
+      "outcome_measured": "Functional leg strength",
+      "outcome_unit": "Distance (cm)",
+      "hoac_relevance": ["step_1", "step_7"],
+      "curriculum": ["Clinimetrics 1", "Assessment 1"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "ACL rehabilitation, return-to-sport testing, lower limb power assessment",
+        "clinical_reasoning_question": "What limb symmetry index are you aiming for before return to sport?",
+        "common_student_error": "Using as isolated criterion for return-to-sport rather than part of comprehensive battery"
+      },
+      "resources": {
+        "protocol_url": "https://drive.google.com/file/d/0B_3MSu1Aedr_LVRYZzRRZFpLa0U/view",
+        "video_url": "https://www.youtube.com/watch?v=Gxs5nVnE4Yg",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/single-limb-hop-tests"
+      },
+      "clinimetric_properties": {
+        "lsi_target": ">90% limb symmetry index"
+      }
+    },
+    {
+      "id": "fms",
+      "name": "Functional Movement Screen",
+      "abbreviation": "FMS",
+      "category": ["Musculoskeletal"],
+      "icf_domain": ["body_function"],
+      "outcome_measured": "Movement quality",
+      "outcome_unit": "Score (0-21)",
+      "hoac_relevance": ["step_1"],
+      "curriculum": ["Clinimetrics 1", "Assessment 1", "Interventions 1"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Pre-participation screening, identifying movement dysfunction patterns",
+        "clinical_reasoning_question": "How will you use FMS findings to guide your intervention selection?",
+        "common_student_error": "Over-relying on FMS score as injury predictor (evidence is mixed)"
+      },
+      "resources": {
+        "protocol_url": "https://www.functionalmovement.com/files/articles/139a_fms%20verbal%20instructions.pdf",
+        "video_url": "https://www.youtube.com/watch?v=s6pAkCwFKTU"
+      }
+    },
+    {
+      "id": "y_test",
+      "name": "Y-test",
+      "abbreviation": "Y-test",
+      "category": ["Musculoskeletal"],
+      "icf_domain": ["body_function"],
+      "outcome_measured": "Dynamic balance",
+      "outcome_unit": "Normalized reach distance (cm)",
+      "hoac_relevance": ["step_1", "step_7"],
+      "curriculum": ["Clinimetrics 1", "Assessment 1"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Lower extremity injury risk screening, ankle instability assessment",
+        "clinical_reasoning_question": "What asymmetries are you looking for and what do they indicate?",
+        "common_student_error": "Not normalizing for leg length"
+      },
+      "resources": {
+        "protocol_url": "https://www.scienceforsport.com/y-balance-test",
+        "video_url": "https://www.youtube.com/watch?v=1gfGkxWlx4o",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/lower-quarter-y-balance-test"
+      }
+    },
+    {
+      "id": "vjt",
+      "name": "Vertical Jump Test",
+      "abbreviation": "VJT",
+      "category": ["Musculoskeletal"],
+      "icf_domain": ["body_function", "activity"],
+      "outcome_measured": "Jump height, Lower Limb Power",
+      "outcome_unit": "Centimeters",
+      "hoac_relevance": ["step_1", "step_7"],
+      "curriculum": ["Clinimetrics 1", "Assessment 1"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Sports performance testing, lower limb power assessment",
+        "clinical_reasoning_question": "How does jump height relate to your patient's sport-specific demands?",
+        "common_student_error": "Not standardizing arm swing or countermovement"
+      },
+      "resources": {
+        "protocol_url": "https://www.scienceforsport.com/vertec-jump-test/"
+      }
+    },
+    {
+      "id": "10mwt",
+      "name": "10m Walk Test",
+      "abbreviation": "10MWT",
+      "category": ["Musculoskeletal", "Neurological", "Cardiac", "Pulmonary", "Geriatric"],
+      "icf_domain": ["body_function"],
+      "outcome_measured": "Gait speed",
+      "outcome_unit": "Meters/second",
+      "hoac_relevance": ["step_1", "step_2", "step_7"],
+      "curriculum": ["Clinimetrics 2-4", "Assessment 3-4", "Case Study 1, 3, 4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Baseline gait assessment, neurological conditions, falls risk, frailty screening",
+        "clinical_reasoning_question": "What does this gait speed tell you about community ambulation ability and fall risk?",
+        "common_student_error": "Not differentiating between comfortable and fast gait speed testing"
+      },
+      "resources": {
+        "protocol_url": "https://drive.google.com/file/d/0B_3MSu1Aedr_NG9mRnlDUV9XLVk/view",
+        "video_url": "https://www.youtube.com/watch?v=jKZcQM5PGq8",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/10-meter-walk-test"
+      },
+      "interpretation": {
+        "community_ambulation_threshold": ">0.8 m/s",
+        "fall_risk_threshold": "<1.0 m/s",
+        "household_ambulation": "<0.4 m/s",
+        "limited_community": "0.4-0.8 m/s",
+        "full_community": ">0.8 m/s"
+      }
+    },
+    {
+      "id": "tug",
+      "name": "Timed Up and Go Test",
+      "abbreviation": "TUG",
+      "category": ["Neurological", "Complex", "Geriatric"],
+      "icf_domain": ["activity"],
+      "outcome_measured": "Functional mobility (sit-stand-walk-turn)",
+      "outcome_unit": "Seconds",
+      "hoac_relevance": ["step_1", "step_2", "step_7"],
+      "curriculum": ["Clinimetrics 2-4", "Assessment 2-4", "Case Study 3-4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Fall risk assessment, functional mobility baseline, geriatric assessment",
+        "clinical_reasoning_question": "Which component of the TUG is most problematic - the sit-to-stand, walking, or turning?",
+        "common_student_error": "Only reporting time without observing quality of movement components"
+      },
+      "resources": {
+        "protocol_url": "https://www.sralab.org/sites/default/files/2017-06/Timed%20Up%20and%20Go%20Test%20Instructions.pdf",
+        "video_url": "https://www.youtube.com/watch?v=grrYoBucNPE"
+      },
+      "interpretation": {
+        "normal_adults": "<10 seconds",
+        "fall_risk_threshold": ">14 seconds",
+        "high_fall_risk": ">30 seconds"
+      }
+    },
+    {
+      "id": "5tsts",
+      "name": "5 Times Sit To Stand",
+      "abbreviation": "5TSTS",
+      "category": ["Musculoskeletal", "Neurological", "Cardiac", "Pulmonary", "Complex", "Geriatric"],
+      "icf_domain": ["activity", "body_function"],
+      "outcome_measured": "Functional leg strength, Fall risk",
+      "outcome_unit": "Seconds",
+      "hoac_relevance": ["step_1", "step_2", "step_7"],
+      "curriculum": ["Clinimetrics 3-4", "Assessment 3-4", "Case Study 3-4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Lower extremity strength screening, fall risk assessment",
+        "clinical_reasoning_question": "How does this functional strength measure relate to the patient's reported difficulty with transfers?",
+        "common_student_error": "Not controlling for chair height or arm use"
+      },
+      "resources": {
+        "protocol_url": "https://www.sralab.org/sites/default/files/2019-12/5xsts_protocol_final.pdf",
+        "video_url": "https://www.youtube.com/watch?v=_jPl-IuRJ5A",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/five-times-sit-stand-test"
+      },
+      "interpretation": {
+        "fall_risk_threshold": ">12 seconds",
+        "normative_60_69": "11.4 seconds",
+        "normative_70_79": "12.6 seconds",
+        "normative_80_89": "14.8 seconds"
+      }
+    },
+    {
+      "id": "mmse",
+      "name": "Mini Mental State Examination",
+      "abbreviation": "MMSE",
+      "category": ["Neurological", "Complex", "Geriatric"],
+      "icf_domain": ["body_function"],
+      "outcome_measured": "Cognitive impairment",
+      "outcome_unit": "Score (0-30)",
+      "hoac_relevance": ["step_1"],
+      "curriculum": ["Clinimetrics 3-4", "Assessment 3-4", "Neurology 2"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Screening for cognitive impairment in geriatric or neurological patients",
+        "clinical_reasoning_question": "How will cognitive status influence your treatment approach and education strategies?",
+        "common_student_error": "Not adjusting communication and education based on cognitive findings"
+      },
+      "resources": {
+        "protocol_url": "https://cgatoolkit.ca/Uploads/ContentDocuments/MMSE.pdf",
+        "video_url": "https://www.youtube.com/watch?v=uXiE2zg35L8",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/mini-mental-state-examination"
+      },
+      "interpretation": {
+        "normal": "24-30",
+        "mild_impairment": "19-23",
+        "moderate_impairment": "10-18",
+        "severe_impairment": "<10"
+      }
+    },
+    {
+      "id": "tfi",
+      "name": "Tilburg Frailty Index",
+      "abbreviation": "TFI",
+      "category": ["Geriatric"],
+      "icf_domain": ["body_function"],
+      "outcome_measured": "Frailty",
+      "outcome_unit": "Score (0-15)",
+      "hoac_relevance": ["step_1", "step_2"],
+      "curriculum": ["Clinimetrics 3-4", "Assessment 4", "Case Study 4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Geriatric assessment, identifying frailty for intervention planning",
+        "clinical_reasoning_question": "How does frailty status affect your prognosis and intervention intensity decisions?",
+        "common_student_error": "Not considering the multidimensional nature of frailty (physical, psychological, social)"
+      },
+      "resources": {
+        "protocol_url": "https://geriatriahcsc.files.wordpress.com/2014/03/tiburg.pdf"
+      },
+      "interpretation": {
+        "frailty_threshold": ">=5 points"
+      }
+    },
+    {
+      "id": "bi",
+      "name": "Barthel Index",
+      "abbreviation": "BI",
+      "category": ["Neurological"],
+      "icf_domain": ["body_function", "activity"],
+      "outcome_measured": "Activities of Daily Living, Functional Mobility, Gait",
+      "outcome_unit": "Score (0-100)",
+      "hoac_relevance": ["step_1", "step_2", "step_3", "step_7"],
+      "curriculum": ["Clinimetrics 2-4", "Neurology 1-2", "Assessment 2-3"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Stroke and neurological rehabilitation, ADL independence assessment",
+        "clinical_reasoning_question": "Which specific ADL items are most limiting and should be prioritized in treatment?",
+        "common_student_error": "Using total score without analyzing which specific items need intervention"
+      },
+      "resources": {
+        "protocol_url": "https://www.sralab.org/sites/default/files/2017-07/barthel.pdf",
+        "video_url": "https://www.youtube.com/watch?v=Barthel_Index"
+      },
+      "interpretation": {
+        "total_dependence": "0-20",
+        "severe_dependence": "21-60",
+        "moderate_dependence": "61-90",
+        "slight_dependence": "91-99",
+        "independence": "100"
+      }
+    },
+    {
+      "id": "borg",
+      "name": "Borg Scale RPE",
+      "abbreviation": "Borg",
+      "category": ["Musculoskeletal", "Neurological", "Geriatric", "Cardiac", "Pulmonary"],
+      "icf_domain": ["body_function"],
+      "outcome_measured": "Perceived Exertion",
+      "outcome_unit": "Score (6-20)",
+      "hoac_relevance": ["step_4", "step_6", "step_7"],
+      "curriculum": ["Clinimetrics 2-4", "Physiology 2-4", "Assessment 2"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Exercise prescription, monitoring training intensity",
+        "clinical_reasoning_question": "How are you using RPE to guide exercise intensity progression?",
+        "common_student_error": "Not explaining the scale properly to patients or not correlating with heart rate"
+      },
+      "resources": {
+        "protocol_url": "https://www.sralab.org/sites/default/files/2018-04/Rating_of_perceived_exertion_-_Borg_scale.pdf",
+        "video_url": "https://www.youtube.com/watch?v=Study_Topics_Modified_BORG_Scale"
+      },
+      "interpretation": {
+        "very_light": "9",
+        "light": "11",
+        "somewhat_hard": "13",
+        "hard": "15",
+        "very_hard": "17",
+        "maximal": "19-20"
+      }
+    },
+    {
+      "id": "tct",
+      "name": "Trunk Control Test",
+      "abbreviation": "TCT",
+      "category": ["Musculoskeletal", "Neurological", "Geriatric"],
+      "icf_domain": ["body_function", "activity"],
+      "outcome_measured": "Core control",
+      "outcome_unit": "Score/Time",
+      "hoac_relevance": ["step_1", "step_2", "step_7"],
+      "curriculum": ["Clinimetrics 2-3", "Assessment 2-3", "Case Study 2-3"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Stroke rehabilitation, assessing sitting balance and trunk control",
+        "clinical_reasoning_question": "How does trunk control relate to your patient's ability to perform transfers and walking?",
+        "common_student_error": "Not recognizing trunk control as predictor of functional recovery in stroke"
+      },
+      "resources": {
+        "protocol_url": "https://jcphysiotherapy.files.wordpress.com/2015/02/trunk-control-test-for-motor-assessment-after-stroke-2.pdf",
+        "video_url": "https://www.youtube.com/watch?v=KsfnHkm99eY"
+      }
+    },
+    {
+      "id": "bbs",
+      "name": "Berg Balance Scale",
+      "abbreviation": "BBS",
+      "category": ["Musculoskeletal", "Neurological", "Cardiac", "Pulmonary", "Geriatric"],
+      "icf_domain": ["activity"],
+      "outcome_measured": "Balance, Functional Mobility",
+      "outcome_unit": "Score (0-56)",
+      "hoac_relevance": ["step_1", "step_2", "step_7"],
+      "curriculum": ["Clinimetrics 3", "Assessment 3-4", "Case Study 3-4", "Neurology 2"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Balance assessment, fall risk prediction, neurological/geriatric populations",
+        "clinical_reasoning_question": "Which items are most impaired and what does this tell you about the balance system affected?",
+        "common_student_error": "Reporting only total score without analyzing item-level performance"
+      },
+      "resources": {
+        "protocol_url": "https://www.brandeis.edu/roybal/docs/Berg-Balance-Scale_Website.pdf",
+        "video_url": "https://www.youtube.com/watch?v=mqr6nUb9X4k",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/berg-balance-scale"
+      },
+      "interpretation": {
+        "high_fall_risk": "0-20",
+        "medium_fall_risk": "21-40",
+        "low_fall_risk": "41-56",
+        "fall_risk_threshold": "<45 (with other risk factors)"
+      },
+      "clinimetric_properties": {
+        "mdc": "4-7 points",
+        "ceiling_effect": "High functioning elderly"
+      }
+    },
+    {
+      "id": "demmi",
+      "name": "de Morton Mobility Index",
+      "abbreviation": "DEMMI",
+      "category": ["Musculoskeletal", "Neurological", "Geriatric"],
+      "icf_domain": ["activity", "participation"],
+      "outcome_measured": "Mobility, Balance, Gait",
+      "outcome_unit": "Score (0-100)",
+      "hoac_relevance": ["step_1", "step_2", "step_7"],
+      "curriculum": ["Clinimetrics 3", "Assessment 3-4", "Case Study 3-4", "Neurology 2"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Acute care, hospital, rehabilitation settings - assessing mobility hierarchy",
+        "clinical_reasoning_question": "At what mobility level is the patient currently functioning and what is the next achievable goal?",
+        "common_student_error": "Not using hierarchical nature to guide progressive goal setting"
+      },
+      "resources": {
+        "protocol_url": "https://www.demmi.org.au/downloads/demmi.pdf",
+        "video_url": "https://www.youtube.com/watch?v=HldV4O6t5tE",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/de-morton-mobility-index"
+      }
+    },
+    {
+      "id": "fes_i",
+      "name": "Falls-Efficacy Scale International",
+      "abbreviation": "FES-I",
+      "category": ["Musculoskeletal", "Neurological", "Complex", "Geriatric"],
+      "icf_domain": ["activity", "participation"],
+      "outcome_measured": "Fear of falling",
+      "outcome_unit": "Score (16-64)",
+      "hoac_relevance": ["step_1", "step_2", "step_3"],
+      "curriculum": ["Clinimetrics 3", "Assessment 4", "Case Study 4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Fall risk assessment, identifying fear of falling as participation barrier",
+        "clinical_reasoning_question": "Is fear of falling appropriate given objective fall risk, or is it limiting participation excessively?",
+        "common_student_error": "Not addressing fear of falling as separate treatment target from physical fall risk"
+      },
+      "resources": {
+        "protocol_url": "https://www.health.qld.gov.au/__data/assets/pdf_file/0026/426635/33346.pdf",
+        "video_url": "https://www.youtube.com/watch?v=Ix9N0cDlZS0",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/falls-efficacy-scale-international"
+      },
+      "interpretation": {
+        "low_concern": "16-19",
+        "moderate_concern": "20-27",
+        "high_concern": "28-64"
+      }
+    },
+    {
+      "id": "mini_best",
+      "name": "Mini Balance Evaluation System Test",
+      "abbreviation": "Mini-BESTest",
+      "category": ["Neurological", "Complex"],
+      "icf_domain": ["activity", "body_function"],
+      "outcome_measured": "Balance systems (anticipatory, reactive, sensory, dynamic gait)",
+      "outcome_unit": "Score (0-28)",
+      "hoac_relevance": ["step_1", "step_2", "step_4", "step_7"],
+      "curriculum": ["Clinimetrics 3", "Assessment 3", "Case Study 3"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "When you need to identify WHICH balance system is impaired to guide treatment",
+        "clinical_reasoning_question": "Which balance subsystem (anticipatory, reactive, sensory, gait) is most impaired?",
+        "common_student_error": "Not using subsystem scores to guide targeted intervention selection"
+      },
+      "resources": {
+        "protocol_url": "https://www.sralab.org/sites/default/files/2017-06/MiniBEST_revised_final_3_8_13.pdf",
+        "video_url": "https://www.youtube.com/watch?v=jK43dcXrhWM",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/mini-balance-evaluation-systems-test"
+      }
+    },
+    {
+      "id": "mas",
+      "name": "Modified Ashworth Scale",
+      "abbreviation": "MAS",
+      "category": ["Neurological"],
+      "icf_domain": ["body_function"],
+      "outcome_measured": "Spasticity",
+      "outcome_unit": "Score (0-4)",
+      "hoac_relevance": ["step_1", "step_2", "step_7"],
+      "curriculum": ["Clinimetrics 3", "Assessment 3", "Case Study 3", "Neurology 2"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Neurological conditions with suspected spasticity",
+        "clinical_reasoning_question": "Is this spasticity functionally limiting or potentially helpful for the patient?",
+        "common_student_error": "Assuming all spasticity should be reduced - sometimes it aids function"
+      },
+      "resources": {
+        "protocol_url": "https://www.sralab.org/sites/default/files/2017-06/Modified%20Ashworth%20Scale%20Instructions.pdf",
+        "video_url": "https://www.youtube.com/watch?v=Zw8BKEeeJAs",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/ashworth-scale-modified-ashworth-scale"
+      },
+      "interpretation": {
+        "grade_0": "No increase in muscle tone",
+        "grade_1": "Slight increase at end range",
+        "grade_1_plus": "Slight increase in tone through less than half of ROM",
+        "grade_2": "More marked increase through most of ROM",
+        "grade_3": "Considerable increase, passive movement difficult",
+        "grade_4": "Rigid"
+      }
+    },
+    {
+      "id": "mi",
+      "name": "Motricity Index",
+      "abbreviation": "MI",
+      "category": ["Neurological"],
+      "icf_domain": ["body_function"],
+      "outcome_measured": "Upper/Lower extremity strength post-stroke",
+      "outcome_unit": "Score (0-100 per limb)",
+      "hoac_relevance": ["step_1", "step_2", "step_7"],
+      "curriculum": ["Clinimetrics 3", "Assessment 3", "Case Study 3", "Neurology 2"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Stroke assessment of motor impairment",
+        "clinical_reasoning_question": "How does this motor impairment level predict functional recovery potential?",
+        "common_student_error": "Not using MI as prognostic indicator for motor recovery"
+      },
+      "resources": {
+        "protocol_url": "https://www.sralab.org/sites/default/files/2018-04/motricity-index-mi.pdf",
+        "video_url": "https://www.youtube.com/watch?v=NHIGW85J5kg",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/motricity-index"
+      }
+    },
+    {
+      "id": "fac",
+      "name": "Functional Ambulation Category",
+      "abbreviation": "FAC",
+      "category": ["Neurological"],
+      "icf_domain": ["activity"],
+      "outcome_measured": "Functional mobility, Gait independence",
+      "outcome_unit": "Score (0-5)",
+      "hoac_relevance": ["step_1", "step_2", "step_3", "step_7"],
+      "curriculum": ["Clinimetrics 3", "Assessment 3", "Case Study 3"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Classifying gait independence level in neurological patients",
+        "clinical_reasoning_question": "What is needed to progress to the next FAC level?",
+        "common_student_error": "Not using FAC categories to guide progressive gait training goals"
+      },
+      "resources": {
+        "protocol_url": "https://www.sralab.org/sites/default/files/2018-04/3785-62959-2-SP.pdf",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/functional-ambulation-category"
+      },
+      "interpretation": {
+        "fac_0": "Non-functional ambulator",
+        "fac_1": "Dependent on physical assistance (level II)",
+        "fac_2": "Dependent on physical assistance (level I)",
+        "fac_3": "Dependent on supervision",
+        "fac_4": "Independent on level surfaces only",
+        "fac_5": "Independent on all surfaces"
+      }
+    },
+    {
+      "id": "sppb",
+      "name": "Short Physical Performance Battery",
+      "abbreviation": "SPPB",
+      "category": ["Musculoskeletal", "Neurological", "Geriatric", "Pulmonary"],
+      "icf_domain": ["body_function", "activity"],
+      "outcome_measured": "Balance, Gait Speed, Functional mobility",
+      "outcome_unit": "Score (0-12)",
+      "hoac_relevance": ["step_1", "step_2", "step_7"],
+      "curriculum": ["Clinimetrics 3", "Assessment 3-4", "Case Study 3-4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Geriatric assessment, frailty screening, predicting disability",
+        "clinical_reasoning_question": "Which component (balance, gait, strength) is most impaired and should be prioritized?",
+        "common_student_error": "Not analyzing subscores - each component provides different clinical information"
+      },
+      "resources": {
+        "protocol_url": "https://www.sralab.org/sites/default/files/2018-03/SPPB-Score-Tool.pdf",
+        "video_url": "https://www.youtube.com/watch?v=N_rJOGhQqZ4",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/short-physical-performance-battery"
+      },
+      "interpretation": {
+        "low_performance": "0-6",
+        "intermediate": "7-9",
+        "high_performance": "10-12"
+      }
+    },
+    {
+      "id": "mpas",
+      "name": "Modified Parkinson Activity Scale",
+      "abbreviation": "MPAS",
+      "category": ["Neurological"],
+      "icf_domain": ["activity", "participation", "body_function"],
+      "outcome_measured": "Transfers, gait, bed mobility",
+      "outcome_unit": "Score",
+      "hoac_relevance": ["step_1", "step_2", "step_7"],
+      "curriculum": ["Clinimetrics 3", "Assessment 3", "Neurology 2"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Parkinson's disease - assessing transfers, gait, bed mobility",
+        "clinical_reasoning_question": "Which daily activity is most affected by the patient's Parkinson's symptoms?",
+        "common_student_error": "Not considering medication timing (ON vs OFF state) when assessing"
+      },
+      "resources": {
+        "protocol_url": "https://www.parkinsonnet.nl/app/uploads/sites/3/2019/11/eu_guideline_parkinson_guideline_for_pt_s1.pdf#page=132",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/modified-parkinson-activity-scale"
+      }
+    },
+    {
+      "id": "2mwt",
+      "name": "2 Minute Walk Test",
+      "abbreviation": "2MWT",
+      "category": ["Neurological", "Cardiovascular", "Pulmonary", "Geriatric"],
+      "icf_domain": ["body_function", "activity"],
+      "outcome_measured": "Cardiovascular endurance, Muscular endurance, Gait",
+      "outcome_unit": "Meters",
+      "hoac_relevance": ["step_1", "step_7"],
+      "curriculum": ["Clinimetrics 4", "Assessment 4", "Case Study 4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "When 6MWT is too fatiguing or space limited, frail populations",
+        "clinical_reasoning_question": "Is this patient too frail for 6MWT? Is 2MWT providing sufficient challenge?",
+        "common_student_error": "Not standardizing encouragement and rest protocols"
+      },
+      "resources": {
+        "protocol_url": "https://www.sralab.org/sites/default/files/2017-07/2%20Minute%20Walk%20Test%20Instructions.pdf",
+        "video_url": "https://www.youtube.com/watch?v=qoa0yQBZFs4",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/2-minute-walk-test"
+      }
+    },
+    {
+      "id": "poma",
+      "name": "Tinetti Performance Oriented Mobility Assessment",
+      "abbreviation": "POMA",
+      "category": ["Neurological", "Geriatric"],
+      "icf_domain": ["activity"],
+      "outcome_measured": "Balance, Gait, Fall risk",
+      "outcome_unit": "Score (0-28)",
+      "hoac_relevance": ["step_1", "step_2", "step_7"],
+      "curriculum": ["Clinimetrics 4", "Assessment 4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Fall risk assessment in elderly, balance and gait evaluation",
+        "clinical_reasoning_question": "Is the gait or balance component more impaired?",
+        "common_student_error": "Not separating gait (12 points) and balance (16 points) subscores"
+      },
+      "resources": {
+        "protocol_url": "https://geriatrictoolkit.missouri.edu/Tinetti-Balance-Gait--POMA.doc",
+        "video_url": "https://www.youtube.com/watch?v=oacjlnRoBQE",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/tinetti-performance-oriented-mobility-assessment"
+      },
+      "interpretation": {
+        "high_fall_risk": "<19",
+        "moderate_fall_risk": "19-24",
+        "low_fall_risk": "25-28"
+      }
+    },
+    {
+      "id": "gse",
+      "name": "General Self-Efficacy Scale",
+      "abbreviation": "GSE",
+      "category": ["Musculoskeletal", "Neurological", "Cardiac", "Pulmonary", "Geriatric"],
+      "icf_domain": ["activity", "participation"],
+      "outcome_measured": "Perceived Self-Efficacy",
+      "outcome_unit": "Score (10-40)",
+      "hoac_relevance": ["step_1", "step_3"],
+      "curriculum": ["Clinimetrics 4", "Assessment 4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Chronic conditions, adherence assessment, self-management readiness",
+        "clinical_reasoning_question": "How might low self-efficacy affect treatment adherence and outcome?",
+        "common_student_error": "Not targeting self-efficacy as modifiable factor in treatment"
+      },
+      "resources": {
+        "protocol_url": "https://www.drugsandalcohol.ie/26768/1/General_Self-Efficacy_Scale%20(GSE).pdf",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/general-self-efficacy-scale"
+      }
+    },
+    {
+      "id": "astrand",
+      "name": "Astrand Bike Test",
+      "abbreviation": "Bike test",
+      "category": ["Musculoskeletal", "Cardiac", "Pulmonary"],
+      "icf_domain": ["body_function"],
+      "outcome_measured": "VO2max (estimated)",
+      "outcome_unit": "Liters/minute or ml/kg/min",
+      "hoac_relevance": ["step_1", "step_7"],
+      "curriculum": ["Clinimetrics 2", "Physiology 2-4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Submaximal aerobic capacity assessment",
+        "clinical_reasoning_question": "What are the limitations of submaximal VO2max estimation?",
+        "common_student_error": "Not recognizing assumptions (linear HR-workload relationship, age-predicted HRmax)"
+      },
+      "resources": {
+        "protocol_url": "https://drive.google.com/file/d/0B_3MSu1Aedr_Tm5kcXVqYmQzSm8/view",
+        "video_url": "https://youtu.be/6KOoejoYP8A"
+      }
+    },
+    {
+      "id": "harvard_step",
+      "name": "Harvard Step Test",
+      "abbreviation": "Step test",
+      "category": ["Cardiac"],
+      "icf_domain": ["body_function"],
+      "outcome_measured": "VO2max (estimated)",
+      "outcome_unit": "Liters/minute",
+      "hoac_relevance": ["step_1", "step_7"],
+      "curriculum": ["Clinimetrics 2", "Physiology 2-3"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Field-based aerobic capacity assessment when cycle ergometer unavailable",
+        "clinical_reasoning_question": "What factors might affect validity in this patient (musculoskeletal issues, balance)?",
+        "common_student_error": "Using in patients with lower limb pathology affecting stepping ability"
+      },
+      "resources": {
+        "video_url": "https://youtu.be/UoDUoW_YKm4"
+      }
+    },
+    {
+      "id": "4dsq",
+      "name": "4 Dimensional Symptom Questionnaire",
+      "abbreviation": "4DSQ",
+      "category": ["Musculoskeletal", "Neurological", "Cardiac", "Pulmonary", "Geriatric"],
+      "icf_domain": ["body_function", "personal_factors"],
+      "outcome_measured": "Distress, Depression, Anxiety, Somatization",
+      "outcome_unit": "Subscale scores",
+      "hoac_relevance": ["step_1", "step_2"],
+      "curriculum": ["Clinimetrics 2", "Psychology 1", "Assessment 2"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Screening for psychological factors in chronic pain, unexplained symptoms",
+        "clinical_reasoning_question": "How do psychological factors influence this patient's presentation and prognosis?",
+        "common_student_error": "Not addressing elevated scores or referring appropriately"
+      },
+      "resources": {
+        "protocol_url": "https://sgeinternational.nl/wp-content/uploads/2016/10/SGE-I-formulier-4DKL-English.pdf"
+      },
+      "interpretation": {
+        "distress_normal": "0-10",
+        "distress_moderate": "11-20",
+        "distress_high": "21-32",
+        "depression_normal": "0-2",
+        "depression_elevated": "3-5",
+        "depression_high": ">5",
+        "anxiety_normal": "0-3",
+        "anxiety_moderate": "4-9",
+        "anxiety_high": "10-24",
+        "somatization_normal": "0-10",
+        "somatization_moderate": "11-20",
+        "somatization_high": "21-32"
+      }
+    },
+    {
+      "id": "6mwt",
+      "name": "6 Minute Walk Test",
+      "abbreviation": "6MWT",
+      "category": ["Musculoskeletal", "Neurological", "Cardiac", "Pulmonary", "Geriatric"],
+      "icf_domain": ["body_function", "activity"],
+      "outcome_measured": "Cardiovascular Endurance, Muscular Endurance, Gait",
+      "outcome_unit": "Meters",
+      "hoac_relevance": ["step_1", "step_7"],
+      "curriculum": ["Clinimetrics 2", "Physiology 2-4", "Assessment 2, 4"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Cardiac, pulmonary, neurological conditions - submaximal functional exercise capacity",
+        "clinical_reasoning_question": "How does the distance walked relate to community ambulation requirements?",
+        "common_student_error": "Not standardizing encouragement, track length, or monitoring symptoms"
+      },
+      "resources": {
+        "protocol_url": "https://neuropt.org/docs/default-source/cpgs/core-outcome-measures/core-outcome-measures-drafts--march-2018/6mwt_protocol_final.pdf",
+        "video_url": "https://www.youtube.com/watch?v=JoItwfswbm4",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/6-minute-walk-test"
+      },
+      "interpretation": {
+        "community_ambulation": ">300m",
+        "limited_community": "200-300m",
+        "household": "<200m"
+      },
+      "clinimetric_properties": {
+        "mcid_copd": "25-33m",
+        "mcid_chf": "43m"
+      }
+    },
+    {
+      "id": "dash",
+      "name": "Disabilities of the Arm, Shoulder and Hand",
+      "abbreviation": "DASH",
+      "category": ["Musculoskeletal"],
+      "icf_domain": ["body_function", "participation"],
+      "outcome_measured": "Upper extremity disability",
+      "outcome_unit": "Score (0-100)",
+      "hoac_relevance": ["step_1", "step_2", "step_3", "step_7"],
+      "curriculum": ["Clinimetrics 2", "Assessment 2"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Upper extremity conditions - outcome measurement",
+        "clinical_reasoning_question": "Which specific upper limb activities are most limiting for this patient?",
+        "common_student_error": "Not analyzing which items are scoring highest"
+      },
+      "resources": {
+        "protocol_url": "https://www.sralab.org/sites/default/files/2017-06/DASH.pdf"
+      }
+    },
+    {
+      "id": "fim",
+      "name": "Functional Independence Measure",
+      "abbreviation": "FIM",
+      "category": ["Neurological"],
+      "icf_domain": ["body_function", "activity", "participation"],
+      "outcome_measured": "Independence in ADL, Mobility",
+      "outcome_unit": "Score (18-126)",
+      "hoac_relevance": ["step_1", "step_2", "step_3", "step_7"],
+      "curriculum": ["Clinimetrics 2", "Neurology 1-2", "Assessment 3"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Rehabilitation settings - comprehensive ADL and mobility assessment",
+        "clinical_reasoning_question": "Which motor vs cognitive items are most impaired?",
+        "common_student_error": "Not separating motor (91 points) and cognitive (35 points) subscores"
+      },
+      "resources": {
+        "protocol_url": "https://www.aast.org/Assets/861012da-9cc3-46d4-b5cf-a5284f97f8dc/637261796786700000/ipv-elderly-fim-data-sheet-pdf"
+      }
+    },
+    {
+      "id": "ndi",
+      "name": "Neck Disability Index",
+      "abbreviation": "NDI",
+      "category": ["Musculoskeletal", "Neurological"],
+      "icf_domain": ["body_function", "participation"],
+      "outcome_measured": "Neck pain disability",
+      "outcome_unit": "Score/Percentage",
+      "hoac_relevance": ["step_1", "step_2", "step_3", "step_7"],
+      "curriculum": ["Clinimetrics 2", "Assessment 2"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Neck pain conditions - baseline and outcome assessment",
+        "clinical_reasoning_question": "Which activities (reading, driving, work) are most affected?",
+        "common_student_error": "Not connecting NDI items to specific treatment targets"
+      },
+      "resources": {
+        "protocol_url": "https://www.sralab.org/sites/default/files/2017-07/NDI.pdf"
+      },
+      "interpretation": {
+        "no_disability": "0-4",
+        "mild": "5-14",
+        "moderate": "15-24",
+        "severe": "25-34",
+        "complete": "35-50"
+      }
+    },
+    {
+      "id": "tampa",
+      "name": "Tampa Scale for Kinesiophobia",
+      "abbreviation": "Tampa/TSK",
+      "category": ["Musculoskeletal"],
+      "icf_domain": ["activity", "personal_factors"],
+      "outcome_measured": "Fear of movement",
+      "outcome_unit": "Score (17-68)",
+      "hoac_relevance": ["step_1", "step_2", "step_3"],
+      "curriculum": ["Clinimetrics 2", "Assessment 2"],
+      "type": "Mandatory",
+      "coaching_prompts": {
+        "when_to_use": "Chronic pain, post-injury - assessing fear-avoidance beliefs",
+        "clinical_reasoning_question": "How is kinesiophobia contributing to activity avoidance and disability?",
+        "common_student_error": "Not targeting kinesiophobia specifically with education and graded exposure"
+      },
+      "resources": {
+        "protocol_url": "http://www.tac.vic.gov.au/__data/assets/pdf_file/0004/27454/tampa_scale_kinesiophobia.pdf"
+      },
+      "interpretation": {
+        "low_kinesiophobia": "<37",
+        "high_kinesiophobia": ">=37"
+      }
+    },
+    {
+      "id": "hoos",
+      "name": "Hip Dysfunction and Osteoarthritis Outcome Score",
+      "abbreviation": "HOOS",
+      "category": ["Musculoskeletal"],
+      "icf_domain": ["body_function", "activity", "participation"],
+      "outcome_measured": "Hip pain and function",
+      "outcome_unit": "Score (0-100 per subscale)",
+      "hoac_relevance": ["step_1", "step_2", "step_3", "step_7"],
+      "curriculum": ["Assessment 2"],
+      "type": "Recommended",
+      "coaching_prompts": {
+        "when_to_use": "Hip osteoarthritis, hip arthroplasty, hip pathology",
+        "clinical_reasoning_question": "Which subscale (pain, symptoms, ADL, sport, QoL) is most affected?",
+        "common_student_error": "Only reporting total score without subscale analysis"
+      }
+    },
+    {
+      "id": "koos",
+      "name": "Knee Injury and Osteoarthritis Outcome Score",
+      "abbreviation": "KOOS",
+      "category": ["Musculoskeletal"],
+      "icf_domain": ["body_function", "activity", "participation"],
+      "outcome_measured": "Knee pain and function",
+      "outcome_unit": "Score (0-100 per subscale)",
+      "hoac_relevance": ["step_1", "step_2", "step_3", "step_7"],
+      "curriculum": ["Assessment 2"],
+      "type": "Recommended",
+      "coaching_prompts": {
+        "when_to_use": "Knee osteoarthritis, ACL injury, meniscus pathology",
+        "clinical_reasoning_question": "Which subscale (pain, symptoms, ADL, sport, QoL) is most affected?",
+        "common_student_error": "Only reporting total score without subscale analysis"
+      }
+    },
+    {
+      "id": "womac",
+      "name": "Western Ontario and McMaster Universities Arthritis Index",
+      "abbreviation": "WOMAC",
+      "category": ["Musculoskeletal"],
+      "icf_domain": ["body_function", "activity"],
+      "outcome_measured": "OA pain, stiffness, function",
+      "outcome_unit": "Score",
+      "hoac_relevance": ["step_1", "step_2", "step_3", "step_7"],
+      "curriculum": ["Assessment 2"],
+      "type": "Recommended",
+      "coaching_prompts": {
+        "when_to_use": "Hip and knee osteoarthritis",
+        "clinical_reasoning_question": "Is pain, stiffness, or functional limitation the primary issue?",
+        "common_student_error": "Not using subscales to guide intervention focus"
+      }
+    },
+    {
+      "id": "hr",
+      "name": "Heart Rate Measurement",
+      "abbreviation": "HR",
+      "category": ["Orthopedic", "Cardiovascular", "Pulmonary", "Geriatric"],
+      "icf_domain": ["body_function"],
+      "outcome_measured": "Heart Rate",
+      "outcome_unit": "Beats per minute",
+      "hoac_relevance": ["step_1", "step_4", "step_6", "step_7"],
+      "curriculum": ["Physiology 2-4", "Interventions 2", "Assessment 2, 4"],
+      "type": "Recommended",
+      "coaching_prompts": {
+        "when_to_use": "Exercise prescription, cardiovascular monitoring",
+        "clinical_reasoning_question": "How are you using heart rate to guide exercise intensity?",
+        "common_student_error": "Not considering medications affecting heart rate (beta-blockers)"
+      }
+    },
+    {
+      "id": "nhpt",
+      "name": "Nine Hole Peg Test",
+      "abbreviation": "NHPT",
+      "category": ["Neurological", "Complex", "Geriatric"],
+      "icf_domain": ["body_function", "activity"],
+      "outcome_measured": "Dexterity",
+      "outcome_unit": "Seconds",
+      "hoac_relevance": ["step_1", "step_7"],
+      "curriculum": ["Assessment 3"],
+      "type": "Recommended",
+      "coaching_prompts": {
+        "when_to_use": "Upper extremity dexterity in neurological conditions",
+        "clinical_reasoning_question": "How does dexterity relate to the patient's ADL requirements?",
+        "common_student_error": "Not comparing affected vs unaffected side"
+      },
+      "resources": {
+        "protocol_url": "https://www.sralab.org/sites/default/files/2017-07/Nine%20Hole%20Peg%20Test%20Instructions.pdf",
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/nine-hole-peg-test"
+      }
+    },
+    {
+      "id": "spadi",
+      "name": "Shoulder Pain and Disability Index",
+      "abbreviation": "SPADI",
+      "category": ["Musculoskeletal"],
+      "icf_domain": ["body_function", "activity", "participation"],
+      "outcome_measured": "Shoulder pain and disability",
+      "outcome_unit": "Score (0-100, higher = worse)",
+      "hoac_relevance": ["step_1", "step_2", "step_3", "step_7"],
+      "curriculum": ["Assessment 2", "Case Study 2"],
+      "type": "Recommended",
+      "coaching_prompts": {
+        "when_to_use": "All shoulder conditions — primary patient-reported outcome measure for shoulder pain and function",
+        "clinical_reasoning_question": "Which subscale (pain vs disability) is driving the overall score? How does this inform your treatment priorities?",
+        "common_student_error": "Not analyzing pain and disability subscales separately — a high pain score with low disability suggests different treatment focus than the reverse"
+      },
+      "resources": {
+        "sralab_url": "https://www.sralab.org/rehabilitation-measures/shoulder-pain-and-disability-index"
+      },
+      "clinimetric_properties": {
+        "mcid": "8-13 points",
+        "subscales": {
+          "pain": "5 items (0-50)",
+          "disability": "8 items (0-80)"
+        },
+        "reliability": "Good to excellent (ICC 0.89-0.95)"
+      },
+      "interpretation": {
+        "minimal_disability": "0-20",
+        "mild_disability": "21-40",
+        "moderate_disability": "41-60",
+        "severe_disability": "61-80",
+        "very_severe_disability": "81-100"
+      }
+    },
+    {
+      "id": "cms",
+      "name": "Constant-Murley Score",
+      "abbreviation": "CMS",
+      "category": ["Musculoskeletal"],
+      "icf_domain": ["body_function", "activity"],
+      "outcome_measured": "Shoulder function (clinician-rated + patient-reported)",
+      "outcome_unit": "Score (0-100, higher = better)",
+      "hoac_relevance": ["step_1", "step_2", "step_7"],
+      "curriculum": ["Assessment 2", "Case Study 2"],
+      "type": "Recommended",
+      "coaching_prompts": {
+        "when_to_use": "Post-operative shoulder assessment, comprehensive functional evaluation combining subjective and objective domains",
+        "clinical_reasoning_question": "Which domain (pain, ADL, ROM, strength) is most impaired? Does the strength component require dynamometry?",
+        "common_student_error": "Not standardizing the strength measurement component — requires hand-held dynamometer in specific position for reliable results"
+      },
+      "resources": {
+        "key_article": "Constant CR, Murley AH. A clinical method of functional assessment of the shoulder. Clin Orthop Relat Res. 1987;(214):160-4"
+      },
+      "clinimetric_properties": {
+        "mcid": "10-17 points",
+        "subscales": {
+          "pain": "15 points",
+          "adl": "20 points",
+          "rom": "40 points",
+          "strength": "25 points"
+        },
+        "reliability": "Moderate to good (ICC 0.80-0.94)"
+      },
+      "interpretation": {
+        "excellent": "86-100",
+        "good": "71-85",
+        "moderate": "56-70",
+        "poor": "<56"
+      }
+    },
+    {
+      "id": "sst",
+      "name": "Simple Shoulder Test",
+      "abbreviation": "SST",
+      "category": ["Musculoskeletal"],
+      "icf_domain": ["activity", "participation"],
+      "outcome_measured": "Shoulder functional limitation",
+      "outcome_unit": "Score (0-12, number of 'yes' answers)",
+      "hoac_relevance": ["step_1", "step_2", "step_3", "step_7"],
+      "curriculum": ["Assessment 2"],
+      "type": "Recommended",
+      "coaching_prompts": {
+        "when_to_use": "Quick functional assessment for shoulder conditions, pre/post-operative monitoring",
+        "clinical_reasoning_question": "Which specific functional tasks can the patient not perform? How do these relate to their participation goals?",
+        "common_student_error": "Not connecting SST items to patient-specific activity limitations and goals"
+      },
+      "clinimetric_properties": {
+        "mcid": "2 points",
+        "note": "12 yes/no questions about functional shoulder tasks"
+      }
+    },
+    {
+      "id": "pcs",
+      "name": "Pain Catastrophizing Scale",
+      "abbreviation": "PCS",
+      "category": ["Musculoskeletal", "Neurological", "Complex"],
+      "icf_domain": ["personal_factors", "body_function"],
+      "outcome_measured": "Pain catastrophizing (rumination, magnification, helplessness)",
+      "outcome_unit": "Score (0-52)",
+      "hoac_relevance": ["step_1", "step_2"],
+      "curriculum": ["Psychology 1", "Assessment 2", "Case Study 2"],
+      "type": "Recommended",
+      "coaching_prompts": {
+        "when_to_use": "Chronic or subacute pain conditions where catastrophizing is suspected as perpetuating factor. Especially relevant in shoulder tendinopathy with yellow flags.",
+        "clinical_reasoning_question": "How is catastrophizing contributing to this patient's pain experience and activity avoidance? Which subscale (rumination, magnification, helplessness) is dominant?",
+        "common_student_error": "Not recognizing catastrophizing as modifiable factor — treating it as fixed personality trait rather than targetable with education and graded exposure"
+      },
+      "resources": {
+        "key_article": "Sullivan MJL, Bishop SR, Pivik J. The Pain Catastrophizing Scale: Development and Validation. Psychol Assess. 1995;7(4):524-32"
+      },
+      "clinimetric_properties": {
+        "mcid": "Not firmly established; clinical significance typically >38% change",
+        "subscales": {
+          "rumination": "Items 8-11 (0-16)",
+          "magnification": "Items 6,7,13 (0-12)",
+          "helplessness": "Items 1-5,12 (0-24)"
+        }
+      },
+      "interpretation": {
+        "low_catastrophizing": "0-14",
+        "moderate_catastrophizing": "15-29",
+        "clinically_relevant": ">=30",
+        "high_catastrophizing": ">=38"
+      }
+    },
+    {
+      "id": "ompq",
+      "name": "Örebro Musculoskeletal Pain Questionnaire",
+      "abbreviation": "ÖMPQ",
+      "category": ["Musculoskeletal"],
+      "icf_domain": ["body_function", "activity", "participation", "personal_factors"],
+      "outcome_measured": "Risk of work disability and chronic pain development",
+      "outcome_unit": "Score (0-210)",
+      "hoac_relevance": ["step_1", "step_2"],
+      "curriculum": ["Assessment 2", "Case Study 2", "Psychology 1"],
+      "type": "Recommended",
+      "coaching_prompts": {
+        "when_to_use": "Subacute musculoskeletal pain (4-12 weeks) to screen for chronicity risk. Especially relevant for shoulder patients with work-related risk factors.",
+        "clinical_reasoning_question": "What is this patient's risk profile for developing chronic pain/disability? How does this change your treatment priorities?",
+        "common_student_error": "Using only for screening without integrating results into treatment planning — high ÖMPQ should shift focus toward psychosocial interventions"
+      },
+      "resources": {
+        "key_article": "Linton SJ, Boersma K. Early identification of patients at risk of developing a persistent back pain disability. Clin J Pain. 2003;19(2):80-86"
+      },
+      "clinimetric_properties": {
+        "note": "25-item screening questionnaire covering pain, function, psychological factors, work factors"
+      },
+      "interpretation": {
+        "low_risk": "<90",
+        "moderate_risk": "90-105",
+        "high_risk": ">105",
+        "very_high_risk": ">130"
+      }
+    },
+    {
+      "id": "quickdash",
+      "name": "Quick Disabilities of Arm, Shoulder and Hand",
+      "abbreviation": "QuickDASH",
+      "category": ["Musculoskeletal"],
+      "icf_domain": ["body_function", "activity", "participation"],
+      "outcome_measured": "Upper extremity disability (shortened version of DASH)",
+      "outcome_unit": "Score (0-100, higher = worse)",
+      "hoac_relevance": ["step_1", "step_2", "step_3", "step_7"],
+      "curriculum": ["Assessment 2", "Case Study 2"],
+      "type": "Recommended",
+      "coaching_prompts": {
+        "when_to_use": "Upper extremity conditions — shorter alternative to full DASH (11 items vs 30). Optional work and sport/performing arts modules.",
+        "clinical_reasoning_question": "How does the patient's QuickDASH score correlate with their patient-specific complaints? Are the optional modules relevant for this patient?",
+        "common_student_error": "Not administering optional work or sport modules when these are the patient's primary participation restrictions"
+      },
+      "resources": {
+        "protocol_url": "https://www.dash.iwh.on.ca/quickdash"
+      },
+      "clinimetric_properties": {
+        "mcid": "8-12 points",
+        "items": "11 core items + optional 4-item work module + optional 4-item sport module",
+        "reliability": "Good (ICC 0.90-0.94)"
+      }
+    },
+    {
+      "id": "ases",
+      "name": "American Shoulder and Elbow Surgeons Score",
+      "abbreviation": "ASES",
+      "category": ["Musculoskeletal"],
+      "icf_domain": ["body_function", "activity"],
+      "outcome_measured": "Shoulder pain and function",
+      "outcome_unit": "Score (0-100, higher = better)",
+      "hoac_relevance": ["step_1", "step_2", "step_7"],
+      "curriculum": ["Assessment 2"],
+      "type": "Recommended",
+      "coaching_prompts": {
+        "when_to_use": "Shoulder conditions — particularly post-operative monitoring. Widely used in orthopaedic research.",
+        "clinical_reasoning_question": "How does this score compare to normative values? Is the pain or function component more limiting?",
+        "common_student_error": "Not recognizing that ASES is heavily weighted toward self-reported function — combine with objective measures"
+      },
+      "clinimetric_properties": {
+        "mcid": "6.4-16.9 points (varies by condition)",
+        "subscales": {
+          "pain": "50% of total score (single VAS item)",
+          "function": "50% of total score (10 ADL items)"
+        }
+      }
+    },
+    {
+      "id": "worc",
+      "name": "Western Ontario Rotator Cuff Index",
+      "abbreviation": "WORC",
+      "category": ["Musculoskeletal"],
+      "icf_domain": ["body_function", "activity", "participation"],
+      "outcome_measured": "Quality of life specific to rotator cuff pathology",
+      "outcome_unit": "Score (0-2100, higher = worse; often converted to percentage)",
+      "hoac_relevance": ["step_1", "step_2", "step_3", "step_7"],
+      "curriculum": ["Assessment 2"],
+      "type": "Recommended",
+      "coaching_prompts": {
+        "when_to_use": "Specifically for rotator cuff pathology — captures domains beyond pain and function including emotional and lifestyle impact",
+        "clinical_reasoning_question": "Which domain (physical symptoms, sports/recreation, work, lifestyle, emotions) is most affected? How does this guide your intervention priorities?",
+        "common_student_error": "Not using a condition-specific outcome measure when available — generic measures may miss important shoulder-specific limitations"
+      },
+      "clinimetric_properties": {
+        "mcid": "245-280 points (raw) or approximately 12-13%",
+        "subscales": {
+          "physical_symptoms": "6 items",
+          "sports_recreation": "4 items",
+          "work": "4 items",
+          "lifestyle": "4 items",
+          "emotions": "3 items"
+        }
+      }
+    }
+  ],
+  "tools_by_curriculum": {
+    "clinimetrics_1": ["bmi", "psfs", "bp", "rom", "hhd", "mrc", "nprs", "psc", "vas", "slht", "fms", "y_test", "vjt"],
+    "clinimetrics_2": ["10mwt", "tug", "bi", "borg", "tct", "astrand", "harvard_step", "4dsq", "6mwt", "dash", "fim", "ndi", "tampa", "spadi", "cms", "sst", "pcs", "ompq", "quickdash", "ases", "worc"],
+    "clinimetrics_3": ["5tsts", "mmse", "bbs", "demmi", "fes_i", "mini_best", "mas", "mi", "fac", "sppb", "mpas"],
+    "clinimetrics_4": ["tfi", "2mwt", "poma", "gse"]
+  },
+  "tools_by_icf_domain": {
+    "body_function": ["bmi", "bp", "rom", "hhd", "mrc", "nprs", "vas", "slht", "fms", "10mwt", "mmse", "tfi", "borg", "tct", "mas", "mi", "astrand", "4dsq", "hr", "spadi", "cms", "pcs", "ompq", "quickdash", "ases", "worc"],
+    "activity": ["psfs", "psc", "tug", "5tsts", "bi", "bbs", "demmi", "fes_i", "mini_best", "fac", "sppb", "2mwt", "poma", "gse", "tampa", "fim", "dash", "nhpt", "spadi", "cms", "sst", "quickdash", "ases", "worc"],
+    "participation": ["psfs", "demmi", "fes_i", "gse", "fim", "ndi", "dash", "hoos", "koos", "spadi", "sst", "quickdash", "worc"],
+    "personal_factors": ["4dsq", "tampa", "gse", "pcs", "ompq"]
+  },
+  "tools_by_category": {
+    "musculoskeletal": ["bmi", "psfs", "rom", "hhd", "mrc", "nprs", "vas", "slht", "fms", "y_test", "vjt", "10mwt", "5tsts", "bbs", "demmi", "sppb", "astrand", "4dsq", "6mwt", "dash", "ndi", "tampa", "hoos", "koos", "womac", "spadi", "cms", "sst", "pcs", "ompq", "quickdash", "ases", "worc"],
+    "neurological": ["bmi", "psfs", "rom", "hhd", "mrc", "nprs", "vas", "10mwt", "tug", "5tsts", "mmse", "bi", "tct", "bbs", "demmi", "fes_i", "mini_best", "mas", "mi", "fac", "sppb", "mpas", "2mwt", "poma", "4dsq", "6mwt", "fim", "ndi", "nhpt"],
+    "cardiac": ["bmi", "bp", "borg", "astrand", "6mwt", "4dsq"],
+    "pulmonary": ["bmi", "bp", "borg", "sppb", "6mwt", "4dsq"],
+    "geriatric": ["bmi", "psfs", "rom", "hhd", "mrc", "nprs", "vas", "10mwt", "tug", "5tsts", "mmse", "tfi", "bbs", "demmi", "fes_i", "sppb", "2mwt", "poma", "gse", "4dsq", "6mwt", "nhpt"]
+  }
+}

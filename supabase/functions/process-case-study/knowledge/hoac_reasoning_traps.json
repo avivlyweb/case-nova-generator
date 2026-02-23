@@ -1,0 +1,286 @@
+{
+  "version": "2.0",
+  "description": "Common clinical reasoning errors (traps) organized by HOAC step, with detection cues and coaching responses",
+  "source": "Compiled from ESP teaching experience and AI in CR education research (Shen 2025, Wu 2025)",
+
+  "reasoning_traps": {
+    "general": [
+      {
+        "id": "premature_closure",
+        "name": "Premature Closure",
+        "description": "Accepting the first hypothesis without considering alternatives",
+        "hoac_steps": [2, 4],
+        "detection_cues": [
+          "Single hypothesis stated",
+          "No competing explanations mentioned",
+          "Quick certainty about diagnosis/mechanism"
+        ],
+        "example": "Immediately concluding 'disc herniation' based on leg pain without considering other causes",
+        "coaching_response": "You've identified one possible explanation. What alternative mechanisms could also explain these findings?",
+        "prevention_strategy": "Always require at least 2 competing hypotheses for major problems"
+      },
+      {
+        "id": "confirmation_bias",
+        "name": "Confirmation Bias",
+        "description": "Seeking or interpreting information to confirm initial hypothesis while ignoring contradictory evidence",
+        "hoac_steps": [4],
+        "detection_cues": [
+          "Dismissing findings that don't fit hypothesis",
+          "Overweighting supportive evidence",
+          "Not addressing contradictory results"
+        ],
+        "example": "Ignoring negative neurological signs while emphasizing pain patterns that support radiculopathy hypothesis",
+        "coaching_response": "I notice you haven't addressed [contradictory finding]. How does this fit with your hypothesis?",
+        "prevention_strategy": "Explicitly ask: 'What finding here might challenge your hypothesis?'"
+      },
+      {
+        "id": "anchoring",
+        "name": "Anchoring Bias",
+        "description": "Over-relying on initial information and failing to adjust reasoning based on new data",
+        "hoac_steps": [1, 2, 4],
+        "detection_cues": [
+          "Returning to initial impression despite new information",
+          "Referring diagnosis mentioned in referral",
+          "Not updating hypothesis after assessment"
+        ],
+        "example": "Continuing to focus on 'muscle strain' mentioned by GP despite findings suggesting different mechanism",
+        "coaching_response": "The referral mentioned [X], but your findings suggest [Y]. How should we integrate this new information?",
+        "prevention_strategy": "Treat referral diagnosis as hypothesis to test, not confirmed truth"
+      }
+    ],
+
+    "step_specific": {
+      "step_1": [
+        {
+          "id": "psychosocial_dismissal",
+          "name": "Psychosocial Factor Dismissal",
+          "description": "Rushing past or dismissing psychosocial context as less important than biomedical factors",
+          "detection_cues": [
+            "Brief mention of work/life without exploration",
+            "No yellow flag identification",
+            "Focus only on physical symptoms"
+          ],
+          "example": "Noting 'works in office' without exploring work stress, deadline pressure, or fear-avoidance",
+          "coaching_response": "You've noted the occupation. How might their work demands, stress, or beliefs about the condition affect prognosis?",
+          "prevention_strategy": "Systematically address psychosocial factors using structured screening"
+        },
+        {
+          "id": "red_flag_assumption",
+          "name": "Red Flag Assumption",
+          "description": "Assuming red flags are absent without systematic screening",
+          "detection_cues": [
+            "No mention of red flag screening",
+            "Quick dismissal: 'nothing serious'",
+            "No documentation of safety screening"
+          ],
+          "example": "Proceeding to problem list without confirming absence of cauda equina symptoms, unexplained weight loss, or night pain",
+          "coaching_response": "Before we proceed, have we ruled out red flags? What specific safety features have we screened for?",
+          "prevention_strategy": "Always document red flag screening, even when negative"
+        }
+      ],
+
+      "step_2": [
+        {
+          "id": "diagnosis_as_problem",
+          "name": "Diagnosis as Problem",
+          "description": "Stating a medical diagnosis instead of a functional problem",
+          "detection_cues": [
+            "Problem statement is a diagnosis (e.g., 'LBP', 'rotator cuff tear')",
+            "No 'unable to' or 'difficulty with' language",
+            "ICF coding at diagnosis level rather than activity/participation"
+          ],
+          "example": "'The problem is non-specific low back pain' instead of 'Unable to sit through work meetings'",
+          "coaching_response": "That's a diagnosis, not a functional problem. If this condition resolved, what would the patient be able to DO that they can't do now?",
+          "prevention_strategy": "Require all PIPs to start with 'Unable to...' or 'Difficulty with...'"
+        },
+        {
+          "id": "impairment_only_list",
+          "name": "Impairment-Only Problem List",
+          "description": "Listing only body function impairments without connecting to activity limitations",
+          "detection_cues": [
+            "Problems are all at b-code level",
+            "No activities or participation mentioned",
+            "Patient's functional concerns not reflected"
+          ],
+          "example": "Problem list: 1) Reduced ROM, 2) Muscle weakness, 3) Joint stiffness",
+          "coaching_response": "These are impairments. How do they affect what the patient does in daily life? What can't they do because of these impairments?",
+          "prevention_strategy": "Start with PIPs (patient perspective), then link NPIPs to them"
+        },
+        {
+          "id": "untestable_hypothesis",
+          "name": "Non-Testable Hypothesis",
+          "description": "Forming hypotheses that cannot be confirmed or refuted through assessment",
+          "detection_cues": [
+            "Vague mediator terms",
+            "No falsification criteria",
+            "Circular reasoning"
+          ],
+          "example": "'The pain is caused by tissue damage' - how would you test this?",
+          "coaching_response": "How would you test this hypothesis? What finding would make you reconsider it?",
+          "prevention_strategy": "Every hypothesis must include: What test? What expected result? What would change your mind?"
+        },
+        {
+          "id": "single_mediator_syndrome",
+          "name": "Single Mediator for All Problems",
+          "description": "Applying one mediator (e.g., 'core weakness') to explain all problems",
+          "detection_cues": [
+            "Same mediator appears in multiple hypotheses",
+            "No problem-specific reasoning",
+            "Over-simplified causal model"
+          ],
+          "example": "'Core weakness' as mediator for sitting intolerance, walking difficulty, and lifting problems",
+          "coaching_response": "You've used the same mediator for several problems. Could there be different mechanisms at play? Why this mediator over alternatives?",
+          "prevention_strategy": "Consider mediators specific to each problem's characteristics"
+        }
+      ],
+
+      "step_3": [
+        {
+          "id": "standard_battery",
+          "name": "Standard Test Battery",
+          "description": "Selecting tests because they are 'standard' rather than hypothesis-driven",
+          "detection_cues": [
+            "Same tests for different patients",
+            "No explanation of test purpose",
+            "Tests not linked to hypotheses"
+          ],
+          "example": "Adding goniometry, manual muscle testing, and special tests 'because we always do them'",
+          "coaching_response": "For each of these tests, can you tell me which hypothesis it helps you evaluate?",
+          "prevention_strategy": "Link every test to a specific hypothesis before including it"
+        },
+        {
+          "id": "test_without_consequence",
+          "name": "Test Without Decision Consequence",
+          "description": "Including tests that won't actually change clinical decisions",
+          "detection_cues": [
+            "No decision rule specified",
+            "Would proceed same way regardless of result",
+            "Test is 'for documentation'"
+          ],
+          "example": "Measuring ROM 'to have a baseline' without specifying how it affects treatment",
+          "coaching_response": "What would you do differently if this test is positive versus negative?",
+          "prevention_strategy": "Specify decision rules for each test before performing it"
+        }
+      ],
+
+      "step_5": [
+        {
+          "id": "intervention_as_goal",
+          "name": "Intervention Described as Goal",
+          "description": "Setting goals that describe what will be done rather than what will be achieved",
+          "detection_cues": [
+            "Goal includes intervention description",
+            "No functional outcome specified",
+            "Focus on doing rather than achieving"
+          ],
+          "example": "'Patient will perform 3x10 squats' instead of 'Patient will climb stairs without pain'",
+          "coaching_response": "That sounds like an intervention, not a goal. What functional OUTCOME would performing squats lead to?",
+          "prevention_strategy": "Goals should describe patient function, not therapist actions"
+        },
+        {
+          "id": "impairment_level_goal",
+          "name": "Goal Only at Impairment Level",
+          "description": "Setting goals at body function level without connection to activities",
+          "detection_cues": [
+            "Goal is 'increase ROM' or 'improve strength'",
+            "No activity or participation target",
+            "Patient priorities not reflected"
+          ],
+          "example": "'Achieve 90 degrees knee flexion' without connecting to functional need",
+          "coaching_response": "Why does the patient need this ROM? What will they be able to do with 90 degrees that they can't do now?",
+          "prevention_strategy": "Long-term goals must be at participation level; short-term goals connect to them"
+        }
+      ],
+
+      "step_6": [
+        {
+          "id": "fixed_protocol",
+          "name": "Fixed Protocol Without Adaptation",
+          "description": "Prescribing a set program without criteria for progression or modification",
+          "detection_cues": [
+            "No progression criteria",
+            "Same program regardless of response",
+            "No exit criteria"
+          ],
+          "example": "'Exercise 3x/week for 6 weeks' with no mention of when/how to progress",
+          "coaching_response": "What result would tell you this plan is working and ready for progression? What would tell you it's not working?",
+          "prevention_strategy": "Every intervention needs progression, regression, and exit criteria"
+        },
+        {
+          "id": "guideline_name_dropping",
+          "name": "Guideline Name-Dropping",
+          "description": "Citing a guideline without actually applying its recommendations",
+          "detection_cues": [
+            "Mentions guideline name without specifics",
+            "Dosage not aligned with guideline",
+            "Decision logic not from guideline"
+          ],
+          "example": "'KNGF recommends exercise' without specifying which exercise, what dose, or which recommendation",
+          "coaching_response": "Which specific recommendation from the guideline applies here? What does it say about dosage and progression?",
+          "prevention_strategy": "Quote specific guideline recommendations and apply them explicitly"
+        }
+      ],
+
+      "step_7": [
+        {
+          "id": "vague_reassessment",
+          "name": "Vague Re-evaluation Plan",
+          "description": "Stating need for re-evaluation without specifying when, how, or what would trigger change",
+          "detection_cues": [
+            "No timeline specified",
+            "No criteria for success/failure",
+            "No decision rules for plan modification"
+          ],
+          "example": "'Re-evaluate as needed' or 'check progress periodically'",
+          "coaching_response": "When specifically will you reassess? What result would make you modify the plan?",
+          "prevention_strategy": "Specify exact timeline and decision criteria before starting treatment"
+        },
+        {
+          "id": "overconfidence",
+          "name": "Overconfidence in Reasoning",
+          "description": "Expressing certainty without acknowledging limitations or alternatives",
+          "detection_cues": [
+            "No uncertainty expressed",
+            "No alternative explanations mentioned",
+            "Defensive when questioned"
+          ],
+          "example": "'This is definitely a motor control problem' without acknowledging other possibilities",
+          "coaching_response": "What might you be wrong about? What would change your mind?",
+          "prevention_strategy": "Always identify at least one assumption that could be wrong"
+        }
+      ]
+    }
+  },
+
+  "trap_prevention_checklist": {
+    "before_step_2": [
+      "Have I systematically screened for red flags?",
+      "Have I explored psychosocial factors?"
+    ],
+    "before_step_3": [
+      "Is each problem at activity/participation level?",
+      "Do I have competing hypotheses for major problems?",
+      "Is each mediator specific and testable?"
+    ],
+    "before_step_4": [
+      "Is each test linked to a hypothesis?",
+      "Have I specified what I'll do based on each result?"
+    ],
+    "before_step_5": [
+      "Have I addressed all findings, including contradictory ones?",
+      "Am I willing to revise my hypothesis if needed?"
+    ],
+    "before_step_6": [
+      "Is my long-term goal at participation level?",
+      "Do short-term goals connect to long-term goal?"
+    ],
+    "before_step_7": [
+      "Have I specified progression and exit criteria?",
+      "Does my intervention target my identified mediators?"
+    ],
+    "final_check": [
+      "Have I specified when and how to reassess?",
+      "What might I be wrong about?"
+    ]
+  }
+}

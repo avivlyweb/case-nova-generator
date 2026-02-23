@@ -1,0 +1,531 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "description": "KNGF (Royal Dutch Society for Physical Therapy) Clinical Practice Guidelines - Key Decision Points",
+    "purpose": "Quick reference for CRISP coaching on evidence-based physiotherapy decision-making",
+    "source_documents": [
+      "KNGF Guideline on Low Back Pain (2013, updated 2017)",
+      "KNGF Guideline on Neck Pain (2016)",
+      "KNGF Guideline on Hip and Knee Osteoarthritis (2018)",
+      "NHG-Standaard Schouderklachten M08 (Nederlands Huisartsen Genootschap)",
+      "NOV/FMS Richtlijn SAPS 2025 (Nederlandse Orthopaedische Vereniging)",
+      "SNN Basisprotocol Rotator Cuff Repair (Samenwerkingsverband Nazorg Netwerk)",
+      "JOSPT Clinical Practice Guideline: Rotator Cuff Tendinopathy 2025"
+    ],
+    "last_updated": "2025-02-21",
+    "usage_note": "These are key decision points extracted from full guidelines. Students should read complete guidelines for comprehensive understanding. Note: No dedicated KNGF guideline exists for shoulder pathology — NHG M08 and NOV/FMS SAPS serve as primary Dutch references."
+  },
+  "low_back_pain": {
+    "guideline_title": "KNGF Guideline on Low Back Pain",
+    "year": "2013/2017",
+    "scope": "Adults with non-specific low back pain with or without leg symptoms",
+    "classification": {
+      "acute": "<6 weeks",
+      "subacute": "6-12 weeks",
+      "chronic": ">12 weeks"
+    },
+    "diagnostic_process": {
+      "step_1_red_flag_screening": {
+        "purpose": "Exclude serious spinal pathology",
+        "red_flags": [
+          "Cauda equina syndrome symptoms (urinary retention, fecal incontinence, saddle anesthesia)",
+          "Progressive neurological deficit",
+          "Unexplained weight loss",
+          "History of cancer",
+          "Fever",
+          "Immunosuppression",
+          "Prolonged corticosteroid use",
+          "Age >55 with first episode",
+          "Severe trauma",
+          "Structural deformity",
+          "Thoracic pain"
+        ],
+        "action_if_present": "Consider urgent referral for medical evaluation and possible imaging",
+        "coaching_prompt": "What red flags did you screen for? What would you do if any were present?"
+      },
+      "step_2_yellow_flag_screening": {
+        "purpose": "Identify psychosocial risk factors for chronicity",
+        "yellow_flags": [
+          "Fear-avoidance beliefs about movement/work",
+          "Catastrophizing",
+          "Passive coping strategies",
+          "Depression/anxiety",
+          "Expectation that passive treatments will help",
+          "Social/work problems",
+          "Over-reliance on healthcare",
+          "Compensation/litigation issues"
+        ],
+        "assessment_tools": ["Tampa Scale for Kinesiophobia", "Fear-Avoidance Beliefs Questionnaire", "4DSQ"],
+        "action_if_present": "Address through education, cognitive-behavioral approaches, graded activity",
+        "coaching_prompt": "What yellow flags did you identify? How might these affect prognosis and your treatment approach?"
+      },
+      "step_3_specific_vs_nonspecific": {
+        "specific_lbp": "Identifiable pathoanatomical cause (fracture, infection, tumor, cauda equina, radiculopathy)",
+        "nonspecific_lbp": "No specific pathoanatomical diagnosis possible (~90% of LBP)",
+        "clinical_note": "Most patients have non-specific LBP. Treatment focuses on function, not finding specific tissue pathology.",
+        "coaching_prompt": "Is this specific or non-specific LBP? What evidence supports your classification?"
+      }
+    },
+    "imaging_decision": {
+      "indication": "Only if red flags present or to confirm suspected specific pathology",
+      "not_indicated": [
+        "Routine assessment of non-specific LBP",
+        "Patient request without clinical indication",
+        "Reassurance purposes"
+      ],
+      "rationale": "Imaging findings (disc degeneration, bulging) are common in asymptomatic individuals and may increase patient worry",
+      "coaching_prompt": "Would you recommend imaging for this patient? What does the guideline say about routine imaging?"
+    },
+    "treatment_recommendations": {
+      "recommended": [
+        {
+          "intervention": "Information and advice",
+          "description": "Reassurance, stay active, hurt ≠ harm, favorable prognosis",
+          "evidence": "Strong",
+          "coaching_prompt": "What key messages would you give this patient about their back pain?"
+        },
+        {
+          "intervention": "Supervised exercise therapy",
+          "description": "Any type of exercise (aerobic, strengthening, stretching, motor control)",
+          "evidence": "Strong for subacute/chronic",
+          "coaching_prompt": "What type of exercise would you choose for this patient and why?"
+        },
+        {
+          "intervention": "Graded activity/graded exposure",
+          "description": "Progressive increase in activity levels despite pain",
+          "evidence": "Strong for patients with fear-avoidance",
+          "coaching_prompt": "How would you implement graded activity with this patient?"
+        },
+        {
+          "intervention": "Behavioral treatment",
+          "description": "CBT approaches, addressing maladaptive beliefs",
+          "evidence": "Moderate-strong for chronic LBP with psychological factors",
+          "coaching_prompt": "What behavioral approaches would you incorporate?"
+        }
+      ],
+      "conditionally_recommended": [
+        {
+          "intervention": "Manual therapy",
+          "description": "Spinal manipulation/mobilization",
+          "condition": "Only as adjunct to exercise in acute/subacute phase",
+          "evidence": "Low-moderate",
+          "coaching_prompt": "Under what conditions might manual therapy be appropriate?"
+        }
+      ],
+      "not_recommended": [
+        {
+          "intervention": "Bed rest",
+          "rationale": "Prolongs recovery, increases disability"
+        },
+        {
+          "intervention": "Passive modalities alone",
+          "examples": "Ultrasound, TENS, laser, traction",
+          "rationale": "No evidence of benefit, may promote passive coping"
+        },
+        {
+          "intervention": "Routine imaging",
+          "rationale": "See imaging decision above"
+        }
+      ],
+      "coaching_prompt": "Does your intervention plan align with KNGF recommendations? What is the evidence level for your chosen interventions?"
+    },
+    "prognosis": {
+      "acute_lbp": "Most patients (70-90%) recover within 6 weeks",
+      "poor_prognostic_factors": [
+        "Yellow flags present",
+        "Previous episodes",
+        "Leg pain/radiculopathy",
+        "Higher baseline disability",
+        "Longer duration before treatment"
+      ],
+      "coaching_prompt": "What is the expected prognosis for this patient? What factors influence your prediction?"
+    }
+  },
+  "neck_pain": {
+    "guideline_title": "KNGF Guideline on Neck Pain",
+    "year": "2016",
+    "scope": "Adults with non-specific neck pain, WAD grades I-II, cervicogenic headache",
+    "classification": {
+      "grade_1_wad": "Neck pain, stiffness, tenderness only",
+      "grade_2_wad": "Neck complaints + musculoskeletal signs (decreased ROM, point tenderness)",
+      "grade_3_wad": "Neck complaints + neurological signs (decreased reflexes, weakness, sensory deficits)",
+      "grade_4_wad": "Neck complaints + fracture/dislocation"
+    },
+    "diagnostic_process": {
+      "red_flag_screening": {
+        "red_flags": [
+          "Severe trauma/fracture",
+          "Signs of myelopathy (gait disturbance, bilateral symptoms, bladder/bowel)",
+          "Signs of vertebral artery insufficiency (dizziness, diplopia, drop attacks, dysarthria, dysphagia, nystagmus)",
+          "Infection (fever, night sweats)",
+          "Malignancy (unexplained weight loss, history of cancer)",
+          "Inflammatory conditions (morning stiffness >1 hour, multiple joint involvement)"
+        ],
+        "coaching_prompt": "What red flags specific to neck pain did you assess?"
+      },
+      "prognostic_screening": {
+        "poor_prognostic_factors": [
+          "High initial pain intensity",
+          "High initial disability (NDI >30%)",
+          "Passive coping",
+          "Fear of movement",
+          "High catastrophizing",
+          "Low self-efficacy",
+          "Cold hyperalgesia (central sensitization indicator)",
+          "Prior neck pain episodes"
+        ],
+        "coaching_prompt": "What prognostic factors are present that might influence recovery?"
+      }
+    },
+    "treatment_recommendations": {
+      "recommended": [
+        {
+          "intervention": "Education and advice",
+          "description": "Reassurance, stay active, recovery expectations",
+          "evidence": "Strong"
+        },
+        {
+          "intervention": "Exercise therapy",
+          "description": "Strengthening, endurance, motor control exercises for neck/shoulder",
+          "evidence": "Strong"
+        },
+        {
+          "intervention": "Multimodal approach",
+          "description": "Combination of exercise + manual therapy + education",
+          "evidence": "Strong for WAD grades I-II"
+        }
+      ],
+      "conditionally_recommended": [
+        {
+          "intervention": "Manual therapy",
+          "condition": "As part of multimodal approach, not alone",
+          "evidence": "Moderate"
+        }
+      ],
+      "not_recommended": [
+        {
+          "intervention": "Collar immobilization",
+          "rationale": "May delay recovery"
+        },
+        {
+          "intervention": "Passive modalities alone",
+          "rationale": "Insufficient evidence"
+        }
+      ],
+      "coaching_prompt": "What multimodal approach would you implement for this neck pain patient?"
+    }
+  },
+  "hip_knee_osteoarthritis": {
+    "guideline_title": "KNGF Guideline on Hip and Knee Osteoarthritis",
+    "year": "2018",
+    "scope": "Adults with symptomatic hip or knee osteoarthritis",
+    "diagnosis": {
+      "clinical_criteria": [
+        "Age >45 years",
+        "Activity-related joint pain",
+        "Morning stiffness ≤30 minutes",
+        "No imaging required for diagnosis"
+      ],
+      "coaching_prompt": "Can you diagnose OA clinically or is imaging required?"
+    },
+    "treatment_principles": {
+      "core_interventions": [
+        {
+          "intervention": "Education and self-management",
+          "description": "Disease information, weight management, activity pacing",
+          "evidence": "Strong - all patients should receive"
+        },
+        {
+          "intervention": "Exercise therapy",
+          "description": "Strengthening (esp. quadriceps), aerobic exercise, flexibility",
+          "dosage": "2-3x/week, moderate intensity",
+          "evidence": "Strong - most important intervention"
+        },
+        {
+          "intervention": "Weight management",
+          "condition": "If BMI >25",
+          "target": "5-10% weight loss",
+          "evidence": "Strong"
+        }
+      ],
+      "adjunctive_interventions": [
+        {
+          "intervention": "Manual therapy",
+          "condition": "Short-term adjunct to exercise for hip OA",
+          "evidence": "Moderate"
+        },
+        {
+          "intervention": "Walking aids",
+          "condition": "When needed for pain relief and safety",
+          "evidence": "Expert opinion"
+        }
+      ],
+      "not_recommended": [
+        {
+          "intervention": "Passive modalities",
+          "examples": "Ultrasound, laser, electromagnetic therapy",
+          "rationale": "No evidence of benefit"
+        }
+      ],
+      "coaching_prompt": "What are the core interventions every OA patient should receive?"
+    },
+    "exercise_prescription": {
+      "strengthening": {
+        "focus": "Quadriceps, hip abductors, hamstrings",
+        "intensity": "Progressive, challenging but manageable",
+        "frequency": "2-3x/week",
+        "coaching_prompt": "How would you progress strengthening exercises for this OA patient?"
+      },
+      "aerobic": {
+        "options": ["Walking", "Cycling", "Swimming", "Aquatic exercise"],
+        "intensity": "Moderate (able to talk during exercise)",
+        "frequency": "30 min/day, 5 days/week",
+        "coaching_prompt": "What aerobic exercise options would you discuss with a patient who has knee OA?"
+      },
+      "pain_during_exercise": {
+        "acceptable": "Mild-moderate pain during/after exercise is acceptable",
+        "flare_management": "Temporary activity modification, not complete rest",
+        "coaching_prompt": "The patient is worried about exercising because of pain. What would you tell them?"
+      }
+    },
+    "referral_for_surgery": {
+      "indications": [
+        "Severe pain and disability despite optimal conservative management (6+ months)",
+        "Significant impact on quality of life",
+        "Radiographic evidence of OA (for surgical planning, not diagnosis)"
+      ],
+      "coaching_prompt": "When would you consider referring this OA patient for surgical consultation?"
+    }
+  },
+  "shoulder_complaints": {
+    "guideline_note": "No dedicated KNGF guideline exists for shoulder complaints. The following is synthesized from NHG M08, NOV/FMS SAPS 2025, SNN RC Repair Protocol, and JOSPT 2025 CPG.",
+    "applicable_guidelines": {
+      "nhg_m08": {
+        "title": "NHG-Standaard Schouderklachten M08",
+        "scope": "Primary care assessment and management of shoulder complaints",
+        "year": "Current edition"
+      },
+      "nov_fms_saps_2025": {
+        "title": "NOV/FMS Richtlijn Subacromiale Pijn Syndrome (SAPS)",
+        "scope": "Specialist-level diagnosis and management of subacromial pain syndrome",
+        "year": "2025"
+      },
+      "snn_rc_repair": {
+        "title": "SNN Basisprotocol Rotator Cuff Repair",
+        "scope": "Post-operative rehabilitation protocol for rotator cuff repair",
+        "year": "Current"
+      },
+      "jospt_rc_tendinopathy_2025": {
+        "title": "JOSPT Clinical Practice Guideline: Rotator Cuff Tendinopathy",
+        "scope": "Conservative management of rotator cuff tendinopathy",
+        "year": "2025"
+      }
+    },
+    "classification": {
+      "acute": "<6 weeks",
+      "subacute": "6-12 weeks",
+      "chronic": ">12 weeks"
+    },
+    "diagnostic_process": {
+      "step_1_red_flag_screening": {
+        "purpose": "Exclude serious pathology requiring urgent referral",
+        "red_flags": [
+          "Acute traumatic onset with significant weakness (suspect acute full-thickness tear)",
+          "Suspected fracture or dislocation (trauma mechanism, deformity)",
+          "Signs of infection (fever, warmth, erythema)",
+          "Suspected malignancy (unexplained weight loss, history of cancer, constant unrelenting pain)",
+          "Acute severe pain with inability to move shoulder (suspect septic arthritis)",
+          "Progressive neurological deficit (brachial plexopathy, cervical radiculopathy)"
+        ],
+        "action_if_present": "Urgent referral for medical evaluation and imaging",
+        "coaching_prompt": "What red flags did you screen for in this shoulder presentation? How do shoulder red flags differ from lumbar red flags?"
+      },
+      "step_2_yellow_flag_screening": {
+        "purpose": "Identify psychosocial risk factors for chronicity",
+        "yellow_flags": [
+          "Fear-avoidance beliefs about shoulder movement",
+          "Catastrophizing about shoulder damage",
+          "Low recovery expectations",
+          "Work-related stress or dissatisfaction",
+          "Passive coping strategies (expecting injection/surgery to fix it)",
+          "Previous negative healthcare experiences with shoulder",
+          "Compensation/litigation"
+        ],
+        "assessment_tools": ["TSK (Tampa Scale for Kinesiophobia)", "PCS (Pain Catastrophizing Scale)", "ÖMPQ (Örebro)", "4DSQ"],
+        "action_if_present": "Integrate psychosocial management into exercise-based treatment. Consider referral if severe.",
+        "coaching_prompt": "What yellow flags did you identify? How might these affect prognosis and your treatment approach for this shoulder patient?"
+      },
+      "step_3_diagnostic_approach_2025": {
+        "key_change": "NOV/FMS SAPS 2025 dismantles traditional orthopaedic test clusters",
+        "recommended_approach": "Single high-accuracy test strategy rather than test batteries",
+        "rule_in_test": "Empty Can Test (Jobe's) — high specificity for RC involvement",
+        "rule_out_test": "Hawkins-Kennedy Test — high sensitivity, negative effectively excludes subacromial involvement",
+        "symptom_modification_tests": "New 2025 concept — identify modifiable factors (scapular assistance, thoracic extension, humeral head relocation)",
+        "coaching_prompt": "You performed 6 special tests for this shoulder. What does the 2025 NOV guideline say about test clusters? Which single test would most change your reasoning?"
+      }
+    },
+    "imaging_decision": {
+      "jospt_2025_rule": "12-week imaging prohibition before conservative management failure is established",
+      "not_indicated": [
+        "Routine assessment before 12 weeks of conservative management",
+        "Patient or referrer request without clinical indication",
+        "Reassurance purposes"
+      ],
+      "indicated": [
+        "Red flags present (fracture, dislocation, infection, malignancy)",
+        "Acute traumatic onset with significant weakness (suspect acute full-thickness tear)",
+        "Failure of ≥12 weeks adequate conservative management",
+        "Pre-surgical planning"
+      ],
+      "rationale": "Structural findings poorly correlate with symptoms. Asymptomatic RC tears are common and increase with age. Early imaging may reinforce biomedical beliefs.",
+      "coaching_prompt": "The patient wants an MRI at 4 weeks. What does the 2025 evidence say? How would you explain this to the patient without dismissing their concerns?"
+    },
+    "treatment_recommendations": {
+      "recommended": [
+        {
+          "intervention": "Patient education and reassurance",
+          "description": "Explain tendinopathy (not 'inflammation'), favorable prognosis with active management, hurt ≠ harm, activity modification not cessation",
+          "evidence": "Strong (all guidelines)",
+          "coaching_prompt": "What key messages would you give this shoulder patient about their condition?"
+        },
+        {
+          "intervention": "Progressive exercise therapy (graduated tendon loading)",
+          "description": "Isometric → isotonic → eccentric → heavy slow resistance → functional loading",
+          "evidence": "Strong (JOSPT 2025, NOV/FMS 2025)",
+          "coaching_prompt": "What loading phase is appropriate for this patient's tendon irritability? How would you progress?"
+        },
+        {
+          "intervention": "Scapular motor control training",
+          "description": "Address scapular dyskinesis contributing to subacromial narrowing. Lower trapezius, serratus anterior focus.",
+          "evidence": "Moderate",
+          "coaching_prompt": "Did you assess scapular contribution to symptoms? What did the scapular assistance test show?"
+        },
+        {
+          "intervention": "Psychosocial factor management",
+          "description": "Screen and address fear-avoidance, catastrophizing, low recovery expectations",
+          "evidence": "Strong (extrapolated from MSK evidence, supported by JOSPT 2025)",
+          "coaching_prompt": "What psychosocial factors are influencing this patient's presentation?"
+        }
+      ],
+      "conditionally_recommended": [
+        {
+          "intervention": "Manual therapy (glenohumeral/thoracic mobilization)",
+          "condition": "Only as adjunct to exercise, not standalone",
+          "evidence": "Low-moderate"
+        },
+        {
+          "intervention": "Corticosteroid injection",
+          "condition": "NOT first-line. Only when pain prevents participation in exercise program",
+          "evidence": "Moderate short-term, negative long-term",
+          "caution": "May suppress collagen synthesis. Maximum 3 injections."
+        }
+      ],
+      "not_recommended": [
+        {
+          "intervention": "Therapeutic ultrasound",
+          "rationale": "Explicitly NOT recommended (JOSPT 2025, NOV/FMS 2025)"
+        },
+        {
+          "intervention": "ESWT",
+          "rationale": "Only for calcific tendinopathy. NOT for non-calcific RC tendinopathy."
+        },
+        {
+          "intervention": "PRP/Hyaluronic acid injection",
+          "rationale": "Not first-line. Insufficient evidence for routine use."
+        },
+        {
+          "intervention": "Opioid analgesics",
+          "rationale": "Must NOT be first-line for shoulder pain."
+        },
+        {
+          "intervention": "Complete rest/immobilization (for tendinopathy)",
+          "rationale": "Promotes tendon deconditioning, delays recovery."
+        }
+      ],
+      "coaching_prompt": "Does your intervention plan align with 2025 shoulder guidelines? What is the evidence level for your chosen interventions?"
+    },
+    "postoperative_rc_repair": {
+      "immobilization_tension": {
+        "nov_2025": "3 weeks for isolated supraspinatus, small-to-medium tear, good tissue quality",
+        "snn_baseline": "6 weeks as standard (4 weeks progressive, 8-10 weeks conservative variant)",
+        "clinical_reasoning_note": "This is a genuine clinical tension — both positions are evidence-informed. Tear size is the key moderator.",
+        "coaching_prompt": "The surgeon prescribed 6 weeks in a sling. The NOV 2025 guideline suggests 3 weeks may suffice for this tear profile. How do you navigate this?"
+      },
+      "rehabilitation_phases": ["Phase 1: Protection (0-3/6 weeks)", "Phase 2: Passive/Active-assisted ROM (3-8 weeks)", "Phase 3: Active ROM (6-12 weeks)", "Phase 4: Strengthening (12-20 weeks)", "Phase 5: Return to activity (20-26+ weeks)"],
+      "coaching_prompt": "What phase is this patient in? What criteria must be met before progressing?"
+    },
+    "prognosis": {
+      "rc_tendinopathy": "Good with consistent conservative management (8-12 weeks). 60-80% of patients improve significantly with exercise therapy alone.",
+      "post_rc_repair": "Full recovery typically 6-9 months. Return to overhead sport/heavy work may take 9-12 months.",
+      "poor_prognostic_factors": [
+        "Significant yellow flags (high TSK, high PCS)",
+        "Diabetes mellitus (increases stiffness risk, delays healing)",
+        "Duration of symptoms >6 months before treatment",
+        "Workers' compensation / litigation",
+        "Large/massive tear (post-op: higher re-tear risk)",
+        "Significant fatty infiltration of RC muscles"
+      ],
+      "coaching_prompt": "What is the expected prognosis for this patient? What factors are working for and against a good outcome?"
+    }
+  },
+  "common_coaching_scenarios": {
+    "student_recommends_imaging_without_indication": {
+      "scenario": "Student wants to order MRI for non-specific LBP without red flags",
+      "coaching_response": "What does the KNGF guideline say about imaging for non-specific LBP? What might be the unintended consequences of imaging for this patient?"
+    },
+    "student_focuses_only_on_biomedical_factors": {
+      "scenario": "Student ignores yellow flags and plans only manual therapy",
+      "coaching_response": "You've addressed the physical impairments. What psychosocial factors might be influencing this patient's presentation? How do these affect your treatment plan?"
+    },
+    "student_recommends_passive_treatment_alone": {
+      "scenario": "Student prescribes ultrasound and massage without active exercise",
+      "coaching_response": "What does the evidence say about passive modalities for this condition? How might passive-only treatment affect the patient's beliefs about their recovery?"
+    },
+    "student_advises_rest_and_activity_avoidance": {
+      "scenario": "Student tells patient to rest and avoid activities until pain-free",
+      "coaching_response": "What does the guideline recommend about activity levels? How might prolonged rest affect this patient's recovery?"
+    },
+    "student_sets_impairment_focused_goals": {
+      "scenario": "Student sets goal 'increase hip flexion ROM to 120 degrees'",
+      "coaching_response": "This goal focuses on an impairment. What functional activity does the patient want to achieve? How would you reframe this as an activity-level goal?"
+    }
+  },
+  "key_messages_for_patients": {
+    "low_back_pain": [
+      "Your back is strong - it's designed to move",
+      "Pain doesn't mean damage - hurt doesn't always equal harm",
+      "Staying active helps recovery - bed rest delays it",
+      "Most back pain improves within 6 weeks",
+      "X-rays and MRIs are rarely needed and often show 'normal aging' changes that worry people unnecessarily",
+      "Exercise is medicine for your back"
+    ],
+    "neck_pain": [
+      "Most neck pain is not serious and recovers well",
+      "Gentle movement helps - collars can delay recovery",
+      "Stress and tension contribute to neck pain - addressing these helps",
+      "Regular exercise and good posture support recovery"
+    ],
+    "osteoarthritis": [
+      "Arthritis can be managed - it doesn't mean the end of activity",
+      "Exercise is the most effective treatment - it won't wear out your joints",
+      "Some pain during exercise is normal and acceptable",
+      "Losing weight (if overweight) significantly reduces joint stress",
+      "You can still do activities you enjoy with some modifications"
+    ],
+    "shoulder_tendinopathy": [
+      "Your tendon is not torn or broken - it is sensitized and needs graduated loading",
+      "Complete rest makes tendons weaker - controlled loading makes them stronger",
+      "Pain during exercise is acceptable if it settles within 24 hours",
+      "Recovery takes time (8-12 weeks minimum) but the prognosis is good with consistent exercise",
+      "An MRI is usually not needed and often shows changes that are normal for your age",
+      "You don't need to stop all activities - modify them so you can keep moving"
+    ],
+    "shoulder_post_operative": [
+      "The repair needs protection initially, but movement will start sooner than you might expect",
+      "Stiffness is a common challenge after surgery - gentle, consistent ROM work is essential",
+      "Strengthening will begin when the tendon has healed enough - your physiotherapist will guide the timing",
+      "Full recovery takes 6-9 months - this is frustrating but the tendon needs time to remodel",
+      "Pain does not mean the repair has failed - discuss any concerns with your physiotherapist"
+    ]
+  }
+}

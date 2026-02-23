@@ -1,0 +1,504 @@
+{
+  "metadata": {
+    "case_id": "esp_002_henk",
+    "case_name": "Henk Visser - Blue-Collar Worker, COPD, and Cardiac Trajectory",
+    "format": "ESP Longitudinal Case Study",
+    "version": "2.0 CRISP Enhanced",
+    "age_progression": [48, 58, 68, 78],
+    "primary_themes": ["Occupational health", "COPD development", "Cardiac disease", "Working-class culture", "Health literacy", "Smoking cessation"],
+    "prevention_cure_care_focus": "Classic prevention opportunities missed, leading to cure then care",
+    "linked_courses": ["Case Study 4", "Assessment 4", "Interventions 4"],
+    "hoac_steps_covered": "All 7 steps"
+  },
+  "patient_overview": {
+    "name": "Henk Visser",
+    "setting": "You are a physiotherapist in a group practice in Zaandam, near a large industrial area.",
+    "narrative_arc": "Henk's story represents the trajectory of many working-class Dutch men: physically demanding work, smoking culture, delayed healthcare seeking, and progressive cardiopulmonary disease. It highlights the importance of occupational health, health literacy, and addressing barriers to lifestyle change."
+  },
+  "life_stage_1": {
+    "title": "Henk at 48 years old",
+    "presentation": {
+      "referral": "Self-referred",
+      "setting": "Private practice",
+      "chief_complaint": "Shoulder pain affecting work"
+    },
+    "patient_narrative": "Henk Visser is 48 years old and works as a supervisor at a shipyard in Zaandam. He's worked in the shipbuilding industry for 30 years, starting as a welder. He comes to your practice complaining of right shoulder pain that's been bothering him for 2 months, making it hard to do overhead work. Henk is a large man, clearly physically strong from years of manual work. He seems uncomfortable in the clinic setting and keeps saying 'I'm sure it's nothing, just need to get it sorted.' He mentions he's had a 'bit of a cough' for a while but attributes it to 'a cold that won't go away.' You notice nicotine stains on his fingers.",
+    "history_taking_findings": {
+      "shoulder": {
+        "onset": "Gradual, 2 months",
+        "location": "Right anterolateral shoulder",
+        "aggravating": "Overhead work, reaching across body",
+        "occupation": "Heavy manual work, overhead activities common"
+      },
+      "relevant_history": {
+        "smoking": "30 pack-years (20 cigarettes/day since age 18)",
+        "cough": "Productive cough most mornings for 'years', attributes to smoking",
+        "exercise_tolerance": "Admits getting more breathless on stairs lately",
+        "previous_injuries": "Multiple minor work injuries over years, 'nothing serious'"
+      },
+      "lifestyle": {
+        "alcohol": "5-6 beers most evenings after work, more on weekends",
+        "diet": "Wife cooks traditional Dutch food, large portions",
+        "physical_activity": "Physical work only, no recreational exercise"
+      },
+      "family": {
+        "marital_status": "Married 25 years to Joke (pronounced Yo-kuh)",
+        "children": "2 sons (26 and 24), both work in trades"
+      }
+    },
+    "physical_examination": {
+      "general": {
+        "bmi": 29,
+        "blood_pressure": "145/92 (does he know this? 'never checked')",
+        "appearance": "Ruddy complexion, barrel chest"
+      },
+      "shoulder": {
+        "rom": "Active flexion limited to 140°, pain with abduction >90°",
+        "strength": "Supraspinatus weakness 4/5",
+        "special_tests": "Neer positive, Hawkins positive",
+        "diagnosis": "Subacromial impingement syndrome"
+      },
+      "respiratory_observation": {
+        "breathing_pattern": "Slightly increased RR at rest (18/min)",
+        "cough": "During assessment, productive cough",
+        "clinical_note": "Signs suggesting undiagnosed COPD - recommend spirometry"
+      }
+    },
+    "outcome_measures": {
+      "nprs_shoulder": 6,
+      "dash": 38,
+      "cat_score": 12,
+      "estimated_borg_stairs": "Would likely be high - patient avoids stairs"
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b28014", "description": "Pain in upper limb", "qualifier": 2},
+        {"code": "b7100", "description": "Mobility of shoulder", "qualifier": 2},
+        {"code": "b730", "description": "Muscle power (shoulder)", "qualifier": 1},
+        {"code": "b440", "description": "Respiration functions", "qualifier": 1, "note": "Suspected, not yet diagnosed"}
+      ],
+      "activity_limitations": [
+        {"code": "d4452", "description": "Reaching", "qualifier": 2},
+        {"code": "d430", "description": "Lifting", "qualifier": 2},
+        {"code": "d4551", "description": "Climbing stairs", "qualifier": 1}
+      ],
+      "participation_restrictions": [
+        {"code": "d850", "description": "Remunerative employment", "qualifier": 1}
+      ],
+      "personal_factors": ["Working-class culture (tough it out)", "Low health literacy", "Normalizes symptoms", "Smoking culture in workplace"]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care?",
+        "teaching_answer": "Cure for shoulder (subacromial impingement is treatable). Prevention is the critical opportunity here - Henk has multiple cardiovascular and respiratory risk factors that, if not addressed, will lead to significant disease."
+      },
+      "q2": {
+        "question": "You notice signs of possible COPD. Is it within your scope to address this?",
+        "teaching_answer": "Yes - physiotherapists have a role in health promotion and screening. Actions: (1) Discuss observations with Henk, (2) Recommend GP visit for spirometry and BP check, (3) Provide brief smoking cessation advice or Very Brief Advice (VBA), (4) Communicate with GP. He may resist - approach sensitively."
+      },
+      "q3": {
+        "question": "What barriers might Henk have to addressing his health risks?",
+        "teaching_answer": "Barriers: (1) Workplace culture - smoking is normalized, (2) Masculinity norms - 'tough it out', don't seek healthcare, (3) Low health literacy - doesn't understand risks, (4) Denial - 'cough is just from smoking', (5) Alcohol use pattern, (6) Social life centered around smoking and drinking. Addressing these requires sensitivity and motivational approach, not lecturing."
+      },
+      "q4": {
+        "question": "Formulate an anticipated problem if current trajectory continues.",
+        "teaching_answer": "Anticipated problems: (1) COPD development/progression (already showing signs), (2) Cardiovascular event (hypertension + smoking + likely dyslipidemia), (3) Shoulder may become chronic if continues aggravating work without modification, (4) Early disability from cardiopulmonary disease."
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Treating only what he came for",
+        "description": "Focusing only on shoulder and ignoring the cough, breathlessness, and risk factors",
+        "coaching_response": "You've treated the shoulder successfully. But what about the productive cough and breathlessness he mentioned? Is it within our role to address this?"
+      },
+      {
+        "trap": "Assuming he'll change if informed",
+        "description": "Simply telling him smoking is bad and expecting change",
+        "coaching_response": "Henk has been smoking for 30 years. His workplace and social life involve smoking. Just telling him to quit won't work. What approach might be more effective?"
+      }
+    ]
+  },
+  "life_stage_2": {
+    "title": "Henk at 58 years old",
+    "presentation": {
+      "referral": "Pulmonologist referral for pulmonary rehabilitation",
+      "setting": "Hospital outpatient",
+      "chief_complaint": "Newly diagnosed COPD, breathlessness limiting work"
+    },
+    "patient_narrative": "Henk is now 58 and has been diagnosed with moderate COPD (GOLD Stage II) after a chest infection landed him in hospital for 3 days. He was forced to stop work early due to breathlessness and has been on sick leave for 6 weeks. He's been prescribed inhalers (Symbicort, Salbutamol) but admits he doesn't always use them correctly. He managed to cut down to 10 cigarettes a day but hasn't quit. His blood pressure is now treated (amlodipine). Henk seems defeated - 'I always thought I was fit because of my physical work. Turns out that doesn't count.' He's gained weight since stopping work (BMI now 32).",
+    "interval_history": {
+      "copd_diagnosis": {
+        "fev1": "62% predicted",
+        "gold_stage": "II (moderate)",
+        "trigger": "Hospitalized for chest infection"
+      },
+      "smoking": "Reduced to 10/day but not quit",
+      "work": "On sick leave 6 weeks, uncertain about return",
+      "weight_gain": "5 kg since stopping work",
+      "medications": ["Symbicort", "Salbutamol PRN", "Amlodipine"],
+      "mood": "Low - feels 'useless' not working"
+    },
+    "physical_examination": {
+      "general": {
+        "bmi": 32,
+        "blood_pressure": "135/85 (controlled)",
+        "respiratory_rate": 18,
+        "oxygen_saturation": "94%",
+        "chest": "Barrel chest, reduced expansion, wheeze on auscultation"
+      },
+      "functional_tests": {
+        "six_minute_walk": {
+          "distance": "380 meters",
+          "spo2_drop": "92%",
+          "borg_dyspnea": 6,
+          "borg_fatigue": 5
+        },
+        "sit_to_stand_1min": 18
+      },
+      "quadriceps_strength": "Weak compared to expected - peripheral muscle dysfunction"
+    },
+    "outcome_measures": {
+      "cat_score": 22,
+      "mmrc_dyspnea": 2,
+      "fev1_percent": 62,
+      "six_mwd": 380,
+      "hads": {
+        "anxiety": 8,
+        "depression": 10
+      }
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b440", "description": "Respiration functions", "qualifier": 2},
+        {"code": "b455", "description": "Exercise tolerance", "qualifier": 3},
+        {"code": "b730", "description": "Muscle power", "qualifier": 2},
+        {"code": "b152", "description": "Emotional functions", "qualifier": 2}
+      ],
+      "activity_limitations": [
+        {"code": "d450", "description": "Walking", "qualifier": 2},
+        {"code": "d4551", "description": "Climbing stairs", "qualifier": 3},
+        {"code": "d430", "description": "Lifting", "qualifier": 2}
+      ],
+      "participation_restrictions": [
+        {"code": "d850", "description": "Work", "qualifier": 3},
+        {"code": "d920", "description": "Recreation", "qualifier": 2}
+      ],
+      "personal_factors": ["Identity crisis (was 'strong worker')", "Low mood", "Still smoking", "Inaccurate illness beliefs"]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care?",
+        "teaching_answer": "Cure and Prevention. Pulmonary rehabilitation can significantly improve function and quality of life (cure of disability, not disease). Prevention of exacerbations, further decline, and cardiac complications is critical. Smoking cessation remains the most important intervention."
+      },
+      "q2": {
+        "question": "What are the goals of pulmonary rehabilitation for Henk?",
+        "teaching_answer": "Goals: (1) Improve exercise capacity (increase 6MWD), (2) Reduce dyspnea and fatigue, (3) Improve quality of life, (4) Reduce anxiety and depression, (5) Improve inhaler technique, (6) Support smoking cessation, (7) Enable return to work or meaningful activities. PR is evidence-based and highly effective."
+      },
+      "q3": {
+        "question": "Henk's FEV1 is 62%. Explain to a student what this means and how it affects exercise prescription.",
+        "teaching_answer": "FEV1 62% = moderate obstruction. Airways are narrowed, limiting airflow during expiration. During exercise: (1) Dynamic hyperinflation occurs (air trapping), (2) Increased work of breathing, (3) Earlier breathlessness. Exercise prescription: (1) Interval training may be better tolerated than continuous, (2) Use Borg for intensity (not HR alone), (3) Consider inspiratory muscle training if PImax low, (4) Allow adequate recovery."
+      },
+      "q4": {
+        "question": "Henk's HADS depression score is 10. How does this affect your approach?",
+        "teaching_answer": "HADS-D ≥8 suggests clinical depression. Depression in COPD is common (anxiety too) and associated with worse outcomes. Approach: (1) Acknowledge his feelings, (2) Explain depression is common with COPD, (3) Physical activity itself helps mood, (4) May need GP referral for further assessment/treatment. Don't ignore psychological status in respiratory rehab."
+      },
+      "q5": {
+        "question": "Design a pulmonary rehabilitation intervention for Henk.",
+        "teaching_answer": "PR program: (1) Frequency: 2-3x/week, 8-12 weeks; (2) Aerobic training: cycling and walking, interval format, Borg 4-6 dyspnea; (3) Resistance training: major muscle groups, especially quadriceps; (4) Breathing techniques: pursed lip breathing, diaphragmatic breathing; (5) Inhaler education: check technique every session; (6) Smoking cessation support: motivational interviewing, refer to specialized service; (7) Self-management education: action plan for exacerbations; (8) Nutritional advice if indicated."
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Avoiding smoking discussion",
+        "description": "Thinking 'he knows smoking is bad, no point mentioning it'",
+        "coaching_response": "Henk has reduced but not quit smoking. Every healthcare contact is an opportunity for Very Brief Advice. What's the evidence for brief interventions? How would you approach this conversation?"
+      },
+      {
+        "trap": "Underloading exercise",
+        "description": "Being too cautious because 'he has lung disease'",
+        "coaching_response": "Your exercise prescription seems quite light. What does the evidence say about training intensity in pulmonary rehabilitation? How do we know if we're providing sufficient stimulus?"
+      }
+    ]
+  },
+  "life_stage_3": {
+    "title": "Henk at 68 years old",
+    "presentation": {
+      "referral": "Cardiologist referral for cardiac rehabilitation",
+      "setting": "Hospital outpatient cardiac rehab",
+      "chief_complaint": "Post-NSTEMI with PCI and stent, also has worsening COPD"
+    },
+    "patient_narrative": "Henk is now 68 and has just had a heart attack (NSTEMI) treated with PCI and a stent to his LAD artery. He finally quit smoking 3 years ago after a serious COPD exacerbation. He retired at 62 on health grounds. His COPD has progressed to severe (GOLD III, FEV1 45%). He's lost muscle mass and now uses supplemental oxygen during exertion. His wife Joke (66) has become his primary caregiver, though she has her own knee problems. Henk says 'First my lungs, now my heart. I never thought I'd end up like this.' He seems frightened to exert himself since the heart attack.",
+    "interval_history": {
+      "cardiac_event": {
+        "type": "NSTEMI",
+        "treatment": "PCI with drug-eluting stent to LAD",
+        "days_post": 14,
+        "ejection_fraction": "45%"
+      },
+      "copd_status": {
+        "gold_stage": "III (severe)",
+        "fev1": "45% predicted",
+        "oxygen": "Uses 2L during exertion",
+        "exacerbations_past_year": 2
+      },
+      "smoking": "Quit 3 years ago (age 65)",
+      "retirement": "Retired at 62 on health grounds",
+      "medications": [
+        {"name": "Aspirin", "dose": "80mg"},
+        {"name": "Clopidogrel", "dose": "75mg"},
+        {"name": "Atorvastatin", "dose": "80mg"},
+        {"name": "Bisoprolol", "dose": "5mg"},
+        {"name": "Ramipril", "dose": "5mg"},
+        {"name": "Symbicort"},
+        {"name": "Tiotropium"},
+        {"name": "Salbutamol PRN"}
+      ],
+      "weight": "BMI 28 (lost some weight)",
+      "mood": "Anxious about heart, scared to exert"
+    },
+    "physical_examination": {
+      "general": {
+        "bmi": 28,
+        "blood_pressure": "125/78",
+        "resting_hr": 62,
+        "spo2_rest": "93%",
+        "spo2_exertion": "88% (with O2: 92%)"
+      },
+      "cardiac": {
+        "heart_sounds": "Normal",
+        "peripheral_edema": "Trace bilateral"
+      },
+      "respiratory": {
+        "chest": "Hyperinflated, reduced breath sounds",
+        "cough": "Occasional productive"
+      },
+      "musculoskeletal": {
+        "muscle_wasting": "Significant, especially quadriceps",
+        "grip_strength": "18 kg"
+      }
+    },
+    "exercise_test_results": {
+      "cpet_modified": {
+        "peak_hr": 95,
+        "hr_reserve_used": "Limited by dyspnea before cardiac limit",
+        "vo2_peak": "12 ml/kg/min (very low)",
+        "ventilatory_limitation": true,
+        "borg_dyspnea_peak": 8,
+        "spo2_nadir": "88%",
+        "ecg": "No ischemia"
+      },
+      "six_mwd_with_o2": "220 meters"
+    },
+    "outcome_measures": {
+      "six_mwd": 220,
+      "fev1_percent": 45,
+      "cat": 28,
+      "hads_anxiety": 12,
+      "hads_depression": 9,
+      "macnew_heart_disease_qol": "Poor"
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b410", "description": "Heart functions", "qualifier": 2},
+        {"code": "b440", "description": "Respiration functions", "qualifier": 3},
+        {"code": "b455", "description": "Exercise tolerance", "qualifier": 3},
+        {"code": "b730", "description": "Muscle power", "qualifier": 3},
+        {"code": "b152", "description": "Emotional functions (fear, anxiety)", "qualifier": 2}
+      ],
+      "activity_limitations": [
+        {"code": "d450", "description": "Walking", "qualifier": 3},
+        {"code": "d640", "description": "Housework", "qualifier": 3},
+        {"code": "d4551", "description": "Climbing stairs", "qualifier": 3}
+      ],
+      "participation_restrictions": [
+        {"code": "d920", "description": "Recreation", "qualifier": 3},
+        {"code": "d910", "description": "Community life", "qualifier": 3}
+      ],
+      "environmental_factors": [
+        {"code": "e1151", "description": "Oxygen equipment", "qualifier": "+2"},
+        {"code": "e310", "description": "Wife (Joke)", "qualifier": "+2", "note": "Caregiver but has own limitations"}
+      ]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care?",
+        "teaching_answer": "Primarily Cure (cardiac rehab improves outcomes) with Care elements (managing dual cardiopulmonary disease). Prevention of second cardiac event and COPD exacerbations remains important."
+      },
+      "q2": {
+        "question": "According to KNGF Cardiac Rehabilitation guideline, what risk factors did Henk have prior to his heart attack?",
+        "teaching_answer": "Risk factors: (1) Smoking (quit 3 years prior, but 30+ pack-year history), (2) COPD (independent risk factor for CVD), (3) Hypertension (treated), (4) Likely dyslipidemia, (5) Physical inactivity (beyond retirement), (6) Male sex, (7) Age. COPD patients have 2-3x increased CV risk."
+      },
+      "q3": {
+        "question": "How do you modify cardiac rehabilitation for someone with severe COPD?",
+        "teaching_answer": "Modifications: (1) Lower intensity may be needed (ventilatory limited before cardiac limit), (2) Interval training often better tolerated, (3) Supplemental O2 during exercise if desaturates <88%, (4) Monitor both cardiac (HR, BP, symptoms) AND respiratory (SpO2, Borg dyspnea), (5) Breathing techniques integrated, (6) May need combined cardiac-pulmonary rehab approach. Don't under-treat the heart because of the lungs."
+      },
+      "q4": {
+        "question": "Henk is scared to exert himself. How do you address this?",
+        "teaching_answer": "Cardiac anxiety is common and can limit rehabilitation. Approach: (1) Educate about what is safe - the heart was fixed, exercise is medicine, (2) Supervised graded exposure to exercise, (3) Teach him to differentiate angina from dyspnea (different sensations), (4) Show him his ECG is clear during exercise, (5) May need anxiety-focused interventions if severe (CBT, refer psychology)."
+      },
+      "q5": {
+        "question": "Calculate Henk's target heart rate for cardiac rehab.",
+        "teaching_answer": "Using Karvonen formula with beta-blocker adjustment. HR reserve = HRpeak (from test) - HRrest = 95 - 62 = 33. Target intensity 50-80% of HR reserve: Lower: (33 × 0.5) + 62 = 78.5 bpm. Upper: (33 × 0.8) + 62 = 88 bpm. Target range: 78-88 bpm. However, in Henk's case, ventilatory limitation and dyspnea may limit before HR target reached - use Borg as primary guide."
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Treating only the heart",
+        "description": "Focusing on cardiac rehab protocol without addressing COPD",
+        "coaching_response": "You've followed the cardiac rehab protocol. But Henk desaturates to 88% and stops due to dyspnea before reaching cardiac training zone. How do you integrate his COPD into the rehab?"
+      },
+      {
+        "trap": "Being too conservative",
+        "description": "Under-training because of fear of both conditions",
+        "coaching_response": "Your training intensity seems very low. What happens to someone with cardiac and pulmonary disease if we under-train them? How do we find the right balance?"
+      }
+    ]
+  },
+  "life_stage_4": {
+    "title": "Henk at 78 years old",
+    "presentation": {
+      "referral": "Pulmonologist referral for palliative pulmonary care",
+      "setting": "Home physiotherapy",
+      "chief_complaint": "End-stage COPD, heart failure, declining function"
+    },
+    "patient_narrative": "Henk is now 78 and has end-stage COPD (GOLD IV, FEV1 28%) and heart failure with reduced ejection fraction (35%). He's been hospitalized 4 times in the past year for exacerbations or heart failure decompensation. He now uses continuous oxygen at home (2-4L/min). His mobility is severely limited - he can walk to the bathroom with a rollator but needs to rest. Joke (now 76) has been his full-time caregiver but is exhausted and recently had a knee replacement herself. Their son Kees has moved back to help. Henk has discussed end-of-life wishes with his GP and has a DNR order. The pulmonologist has referred for 'maintenance physiotherapy to optimize quality of life.'",
+    "interval_history": {
+      "copd_status": {
+        "gold_stage": "IV (very severe)",
+        "fev1": "28% predicted",
+        "oxygen": "Continuous 2-4L/min",
+        "exacerbations_past_year": 4,
+        "hospitalizations": 4
+      },
+      "cardiac_status": {
+        "ejection_fraction": "35%",
+        "nyha_class": "III",
+        "hospitalizations": 2
+      },
+      "functional_status": "Housebound, needs assistance for most ADLs",
+      "weight": "BMI 24 (cachexia setting in)",
+      "medications": "Multiple (13 medications)",
+      "advance_directives": "DNR in place, has discussed euthanasia as future option if suffering unbearable"
+    },
+    "physical_examination": {
+      "general": {
+        "appearance": "Cachectic, pursed-lip breathing at rest, anxious",
+        "bmi": 24,
+        "spo2_rest": "91% on 2L O2",
+        "respiratory_rate": 22,
+        "peripheral_edema": "Moderate"
+      },
+      "functional": {
+        "gait": "With rollator and O2, 10 meters causes significant dyspnea",
+        "sit_to_stand": "Requires arms, 2 attempts",
+        "adl_status": "Needs help with bathing, can manage toileting with setup"
+      },
+      "mood": "Accepts his situation, some days better than others, worried about Joke"
+    },
+    "outcome_measures": {
+      "cat": 35,
+      "mmrc": 4,
+      "six_mwd": "Unable (6MWT contraindicated)",
+      "sppb": 3,
+      "barthel_index": 55,
+      "esas_symptom_assessment": {
+        "dyspnea": 7,
+        "fatigue": 8,
+        "pain": 3,
+        "anxiety": 5,
+        "depression": 4
+      }
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b440", "description": "Respiration functions", "qualifier": 4},
+        {"code": "b410", "description": "Heart functions", "qualifier": 3},
+        {"code": "b455", "description": "Exercise tolerance", "qualifier": 4},
+        {"code": "b730", "description": "Muscle power", "qualifier": 3}
+      ],
+      "activity_limitations": [
+        {"code": "d450", "description": "Walking", "qualifier": 4},
+        {"code": "d510", "description": "Washing", "qualifier": 3},
+        {"code": "d540", "description": "Dressing", "qualifier": 3}
+      ],
+      "participation_restrictions": [
+        {"code": "d910", "description": "Community life", "qualifier": 4}
+      ],
+      "environmental_factors": [
+        {"code": "e1101", "description": "Medications", "qualifier": "+1"},
+        {"code": "e1151", "description": "O2 equipment", "qualifier": "+2"},
+        {"code": "e310", "description": "Family (Joke, Kees)", "qualifier": "+3"}
+      ]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care?",
+        "teaching_answer": "Care. This is palliative/maintenance phase. Goals shift from improving function to maintaining quality of life, managing symptoms, supporting caregiver, and helping Henk live as well as possible for as long as possible."
+      },
+      "q2": {
+        "question": "What are appropriate physiotherapy goals at this stage?",
+        "teaching_answer": "Appropriate goals: (1) Maintain ability to transfer and toilet independently as long as possible, (2) Manage dyspnea with positioning and breathing techniques, (3) Prevent complete deconditioning, (4) Support caregiver (educate Joke and Kees), (5) Optimize comfort and quality of life. NOT appropriate: aggressive exercise goals, increasing 6MWD, etc."
+      },
+      "q3": {
+        "question": "Joke is exhausted from caregiving. How do you address this?",
+        "teaching_answer": "Caregiver burnout is a critical issue. Actions: (1) Assess Joke's wellbeing explicitly, (2) Educate family on sustainable caregiving, (3) Involve home care services, (4) Discuss respite options, (5) Include Kees in care routines, (6) Recognize Joke is a patient too. If caregiver collapses, patient's home care collapses."
+      },
+      "q4": {
+        "question": "Henk has a DNR and has discussed euthanasia. How does this affect your approach?",
+        "teaching_answer": "This indicates end-of-life awareness, common in Netherlands where euthanasia is legal. Physiotherapy approach: (1) Focus on quality of life, not quantity, (2) Respect his wishes, (3) Communicate with GP and palliative team, (4) Discuss what 'good days' look like and optimize for those, (5) Support him to maintain dignity and control. This is part of compassionate care."
+      },
+      "q5": {
+        "question": "Looking back over Henk's life, what intervention points could have changed his trajectory?",
+        "teaching_answer": "Critical points: (1) Age 48: Smoking cessation intervention, BP check and treatment, health education. (2) Age 58: More aggressive PR and complete smoking cessation. (3) Age 68: Optimal dual cardiac-pulmonary rehab. Each decade, opportunities existed. The most impactful would have been smoking cessation at 48 - would likely have prevented COPD progression and significantly reduced cardiac risk. This case illustrates primary prevention importance."
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Continuing active rehab approach",
+        "description": "Prescribing intensive exercise program because 'exercise is always good'",
+        "coaching_response": "You've prescribed a progressive exercise program. Is this appropriate for someone with end-stage disease on palliative care? What are realistic and meaningful goals here?"
+      },
+      {
+        "trap": "Focusing only on the patient",
+        "description": "Ignoring caregiver burden",
+        "coaching_response": "Joke is exhausted and just had knee surgery. Your treatment plan depends on her assistance. How sustainable is this? What happens if Joke can't continue?"
+      },
+      {
+        "trap": "Avoiding end-of-life discussion",
+        "description": "Being uncomfortable discussing prognosis and wishes",
+        "coaching_response": "Henk has a DNR and has discussed euthanasia with his GP. Have you explored what his priorities are for his remaining time? What would make his days 'good days'?"
+      }
+    ]
+  },
+  "longitudinal_reflection": {
+    "trajectory_summary": "Henk's story represents the classic trajectory of occupational and lifestyle-related disease in Dutch working-class men. Smoking, normalized in his workplace and social life, led to COPD, which combined with other risk factors caused cardiac disease. Earlier intervention, particularly smoking cessation, could have dramatically changed outcomes.",
+    "key_lessons": [
+      "Every clinical contact is an opportunity for health promotion and screening",
+      "Smoking cessation is the most effective intervention for COPD prognosis",
+      "COPD and CVD often co-exist and each worsens the other",
+      "Combined cardiac-pulmonary rehabilitation may be needed",
+      "End-stage care requires shift from cure to care focus",
+      "Caregiver health and sustainability is critical for home care"
+    ],
+    "dutch_context": {
+      "working_class_health": "Blue-collar workers have higher rates of smoking, CVD, and COPD",
+      "euthanasia_context": "Netherlands allows euthanasia - advance care discussions are normal",
+      "home_care_system": "Strong home care tradition but family caregivers still bear significant burden"
+    }
+  },
+  "teaching_notes": {
+    "key_competencies_assessed": [
+      "Pulmonary rehabilitation",
+      "Cardiac rehabilitation",
+      "Screening and health promotion",
+      "Combined cardiopulmonary management",
+      "Palliative care approach",
+      "Caregiver considerations"
+    ],
+    "guideline_integration": [
+      "KNGF Guideline Cardiac Rehabilitation",
+      "KNGF Guideline COPD",
+      "ATS/ERS Pulmonary Rehabilitation Statement"
+    ]
+  }
+}

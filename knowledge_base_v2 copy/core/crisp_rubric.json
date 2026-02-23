@@ -1,0 +1,288 @@
+{
+  "rubric_name": "ESP Clinical Reasoning Rubric - CRISP Hybrid",
+  "version": "2.0",
+  "source": "Adapted from ESP assessment criteria, integrated with CRISP coaching framework",
+  "purpose": [
+    "Student self-check and learning guidance",
+    "Lecturer assessment alignment",
+    "CRISP AI coaching and enforcement"
+  ],
+
+  "grading_philosophy": "Assess quality of reasoning under uncertainty, not correctness of diagnosis or treatment",
+
+  "domains": {
+    "A_problem_framing": {
+      "name": "Problem Framing",
+      "description": "Translation of patient story into rehabilitation-relevant problems",
+      "hoac_mapping": ["Step 1", "Step 2"],
+      "icf_focus": ["Activities (d)", "Participation (d)"],
+      "weight": "Essential",
+      
+      "criteria": {
+        "satisfactory": [
+          "PIPs expressed at activity or participation level",
+          "NPIPs are clinically relevant contributors",
+          "Clear distinction between complaint, problem, and impairment",
+          "Problems reflect patient's functional priorities"
+        ],
+        "weak": [
+          "Problems mainly at impairment level",
+          "Participation impact implied but not explicit",
+          "Limited connection to patient's daily life context"
+        ],
+        "error": [
+          "Problems stated as diagnoses",
+          "Pure impairment lists without functional meaning",
+          "No patient-identified problems included"
+        ]
+      },
+      
+      "crisp_enforcement": {
+        "interrupt_if": ["diagnosis_used_as_problem"],
+        "coach_if": ["impairment_focused_problem"],
+        "core_question": "If this problem resolved, what would the patient be able to do?"
+      },
+      
+      "feedback_templates": {
+        "satisfactory": "Your problem framing effectively captures the patient's functional limitations. The PIPs clearly reflect what matters to the patient.",
+        "weak": "Your problems identify relevant impairments, but could be strengthened by connecting them more explicitly to the patient's daily activities and participation.",
+        "error": "The problems as stated are diagnoses rather than functional limitations. Let's reframe: what can't the patient DO because of their condition?"
+      }
+    },
+
+    "B_hypothesis_mediator_logic": {
+      "name": "Hypothesis-Mediator Logic",
+      "description": "Quality of causal explanations linking problems to modifiable mechanisms",
+      "hoac_mapping": ["Step 2"],
+      "icf_focus": ["Body Functions (b)", "Body Structures (s)"],
+      "weight": "Essential",
+      
+      "criteria": {
+        "satisfactory": [
+          "Each hypothesis includes problem, specific mediator, and causal rationale",
+          "Competing hypotheses considered",
+          "Mediators are specific and testable",
+          "Clear mechanism linking mediator to problem"
+        ],
+        "weak": [
+          "Mediator vaguely defined",
+          "Limited justification for mediator choice",
+          "Only one hypothesis per problem",
+          "Mechanism implied but not explicit"
+        ],
+        "error": [
+          "Non-testable hypotheses",
+          "One mediator applied to all problems",
+          "No causal reasoning provided",
+          "Mediator is actually a diagnosis"
+        ]
+      },
+      
+      "crisp_enforcement": {
+        "interrupt_if": ["vague_or_nontestable_mediator"],
+        "challenge_if": ["single_mediator_reuse"],
+        "core_questions": [
+          "What change would falsify this hypothesis?",
+          "Why this mediator over alternatives?"
+        ]
+      },
+      
+      "feedback_templates": {
+        "satisfactory": "Strong hypothesis construction - you've clearly linked each problem to a specific, testable mediator with sound causal reasoning.",
+        "weak": "Your hypotheses identify relevant factors, but the mediators need to be more specific. What exactly would you measure to test this hypothesis?",
+        "error": "The hypothesis as stated cannot be tested. What measurable change would you expect to see if your hypothesis is correct?"
+      }
+    },
+
+    "C_assessment_decision_logic": {
+      "name": "Assessment Decision Logic",
+      "description": "Use of assessment to reduce uncertainty and guide decisions",
+      "hoac_mapping": ["Step 3", "Step 4"],
+      "icf_focus": ["Body Functions (b)", "Activities (d)"],
+      "weight": "Essential",
+      
+      "criteria": {
+        "satisfactory": [
+          "Tests explicitly linked to hypotheses",
+          "Results influence clinical decisions",
+          "Functional tests prioritized",
+          "Clear decision rules stated (if X, then Y)",
+          "Appropriate clinimetrics selected"
+        ],
+        "weak": [
+          "Test rationale partially explained",
+          "Limited decision consequences stated",
+          "Over-reliance on impairment testing",
+          "Some tests not clearly linked to hypotheses"
+        ],
+        "error": [
+          "Standard test batteries without reasoning",
+          "Tests that do not affect decisions",
+          "No hypothesis-test linkage",
+          "Missing critical assessments"
+        ]
+      },
+      
+      "crisp_enforcement": {
+        "interrupt_if": ["test_without_decision_consequence"],
+        "core_question": "What would you do differently if this test is positive vs negative?"
+      },
+      
+      "feedback_templates": {
+        "satisfactory": "Excellent assessment strategy - each test is clearly linked to a hypothesis and you've specified how results will influence your decisions.",
+        "weak": "Your test selection is reasonable, but consider: for each test, what would a positive vs negative result mean for your clinical reasoning?",
+        "error": "The assessment appears to be a standard battery rather than hypothesis-driven. Let's think about which tests will actually help you confirm or refute your hypotheses."
+      }
+    },
+
+    "D_goal_coherence": {
+      "name": "Goal Coherence",
+      "description": "Logical and patient-centred goal hierarchy",
+      "hoac_mapping": ["Step 5"],
+      "icf_focus": ["Participation (d)", "Activities (d)"],
+      "weight": "Essential",
+      
+      "criteria": {
+        "satisfactory": [
+          "Long-term goal at participation level",
+          "Short-term goals progressive and mechanism-linked",
+          "Goals measurable in function",
+          "Clear connection between short-term and long-term goals",
+          "Goals reflect patient priorities"
+        ],
+        "weak": [
+          "SMART format but limited functional relevance",
+          "Loose connection between short- and long-term goals",
+          "Goals somewhat impairment-focused",
+          "Limited patient priority integration"
+        ],
+        "error": [
+          "Goals describe interventions",
+          "Goals unrelated to patient priorities",
+          "No measurable criteria",
+          "Goals at wrong ICF level"
+        ]
+      },
+      
+      "crisp_enforcement": {
+        "coach_if": ["intervention_like_goal"],
+        "core_question": "How does achieving this goal change daily life for the patient?"
+      },
+      
+      "feedback_templates": {
+        "satisfactory": "Your goals form a coherent hierarchy from patient participation down to specific, measurable short-term objectives.",
+        "weak": "Your goals are SMART, but could better reflect what the patient actually wants to achieve. How do these connect to their identified problems?",
+        "error": "These read more like intervention descriptions than outcome goals. What functional change would the patient experience if successful?"
+      }
+    },
+
+    "E_intervention_and_re_evaluation": {
+      "name": "Intervention and Re-evaluation",
+      "description": "Adaptive intervention planning and evaluative thinking",
+      "hoac_mapping": ["Step 6", "Step 7"],
+      "icf_focus": ["All domains"],
+      "weight": "Essential",
+      
+      "criteria": {
+        "satisfactory": [
+          "Interventions target identified mediators",
+          "Clear progression and regression criteria",
+          "Re-evaluation timing and outcomes defined",
+          "Safety flags identified (red/yellow)",
+          "FITT parameters specified appropriately"
+        ],
+        "weak": [
+          "Re-evaluation present but vague",
+          "Limited adaptation logic",
+          "Progression criteria unclear",
+          "Some interventions not clearly linked to mediators"
+        ],
+        "error": [
+          "Fixed protocols without adaptation",
+          "Guideline name-dropping without decision logic",
+          "No failure criteria",
+          "Missing safety considerations"
+        ]
+      },
+      
+      "crisp_enforcement": {
+        "interrupt_if": ["no_failure_or_exit_criteria"],
+        "challenge_if": ["guideline_name_dropping"],
+        "core_question": "What result would tell you this plan is not working?"
+      },
+      
+      "feedback_templates": {
+        "satisfactory": "Your intervention plan is well-designed with clear mediator targeting, progression logic, and defined re-evaluation criteria.",
+        "weak": "The intervention approach is reasonable, but needs clearer criteria for when and how to adapt the plan. What would trigger a change?",
+        "error": "The plan lacks criteria for success or failure. Every intervention needs an exit strategy - what would tell you this isn't working?"
+      }
+    },
+
+    "F_reflection_and_self_correction": {
+      "name": "Reflection and Self-Correction",
+      "description": "Ability to evaluate, question, and adjust one's own reasoning",
+      "hoac_mapping": ["All steps"],
+      "icf_focus": ["All domains"],
+      "weight": "Essential",
+      
+      "criteria": {
+        "satisfactory": [
+          "Assumptions and uncertainty explicitly stated",
+          "Alternative explanations considered",
+          "Plan adjusted based on new information",
+          "Recognizes limits of own knowledge",
+          "Identifies potential biases in reasoning"
+        ],
+        "weak": [
+          "Reflection generic or descriptive",
+          "Bias awareness without consequences",
+          "Limited consideration of alternatives",
+          "Uncertainty acknowledged but not addressed"
+        ],
+        "error": [
+          "Overconfidence in conclusions",
+          "No alternatives considered",
+          "AI or guideline treated as absolute authority",
+          "Defensive when challenged",
+          "Unable to identify own assumptions"
+        ]
+      },
+      
+      "crisp_enforcement": {
+        "always_prompt": true,
+        "core_questions": [
+          "What might you be wrong about?",
+          "What would change your plan?",
+          "What assumption are you making that might need to be tested?"
+        ]
+      },
+      
+      "feedback_templates": {
+        "satisfactory": "Excellent metacognition - you've clearly identified your assumptions, considered alternatives, and shown willingness to adapt based on new information.",
+        "weak": "You've reflected on your reasoning, but could go deeper. What specifically might be wrong with your current approach?",
+        "error": "Critical reasoning requires recognizing uncertainty. No clinical reasoning is 100% certain - what are your key assumptions that might be challenged?"
+      }
+    }
+  },
+
+  "overall_rating_logic": {
+    "acceptable": {
+      "criteria": "No domain rated as error",
+      "description": "Reasoning demonstrates adequate quality across all domains"
+    },
+    "questionable": {
+      "criteria": "One or more domains rated as weak",
+      "description": "Reasoning has identifiable gaps that should be addressed"
+    },
+    "unsafe": {
+      "criteria": "Any domain rated as error",
+      "description": "Significant reasoning flaws that could impact patient safety"
+    }
+  },
+
+  "integration_notes": {
+    "knowledge_vs_skills": "This rubric assesses reasoning SKILLS, not factual knowledge. A student may demonstrate excellent reasoning process even if specific clinical facts need correction.",
+    "formative_use": "Designed primarily for formative feedback during learning, not summative grading.",
+    "crisp_role": "CRISP uses this rubric to guide coaching, not to formally assess students."
+  }
+}

@@ -1,0 +1,507 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "case_id": "neuro_001_stroke",
+    "case_name": "Subacute Stroke - Left MCA Infarct",
+    "category": "Neurological",
+    "difficulty": "Intermediate-Advanced",
+    "hoac_steps_covered": ["step_1", "step_2", "step_3", "step_4", "step_5", "step_6", "step_7"],
+    "icf_domains_covered": ["body_function", "body_structure", "activity", "participation", "environmental_factors", "personal_factors"],
+    "clinical_reasoning_focus": ["neurological assessment", "prognosis prediction", "goal setting with uncertain recovery", "discharge planning"],
+    "estimated_session_time": "60-75 minutes",
+    "guideline_reference": "KNGF Guideline on Stroke (2014), European Stroke Guidelines"
+  },
+  "patient_profile": {
+    "name": "Maria van den Berg",
+    "age": 68,
+    "gender": "Female",
+    "occupation": "Retired schoolteacher",
+    "living_situation": "Lives with husband (72, healthy) in two-story house, bedroom upstairs",
+    "hobbies": "Gardening, reading, weekly bridge club, caring for grandchildren",
+    "referral_source": "Neurology ward",
+    "referral_reason": "Inpatient rehabilitation following left MCA ischemic stroke",
+    "days_post_stroke": 12
+  },
+  "medical_information": {
+    "diagnosis": "Left middle cerebral artery (MCA) ischemic stroke",
+    "date_of_onset": "12 days ago",
+    "mechanism": "Cardioembolic - atrial fibrillation",
+    "imaging": "CT: Left MCA territory infarct involving motor cortex and corona radiata",
+    "thrombolysis": "tPA administered within 3 hours of symptom onset",
+    "complications": "None - no hemorrhagic transformation",
+    "medical_history": [
+      "Atrial fibrillation (newly diagnosed at stroke onset)",
+      "Hypertension (10 years, suboptimally controlled)",
+      "Type 2 diabetes (5 years, diet-controlled)",
+      "Hypercholesterolemia"
+    ],
+    "medications": [
+      {"name": "Apixaban", "dose": "5mg", "frequency": "Twice daily", "indication": "Anticoagulation for AF"},
+      {"name": "Metoprolol", "dose": "50mg", "frequency": "Daily", "indication": "Rate control"},
+      {"name": "Amlodipine", "dose": "10mg", "frequency": "Daily", "indication": "Hypertension"},
+      {"name": "Atorvastatin", "dose": "40mg", "frequency": "Daily", "indication": "Secondary prevention"},
+      {"name": "Metformin", "dose": "500mg", "frequency": "Twice daily", "indication": "Diabetes"}
+    ],
+    "allergies": "Penicillin"
+  },
+  "stroke_presentation": {
+    "initial_symptoms": [
+      "Sudden right-sided weakness",
+      "Slurred speech",
+      "Facial droop right side",
+      "Confusion"
+    ],
+    "nihss_admission": 12,
+    "nihss_current": 6,
+    "current_deficits": [
+      "Right hemiparesis (arm > leg)",
+      "Mild dysarthria (improving)",
+      "Right facial weakness (lower)",
+      "Mild attention deficits"
+    ]
+  },
+  "session_1_initial_assessment": {
+    "patient_narrative": "I woke up and couldn't move my right side. My husband called the ambulance. I was so scared - I thought I was dying. The doctors say I had a stroke. My right arm still doesn't work properly, and I'm worried I'll never be able to hold my grandchildren again or work in my garden. I've always been independent and I don't want to be a burden on Hans.",
+    "patient_goals_stated": [
+      "Walk without needing someone to hold me",
+      "Use my right hand to hold things",
+      "Go back home - I don't want to go to a nursing home",
+      "Be able to play with my grandchildren"
+    ],
+    "family_input": {
+      "husband_concerns": "Will she be able to manage the stairs at home? I want to help but I have a bad back myself.",
+      "family_support": "Two adult children living nearby, willing to help with care and transport"
+    }
+  },
+  "physical_examination": {
+    "observation": {
+      "posture_sitting": "Sitting balance fair, tends to list to right (pushing behavior minimal)",
+      "posture_standing": "Requires assistance, weight-bearing asymmetrical (favors left)",
+      "facial_expression": "Right lower facial droop, able to close eyes symmetrically",
+      "upper_limb_position": "Right arm held in flexion synergy pattern at rest",
+      "alertness": "Alert, oriented to person/place/time, mild attention deficits"
+    },
+    "motor_assessment": {
+      "motricity_index": {
+        "right_upper_limb": 42,
+        "right_lower_limb": 64,
+        "interpretation": "Moderate impairment UL, mild-moderate impairment LL"
+      },
+      "muscle_power_mrc": {
+        "right_shoulder_flexion": 2,
+        "right_shoulder_abduction": 2,
+        "right_elbow_flexion": 3,
+        "right_elbow_extension": 2,
+        "right_wrist_extension": 1,
+        "right_grip": 1,
+        "right_hip_flexion": 3,
+        "right_knee_extension": 4,
+        "right_ankle_dorsiflexion": 3,
+        "left_side": "5/5 throughout"
+      },
+      "synergy_patterns": {
+        "upper_limb": "Flexor synergy dominant - shoulder abduction/external rotation limited, elbow extension weak",
+        "lower_limb": "Emerging out of extensor synergy, some selective hip flexion possible"
+      }
+    },
+    "tone_assessment": {
+      "modified_ashworth_scale": {
+        "right_elbow_flexors": 1,
+        "right_wrist_flexors": "1+",
+        "right_ankle_plantarflexors": 1,
+        "interpretation": "Mild spasticity emerging, monitor for increase"
+      }
+    },
+    "sensory_assessment": {
+      "light_touch": "Diminished right arm and leg (can detect but not localize)",
+      "proprioception": "Impaired at right wrist and fingers, intact at elbow and ankle",
+      "clinical_implication": "Sensory deficits will affect motor learning and safety"
+    },
+    "balance_assessment": {
+      "trunk_control_test": {
+        "score": 74,
+        "interpretation": "Fair trunk control, good prognostic sign"
+      },
+      "sitting_balance": "Independent static, requires supervision for dynamic reaching",
+      "standing_balance": "Requires moderate assistance, weight shift to right limited",
+      "berg_balance_scale": {
+        "score": 24,
+        "interpretation": "High fall risk (wheelchair level)"
+      }
+    },
+    "mobility_assessment": {
+      "bed_mobility": "Modified independent with bedrail, rolls to left better than right",
+      "transfers": {
+        "sit_to_stand": "Moderate assistance x1",
+        "stand_pivot_transfer": "Moderate assistance x1",
+        "technique": "Leads with left, difficulty weight-shifting to right"
+      },
+      "gait": {
+        "functional_ambulation_category": 2,
+        "fac_description": "Dependent on physical assistance (level I) - needs continuous support of one person",
+        "distance": "10 meters with assistance and AFO",
+        "pattern": "Circumduction right leg, decreased right stance time, foot drop requiring AFO",
+        "assistive_device": "Quad cane + AFO, moderate assistance x1"
+      },
+      "stairs": "Not yet assessed - insufficient balance and strength"
+    },
+    "upper_limb_function": {
+      "action_research_arm_test": {
+        "score": 12,
+        "max_score": 57,
+        "interpretation": "Severe limitation, some grasp possible but no functional use"
+      },
+      "functional_use": "Unable to use right hand for ADLs, uses left hand for all tasks",
+      "voluntary_movement": "Can initiate shoulder flexion in synergy, minimal isolated finger movement"
+    },
+    "cognitive_screening": {
+      "mmse": {
+        "score": 25,
+        "interpretation": "Mild impairment (normal ≥27)"
+      },
+      "attention": "Mild deficits - distractible, needs redirection",
+      "neglect_screening": "Line bisection - no significant neglect",
+      "implications": "Cognitive deficits may affect learning, need clear simple instructions"
+    },
+    "communication": {
+      "speech": "Mild dysarthria - intelligible with effort",
+      "language_comprehension": "Intact for simple and complex commands",
+      "expression": "Occasional word-finding difficulties"
+    },
+    "outcome_measures_summary": {
+      "motricity_index_ul": 42,
+      "motricity_index_ll": 64,
+      "berg_balance_scale": 24,
+      "trunk_control_test": 74,
+      "fac": 2,
+      "barthel_index": 45,
+      "arat": 12,
+      "ten_meter_walk": "Not applicable - requires assistance",
+      "mmse": 25
+    }
+  },
+  "prognostic_indicators": {
+    "positive_factors": [
+      "Early presentation and tPA treatment",
+      "Good trunk control (TCT 74 - predicts walking ability)",
+      "Lower limb stronger than upper limb",
+      "Some voluntary UL movement present",
+      "No neglect",
+      "Good family support",
+      "High motivation",
+      "No significant cognitive impairment"
+    ],
+    "negative_factors": [
+      "Age 68 (older age associated with slower recovery)",
+      "Severe initial UL weakness (Motricity Index 42)",
+      "Proprioceptive deficits (affects motor learning)",
+      "Comorbidities (DM, HTN, AF)"
+    ],
+    "prediction_algorithms": {
+      "safe_score_walking": {
+        "factors": "Age, initial leg strength, trunk control",
+        "prediction": "Good probability of independent walking within 3 months (TCT >50 is strong predictor)"
+      },
+      "epos_upper_limb": {
+        "factors": "Day 2 shoulder abduction and finger extension",
+        "limitation": "Not fully applicable at day 12, but minimal finger extension is concerning for UL recovery"
+      }
+    },
+    "clinical_reasoning_note": "Prognosis for walking is good based on TCT and LL strength. UL functional recovery less certain - focus on compensation strategies while continuing to work on recovery."
+  },
+  "icf_mapping": {
+    "body_functions": [
+      {"code": "b730", "description": "Muscle power functions (right side)", "qualifier": 3, "qualifier_description": "Severe problem"},
+      {"code": "b735", "description": "Muscle tone functions (emerging spasticity)", "qualifier": 1, "qualifier_description": "Mild problem"},
+      {"code": "b760", "description": "Control of voluntary movement", "qualifier": 3, "qualifier_description": "Severe problem"},
+      {"code": "b770", "description": "Gait pattern functions", "qualifier": 3, "qualifier_description": "Severe problem"},
+      {"code": "b260", "description": "Proprioceptive function", "qualifier": 2, "qualifier_description": "Moderate problem"},
+      {"code": "b755", "description": "Involuntary movement reaction functions (balance)", "qualifier": 3, "qualifier_description": "Severe problem"},
+      {"code": "b164", "description": "Higher-level cognitive functions", "qualifier": 1, "qualifier_description": "Mild problem"}
+    ],
+    "activity_limitations": [
+      {"code": "d410", "description": "Changing basic body position", "qualifier": 2, "qualifier_description": "Moderate problem"},
+      {"code": "d420", "description": "Transferring oneself", "qualifier": 3, "qualifier_description": "Severe problem"},
+      {"code": "d450", "description": "Walking", "qualifier": 3, "qualifier_description": "Severe problem - requires assistance"},
+      {"code": "d445", "description": "Hand and arm use", "qualifier": 4, "qualifier_description": "Complete problem - no functional use"},
+      {"code": "d510", "description": "Washing oneself", "qualifier": 3, "qualifier_description": "Severe problem"},
+      {"code": "d540", "description": "Dressing", "qualifier": 3, "qualifier_description": "Severe problem"},
+      {"code": "d455", "description": "Moving around (stairs)", "qualifier": 4, "qualifier_description": "Complete problem"}
+    ],
+    "participation_restrictions": [
+      {"code": "d660", "description": "Assisting others (grandchildren)", "qualifier": 4, "qualifier_description": "Complete problem"},
+      {"code": "d620", "description": "Acquisition of goods (shopping)", "qualifier": 4, "qualifier_description": "Complete problem"},
+      {"code": "d920", "description": "Recreation and leisure (gardening, bridge)", "qualifier": 4, "qualifier_description": "Complete problem"}
+    ],
+    "environmental_factors": [
+      {"code": "e310", "description": "Immediate family (husband)", "qualifier": "+3", "qualifier_description": "Substantial facilitator"},
+      {"code": "e315", "description": "Extended family (children)", "qualifier": "+3", "qualifier_description": "Substantial facilitator"},
+      {"code": "e155", "description": "Design of buildings for private use (stairs at home)", "qualifier": "-3", "qualifier_description": "Severe barrier"},
+      {"code": "e120", "description": "Mobility equipment (AFO, walker)", "qualifier": "+2", "qualifier_description": "Moderate facilitator"}
+    ],
+    "personal_factors": {
+      "motivation": "High - very motivated to return home and resume activities",
+      "fear": "Worried about being a burden, fear of nursing home",
+      "previous_activity_level": "Active and independent",
+      "coping_style": "Problem-focused, realistic",
+      "self_efficacy": "Currently low but willing to work hard"
+    }
+  },
+  "problem_statements": {
+    "problems": [
+      {
+        "problem_number": 1,
+        "activity_limitation": "Unable to transfer independently (sit-to-stand, bed-chair) - requires moderate assistance x1",
+        "underlying_impairments": [
+          "Right lower limb weakness (MRC hip flexion 3, knee extension 4)",
+          "Impaired balance and weight shift to right",
+          "Reduced trunk control for dynamic tasks"
+        ],
+        "participation_impact": "Cannot be left alone safely, requires caregiver presence"
+      },
+      {
+        "problem_number": 2,
+        "activity_limitation": "Unable to walk independently - FAC 2, requires continuous physical assistance",
+        "underlying_impairments": [
+          "Right LE weakness with foot drop",
+          "Impaired balance (BBS 24)",
+          "Abnormal gait pattern (circumduction)",
+          "Reduced proprioception"
+        ],
+        "participation_impact": "Dependent for all mobility, cannot access community"
+      },
+      {
+        "problem_number": 3,
+        "activity_limitation": "Unable to use right hand for any functional tasks (ARAT 12/57)",
+        "underlying_impairments": [
+          "Severe right UL weakness (MI 42)",
+          "Flexor synergy pattern limiting selective movement",
+          "Impaired proprioception hand/wrist",
+          "Emerging wrist flexor spasticity"
+        ],
+        "participation_impact": "Cannot care for grandchildren, gardening not possible, needs help with all bimanual tasks"
+      },
+      {
+        "problem_number": 4,
+        "activity_limitation": "Unable to manage stairs",
+        "underlying_impairments": [
+          "Insufficient balance and strength",
+          "Fear of falling"
+        ],
+        "participation_impact": "Cannot access bedroom in current home - major barrier to discharge"
+      }
+    ]
+  },
+  "goals": {
+    "discharge_criteria": "Safe discharge home with husband as primary caregiver, community support in place",
+    "long_term_goal": {
+      "timeframe": "6 weeks (end of inpatient rehabilitation)",
+      "goal": "Discharge home with supervision-level mobility, independent transfers, and strategies to manage ADLs with one-handed techniques",
+      "outcome_measures": ["FAC ≥4", "BBS ≥41", "Barthel Index ≥75", "Safe stair negotiation with rail"]
+    },
+    "short_term_goals": [
+      {
+        "goal_number": 1,
+        "timeframe": "2 weeks",
+        "goal": "Perform sit-to-stand transfer with standby assistance only, using appropriate technique",
+        "linked_to_problem": 1,
+        "outcome_measure": "Transfer assessment, FIM transfer score"
+      },
+      {
+        "goal_number": 2,
+        "timeframe": "2 weeks",
+        "goal": "Walk 20 meters with quad cane and standby assistance (FAC 3)",
+        "linked_to_problem": 2,
+        "outcome_measure": "FAC, gait observation"
+      },
+      {
+        "goal_number": 3,
+        "timeframe": "4 weeks",
+        "goal": "Walk 50 meters with quad cane independently on level surfaces (FAC 4)",
+        "linked_to_problem": 2,
+        "outcome_measure": "FAC, 10MWT"
+      },
+      {
+        "goal_number": 4,
+        "timeframe": "3 weeks",
+        "goal": "Initiate voluntary right shoulder flexion to 90° with gravity eliminated (out of synergy)",
+        "linked_to_problem": 3,
+        "outcome_measure": "Motor assessment, ARAT subscore"
+      },
+      {
+        "goal_number": 5,
+        "timeframe": "4 weeks",
+        "goal": "Independently perform grooming and feeding using one-handed techniques and adaptive equipment",
+        "linked_to_problem": 3,
+        "outcome_measure": "ADL observation, Barthel self-care items"
+      },
+      {
+        "goal_number": 6,
+        "timeframe": "5 weeks",
+        "goal": "Negotiate 12 stairs with rail and supervision (to access bedroom)",
+        "linked_to_problem": 4,
+        "outcome_measure": "Stair assessment"
+      }
+    ]
+  },
+  "intervention_plan": {
+    "treatment_approach": "Task-specific, high-intensity, repetitive practice with focus on functional goals. Compensation where recovery limited, but continue to challenge motor recovery.",
+    "interventions": [
+      {
+        "category": "Gait training",
+        "intervention": "Task-specific overground gait training with appropriate assistance and AFO",
+        "rationale": "Repetitive, task-specific practice drives neuroplasticity. Walking is the priority functional goal.",
+        "dosage": "30-45 min daily, high repetition",
+        "progression": "Decrease assistance, increase distance, add challenges (turns, obstacles)",
+        "evidence": "Strong"
+      },
+      {
+        "category": "Balance training",
+        "intervention": "Progressive balance exercises - static to dynamic, supported to unsupported",
+        "rationale": "Balance is prerequisite for safe mobility. Weight-shifting to affected side critical.",
+        "dosage": "20 min daily",
+        "progression": "Sitting → Standing with support → Standing unsupported → Reaching → Perturbations",
+        "evidence": "Strong"
+      },
+      {
+        "category": "Strength training",
+        "intervention": "Progressive resistance training for affected lower limb",
+        "rationale": "Strength gains support functional improvement",
+        "dosage": "3x/week, functional exercises (sit-to-stand, step-ups)",
+        "evidence": "Moderate-strong"
+      },
+      {
+        "category": "Upper limb rehabilitation",
+        "intervention": "Repetitive task practice, constraint considerations, electrical stimulation if appropriate",
+        "rationale": "Some voluntary movement present - maximize recovery potential while teaching compensation",
+        "dosage": "45-60 min daily total (can include self-practice)",
+        "approach": "Combine recovery-focused exercises with one-handed technique training",
+        "evidence": "Moderate (CIMT criteria not met due to minimal hand function)"
+      },
+      {
+        "category": "Transfer training",
+        "intervention": "Repetitive sit-to-stand and transfer practice",
+        "rationale": "Critical for independence and safety",
+        "dosage": "Integrated into all sessions, aim for 30+ repetitions/day",
+        "evidence": "Strong"
+      },
+      {
+        "category": "Stair training",
+        "intervention": "Progressive stair negotiation training",
+        "rationale": "Essential for home discharge (bedroom upstairs)",
+        "timing": "Begin when standing balance adequate (BBS >35)",
+        "progression": "Step-to pattern with rail → Step-over pattern → Decreased reliance on rail",
+        "evidence": "Moderate"
+      },
+      {
+        "category": "ADL training",
+        "intervention": "One-handed technique training and adaptive equipment",
+        "rationale": "Maximize independence while UL recovery continues",
+        "collaboration": "With occupational therapy",
+        "evidence": "Moderate"
+      },
+      {
+        "category": "Education",
+        "intervention": "Patient and family education on stroke recovery, home exercise, safety",
+        "rationale": "Prepare for discharge, set realistic expectations, involve husband in care",
+        "topics": ["Stroke recovery timeline", "Fall prevention", "Home modifications needed", "Ongoing exercise importance"],
+        "evidence": "Strong"
+      }
+    ],
+    "intensity_considerations": {
+      "current_guidelines": "High-intensity, repetitive, task-specific practice",
+      "minimum_therapy_time": "3 hours/day recommended in stroke rehabilitation",
+      "patient_factors": "Age and cardiac history - monitor for fatigue, appropriate rest breaks"
+    },
+    "multidisciplinary_team": {
+      "physiotherapy": "Mobility, balance, gait, LL strengthening, transfers, stairs",
+      "occupational_therapy": "UL function, ADL training, home assessment, equipment",
+      "speech_therapy": "Dysarthria management, swallow if needed",
+      "nursing": "Medication, skin integrity, 24-hour rehabilitation approach",
+      "social_work": "Discharge planning, community services, family support",
+      "physician": "Medical management, secondary prevention"
+    }
+  },
+  "discharge_planning": {
+    "home_assessment_needed": true,
+    "key_issues": [
+      "Stairs to bedroom - can patient manage or need stairlift/bedroom relocation?",
+      "Bathroom accessibility - rails, shower seat needed",
+      "Husband's capacity to assist (has back problems)"
+    ],
+    "equipment_recommendations": [
+      "Quad cane or rollator for home",
+      "AFO (already fitted)",
+      "Shower seat and grab rails",
+      "Bed rail",
+      "Consider stairlift if stairs remain difficult"
+    ],
+    "community_services": [
+      "Outpatient or community physiotherapy continuation",
+      "Home care assistance initially",
+      "Day rehabilitation program option"
+    ],
+    "caregiver_training": {
+      "husband_training": [
+        "Standby assistance for transfers and stairs",
+        "Recognition of warning signs (new stroke symptoms)",
+        "Encouragement of independence - avoid over-helping"
+      ]
+    }
+  },
+  "reasoning_traps_for_this_case": [
+    {
+      "trap": "Neglecting upper limb because recovery is uncertain",
+      "description": "Focusing only on mobility and ignoring UL rehabilitation",
+      "coaching_response": "The patient has some voluntary UL movement. What does the evidence say about UL rehabilitation intensity? How can you balance recovery-focused and compensation approaches?"
+    },
+    {
+      "trap": "Setting unrealistic UL goals",
+      "description": "Promising full UL recovery despite poor prognostic signs",
+      "coaching_response": "What prognostic indicators help predict UL recovery? How do you set hopeful but realistic goals with this patient?"
+    },
+    {
+      "trap": "Underestimating importance of discharge planning",
+      "description": "Focusing only on impairments without considering home context",
+      "coaching_response": "How do the stairs at home affect your goal setting? What needs to happen for safe discharge?"
+    },
+    {
+      "trap": "Low treatment intensity",
+      "description": "Providing only 30 min/day of physiotherapy",
+      "coaching_response": "What does the evidence say about rehabilitation intensity after stroke? How can you maximize practice opportunities?"
+    },
+    {
+      "trap": "Ignoring the husband as part of the team",
+      "description": "Not involving caregiver in rehabilitation and planning",
+      "coaching_response": "The husband will be the primary caregiver at home. How are you involving him in the rehabilitation process?"
+    }
+  ],
+  "coaching_questions_by_hoac_step": {
+    "step_1_data_collection": [
+      "What prognostic indicators did you identify? What do they suggest about recovery potential?",
+      "How does the Motricity Index score help you understand the difference between UL and LL prognosis?",
+      "What does the Trunk Control Test score tell you about walking prognosis?",
+      "How do the home environment factors affect your assessment?"
+    ],
+    "step_2_problem_statements": [
+      "You've listed 'right hemiparesis' as a problem - is this an impairment or activity limitation?",
+      "How does the inability to manage stairs affect discharge planning?",
+      "What is the relationship between the sensory deficits and the motor problems?"
+    ],
+    "step_3_goal_setting": [
+      "How did you decide on the FAC goal of 4? What evidence supports this as achievable?",
+      "Your UL goal focuses on impairment - how does this connect to a functional goal?",
+      "Have you discussed these goals with the patient? Do they align with her priorities?"
+    ],
+    "step_4_intervention_selection": [
+      "What is your rationale for the gait training approach?",
+      "How will you ensure sufficient intensity and repetition?",
+      "Why did you choose this particular balance exercise progression?"
+    ],
+    "step_7_reevaluation": [
+      "When would you re-administer outcome measures?",
+      "If the patient isn't progressing as expected at week 2, what would you consider?",
+      "How will you know when the patient is ready to practice stairs?"
+    ]
+  }
+}

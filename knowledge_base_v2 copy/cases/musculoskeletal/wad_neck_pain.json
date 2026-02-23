@@ -1,0 +1,534 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "case_id": "msk_002_neck",
+    "case_name": "Whiplash Associated Disorder - Post MVA",
+    "category": "Musculoskeletal",
+    "difficulty": "Intermediate",
+    "hoac_steps_covered": ["step_1", "step_2", "step_3", "step_4", "step_5", "step_6", "step_7"],
+    "icf_domains_covered": ["body_function", "activity", "participation", "environmental_factors", "personal_factors"],
+    "clinical_reasoning_focus": ["WAD classification", "red flag screening", "yellow flag identification", "prognosis prediction", "multimodal treatment"],
+    "estimated_session_time": "45-60 minutes",
+    "guideline_reference": "KNGF Guideline on Neck Pain (2016), Quebec Task Force WAD Classification"
+  },
+  "patient_profile": {
+    "name": "Sophie van Dijk",
+    "age": 34,
+    "gender": "Female",
+    "occupation": "Graphic designer - works at computer 8 hours/day",
+    "living_situation": "Lives with partner and 3-year-old daughter",
+    "hobbies": "Yoga (2x/week), running (3x/week), reading",
+    "referral_source": "General practitioner",
+    "referral_reason": "Neck pain and headaches following motor vehicle accident 3 weeks ago",
+    "injury_date": "3 weeks ago"
+  },
+  "injury_mechanism": {
+    "type": "Motor vehicle accident - rear-end collision",
+    "description": "Patient was stationary at traffic light, struck from behind by another vehicle at approximately 30 km/h",
+    "position_at_impact": "Seatbelt on, head turned slightly to right checking mirror",
+    "immediate_symptoms": "Immediate neck pain and stiffness, headache developed within hours",
+    "emergency_care": "Attended ED, cervical spine x-ray negative for fracture, discharged with paracetamol",
+    "police_report": "Filed, other driver at fault",
+    "insurance_claim": "In process with other driver's insurance"
+  },
+  "current_status_3_weeks_post_injury": {
+    "presenting_complaint": {
+      "chief_complaint": "Constant neck pain and stiffness with daily headaches",
+      "pain_location": "Bilateral posterior neck, more right than left, radiating to right shoulder and upper trapezius",
+      "headache_location": "Starts at base of skull, radiates to right temple",
+      "pain_intensity_current": 6,
+      "pain_intensity_worst": 8,
+      "pain_intensity_best": 4,
+      "headache_frequency": "Daily, usually worse by afternoon",
+      "aggravating_factors": [
+        "Prolonged computer work (>30 min)",
+        "Driving (afraid to drive but has tried once)",
+        "Looking over right shoulder",
+        "Holding daughter",
+        "Reading"
+      ],
+      "easing_factors": [
+        "Heat",
+        "Gentle movement",
+        "Lying down with small pillow",
+        "Ibuprofen (temporary)"
+      ],
+      "24_hour_pattern": "Morning stiffness (7/10) improves with movement, worsens through workday, headaches worst by evening"
+    },
+    "patient_narrative": "The accident really shook me up. Even though the doctors said nothing is broken, my neck has never felt like this. I can barely work at my computer - after 30 minutes I have to stop. I'm terrified of driving now. My partner has to do all the driving and I feel so dependent. I've had to stop yoga and running. I'm worried this is permanent - what if I can never work properly again? I keep thinking about the accident and can't sleep well. My daughter wants me to pick her up but it hurts too much.",
+    "associated_symptoms": {
+      "sleep_disturbance": true,
+      "dizziness": "Mild, with quick head movements",
+      "concentration_difficulty": true,
+      "fatigue": true,
+      "numbness_tingling": "None",
+      "arm_weakness": "None reported",
+      "visual_disturbance": "None",
+      "dysphagia": "None",
+      "tinnitus": "None"
+    },
+    "psychological_status": {
+      "anxiety_about_injury": "High - fears permanent damage",
+      "driving_fear": "Significant - avoids driving completely",
+      "sleep_quality": "Poor - difficulty falling asleep, nightmares about accident",
+      "mood": "Low, frustrated, tearful at times",
+      "intrusive_thoughts": "Yes - replays accident, hypervigilant in cars"
+    }
+  },
+  "red_flag_screening": {
+    "red_flags_assessed": [
+      {"flag": "Severe trauma / fracture", "status": "Negative - x-ray clear, low-speed collision"},
+      {"flag": "Signs of myelopathy", "status": "Negative - no gait disturbance, no bilateral symptoms"},
+      {"flag": "Vertebral artery insufficiency", "status": "Negative - no 5 D's (dizziness is positional, not sustained)"},
+      {"flag": "Progressive neurological deficit", "status": "Negative"},
+      {"flag": "Infection indicators", "status": "Negative - no fever, no night sweats"},
+      {"flag": "Malignancy indicators", "status": "Negative - no weight loss, no history of cancer"},
+      {"flag": "Inflammatory indicators", "status": "Negative - no prolonged morning stiffness, no multi-joint involvement"}
+    ],
+    "red_flags_present": false,
+    "clinical_reasoning_note": "No red flags identified. Symptoms are consistent with WAD Grade II. Dizziness is mild and positional - monitor but not concerning for VAI."
+  },
+  "yellow_flags_assessment": {
+    "psychosocial_factors_identified": [
+      {"factor": "Catastrophizing", "evidence": "Fears permanent damage, 'what if I can never work'", "severity": "Moderate"},
+      {"factor": "Fear-avoidance", "evidence": "Stopped all exercise, avoids driving", "severity": "High"},
+      {"factor": "Anxiety about injury", "evidence": "High concern, hypervigilance", "severity": "Moderate-High"},
+      {"factor": "Post-traumatic stress symptoms", "evidence": "Intrusive thoughts, nightmares, avoids driving (accident reminder)", "severity": "Moderate"},
+      {"factor": "Sleep disturbance", "evidence": "Difficulty falling asleep, nightmares", "severity": "Moderate"},
+      {"factor": "Passive coping expectation", "evidence": "None - seems willing to engage in active treatment", "severity": "Low"},
+      {"factor": "Compensation/litigation", "evidence": "Insurance claim in process - monitor as potential barrier", "severity": "Low (currently)"}
+    ],
+    "prognostic_implications": "Multiple yellow flags present predict slower recovery. Addressing psychological factors is essential for good outcome.",
+    "clinical_note": "Post-traumatic stress symptoms and driving avoidance suggest possible PTSD features. May need psychology referral if not improving."
+  },
+  "wad_classification": {
+    "classification": "WAD Grade II",
+    "criteria": "Neck complaint with musculoskeletal signs (decreased ROM, point tenderness)",
+    "rationale": "No neurological signs (would be Grade III), no fracture/dislocation (would be Grade IV), more than just pain/stiffness (would be Grade I)",
+    "other_grades": {
+      "grade_0": "No neck complaints, no physical signs",
+      "grade_1": "Neck pain, stiffness or tenderness only, no physical signs",
+      "grade_2": "Neck complaint + musculoskeletal signs (THIS PATIENT)",
+      "grade_3": "Neck complaint + neurological signs (weakness, sensory deficit, reflex changes)",
+      "grade_4": "Neck complaint + fracture or dislocation"
+    }
+  },
+  "physical_examination": {
+    "observation": {
+      "posture": "Forward head position, elevated right shoulder, guarded cervical posture",
+      "movement_willingness": "Hesitant to move, protects neck",
+      "facial_expression": "Anxious, wincing with movement",
+      "breathing": "Shallow, upper chest breathing pattern"
+    },
+    "active_rom_cervical": {
+      "flexion": {"range": "70%", "pain": "Yes - 5/10 at end range"},
+      "extension": {"range": "50%", "pain": "Yes - 6/10, most limited and painful"},
+      "rotation_right": {"range": "50%", "pain": "Yes - 7/10, reproduces headache"},
+      "rotation_left": {"range": "70%", "pain": "Mild - 4/10"},
+      "lateral_flexion_right": {"range": "60%", "pain": "Yes - 5/10"},
+      "lateral_flexion_left": {"range": "75%", "pain": "Mild - 3/10"},
+      "pattern": "Most limited into right rotation and extension - direction of impact"
+    },
+    "neurological_screening": {
+      "myotomes": {
+        "C5_elbow_flexion": "5/5 bilateral",
+        "C6_wrist_extension": "5/5 bilateral",
+        "C7_elbow_extension": "5/5 bilateral",
+        "C8_finger_flexion": "5/5 bilateral",
+        "T1_finger_abduction": "5/5 bilateral"
+      },
+      "dermatomes": "Intact bilateral C4-T1",
+      "reflexes": {
+        "biceps_C5_6": "2+ bilateral",
+        "brachioradialis_C6": "2+ bilateral",
+        "triceps_C7": "2+ bilateral"
+      },
+      "upper_limb_tension_tests": "Negative bilateral",
+      "spurling_test": "Negative",
+      "clinical_note": "No neurological involvement - confirms WAD Grade II"
+    },
+    "vertebral_artery_screening": {
+      "sustained_rotation_test": "Negative - no symptoms with 30 sec hold each direction",
+      "clinical_note": "Dizziness with quick movements is likely cervicogenic, not vascular"
+    },
+    "palpation": {
+      "tenderness": [
+        "Suboccipital muscles bilateral (right > left)",
+        "Upper trapezius bilateral (right > left)",
+        "Levator scapulae right",
+        "C2-C5 facet joints right",
+        "SCM right"
+      ],
+      "muscle_tone": "Increased tone/guarding in cervical paraspinals and upper trapezius",
+      "trigger_points": "Active trigger point right upper trapezius referring to head"
+    },
+    "special_tests": {
+      "craniocervical_flexion_test": {
+        "result": "Unable to hold 24mmHg, poor activation of deep neck flexors",
+        "interpretation": "Deep neck flexor weakness/inhibition - common in WAD"
+      },
+      "joint_position_error": {
+        "result": "Increased error relocating to neutral (>4.5 degrees)",
+        "interpretation": "Impaired cervical proprioception"
+      },
+      "smooth_pursuit_neck_torsion_test": {
+        "result": "Mild increase in corrective saccades with trunk rotation",
+        "interpretation": "Possible cervicogenic dizziness component"
+      }
+    },
+    "cervicogenic_headache_criteria": {
+      "unilateral_headache": "Yes - predominantly right",
+      "precipitated_by_neck_movement": "Yes",
+      "reduced_rom": "Yes",
+      "triggered_by_pressure_on_neck": "Yes - suboccipital pressure reproduces headache",
+      "clinical_note": "Meets criteria for cervicogenic headache secondary to WAD"
+    },
+    "outcome_measures": {
+      "nprs_neck": 6,
+      "nprs_headache": 5,
+      "ndi": {
+        "score": 52,
+        "interpretation": "Severe disability (35-50 = severe, >50 = complete)",
+        "most_affected_items": ["Headaches", "Concentration", "Work", "Driving", "Recreation"]
+      },
+      "tampa_scale_kinesiophobia": {
+        "score": 41,
+        "interpretation": "High kinesiophobia"
+      },
+      "pain_catastrophizing_scale": {
+        "score": 28,
+        "interpretation": "Elevated catastrophizing (clinical cutoff ~30)"
+      },
+      "impact_of_events_scale": {
+        "score": 34,
+        "interpretation": "Moderate PTSD symptom level (>33 suggests probable PTSD)"
+      }
+    }
+  },
+  "icf_mapping": {
+    "body_functions": [
+      {"code": "b28010", "description": "Pain in head and neck", "qualifier": 2, "qualifier_description": "Moderate problem"},
+      {"code": "b7101", "description": "Mobility of several joints (cervical)", "qualifier": 2, "qualifier_description": "Moderate problem"},
+      {"code": "b260", "description": "Proprioceptive function (cervical)", "qualifier": 1, "qualifier_description": "Mild problem"},
+      {"code": "b235", "description": "Vestibular/dizziness functions", "qualifier": 1, "qualifier_description": "Mild problem"},
+      {"code": "b134", "description": "Sleep functions", "qualifier": 2, "qualifier_description": "Moderate problem"},
+      {"code": "b152", "description": "Emotional functions (anxiety, fear)", "qualifier": 2, "qualifier_description": "Moderate problem"},
+      {"code": "b730", "description": "Muscle power functions (deep neck flexors)", "qualifier": 1, "qualifier_description": "Mild problem"}
+    ],
+    "activity_limitations": [
+      {"code": "d4751", "description": "Driving (car)", "qualifier": 4, "qualifier_description": "Complete problem - avoids completely"},
+      {"code": "d4153", "description": "Maintaining sitting position (computer work)", "qualifier": 3, "qualifier_description": "Severe problem"},
+      {"code": "d430", "description": "Lifting and carrying (daughter)", "qualifier": 3, "qualifier_description": "Severe problem"},
+      {"code": "d166", "description": "Reading", "qualifier": 2, "qualifier_description": "Moderate problem"},
+      {"code": "d920", "description": "Recreation (yoga, running)", "qualifier": 3, "qualifier_description": "Severe problem"}
+    ],
+    "participation_restrictions": [
+      {"code": "d850", "description": "Remunerative employment", "qualifier": 2, "qualifier_description": "Moderate problem - struggling to work"},
+      {"code": "d660", "description": "Assisting others (caring for daughter)", "qualifier": 2, "qualifier_description": "Moderate problem"},
+      {"code": "d920", "description": "Recreation and leisure", "qualifier": 3, "qualifier_description": "Severe problem"}
+    ],
+    "personal_factors": {
+      "catastrophizing": "Elevated (PCS 28)",
+      "fear_avoidance": "High (TSK 41)",
+      "ptsd_symptoms": "Present (IES 34)",
+      "previous_coping": "Good - was active and healthy before accident",
+      "motivation": "High - wants to return to normal life",
+      "compensation_claim": "In process - potential complicating factor"
+    }
+  },
+  "prognostic_factors": {
+    "positive_factors": [
+      "Young age (34)",
+      "No previous neck problems",
+      "Motivated",
+      "Good support (partner)",
+      "No neurological involvement (Grade II)",
+      "Early presentation (3 weeks)"
+    ],
+    "negative_factors": [
+      "High initial NDI (52%)",
+      "High pain catastrophizing",
+      "High kinesiophobia",
+      "PTSD symptoms",
+      "Complete driving avoidance",
+      "Sleep disturbance",
+      "Compensation claim (may prolong recovery)"
+    ],
+    "prognosis_prediction": "Mixed prognosis. Physical presentation is moderate (WAD II), but significant psychological factors predict slower recovery. Early addressing of fear-avoidance and possible PTSD is critical.",
+    "recovery_timeline": "Most WAD II recovers within 3 months, but with these yellow flags, extended recovery (6+ months) possible if psychological factors not addressed."
+  },
+  "problem_statements": {
+    "problems": [
+      {
+        "problem_number": 1,
+        "activity_limitation": "Unable to work at computer for >30 minutes due to neck pain and headache",
+        "underlying_impairments": [
+          "Cervical pain and stiffness",
+          "Reduced cervical ROM",
+          "Deep neck flexor weakness",
+          "Poor posture and workstation habits"
+        ],
+        "participation_impact": "Struggling to maintain work productivity, at risk of sick leave"
+      },
+      {
+        "problem_number": 2,
+        "activity_limitation": "Unable/unwilling to drive due to fear and pain with head rotation",
+        "underlying_impairments": [
+          "Reduced cervical rotation especially right",
+          "Pain with sustained positions",
+          "Fear of driving (PTSD-related)",
+          "Hypervigilance"
+        ],
+        "participation_impact": "Dependent on partner for all transport, unable to take daughter to activities"
+      },
+      {
+        "problem_number": 3,
+        "activity_limitation": "Unable to pick up and hold 3-year-old daughter",
+        "underlying_impairments": [
+          "Neck pain aggravated by upper limb loading",
+          "Fear of causing further injury",
+          "Upper trapezius overactivity"
+        ],
+        "participation_impact": "Parenting role affected, emotional distress"
+      },
+      {
+        "problem_number": 4,
+        "activity_limitation": "Not participating in exercise (yoga, running)",
+        "underlying_impairments": [
+          "Pain and fear of movement",
+          "Kinesiophobia",
+          "Belief that exercise will cause harm"
+        ],
+        "participation_impact": "Loss of fitness, stress relief, social connection from yoga"
+      }
+    ]
+  },
+  "goals": {
+    "long_term_goal": {
+      "timeframe": "10-12 weeks",
+      "goal": "Full return to work duties, independent driving, resumed yoga and running, and caring for daughter without limitation",
+      "outcome_measures": ["NDI <10%", "NPRS ≤2", "Full return to work", "Driving independently", "TSK <37"]
+    },
+    "short_term_goals": [
+      {
+        "goal_number": 1,
+        "timeframe": "2 weeks",
+        "goal": "Work at computer for 60 minutes with breaks, pain ≤4/10, using posture and break strategies",
+        "linked_to_problem": 1
+      },
+      {
+        "goal_number": 2,
+        "timeframe": "3 weeks",
+        "goal": "Complete a short car journey as passenger without significant anxiety (self-rated 4/10 or less)",
+        "linked_to_problem": 2
+      },
+      {
+        "goal_number": 3,
+        "timeframe": "4 weeks",
+        "goal": "Drive short familiar route independently",
+        "linked_to_problem": 2
+      },
+      {
+        "goal_number": 4,
+        "timeframe": "3 weeks",
+        "goal": "Pick up daughter for brief periods (1-2 minutes) with pain ≤4/10",
+        "linked_to_problem": 3
+      },
+      {
+        "goal_number": 5,
+        "timeframe": "4 weeks",
+        "goal": "Resume gentle yoga class (modified positions as needed)",
+        "linked_to_problem": 4
+      },
+      {
+        "goal_number": 6,
+        "timeframe": "6 weeks",
+        "goal": "Resume running - start with 15 minutes walk/jog",
+        "linked_to_problem": 4
+      },
+      {
+        "goal_number": 7,
+        "timeframe": "4 weeks",
+        "goal": "NDI improved from 52% to <35% (severe to moderate)",
+        "outcome_measure": "NDI"
+      }
+    ]
+  },
+  "intervention_plan": {
+    "treatment_approach": "Multimodal approach per KNGF guideline: education, exercise, manual therapy as adjunct, and addressing psychological factors. Active approach emphasized.",
+    "key_messages_for_patient": [
+      "Your neck is not damaged - x-rays were clear",
+      "WAD is very common and most people recover fully",
+      "Tissues heal in 6-12 weeks - your neck is getting stronger",
+      "Hurt does not equal harm - movement is safe and helpful",
+      "Avoiding activity will delay recovery, not protect you",
+      "Your anxiety about driving is understandable - we'll address it gradually"
+    ],
+    "interventions": [
+      {
+        "category": "Education and reassurance",
+        "intervention": "Explanation of WAD, prognosis, pain neuroscience",
+        "content": [
+          "What happened to your neck (soft tissue injury, not damage)",
+          "Normal healing timeline",
+          "Why pain persists beyond tissue healing",
+          "Hurt ≠ harm concept",
+          "Role of anxiety, stress, sleep in pain",
+          "Importance of staying active"
+        ],
+        "dosage": "Session 1 priority, reinforce throughout",
+        "evidence": "Strong"
+      },
+      {
+        "category": "Cervical exercise",
+        "intervention": "Active ROM, deep neck flexor training, general strengthening",
+        "exercises": [
+          "Active cervical ROM in all directions (hourly)",
+          "Craniocervical flexion training (deep neck flexor activation)",
+          "Chin tucks with progression",
+          "Scapular stabilization exercises",
+          "Upper trapezius stretching/relaxation"
+        ],
+        "dosage": "Daily home exercises, 2-3x/day initially",
+        "progression": "ROM → Strengthening → Functional loading → Sport-specific",
+        "evidence": "Strong"
+      },
+      {
+        "category": "Manual therapy",
+        "intervention": "Cervical mobilization, soft tissue techniques",
+        "approach": "Adjunct to exercise, not standalone treatment",
+        "techniques": [
+          "Cervical mobilization (mid-range, graded)",
+          "Suboccipital release",
+          "Upper trapezius soft tissue work",
+          "Thoracic mobilization"
+        ],
+        "caution": "Avoid high-velocity thrust in acute WAD",
+        "evidence": "Moderate - as part of multimodal approach"
+      },
+      {
+        "category": "Ergonomic advice",
+        "intervention": "Workstation assessment and modification",
+        "recommendations": [
+          "Monitor height and position",
+          "Regular microbreaks (every 20-30 min)",
+          "Posture variation",
+          "Movement snacks during workday"
+        ],
+        "evidence": "Moderate"
+      },
+      {
+        "category": "Graded exposure to driving",
+        "intervention": "Systematic desensitization to driving",
+        "progression": [
+          "1. Sit in parked car (engine off)",
+          "2. Sit in parked car (engine on)",
+          "3. Short ride as passenger in quiet area",
+          "4. Longer ride as passenger",
+          "5. Drive in empty parking lot",
+          "6. Drive short quiet route",
+          "7. Gradually increase distance and complexity"
+        ],
+        "rationale": "Avoidance maintains fear. Graded exposure builds confidence.",
+        "evidence": "Moderate-strong for fear-avoidance"
+      },
+      {
+        "category": "Graded activity",
+        "intervention": "Progressive return to yoga and running",
+        "yoga_progression": [
+          "Gentle home stretching",
+          "Modified yoga poses (avoid prolonged neck positions initially)",
+          "Return to class with modifications",
+          "Full participation"
+        ],
+        "running_progression": [
+          "Walking 20-30 min",
+          "Walk/jog intervals",
+          "Progressive jogging",
+          "Return to previous running duration"
+        ],
+        "evidence": "Strong for graded activity in WAD"
+      },
+      {
+        "category": "Addressing psychological factors",
+        "intervention": "Cognitive-behavioral strategies, possible referral",
+        "strategies": [
+          "Discuss and normalize fears",
+          "Challenge catastrophic thoughts",
+          "Graded exposure to feared activities",
+          "Sleep hygiene advice",
+          "Relaxation techniques (breathing, progressive relaxation)"
+        ],
+        "referral_threshold": "If PTSD symptoms not improving by week 4, or worsening at any time, refer to psychologist",
+        "evidence": "Moderate for integrated psychological approach"
+      }
+    ],
+    "plan_of_care": {
+      "frequency": "2x/week for 4 weeks, then 1x/week for 4 weeks, then 2-weekly",
+      "total_sessions": "10-12 sessions over 10-12 weeks",
+      "reassessment": "Week 4 (formal outcome measures), Week 8, Week 12"
+    }
+  },
+  "reasoning_traps_for_this_case": [
+    {
+      "trap": "Treating only the neck",
+      "description": "Focusing on cervical impairments while ignoring significant psychological factors",
+      "coaching_response": "You've identified cervical ROM and strength deficits. What psychological factors did you identify? How might these affect recovery if not addressed?"
+    },
+    {
+      "trap": "Prolonged rest/collar advice",
+      "description": "Advising rest or collar use beyond acute phase",
+      "coaching_response": "What does the evidence say about collars and rest for WAD? What are the risks of prolonged immobilization?"
+    },
+    {
+      "trap": "Over-treating cervical spine",
+      "description": "Excessive passive treatment, avoiding active approaches",
+      "coaching_response": "You've scheduled 3 manual therapy sessions per week. What is the evidence for active vs passive treatment in WAD? What balance would you recommend?"
+    },
+    {
+      "trap": "Not addressing driving avoidance",
+      "description": "Ignoring the driving avoidance as 'she'll drive when she's ready'",
+      "coaching_response": "The patient is completely avoiding driving. What happens to fears when we avoid the feared situation? How might you address this?"
+    },
+    {
+      "trap": "Missing PTSD symptoms",
+      "description": "Not recognizing post-traumatic stress features and need for referral",
+      "coaching_response": "The patient has nightmares, intrusive thoughts about the accident, and avoidance behaviors. What might these indicate? When would you consider referral?"
+    },
+    {
+      "trap": "Ignoring compensation claim context",
+      "description": "Not considering how litigation might affect recovery",
+      "coaching_response": "The patient has an insurance claim in process. How might this affect recovery? How would you address this in treatment?"
+    }
+  ],
+  "coaching_questions_by_hoac_step": {
+    "step_1_data_collection": [
+      "What WAD grade is this patient? What are the criteria?",
+      "What red flags did you screen for? Were any concerning?",
+      "What yellow flags did you identify? Why are these important for prognosis?",
+      "What do the high NDI and TSK scores tell you?",
+      "What features suggest possible PTSD? Why is this relevant?"
+    ],
+    "step_2_problem_statements": [
+      "You've listed 'reduced cervical ROM' as a problem. Is this an impairment or activity limitation?",
+      "How does the driving avoidance connect to the PTSD symptoms?",
+      "What is the relationship between her catastrophizing and her activity limitations?"
+    ],
+    "step_3_goal_setting": [
+      "Your goal is 'reduce pain.' How would you make this more functional and SMART?",
+      "The patient wants to 'get back to normal' - how do you translate this into measurable goals?",
+      "Is driving in 4 weeks a realistic goal given her current avoidance?"
+    ],
+    "step_4_intervention_selection": [
+      "Why have you chosen a multimodal approach?",
+      "How much of treatment should be active vs passive?",
+      "How will you address the driving phobia?",
+      "When would you refer to a psychologist?"
+    ],
+    "step_7_reevaluation": [
+      "What outcome measures will you reassess?",
+      "How will you know if the psychological factors are improving?",
+      "If she's not progressing at week 4, what would you consider?"
+    ]
+  }
+}

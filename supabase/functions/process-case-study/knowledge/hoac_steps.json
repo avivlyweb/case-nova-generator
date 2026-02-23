@@ -1,0 +1,281 @@
+{
+  "framework": "HOAC-II",
+  "full_name": "Hypothesis-Oriented Algorithm for Clinicians, Version II",
+  "source": {
+    "authors": "Rothstein, J.M., Echternach, J.L., & Riddle, D.L.",
+    "year": 2003,
+    "publication": "Physical Therapy",
+    "doi": "10.1093/ptj/83.5.455"
+  },
+  "purpose": "Provide a structured, patient-centered approach to clinical decision-making in physiotherapy",
+  
+  "key_concepts": {
+    "patient_identified_problems": {
+      "abbreviation": "PIPs",
+      "definition": "Problems that the patient identifies as limiting their function or participation",
+      "icf_level": "Activities and Participation (d)"
+    },
+    "non_patient_identified_problems": {
+      "abbreviation": "NPIPs",
+      "definition": "Problems identified by the clinician that the patient may not be aware of, but contribute to their functional limitations",
+      "icf_level": "Body Functions (b) and Structures (s)"
+    },
+    "hypothesis": {
+      "definition": "A proposed explanation linking a problem to a modifiable mediator",
+      "components": ["Problem statement", "Target mediator", "Causal rationale", "Falsification criteria"]
+    },
+    "mediator": {
+      "definition": "A modifiable factor that, if changed, would influence the problem",
+      "examples": ["Muscle weakness", "Fear-avoidance beliefs", "Joint stiffness", "Movement pattern dysfunction"]
+    }
+  },
+
+  "steps": [
+    {
+      "step": 1,
+      "title": "Patient Introduction",
+      "objective": "Collect and contextualize patient scenario information",
+      "components": [
+        {
+          "name": "Personal information",
+          "includes": ["Demographics", "Occupation", "Living situation", "Activity level"]
+        },
+        {
+          "name": "Medical information",
+          "includes": ["Diagnosis", "Onset/duration", "Medical history", "Medications", "Imaging"]
+        },
+        {
+          "name": "Guideline context",
+          "includes": ["Relevant KNGF guideline", "Risk stratification", "Prognosis indicators"]
+        },
+        {
+          "name": "Psychosocial context",
+          "includes": ["Social support", "Work demands", "Beliefs about condition", "Psychological factors"]
+        }
+      ],
+      "icf_focus": ["Personal factors", "Environmental factors (e)"],
+      "key_outputs": [
+        "Clear patient profile",
+        "Red flag screening completed",
+        "Yellow flag identification",
+        "Guideline applicability established"
+      ],
+      "rubric_domain": null,
+      "time_estimate": "10-15 minutes"
+    },
+    {
+      "step": 2,
+      "title": "Interview and Problem List",
+      "objective": "Translate patient story into rehabilitation-relevant problems and generate testable hypotheses",
+      "components": [
+        {
+          "name": "Health Seeking Questions (HSQ)",
+          "includes": ["Main concern", "Functional impact", "Expectations", "Previous treatment"]
+        },
+        {
+          "name": "Patient Identified Problems (PIPs)",
+          "includes": ["Activities patient cannot do", "Participation restrictions", "What patient wants to achieve"]
+        },
+        {
+          "name": "Non-Patient Identified Problems (NPIPs)",
+          "includes": ["Clinician-observed impairments", "Contributing factors patient may not recognize"]
+        },
+        {
+          "name": "Hypotheses",
+          "includes": ["Problem-mediator linkage", "Causal rationale", "Falsification criteria"]
+        }
+      ],
+      "icf_focus": ["Activities (d)", "Participation (d)", "Body Functions (b)"],
+      "key_outputs": [
+        "Prioritized PIP list",
+        "Relevant NPIP list",
+        "At least 2-3 testable hypotheses per major problem",
+        "Competing hypotheses considered"
+      ],
+      "rubric_domains": ["A_problem_framing", "B_hypothesis_mediator_logic"],
+      "time_estimate": "15-20 minutes"
+    },
+    {
+      "step": 3,
+      "title": "Assessment Strategy",
+      "objective": "Design a hypothesis-driven assessment plan that will inform clinical decisions",
+      "components": [
+        {
+          "name": "Assessment goals",
+          "includes": ["Which hypotheses to test", "What decisions depend on results"]
+        },
+        {
+          "name": "Basic testing",
+          "includes": ["Observation", "Vital signs", "Posture", "Gait observation"]
+        },
+        {
+          "name": "Special testing",
+          "includes": ["Orthopedic tests", "Neurological screening", "Provocative tests"]
+        },
+        {
+          "name": "Functional testing",
+          "includes": ["Standardized functional measures", "Activity-specific tests", "PROMs"]
+        },
+        {
+          "name": "Muscle/movement testing",
+          "includes": ["Strength testing", "Movement quality", "Motor control"]
+        }
+      ],
+      "icf_focus": ["Body Functions (b)", "Activities (d)"],
+      "key_outputs": [
+        "Test selection linked to hypotheses",
+        "Decision rules specified (if X, then Y)",
+        "Appropriate clinimetrics selected",
+        "Baseline measures for outcome tracking"
+      ],
+      "rubric_domain": "C_assessment_decision_logic",
+      "time_estimate": "10-15 minutes"
+    },
+    {
+      "step": 4,
+      "title": "Assessment Findings",
+      "objective": "Interpret results to confirm or refute hypotheses and refine problem understanding",
+      "components": [
+        {
+          "name": "Test results",
+          "includes": ["Objective findings", "Comparison to norms/expected values"]
+        },
+        {
+          "name": "Interpretation",
+          "includes": ["What findings mean for each hypothesis", "Pattern recognition"]
+        },
+        {
+          "name": "Hypothesis revision",
+          "includes": ["Which hypotheses supported", "Which refuted", "Need for additional testing"]
+        }
+      ],
+      "icf_focus": ["Body Functions (b)", "Activities (d)"],
+      "key_outputs": [
+        "Clear interpretation of each test",
+        "Hypothesis confirmation/refutation documented",
+        "Primary working hypothesis identified",
+        "Baseline values recorded for re-evaluation"
+      ],
+      "rubric_domain": "C_assessment_decision_logic",
+      "time_estimate": "10-15 minutes"
+    },
+    {
+      "step": 5,
+      "title": "Goals and Actions",
+      "objective": "Establish patient-centered, mechanism-linked goal hierarchy",
+      "components": [
+        {
+          "name": "Long-term goal",
+          "includes": ["Participation-level outcome", "Patient's functional priority", "Timeframe"]
+        },
+        {
+          "name": "Short-term goals",
+          "includes": ["Progressive steps toward LTG", "Linked to mediators", "Measurable outcomes"]
+        },
+        {
+          "name": "Actions",
+          "includes": ["What will be done to achieve each STG", "Patient and therapist responsibilities"]
+        }
+      ],
+      "icf_focus": ["Participation (d)", "Activities (d)"],
+      "key_outputs": [
+        "SMART long-term goal at participation level",
+        "Progressive short-term goals",
+        "Clear connection STG -> LTG",
+        "Goals reflect patient priorities"
+      ],
+      "rubric_domain": "D_goal_coherence",
+      "time_estimate": "10-15 minutes"
+    },
+    {
+      "step": 6,
+      "title": "Intervention Plan",
+      "objective": "Design adaptive intervention targeting identified mediators",
+      "components": [
+        {
+          "name": "FITT parameters",
+          "includes": ["Frequency", "Intensity", "Time/duration", "Type of intervention"]
+        },
+        {
+          "name": "Intervention rationale",
+          "includes": ["How intervention targets mediator", "Evidence base", "Guideline alignment"]
+        },
+        {
+          "name": "Progression rules",
+          "includes": ["Criteria for advancing", "Parameters to increase"]
+        },
+        {
+          "name": "Regression rules",
+          "includes": ["Criteria for stepping back", "Safety thresholds"]
+        },
+        {
+          "name": "Safety flags",
+          "includes": ["Red flags requiring referral", "Yellow flags requiring modification"]
+        }
+      ],
+      "icf_focus": ["All domains"],
+      "key_outputs": [
+        "Specific FITT parameters",
+        "Clear mediator-intervention link",
+        "Progression/regression criteria",
+        "Safety considerations documented"
+      ],
+      "rubric_domain": "E_intervention_and_re_evaluation",
+      "time_estimate": "15-20 minutes"
+    },
+    {
+      "step": 7,
+      "title": "Reassessment",
+      "objective": "Define when and how to evaluate intervention effectiveness and adapt plan",
+      "components": [
+        {
+          "name": "Timeline",
+          "includes": ["Re-evaluation schedule", "Key milestones"]
+        },
+        {
+          "name": "Evaluation methods",
+          "includes": ["Outcome measures to repeat", "Functional tests", "Patient feedback"]
+        },
+        {
+          "name": "Decision criteria",
+          "includes": ["Criteria for continuing plan", "Criteria for modifying plan", "Criteria for discharge"]
+        }
+      ],
+      "icf_focus": ["All domains"],
+      "key_outputs": [
+        "Specific re-evaluation timeline",
+        "Outcome measures selected",
+        "Success/failure criteria defined",
+        "Discharge criteria established"
+      ],
+      "rubric_domains": ["E_intervention_and_re_evaluation", "F_reflection_and_self_correction"],
+      "time_estimate": "5-10 minutes"
+    }
+  ],
+
+  "integration_with_icf": {
+    "principle": "Each HOAC step maps to specific ICF domains",
+    "mapping": {
+      "step_1": ["Personal factors", "Environmental factors"],
+      "step_2": ["Activities (d)", "Participation (d)", "Body Functions (b)"],
+      "step_3": ["Body Functions (b)", "Activities (d)"],
+      "step_4": ["Body Functions (b)", "Activities (d)"],
+      "step_5": ["Participation (d)", "Activities (d)"],
+      "step_6": ["All domains - intervention targets mediators across domains"],
+      "step_7": ["All domains - evaluate change across domains"]
+    }
+  },
+
+  "integration_with_kngf": {
+    "principle": "KNGF guidelines inform decisions at each step",
+    "application_points": {
+      "step_1": "Risk stratification, prognosis indicators",
+      "step_2": "Typical problem presentations, expected impairments",
+      "step_3": "Recommended assessments, diagnostic accuracy data",
+      "step_4": "Interpretation guidance, reference values",
+      "step_5": "Expected outcomes, recovery timelines",
+      "step_6": "Recommended interventions, dosage parameters",
+      "step_7": "Re-evaluation timelines, outcome expectations"
+    }
+  }
+}

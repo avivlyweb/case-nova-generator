@@ -1,0 +1,37 @@
+name: Supabase Keep-Alive
+
+# Ping the Supabase project every 5 days to prevent free-tier pausing (7-day inactivity limit)
+on:
+  schedule:
+    - cron: '0 8 */5 * *'  # Every 5 days at 08:00 UTC
+  workflow_dispatch: {}     # Allow manual trigger
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase REST API
+        env:
+          SUPABASE_URL: https://gmlpzjtnmxwojejnugej.supabase.co
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          echo "Pinging Supabase to prevent free-tier pausing..."
+
+          # Query case_studies count to trigger DB activity
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            -X GET "${SUPABASE_URL}/rest/v1/case_studies?select=id&limit=1" \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}")
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+
+          echo "HTTP status: ${HTTP_CODE}"
+
+          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+            echo "Supabase is alive and responding."
+          else
+            echo "WARNING: Supabase returned HTTP ${HTTP_CODE}"
+            echo "Response: ${BODY}"
+            exit 1
+          fi

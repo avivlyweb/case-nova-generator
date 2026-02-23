@@ -1,0 +1,963 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "case_id": "msk_002_shoulder_rc_tendinopathy",
+    "case_name": "Subacute Rotator Cuff Tendinopathy with Yellow Flags — Primary School Teacher",
+    "category": "Musculoskeletal",
+    "difficulty": "Intermediate-Advanced",
+    "hoac_steps_covered": ["step_1", "step_2", "step_3", "step_4", "step_5", "step_6", "step_7"],
+    "icf_domains_covered": ["body_function", "activity", "participation", "environmental_factors", "personal_factors"],
+    "clinical_reasoning_focus": ["hypothesis generation", "yellow flag identification", "ICF mapping", "2025 diagnostic approach", "imaging decision-making", "biopsychosocial intervention planning"],
+    "estimated_session_time": "45-60 minutes",
+    "guideline_references": [
+      "NOV/FMS Richtlijn SAPS 2025",
+      "NHG-Standaard Schouderklachten M08",
+      "JOSPT Clinical Practice Guideline: Rotator Cuff Tendinopathy 2025"
+    ],
+    "note": "No dedicated KNGF guideline exists for shoulder pathology. NHG M08 and NOV/FMS SAPS 2025 serve as primary Dutch references."
+  },
+  "patient_profile": {
+    "name": "Nadia Verhoeven",
+    "age": 55,
+    "gender": "Female",
+    "occupation": "Primary school teacher (group 5, ages 8-9)",
+    "living_situation": "Lives alone since divorce 2 years ago. Two adult children (27 and 24), both live independently. Has a small dog.",
+    "hobbies": "Swimming (used to go 2x/week), reading, gardening in summer, occasional painting (watercolors)",
+    "referral_source": "General practitioner (huisarts)",
+    "referral_reason": "Right shoulder pain for 9 weeks, not improving with paracetamol and advice to rest"
+  },
+  "session_1_initial_encounter": {
+    "presenting_complaint": {
+      "chief_complaint": "Right shoulder pain that started approximately 9 weeks ago without clear trauma. Gradual onset, initially noticed when reaching for items on high shelves in the classroom.",
+      "pain_location": "Anterolateral right shoulder, sometimes radiating to lateral upper arm (not below elbow)",
+      "pain_intensity_current": 5,
+      "pain_intensity_worst": 8,
+      "pain_intensity_best": 2,
+      "pain_scale": "NPRS",
+      "aggravating_factors": [
+        "Reaching overhead (writing on the whiteboard, getting supplies from high shelves)",
+        "Lifting objects above shoulder height",
+        "Lying on right side at night",
+        "Putting on and removing coat/blouse",
+        "Reaching behind back (bra fastening)",
+        "Carrying school materials (bag over right shoulder)"
+      ],
+      "easing_factors": [
+        "Keeping arm below shoulder level",
+        "Warmth (warm shower on shoulder)",
+        "Gentle pendular movements",
+        "Paracetamol (slight temporary relief)"
+      ],
+      "24_hour_pattern": "Stiff and achy in morning (~15 min to loosen up). Manageable during morning teaching if careful. Worsens significantly by afternoon (6-7/10) after repeated overhead reaching. Night pain when rolling onto right side, wakes 1-2x.",
+      "sleep_impact": "Difficulty finding comfortable position. Wakes when rolling onto right side. Sleeps with pillow under arm. Reports feeling unrested and irritable."
+    },
+    "patient_narrative": "It started about 9 weeks ago — I can't point to one moment. I just noticed it was getting harder to reach the whiteboard and the supply shelves in my classroom. I'm right-handed, so I can't really avoid using it. My GP told me to take paracetamol and rest it, but how can I rest it when I'm teaching 25 eight-year-olds all day? The pain is getting worse, not better. I'm worried because my mother had a frozen shoulder that took over a year to improve and she never fully recovered. I've stopped swimming — it's too painful. I can barely keep up with lesson preparation because writing on the board hurts so much. I feel like I'm letting my students down. Honestly, I'm already dealing with a lot — the divorce was two years ago but I'm still adjusting to living alone, and work has been stressful with a new school director pushing for higher test scores. I just don't feel like myself anymore. I keep thinking: what if this doesn't get better? What if I can't teach anymore?",
+    "red_flags_screening": {
+      "acute_traumatic_onset_with_weakness": false,
+      "suspected_fracture_dislocation": false,
+      "signs_of_infection": false,
+      "suspected_malignancy": false,
+      "progressive_neurological_deficit": false,
+      "constant_unrelenting_pain": false,
+      "unexplained_weight_loss": false,
+      "history_of_cancer": false,
+      "red_flags_present": false,
+      "clinical_reasoning_note": "No red flags identified. Gradual onset without trauma is typical for rotator cuff tendinopathy. No signs suggesting serious pathology."
+    },
+    "yellow_flags_assessment": {
+      "fear_avoidance": {
+        "present": true,
+        "indicators": [
+          "Stopped swimming entirely (not gradual reduction)",
+          "Avoids all overhead activities when possible",
+          "Believes she should not use the shoulder until it stops hurting",
+          "Fear that continued use will cause permanent damage"
+        ]
+      },
+      "catastrophizing": {
+        "present": true,
+        "indicators": [
+          "Mother's frozen shoulder experience creating fear of same outcome",
+          "'What if I can't teach anymore?' — worst-case scenario thinking",
+          "Believes the problem is getting progressively worse with no hope of improvement",
+          "Interprets pain as sign of ongoing damage"
+        ]
+      },
+      "low_recovery_expectations": {
+        "present": true,
+        "indicators": [
+          "Mother's poor outcome shapes expectation that shoulder problems don't resolve",
+          "Already 9 weeks with no improvement — losing confidence in recovery",
+          "Questions whether physiotherapy can help"
+        ]
+      },
+      "passive_coping": {
+        "present": true,
+        "indicators": [
+          "Relying on paracetamol and rest (advice from GP)",
+          "Waiting for pain to 'go away on its own'",
+          "Has not sought information about self-management strategies"
+        ]
+      },
+      "work_related_factors": {
+        "present": true,
+        "indicators": [
+          "New school director creating pressure for higher performance",
+          "Feels she is 'letting students down'",
+          "Work demands (overhead reaching) directly provoke symptoms",
+          "No ergonomic modifications attempted at workplace"
+        ]
+      },
+      "psychosocial_context": {
+        "present": true,
+        "indicators": [
+          "Divorce 2 years ago — still adjusting to living alone",
+          "Reduced social activities (stopped swimming, which was also social)",
+          "Reports feeling 'not like herself' — possible subclinical mood disturbance",
+          "Disrupted sleep contributing to irritability and low resilience"
+        ]
+      },
+      "tsk_score": 42,
+      "tsk_interpretation": "High kinesiophobia (cutoff 37). Fear of movement/reinjury is a significant barrier.",
+      "pcs_score": 32,
+      "pcs_interpretation": "Clinically relevant catastrophizing (cutoff 30). Rumination and helplessness subscales elevated.",
+      "ompq_score": 118,
+      "ompq_interpretation": "High risk of work disability (cutoff >105). Multiple psychosocial risk factors present.",
+      "clinical_reasoning_note": "Significant yellow flag burden across multiple domains. This is a key driver of the persistent disability — addressing psychosocial factors is as important as addressing the physical impairments. Risk of chronicity is high without targeted intervention."
+    },
+    "past_medical_history": {
+      "previous_shoulder_problems": "None",
+      "surgeries": "Appendectomy age 22",
+      "chronic_conditions": [
+        {"condition": "Type 2 Diabetes Mellitus", "diagnosis_year": 2019, "management": "Metformin 1000mg 2x/day. HbA1c last check 58 mmol/mol (moderately controlled)", "relevance": "Increases risk of adhesive capsulitis, may delay tendon healing, affects tissue quality"},
+        {"condition": "Mild hypertension", "management": "Amlodipine 5mg daily", "relevance": "Generally well-controlled, no direct impact on shoulder management"}
+      ],
+      "medications": [
+        {"name": "Metformin", "dose": "1000mg", "frequency": "2x daily", "indication": "T2DM"},
+        {"name": "Amlodipine", "dose": "5mg", "frequency": "Daily", "indication": "Hypertension"},
+        {"name": "Paracetamol", "dose": "1000mg", "frequency": "PRN (2-3x daily currently)", "indication": "Shoulder pain"}
+      ],
+      "allergies": "None known",
+      "family_history": "Mother — adhesive capsulitis right shoulder (age 60, poor outcome). Father — deceased (cardiac event age 72). Sister — Type 2 diabetes."
+    },
+    "social_history": {
+      "work_demands": "Full-time primary school teacher. Standing 6+ hours/day. Frequent overhead reaching (whiteboard, classroom shelves). Lifting classroom materials. Detailed lesson preparation (writing, computer work). High cognitive and emotional demands.",
+      "physical_activity_pre_onset": "Swimming 2x/week (30-45 min), daily dog walks (20 min), gardening in season",
+      "physical_activity_current": "Stopped swimming 6 weeks ago. Dog walks shortened to 10 min (arm hangs and aches). No gardening.",
+      "smoking": "Never",
+      "alcohol": "1-2 glasses wine on weekends",
+      "bmi": 29.3,
+      "support_system": "Adult children supportive but live elsewhere. Close colleague at school. Limited social network since divorce — swimming group was main social outlet.",
+      "stress_level": "High — combination of work pressure, post-divorce adjustment, shoulder pain, sleep disruption, and reduced social contact."
+    }
+  },
+  "physical_examination": {
+    "observation": {
+      "posture_standing": "Mild increased thoracic kyphosis, right shoulder slightly protracted and elevated compared to left, forward head posture",
+      "scapular_position": "Right scapula mildly abducted and anteriorly tilted at rest compared to left",
+      "movement_quality": "Guards right shoulder during upper body movements, avoids overhead reaching, uses left hand compensatorily",
+      "facial_expression": "Grimacing during active flexion above 90°, apprehensive expression when asked to reach overhead",
+      "gait": "Normal, but reduced right arm swing"
+    },
+    "active_rom_shoulder_right": {
+      "flexion": {
+        "range": "130° (contralateral 170°)",
+        "pain": "Painful arc 70-120°, end-range pain 6/10",
+        "pattern": "Scapular hiking and early shrugging pattern from 80°"
+      },
+      "abduction": {
+        "range": "110° (contralateral 175°)",
+        "pain": "Painful arc 60-110°, end-range pain 7/10",
+        "pattern": "Significant scapular dyskinesis — winging and hiking"
+      },
+      "external_rotation_0_abd": {
+        "range": "55° (contralateral 70°)",
+        "pain": "Mild end-range pain 3/10"
+      },
+      "internal_rotation": {
+        "range": "Hand to L3 level (contralateral T10)",
+        "pain": "Moderate pain 5/10 at end range"
+      },
+      "hand_behind_back": {
+        "observation": "Cannot reach bra strap level. Reaches to waistband with pain.",
+        "pain": "5/10"
+      }
+    },
+    "passive_rom_shoulder_right": {
+      "flexion": "155° (mild capsular end-feel, pain 4/10 at end range)",
+      "abduction": "140° (pain 5/10 at end range)",
+      "external_rotation_0_abd": "65° (firm end-feel, mild pain)",
+      "internal_rotation": "Hand to L1 (pain 4/10)",
+      "clinical_note": "Passive ROM greater than active ROM by 20-30°, suggesting muscular inhibition and/or apprehension rather than purely structural limitation. Some capsular restriction present — monitor for developing adhesive capsulitis given T2DM."
+    },
+    "strength_assessment": {
+      "supraspinatus_empty_can": {
+        "right": "4-/5 with pain (5/10)",
+        "left": "5/5",
+        "interpretation": "Weakness with pain — could be pain inhibition or genuine tendon weakness"
+      },
+      "infraspinatus_er_0_abd": {
+        "right": "4+/5 mild pain (2/10)",
+        "left": "5/5"
+      },
+      "subscapularis_belly_press": {
+        "right": "4+/5 no pain",
+        "left": "5/5"
+      },
+      "deltoid_middle": {
+        "right": "4/5 with pain at 90° abduction",
+        "left": "5/5"
+      },
+      "scapular_stabilizers": {
+        "lower_trapezius": "Weak bilateral (3+/5) — difficulty maintaining scapular depression against resistance",
+        "serratus_anterior": "4/5 right, 4+/5 left — mild scapular winging with wall push-up",
+        "clinical_note": "Bilateral scapular stabilizer weakness suggests deconditioning pattern, not specific to shoulder pathology"
+      }
+    },
+    "special_tests": {
+      "empty_can_test": {
+        "result": "Positive — pain and mild weakness",
+        "interpretation": "Per NOV 2025: high specificity for RC involvement. Supports RC tendinopathy hypothesis."
+      },
+      "hawkins_kennedy": {
+        "result": "Positive — pain with passive internal rotation at 90° flexion",
+        "interpretation": "Per NOV 2025: high sensitivity. Positive result consistent with subacromial involvement but does not rule out other sources."
+      },
+      "symptom_modification_tests": {
+        "scapular_assistance_test": {
+          "result": "Positive — manual scapular upward rotation reduces pain during active flexion from 6/10 to 3/10",
+          "interpretation": "Scapular dyskinesis is a contributing modifiable factor. Scapular motor control training indicated."
+        },
+        "thoracic_extension_modification": {
+          "result": "Mildly positive — correcting thoracic kyphosis reduces pain during flexion from 6/10 to 5/10",
+          "interpretation": "Thoracic mobility is a secondary contributing factor"
+        }
+      },
+      "drop_arm_test": {
+        "result": "Negative — can lower arm from full elevation with control (though painful)",
+        "interpretation": "Against full-thickness tear"
+      },
+      "neer_test": {
+        "result": "Positive",
+        "note": "Traditional impingement test. NOV 2025 questions utility of test batteries — included for completeness but clinical weight is lower than Empty Can and Hawkins-Kennedy per current evidence."
+      },
+      "cervical_screening": {
+        "cervical_rom": "Full, pain-free",
+        "spurling_test": "Negative bilateral",
+        "upper_limb_tension_test": "Negative",
+        "interpretation": "Cervical spine excluded as source of shoulder symptoms"
+      }
+    },
+    "palpation": {
+      "tenderness": "Moderate tenderness over supraspinatus insertion (greater tuberosity), mild tenderness over biceps tendon groove",
+      "muscle_tone": "Increased tone upper trapezius bilateral (right > left)",
+      "trigger_points": "Active trigger points upper trapezius right, latent trigger points infraspinatus right",
+      "acromioclavicular_joint": "Non-tender, no instability"
+    },
+    "functional_tests": {
+      "reaching_overhead": {
+        "observation": "Cannot reach full overhead. Substitutes with trunk lateral flexion and scapular hiking. Avoidant behavior — hesitates before attempting.",
+        "pain": "6/10",
+        "functional_relevance": "Writing on whiteboard, accessing classroom shelves"
+      },
+      "reaching_behind_back": {
+        "observation": "Limited to waistband level. Cannot reach bra strap.",
+        "pain": "5/10",
+        "functional_relevance": "Dressing, personal hygiene"
+      },
+      "lifting_object_shoulder_height": {
+        "observation": "Can lift 2kg to shoulder height with pain (5/10). Refuses to attempt above shoulder height.",
+        "functional_relevance": "Placing/retrieving items from classroom shelves"
+      },
+      "putting_on_coat": {
+        "observation": "Uses compensatory strategy — puts left arm in first, then carefully swings coat over right shoulder. Slow and guarded.",
+        "pain": "4/10"
+      }
+    },
+    "outcome_measures": {
+      "nprs": {
+        "current": 5,
+        "worst_past_week": 8,
+        "best_past_week": 2
+      },
+      "spadi": {
+        "total_score": 62,
+        "pain_subscale": 68,
+        "disability_subscale": 58,
+        "interpretation": "Moderate-severe shoulder disability. Pain subscale higher than disability — pain is the primary driver."
+      },
+      "patient_specific_functional_scale": {
+        "activity_1": {"activity": "Writing on whiteboard for 10+ minutes", "baseline_score": 2},
+        "activity_2": {"activity": "Getting supplies from high shelves at school", "baseline_score": 2},
+        "activity_3": {"activity": "Swimming (freestyle)", "baseline_score": 0}
+      },
+      "tampa_scale_kinesiophobia": {
+        "score": 42,
+        "interpretation": "High kinesiophobia (cutoff 37). Significant fear of movement/reinjury.",
+        "clinical_implication": "Fear-avoidance is a major barrier to recovery and active participation in treatment"
+      },
+      "pain_catastrophizing_scale": {
+        "total_score": 32,
+        "rumination": 14,
+        "magnification": 6,
+        "helplessness": 12,
+        "interpretation": "Clinically relevant catastrophizing (cutoff 30). Rumination and helplessness subscales most elevated."
+      },
+      "orebro_musculoskeletal_pain_questionnaire": {
+        "score": 118,
+        "interpretation": "High risk of work disability (>105). Multiple psychosocial risk factors contributing."
+      },
+      "quickdash": {
+        "score": 52,
+        "work_module": 62,
+        "interpretation": "Moderate-severe upper extremity disability. Work module notably higher than core score."
+      }
+    }
+  },
+  "icf_mapping": {
+    "body_functions": [
+      {
+        "code": "b28014",
+        "description": "Pain in upper limb (right shoulder)",
+        "qualifier": 2,
+        "qualifier_description": "Moderate problem"
+      },
+      {
+        "code": "b7100",
+        "description": "Mobility of single joint (glenohumeral — flexion, abduction, IR)",
+        "qualifier": 2,
+        "qualifier_description": "Moderate problem"
+      },
+      {
+        "code": "b730",
+        "description": "Muscle power functions (rotator cuff, scapular stabilizers)",
+        "qualifier": 2,
+        "qualifier_description": "Moderate problem"
+      },
+      {
+        "code": "b760",
+        "description": "Control of voluntary movement functions (scapular motor control)",
+        "qualifier": 2,
+        "qualifier_description": "Moderate problem — scapular dyskinesis"
+      },
+      {
+        "code": "b134",
+        "description": "Sleep functions",
+        "qualifier": 2,
+        "qualifier_description": "Moderate problem — night pain, disrupted sleep"
+      },
+      {
+        "code": "b152",
+        "description": "Emotional functions (fear, worry, frustration)",
+        "qualifier": 2,
+        "qualifier_description": "Moderate problem"
+      },
+      {
+        "code": "b710",
+        "description": "Mobility of joint functions (thoracic spine extension)",
+        "qualifier": 1,
+        "qualifier_description": "Mild problem — contributing factor"
+      }
+    ],
+    "activity_limitations": [
+      {
+        "code": "d4452",
+        "description": "Reaching (overhead)",
+        "qualifier": 3,
+        "qualifier_description": "Severe problem — cannot reach overhead without significant pain and compensatory movement"
+      },
+      {
+        "code": "d4300",
+        "description": "Lifting (above shoulder height)",
+        "qualifier": 3,
+        "qualifier_description": "Severe problem — avoids entirely"
+      },
+      {
+        "code": "d5400",
+        "description": "Putting on clothes (upper body)",
+        "qualifier": 2,
+        "qualifier_description": "Moderate problem — requires compensatory strategies"
+      },
+      {
+        "code": "d5101",
+        "description": "Washing whole body (reaching behind back/overhead in shower)",
+        "qualifier": 2,
+        "qualifier_description": "Moderate problem"
+      },
+      {
+        "code": "d4401",
+        "description": "Grasping (overhead, e.g. reaching items from shelves)",
+        "qualifier": 2,
+        "qualifier_description": "Moderate problem"
+      },
+      {
+        "code": "d4453",
+        "description": "Turning or twisting the hands or arms",
+        "qualifier": 1,
+        "qualifier_description": "Mild problem — behind-back rotation limited"
+      }
+    ],
+    "participation_restrictions": [
+      {
+        "code": "d850",
+        "description": "Remunerative employment (teaching — whiteboard, shelf access, classroom management)",
+        "qualifier": 2,
+        "qualifier_description": "Moderate problem — struggling to perform core teaching tasks, feels she is underperforming"
+      },
+      {
+        "code": "d9201",
+        "description": "Sports (swimming)",
+        "qualifier": 4,
+        "qualifier_description": "Complete problem — completely stopped swimming"
+      },
+      {
+        "code": "d920",
+        "description": "Recreation and leisure (gardening, painting)",
+        "qualifier": 3,
+        "qualifier_description": "Severe problem — stopped gardening, painting limited by shoulder"
+      },
+      {
+        "code": "d6200",
+        "description": "Shopping (carrying bags)",
+        "qualifier": 2,
+        "qualifier_description": "Moderate problem — avoids carrying with right arm"
+      }
+    ],
+    "environmental_factors": [
+      {
+        "code": "e1101",
+        "description": "Drugs/medication (paracetamol)",
+        "qualifier": "+1",
+        "qualifier_description": "Mild facilitator — marginal pain relief"
+      },
+      {
+        "code": "e310",
+        "description": "Immediate family (adult children)",
+        "qualifier": "+1",
+        "qualifier_description": "Mild facilitator — supportive but live separately"
+      },
+      {
+        "code": "e325",
+        "description": "Acquaintances, peers (colleague at school)",
+        "qualifier": "+1",
+        "qualifier_description": "Mild facilitator"
+      },
+      {
+        "code": "e1350",
+        "description": "Products and technology for employment (classroom setup — whiteboard height, shelf height)",
+        "qualifier": "-2",
+        "qualifier_description": "Moderate barrier — non-modifiable classroom design requires overhead reaching"
+      },
+      {
+        "code": "e580",
+        "description": "Health services (GP advice: rest)",
+        "qualifier": "-1",
+        "qualifier_description": "Mild barrier — rest advice reinforced passive coping and may have contributed to deconditioning"
+      }
+    ],
+    "personal_factors": {
+      "fear_avoidance_beliefs": "High (TSK 42) — believes shoulder use causes damage, avoids all painful activities",
+      "catastrophizing": "Clinically relevant (PCS 32) — rumination and helplessness dominant, influenced by mother's frozen shoulder",
+      "recovery_expectations": "Low — expects prolonged course like mother, questions whether physiotherapy can help",
+      "self_efficacy": "Low for shoulder management, moderate for general daily life",
+      "coping_style": "Passive — relying on medication and avoidance. Amenable to active approach if educated.",
+      "motivation": "Moderate — wants to teach effectively and swim again, but discouraged by 9 weeks of no improvement",
+      "diabetes_mellitus": "T2DM — increases stiffness risk, potential complication for adhesive capsulitis development. Must monitor ROM carefully.",
+      "life_context": "Recent divorce (2 years), living alone, reduced social network, work stress — cumulative psychosocial burden"
+    }
+  },
+  "clinical_reasoning_pathway": {
+    "hypothesis_generation": {
+      "working_hypotheses": [
+        {
+          "hypothesis": "Rotator cuff tendinopathy (supraspinatus predominant) with subacromial pain",
+          "supporting_evidence": [
+            "Gradual onset without trauma — typical for tendinopathy",
+            "Painful arc pattern (70-120°)",
+            "Positive Empty Can test (pain + mild weakness)",
+            "Positive Hawkins-Kennedy",
+            "Age 55 — within peak prevalence for RC tendinopathy",
+            "Pain with overhead activities and lying on affected side"
+          ],
+          "mediator": "Tendon load capacity insufficient for occupational demands (repeated overhead reaching). Scapular dyskinesis contributing to subacromial loading.",
+          "probability": "High"
+        },
+        {
+          "hypothesis": "Scapular dyskinesis as contributing/perpetuating factor",
+          "supporting_evidence": [
+            "Positive scapular assistance test (pain reduced from 6/10 to 3/10)",
+            "Visible scapular winging and hiking during elevation",
+            "Bilateral lower trapezius weakness",
+            "Increased thoracic kyphosis"
+          ],
+          "mediator": "Altered scapulohumeral rhythm reduces subacromial space during elevation",
+          "probability": "High (as contributing factor)"
+        },
+        {
+          "hypothesis": "Fear-avoidance and catastrophizing as primary perpetuating factors for disability",
+          "supporting_evidence": [
+            "TSK 42 (high)",
+            "PCS 32 (clinically relevant)",
+            "ÖMPQ 118 (high risk)",
+            "Stopped all physical activity (swimming, gardening)",
+            "Mother's frozen shoulder narrative driving expectations",
+            "Disability disproportionate to physical findings"
+          ],
+          "mediator": "Maladaptive beliefs about shoulder damage → activity avoidance → deconditioning → increased pain sensitivity → further avoidance",
+          "probability": "High"
+        },
+        {
+          "hypothesis": "Early/developing adhesive capsulitis",
+          "supporting_evidence": [
+            "T2DM (significant risk factor)",
+            "Age 55, female (demographic risk)",
+            "Some passive ROM restriction (flexion 155°, ER 65°)",
+            "Mother had adhesive capsulitis"
+          ],
+          "against": [
+            "Passive ROM restriction is mild (not the severe global restriction of established AC)",
+            "Painful arc pattern (more consistent with RC tendinopathy than AC)",
+            "Passive ROM substantially greater than active ROM — suggests inhibition/guarding",
+            "Only 9 weeks duration"
+          ],
+          "mediator": "Capsular fibrosis secondary to inflammation and/or immobility",
+          "probability": "Low currently, but must MONITOR — T2DM makes this a genuine risk with prolonged underuse",
+          "clinical_action": "Track passive ROM at each session. Any progressive passive ROM loss triggers escalation."
+        }
+      ],
+      "excluded_hypotheses": [
+        {
+          "hypothesis": "Full-thickness rotator cuff tear",
+          "reason": "Negative drop arm test, strength is 4-/5 (pain-limited, not absent), gradual onset without trauma, age-appropriate"
+        },
+        {
+          "hypothesis": "Cervical radiculopathy",
+          "reason": "Full pain-free cervical ROM, negative Spurling test, negative ULTT, pain does not radiate below elbow, no dermatomal pattern"
+        },
+        {
+          "hypothesis": "Acromioclavicular joint pathology",
+          "reason": "AC joint non-tender, no pain with horizontal adduction or AC joint compression"
+        },
+        {
+          "hypothesis": "Calcific tendinopathy",
+          "reason": "No acute severe pain episode, no imaging confirming calcification. Cannot definitively exclude but clinical presentation is more consistent with non-calcific tendinopathy. If conservative management fails at 12 weeks, imaging would clarify."
+        }
+      ]
+    },
+    "key_clinical_reasoning_questions": [
+      {
+        "question": "Why has this episode persisted beyond the typical 6-week acute phase?",
+        "answer": "Multiple perpetuating factors: (1) Ongoing occupational loading without modification (repeated overhead reaching), (2) Significant psychosocial burden (fear-avoidance, catastrophizing, low recovery expectations), (3) GP advice to 'rest' promoted deconditioning without addressing load management, (4) Complete cessation of exercise (swimming) reduced general conditioning."
+      },
+      {
+        "question": "Is imaging indicated at this point?",
+        "answer": "No — per JOSPT 2025, imaging is not indicated before 12 weeks of adequate conservative management unless red flags are present. Adequate conservative management has not yet been attempted (only paracetamol and rest). Imaging at this point could reinforce biomedical beliefs and catastrophizing."
+      },
+      {
+        "question": "How do the yellow flags interact with the physical findings?",
+        "answer": "The physical findings (RC tendinopathy, scapular dyskinesis) explain the pain mechanism but do not fully account for the level of disability. The gap between impairment severity and disability level is filled by the psychosocial factors: fear of movement → activity cessation → deconditioning → increased pain sensitivity → reinforced fear. This is the fear-avoidance cycle."
+      },
+      {
+        "question": "What is the significance of T2DM in this case?",
+        "answer": "T2DM is a significant comorbidity: (1) Increases risk of adhesive capsulitis development — must actively maintain ROM, (2) May delay tendon healing and affect tissue quality, (3) Creates additional reason to avoid prolonged immobility. This makes early, graduated active management even more important."
+      }
+    ]
+  },
+  "problem_statements": {
+    "hoac_format": true,
+    "problems": [
+      {
+        "problem_number": 1,
+        "activity_limitation": "Unable to reach overhead (writing on whiteboard, accessing classroom shelves) for >5 minutes without significant pain increase (6-7/10) and compensatory movement patterns",
+        "underlying_impairments": [
+          "Rotator cuff tendinopathy (supraspinatus) with painful arc",
+          "Scapular dyskinesis (reduced lower trapezius and serratus anterior control)",
+          "Reduced active shoulder flexion (130°) and abduction (110°)",
+          "Thoracic kyphosis limiting overhead range"
+        ],
+        "participation_impact": "Cannot perform core teaching tasks effectively. Feels she is underperforming professionally."
+      },
+      {
+        "problem_number": 2,
+        "activity_limitation": "Unable to swim (freestyle) due to shoulder pain with overhead arm movement",
+        "underlying_impairments": [
+          "Pain with repetitive overhead motion",
+          "Reduced shoulder ROM (flexion, abduction, IR)",
+          "High kinesiophobia (TSK 42) — fear that swimming will damage shoulder further"
+        ],
+        "participation_impact": "Loss of primary exercise and social outlet. Contributing to social isolation and mood disturbance."
+      },
+      {
+        "problem_number": 3,
+        "activity_limitation": "Difficulty with self-care activities (dressing upper body, reaching behind back) requiring compensatory strategies and increased time",
+        "underlying_impairments": [
+          "Reduced internal rotation (hand to L3)",
+          "Pain with combined movements (reaching behind back)",
+          "Guarding behavior"
+        ],
+        "participation_impact": "Loss of independence in basic daily activities, contributing to frustration and reduced self-efficacy"
+      },
+      {
+        "problem_number": 4,
+        "activity_limitation": "Avoiding all physical activities and shoulder use beyond minimum requirements due to fear of causing damage",
+        "underlying_impairments": [
+          "High kinesiophobia (TSK 42)",
+          "Clinically relevant catastrophizing (PCS 32)",
+          "Low recovery expectations (influenced by mother's frozen shoulder)",
+          "Passive coping style reinforced by GP 'rest' advice"
+        ],
+        "participation_impact": "Activity avoidance perpetuating deconditioning cycle. High risk of developing chronic disability (ÖMPQ 118)."
+      }
+    ]
+  },
+  "goals": {
+    "smart_format": true,
+    "long_term_goal": {
+      "timeframe": "12 weeks",
+      "goal": "Return to full teaching duties (including whiteboard and shelf access) and resume swimming 2x/week, with manageable shoulder symptoms (NPRS ≤2/10 during activities)",
+      "outcome_measures": ["SPADI ≤20", "PSFS all items ≥7/10", "TSK <37", "PCS <20", "QuickDASH ≤20"]
+    },
+    "short_term_goals": [
+      {
+        "goal_number": 1,
+        "timeframe": "2 weeks",
+        "goal": "Perform isometric RC exercises 3x/day without fear, with understanding of hurt ≠ harm and tendon loading principles",
+        "linked_to_problem": [1, 4],
+        "outcome_measure": "Exercise diary, patient verbalization of pain education concepts"
+      },
+      {
+        "goal_number": 2,
+        "timeframe": "3 weeks",
+        "goal": "Write on whiteboard for 10 minutes with pain ≤4/10 using scapular control strategies and task modification",
+        "linked_to_problem": 1,
+        "outcome_measure": "PSFS whiteboard activity, pain diary"
+      },
+      {
+        "goal_number": 3,
+        "timeframe": "4 weeks",
+        "goal": "Active shoulder flexion improved to 150° with reduced scapular compensatory patterns",
+        "linked_to_problem": 1,
+        "outcome_measure": "Goniometry, movement quality observation"
+      },
+      {
+        "goal_number": 4,
+        "timeframe": "4 weeks",
+        "goal": "TSK score reduced from 42 to <40, with patient expressing confidence in graduated shoulder loading",
+        "linked_to_problem": 4,
+        "outcome_measure": "TSK re-assessment"
+      },
+      {
+        "goal_number": 5,
+        "timeframe": "6 weeks",
+        "goal": "Dress independently (including bra fastening) without pain or compensatory strategies",
+        "linked_to_problem": 3,
+        "outcome_measure": "PSFS, patient report"
+      },
+      {
+        "goal_number": 6,
+        "timeframe": "8 weeks",
+        "goal": "Return to swimming pool — complete 20 minutes of backstroke or breaststroke with pain ≤3/10",
+        "linked_to_problem": 2,
+        "outcome_measure": "PSFS swimming activity, activity log"
+      },
+      {
+        "goal_number": 7,
+        "timeframe": "12 weeks",
+        "goal": "Return to freestyle swimming 2x/week (30 min) and all teaching tasks without limitation",
+        "linked_to_problem": [1, 2],
+        "outcome_measure": "SPADI, PSFS, QuickDASH work module"
+      }
+    ]
+  },
+  "intervention_plan": {
+    "treatment_approach": "Biopsychosocial, active approach. Graduated tendon loading combined with education targeting fear-avoidance and catastrophizing. Scapular motor control as key physical intervention. Workplace modification to reduce provocative loading. Aligned with JOSPT 2025 and NOV/FMS SAPS 2025.",
+    "guideline_alignment": "No dedicated KNGF shoulder guideline. Intervention aligns with NOV/FMS SAPS 2025 (exercise-based management, no passive modalities), JOSPT 2025 CPG (graduated loading, imaging prohibition, psychosocial management), and NHG M08 (primary care pathway).",
+    "interventions": [
+      {
+        "category": "Education — Pain and tendon biology",
+        "intervention": "Targeted education addressing pain beliefs, tendon biology, and recovery expectations",
+        "rationale": "Address catastrophizing (PCS 32), fear-avoidance (TSK 42), and maladaptive beliefs (mother's frozen shoulder narrative). Reframe from 'damaged shoulder' to 'sensitized tendon that responds to graduated loading.'",
+        "dosage": "20 minutes session 1, 5-10 minute reinforcement each subsequent session",
+        "evidence_level": "Strong (all guidelines)",
+        "key_messages": [
+          "Your tendon is not torn or breaking down — it is sensitized and needs graduated loading to recover",
+          "Complete rest actually makes tendons weaker. Controlled, progressive loading makes them stronger",
+          "Pain during exercise is acceptable if it stays ≤4/10 and settles within 24 hours",
+          "Your mother's frozen shoulder is a different condition — this is not the same thing",
+          "Your shoulder is safe to use — the pain is your nervous system being overprotective, not a sign of damage",
+          "Recovery takes 8-12 weeks of consistent work, but the prognosis is good"
+        ],
+        "coaching_prompt": "How would you address this patient's belief that her shoulder is following her mother's pattern? What education approach would you use?"
+      },
+      {
+        "category": "Graduated tendon loading program",
+        "intervention": "Progressive rotator cuff loading: isometric → isotonic → functional",
+        "rationale": "Primary evidence-based intervention for RC tendinopathy. Addresses tendon capacity deficit that is mismatched with occupational demands. Start with isometric loading for pain management and tendon stimulus.",
+        "dosage_progression": {
+          "weeks_1_2_isometric": {
+            "exercises": [
+              "Isometric shoulder external rotation at side (towel roll) — 5x 30-45 sec holds, 70% max, 3x/day",
+              "Isometric shoulder abduction at 30° (wall press) — 5x 30-45 sec holds, 3x/day",
+              "Isometric shoulder flexion (wall press at 60°) — 5x 30-45 sec holds, 3x/day"
+            ],
+            "rationale": "Isometric loading provides analgesic effect and begins tendon loading without provoking painful arc. Safe starting point for fearful patient.",
+            "pain_rule": "Pain ≤4/10 during exercise, should not increase resting pain for >24 hours"
+          },
+          "weeks_3_5_isotonic": {
+            "exercises": [
+              "Sidelying external rotation with 1-2kg — 3x12 reps, slow tempo (3 sec concentric, 3 sec eccentric)",
+              "Standing shoulder flexion with theraband (below 90° initially, progress to full range) — 3x12 reps",
+              "Prone horizontal abduction (Y, T) with 0.5-1kg — 3x10 reps",
+              "Standing rows with theraband — 3x12 reps"
+            ],
+            "frequency": "Every other day (allow 48h tendon recovery)",
+            "progression": "Increase load when 12 reps completed with good form and pain ≤3/10"
+          },
+          "weeks_6_8_eccentric_emphasis": {
+            "exercises": [
+              "Eccentric shoulder elevation with light dumbbell (2-3kg) — 3x15 reps, slow eccentric (4 sec)",
+              "Eccentric external rotation with theraband — 3x15 reps",
+              "Standing D2 diagonal pattern with theraband — 3x12 reps"
+            ],
+            "frequency": "3x/week"
+          },
+          "weeks_9_12_functional_loading": {
+            "exercises": [
+              "Overhead press progression (seated → standing) — 3x10 reps",
+              "Simulated whiteboard activity with progressive duration",
+              "Swimming-specific shoulder conditioning (freestyle arm pattern with theraband)",
+              "Functional reaching/lifting to overhead shelves with progressive load"
+            ],
+            "frequency": "3-4x/week"
+          }
+        },
+        "evidence_level": "Strong (JOSPT 2025, NOV/FMS 2025)",
+        "coaching_prompt": "Why are you starting with isometric loading rather than jumping to functional exercises? What loading phase is appropriate for this tendon's irritability?"
+      },
+      {
+        "category": "Scapular motor control training",
+        "intervention": "Progressive scapular stabilization program",
+        "rationale": "Positive scapular assistance test confirms scapular dyskinesis as modifiable contributing factor. Pain reduced from 6/10 to 3/10 with manual correction — significant clinical improvement potential.",
+        "exercises": [
+          "Scapular setting (low trapezius activation in supported position) — 10x 10 sec holds, 3x/day",
+          "Wall slides with scapular depression focus — 3x10 reps",
+          "Serratus anterior activation (wall push-up plus) — 3x10 reps",
+          "Prone Y, T, W on incline bench — 3x8 reps, progress load",
+          "Dynamic scapular control during elevation activities (integrate with tendon loading)"
+        ],
+        "evidence_level": "Moderate",
+        "coaching_prompt": "How does the scapular assistance test result inform your intervention selection?"
+      },
+      {
+        "category": "Thoracic mobility",
+        "intervention": "Thoracic extension exercises",
+        "rationale": "Mild positive thoracic extension modification test. Addressing kyphosis may improve overhead capacity.",
+        "exercises": [
+          "Thoracic extension over foam roller — 2x10 reps, 2x/day",
+          "Open book rotation in sidelying — 2x10 reps each side",
+          "Cat-cow with emphasis on thoracic extension"
+        ],
+        "evidence_level": "Moderate",
+        "coaching_prompt": "How does thoracic posture affect subacromial space during overhead activities?"
+      },
+      {
+        "category": "Graded activity and behavioral approach",
+        "intervention": "Systematic graded return to avoided activities",
+        "rationale": "Address fear-avoidance cycle. Build self-efficacy through successful graded exposure to feared movements. TSK 42 and complete cessation of swimming indicate fear-avoidance is a primary driver of disability.",
+        "protocol": {
+          "step_1": "Activity hierarchy — list all avoided activities and rank by fear/difficulty (patient-led)",
+          "step_2": "Start with least threatening activity (e.g., gentle pendular movements → supported arm elevation → reaching at waist level)",
+          "step_3": "Progress to moderate activities (whiteboard for 2 min → 5 min → 10 min, with pacing and breaks)",
+          "step_4": "Progress to feared activities (swimming — start with backstroke/breaststroke → freestyle with pull buoy → full freestyle)",
+          "step_5": "Full return to all activities with self-management strategies"
+        },
+        "evidence_level": "Strong (extrapolated from chronic MSK pain literature, supported by JOSPT 2025)",
+        "coaching_prompt": "How would you design a graded return to swimming for this patient? What strokes would you start with and why?"
+      },
+      {
+        "category": "Workplace modification",
+        "intervention": "Ergonomic assessment and task modification for classroom",
+        "rationale": "Overhead reaching is the primary occupational provocateur. Modifying the environment reduces load on sensitized tendon while it recovers.",
+        "modifications": [
+          "Lower commonly-used supplies to accessible shelves (below shoulder height)",
+          "Use a step stool for accessing high shelves (reduces overhead reaching angle)",
+          "Alternate between whiteboard and projected/digital materials to reduce overhead writing duration",
+          "Microbreaks during whiteboard use (write 3-4 minutes, pause for shoulder movements)",
+          "Carry school bag on left shoulder or use wheeled bag"
+        ],
+        "evidence_level": "Expert opinion, logical extension of load management principles",
+        "coaching_prompt": "What workplace modifications would reduce this patient's symptom-provoking exposure while keeping her at work?"
+      },
+      {
+        "category": "General exercise and reconditioning",
+        "intervention": "Return to cardiovascular exercise",
+        "rationale": "Patient has stopped all exercise (swimming, shortened dog walks). General deconditioning contributes to pain sensitivity and mood. Exercise has antidepressant and anxiolytic effects.",
+        "protocol": [
+          "Increase daily dog walks back to 20 minutes (immediate — low shoulder demand)",
+          "Stationary cycling 20-30 min, 3x/week (shoulder-neutral cardiovascular exercise)",
+          "Progress to swimming at 6-8 weeks (backstroke/breaststroke first, then freestyle)"
+        ],
+        "evidence_level": "Strong for general health; moderate for shoulder pain modulation via exercise-induced hypoalgesia"
+      }
+    ],
+    "plan_of_care": {
+      "frequency": "2x/week for first 3 weeks, then 1x/week for weeks 4-8, then 1x/2 weeks for weeks 9-12",
+      "total_sessions": "12-15 sessions over 12 weeks",
+      "home_exercise_program": "Daily isometric exercises (weeks 1-2), then loading program every other day + daily scapular/thoracic exercises + daily walking",
+      "reassessment_schedule": "Week 3 (formal: NPRS, SPADI, PSFS, TSK), Week 6 (formal + PCS), Week 12 (all outcome measures including ÖMPQ)"
+    }
+  },
+  "reasoning_traps_for_this_case": [
+    {
+      "trap": "Requesting imaging before 12 weeks of conservative management",
+      "description": "Ordering MRI to 'see what's going on' or to reassure patient, despite no red flags and no adequate conservative management attempted yet",
+      "coaching_response": "What does the JOSPT 2025 guideline say about imaging timing? How might imaging affect a patient who already has high catastrophizing (PCS 32) and believes her shoulder is like her mother's frozen shoulder?"
+    },
+    {
+      "trap": "Performing excessive special tests",
+      "description": "Running a battery of 6+ shoulder special tests (Neer, Hawkins, Empty Can, Speed's, O'Brien's, Drop Arm, etc.) when NOV 2025 recommends single high-accuracy test approach",
+      "coaching_response": "You performed 7 special tests. What does the NOV 2025 guideline say about test clusters? Which single test most changed your clinical reasoning? What about symptom modification tests?"
+    },
+    {
+      "trap": "Ignoring yellow flags — treating as purely biomedical",
+      "description": "Focusing exclusively on rotator cuff tendinopathy treatment without addressing TSK 42, PCS 32, ÖMPQ 118, and the fear-avoidance cycle",
+      "coaching_response": "This patient's TSK is 42, PCS is 32, and ÖMPQ indicates high risk of work disability. Her disability is disproportionate to her physical findings. What psychosocial factors are perpetuating her condition? How does this change your intervention priorities?"
+    },
+    {
+      "trap": "Prescribing passive modalities",
+      "description": "Using therapeutic ultrasound, TENS, or laser therapy as primary or significant treatment components",
+      "coaching_response": "What does the 2025 evidence say about therapeutic ultrasound for shoulder tendinopathy? How might passive treatment affect this patient's already-passive coping style and low self-efficacy?"
+    },
+    {
+      "trap": "Recommending corticosteroid injection as first-line",
+      "description": "Suggesting a cortisone injection to 'get the inflammation down' before trying exercise-based management",
+      "coaching_response": "What does the evidence say about corticosteroid injections for tendinopathy? When might they be appropriate? What are the long-term effects on tendon tissue? Is 'inflammation' the right framework for understanding this tendinopathy?"
+    },
+    {
+      "trap": "Setting impairment-focused goals only",
+      "description": "Goals like 'increase shoulder flexion to 170°' or 'reduce pain to 0/10' without functional context",
+      "coaching_response": "Your goal focuses on an impairment. What activity does the patient want to achieve? Can you reframe this as a functional goal that matters to Nadia?"
+    },
+    {
+      "trap": "Ignoring diabetes as complicating factor",
+      "description": "Not recognizing T2DM as risk factor for adhesive capsulitis development and tendon healing delay",
+      "coaching_response": "This patient has Type 2 diabetes. What does this mean for her shoulder prognosis? What specific complication should you be monitoring for? How does this affect your urgency around maintaining ROM?"
+    },
+    {
+      "trap": "Advising complete rest or activity cessation",
+      "description": "Reinforcing GP's rest advice by telling patient to stop teaching activities involving the shoulder",
+      "coaching_response": "How might advising further rest reinforce the fear-avoidance cycle? What does the evidence say about rest for tendinopathy? How would you modify her activities rather than stopping them?"
+    },
+    {
+      "trap": "Loading too aggressively too early",
+      "description": "Starting with heavy resistance exercises or full-range overhead loading in a fearful patient with moderate irritability",
+      "coaching_response": "This patient has high kinesiophobia and moderate tendon irritability. What loading phase should you start with? Why are isometrics a good starting point for this presentation? How does the pain-monitoring model work?"
+    }
+  ],
+  "session_progression": {
+    "session_1": {
+      "focus": "Assessment, education, reassurance, initial isometric exercises",
+      "activities": [
+        "Complete subjective and objective examination",
+        "Red and yellow flag screening (TSK, PCS, ÖMPQ)",
+        "Provide reassurance — no serious pathology, tendon is not damaged",
+        "Pain and tendon education (hurt ≠ harm, loading principles, mother's frozen shoulder ≠ this condition)",
+        "Teach isometric RC exercises (3 positions)",
+        "Discuss pain-monitoring model (≤4/10 during exercise, settles within 24 hours)",
+        "Resume full-length dog walks (non-shoulder activity to rebuild exercise habit)"
+      ],
+      "homework": "Isometric exercises 3x/day, daily 20-min dog walk, track pain diary"
+    },
+    "session_2": {
+      "focus": "Review, education reinforcement, scapular work begins",
+      "activities": [
+        "Review home exercise performance and pain response",
+        "Assess isometric exercises — correct form, discuss pain experience",
+        "Reinforce education — explore fears and beliefs in more depth",
+        "Add scapular setting exercises",
+        "Begin thoracic mobility exercises",
+        "Discuss workplace modifications (lower shelves, step stool, alternate whiteboard/digital)"
+      ],
+      "expected_progress": "Isometrics performed consistently, pain stable or improving, beginning to verbalize understanding of hurt ≠ harm"
+    },
+    "session_4_week_3": {
+      "focus": "Formal reassessment, progress to isotonic loading, graded activity planning",
+      "activities": [
+        "Reassess: NPRS, SPADI, PSFS, TSK",
+        "Transition from isometric to isotonic loading (if pain criteria met)",
+        "Begin graded activity hierarchy for avoided activities",
+        "Introduce swimming return plan (backstroke first at week 6-8)",
+        "Monitor passive ROM — screen for AC development (T2DM risk)"
+      ],
+      "expected_progress": "NPRS improved 1-2 points, SPADI improved 8-13 points, TSK trending down, patient expressing more confidence"
+    },
+    "session_7_week_6": {
+      "focus": "Mid-point assessment, eccentric progression, swimming return initiation",
+      "activities": [
+        "Formal reassessment (all measures including PCS)",
+        "Progress to eccentric-emphasis loading (if pain criteria met)",
+        "Trial return to swimming pool (backstroke/breaststroke — supervised if possible)",
+        "Review and refine workplace modifications",
+        "Address any residual catastrophizing beliefs"
+      ],
+      "expected_progress": "SPADI ≤40, PSFS whiteboard ≥5, TSK <40, swimming backstroke initiated, active flexion >150°"
+    },
+    "session_10_week_9": {
+      "focus": "Functional loading, sport-specific progression, self-management preparation",
+      "activities": [
+        "Progress to functional loading program (overhead activities, freestyle preparation)",
+        "Full overhead teaching task simulation",
+        "Swimming progression (freestyle with pacing)",
+        "Develop self-management and flare-up plan"
+      ],
+      "expected_progress": "SPADI ≤30, teaching tasks manageable, swimming 2x/week (mixed strokes)"
+    },
+    "session_12_week_12": {
+      "focus": "Discharge assessment, long-term self-management",
+      "activities": [
+        "Final outcome measures (all: SPADI, PSFS, TSK, PCS, ÖMPQ, QuickDASH)",
+        "Review progress against goals",
+        "Finalize self-management plan",
+        "Flare-up protocol",
+        "Discuss long-term shoulder health (ongoing exercise, ergonomics, monitoring for AC with T2DM)",
+        "Discharge or transition to maintenance phase"
+      ],
+      "expected_outcomes": "SPADI ≤20, PSFS all ≥7, TSK <37, PCS <20, returned to swimming and full teaching duties"
+    }
+  },
+  "coaching_questions_by_hoac_step": {
+    "step_1_data_collection": [
+      "What red flags did you screen for in this shoulder presentation? Were any present?",
+      "What yellow flags did you identify? What screening tools did you use?",
+      "How does the NOV 2025 guideline recommend you approach special testing for this shoulder? What symptom modification tests did you use?",
+      "How does this patient's T2DM affect your clinical reasoning?",
+      "Is imaging indicated at this point? What does the 2025 evidence say?"
+    ],
+    "step_2_problem_statements": [
+      "Can you state the problem in terms of activity limitation first, then link to impairments?",
+      "You've listed 'rotator cuff tendinopathy' as a problem. Is that an activity limitation or a pathoanatomical label? How would HOAC-II frame this?",
+      "What is the relationship between this patient's physical impairments and her level of disability? Is the disability proportionate?",
+      "How do you represent the psychosocial factors in your problem list? Are fear-avoidance and catastrophizing impairments, activity limitations, or something else?"
+    ],
+    "step_3_goal_setting": [
+      "Is this goal written at the activity/participation level or impairment level?",
+      "How does this goal reflect what the PATIENT wants to achieve?",
+      "You've set a goal of 'return to swimming.' Can you make this more SMART?",
+      "Is it realistic to expect full pain resolution (0/10)? What would the 2025 evidence suggest as a reasonable outcome?"
+    ],
+    "step_4_intervention_selection": [
+      "What is your evidence for choosing this intervention?",
+      "Why are you starting with isometric loading rather than functional exercises?",
+      "How does your intervention plan address the fear-avoidance component?",
+      "You've included therapeutic ultrasound. What does the 2025 evidence say about this for shoulder tendinopathy?",
+      "What is your plan for workplace modification? How does this fit with load management?"
+    ],
+    "step_7_reevaluation": [
+      "What outcome measures will you use to track progress?",
+      "What does an adequate trial of conservative management look like for this condition?",
+      "If the patient isn't improving at 6 weeks, what factors would you reassess? When would you consider referral?",
+      "How will you monitor for developing adhesive capsulitis given her T2DM?",
+      "The TSK hasn't improved at week 4 despite education. What would you change?"
+    ]
+  }
+}

@@ -1,0 +1,506 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "title": "Shoulder RC/SAPS 2025 Evidence Synthesis",
+    "description": "Comprehensive evidence synthesis for rotator cuff tendinopathy, subacromial pain syndrome (SAPS), and post-operative rotator cuff repair rehabilitation, based on 2025 Dutch and international clinical guidelines",
+    "purpose": "Provide CRISP agents with current best evidence for shoulder case clinical reasoning",
+    "source_documents": [
+      "NOV/FMS Richtlijn SAPS 2025 (Nederlandse Orthopaedische Vereniging / Federatie Medisch Specialisten)",
+      "NHG-Standaard Schouderklachten M08 (Nederlands Huisartsen Genootschap)",
+      "SNN Basisprotocol Rotator Cuff Repair (Samenwerkingsverband Nazorg Netwerk)",
+      "JOSPT Clinical Practice Guideline: Rotator Cuff Tendinopathy 2025",
+      "KNGF — No dedicated shoulder/SAPS guideline exists (gap noted)"
+    ],
+    "last_updated": "2025-02-21",
+    "usage_note": "This synthesis integrates Dutch national guidelines with international evidence. KNGF guidelines do not cover shoulder pathology — NHG M08 and NOV/FMS SAPS serve as primary Dutch references."
+  },
+  "guideline_landscape": {
+    "kngf_gap": {
+      "status": "No dedicated KNGF guideline for shoulder complaints or SAPS",
+      "implication": "Physiotherapists must rely on NHG M08 (primary care pathway), NOV/FMS SAPS 2025 (specialist pathway), and international evidence (JOSPT 2025)",
+      "coaching_note": "Students should be aware that not all body regions have KNGF guidelines. Critical appraisal of available evidence from multiple sources is essential."
+    },
+    "applicable_dutch_guidelines": [
+      {
+        "guideline": "NHG-Standaard Schouderklachten M08",
+        "scope": "Primary care management of shoulder complaints",
+        "role": "First-line assessment and referral pathway",
+        "key_relevance": "Defines when to refer to physiotherapy vs specialist, initial management approach"
+      },
+      {
+        "guideline": "NOV/FMS Richtlijn SAPS 2025",
+        "scope": "Specialist-level diagnosis and management of subacromial pain syndrome",
+        "role": "Diagnostic approach, surgical indications, evidence-based treatment hierarchy",
+        "key_relevance": "2025 update dismantles traditional test clusters, provides updated imaging and treatment recommendations"
+      },
+      {
+        "guideline": "SNN Basisprotocol Rotator Cuff Repair",
+        "scope": "Post-operative rehabilitation protocol for rotator cuff repair",
+        "role": "Phase-based rehabilitation framework with timeline and criteria",
+        "key_relevance": "Baseline 6-week immobilization with progressive (4-week) and conservative (8-10 week) variants based on tear characteristics"
+      }
+    ],
+    "international_evidence": [
+      {
+        "guideline": "JOSPT Clinical Practice Guideline: Rotator Cuff Tendinopathy 2025",
+        "scope": "Conservative management of rotator cuff tendinopathy",
+        "role": "Evidence-graded treatment recommendations",
+        "key_relevance": "12-week imaging prohibition, exercise dosage, modality recommendations"
+      }
+    ]
+  },
+  "conservative_management_rc_tendinopathy": {
+    "definition": "Rotator cuff tendinopathy encompasses a spectrum from reactive tendinopathy to tendon degeneration, presenting as shoulder pain with overhead activities, often within the subacromial space",
+    "classification": {
+      "acute": "<6 weeks",
+      "subacute": "6-12 weeks",
+      "chronic": ">12 weeks",
+      "clinical_note": "Subacute phase is critical window — yellow flags and chronicity risk factors should be actively assessed"
+    },
+    "diagnostic_approach_2025": {
+      "key_change": "NOV/FMS SAPS 2025 dismantles traditional orthopaedic test clusters",
+      "old_approach": "Multiple special tests in cluster (Neer, Hawkins-Kennedy, Empty Can, Drop Arm, etc.) combined for diagnosis",
+      "new_approach": "Single high-accuracy test strategy",
+      "recommended_tests": {
+        "rule_in_rc_tendinopathy": {
+          "test": "Empty Can Test (Jobe's)",
+          "purpose": "High specificity — positive result increases probability of RC involvement",
+          "interpretation": "Pain and/or weakness with resisted abduction in scaption with internal rotation"
+        },
+        "rule_out_rc_tendinopathy": {
+          "test": "Hawkins-Kennedy Test",
+          "purpose": "High sensitivity — negative result effectively excludes subacromial involvement",
+          "interpretation": "Pain with passive internal rotation at 90° flexion"
+        },
+        "symptom_modification": {
+          "concept": "Symptom Modification Tests (introduced 2025)",
+          "purpose": "Identify modifiable factors contributing to symptoms",
+          "examples": [
+            "Scapular assistance test — does manual scapular repositioning reduce pain?",
+            "Thoracic extension modification — does improving thoracic posture reduce impingement symptoms?",
+            "Humeral head relocation — does posterior glide of humeral head during elevation reduce pain?"
+          ],
+          "clinical_value": "Positive modification test directly informs intervention selection"
+        }
+      },
+      "coaching_note": "Challenge students who perform >3 special tests for shoulder. Ask: what single test would most change your clinical reasoning?"
+    },
+    "imaging_policy_2025": {
+      "jospt_recommendation": "12-week imaging prohibition before conservative management failure is established",
+      "rationale": [
+        "Structural findings on imaging poorly correlate with symptoms",
+        "Asymptomatic rotator cuff tears are common (prevalence increases with age)",
+        "Early imaging may reinforce biomedical illness beliefs and catastrophizing",
+        "Imaging does not change initial conservative management approach"
+      ],
+      "indications_for_imaging": [
+        "Failure of 12+ weeks adequate conservative management",
+        "Red flags: suspected fracture, dislocation, tumor, infection",
+        "Acute traumatic onset with significant weakness (suspected acute full-thickness tear)",
+        "Pre-surgical planning (when surgery is being considered)"
+      ],
+      "coaching_prompt": "The patient requests an MRI at 4 weeks. What does the 2025 evidence say about imaging timing? How would you explain this to the patient?"
+    },
+    "treatment_recommendations": {
+      "recommended": [
+        {
+          "intervention": "Patient education and reassurance",
+          "description": "Explain the nature of tendinopathy (not 'inflammation'), favorable prognosis with active management, hurt ≠ harm, activity modification (not cessation)",
+          "evidence": "Strong (all guidelines)",
+          "key_messages": [
+            "Your tendon is not damaged — it is sensitized and needs graduated loading",
+            "Complete rest makes tendons weaker — controlled loading makes them stronger",
+            "Pain during exercise is acceptable if it settles within 24 hours",
+            "Recovery takes time (8-12 weeks minimum) but prognosis is good with consistent exercise"
+          ]
+        },
+        {
+          "intervention": "Progressive exercise therapy — graduated tendon loading",
+          "description": "Isometric → isotonic → eccentric → functional loading progression",
+          "evidence": "Strong (JOSPT 2025, NOV/FMS 2025)",
+          "dosage": {
+            "isometric_phase": "5x 45-second holds at ~70% max, 3x/day for reactive/high-irritability tendon",
+            "isotonic_phase": "3-4 sets x 8-12 reps, moderate load, every other day",
+            "eccentric_emphasis": "3 sets x 15 reps, slow eccentric (3-4 sec), daily or every other day",
+            "heavy_slow_resistance": "4 sets x 6-8 reps at high load, 3x/week (for chronic tendinopathy)",
+            "functional_loading": "Sport/task-specific loading with progressive volume and intensity"
+          },
+          "progression_criteria": "Pain ≤4/10 during exercise, no increase in resting pain lasting >24 hours, subjective improvement in function",
+          "coaching_prompt": "What loading phase is appropriate for this patient's tendon irritability? How would you progress?"
+        },
+        {
+          "intervention": "Scapular motor control training",
+          "description": "Address scapular dyskinesis contributing to subacromial narrowing",
+          "evidence": "Moderate (supported by symptom modification test rationale)",
+          "exercises": [
+            "Scapular setting (lower trapezius, serratus anterior activation)",
+            "Wall slides with scapular control focus",
+            "Prone Y, T, W exercises for posterior scapular musculature",
+            "Dynamic scapular control during functional overhead activities"
+          ],
+          "coaching_prompt": "Did you assess scapular contribution to symptoms? What did the scapular assistance test show?"
+        },
+        {
+          "intervention": "Thoracic mobility",
+          "description": "Address thoracic kyphosis limiting shoulder flexion and contributing to impingement",
+          "evidence": "Moderate",
+          "indication": "When thoracic extension modification test is positive"
+        },
+        {
+          "intervention": "Psychosocial assessment and management",
+          "description": "Screen for and address fear-avoidance, catastrophizing, low recovery expectations, work-related stress",
+          "evidence": "Strong (extrapolated from MSK pain literature, supported by JOSPT 2025)",
+          "tools": ["TSK (Tampa Scale for Kinesiophobia)", "PCS (Pain Catastrophizing Scale)", "ÖMPQ (Örebro Musculoskeletal Pain Questionnaire)"],
+          "coaching_prompt": "What yellow flags are present? How do they influence prognosis and your treatment approach?"
+        }
+      ],
+      "conditionally_recommended": [
+        {
+          "intervention": "Manual therapy (glenohumeral/thoracic mobilization)",
+          "condition": "Only as adjunct to exercise, not standalone",
+          "evidence": "Low-moderate",
+          "rationale": "May provide short-term pain relief facilitating exercise participation"
+        },
+        {
+          "intervention": "Corticosteroid injection",
+          "condition": "NOT first-line. Only when pain prevents participation in exercise program",
+          "evidence": "Moderate short-term, negative long-term",
+          "caution": "May suppress collagen synthesis and weaken tendon structure. Maximum 3 injections. Avoid in chronic tendinopathy.",
+          "coaching_prompt": "The GP has offered a corticosteroid injection. What are the pros and cons? When might it be appropriate?"
+        }
+      ],
+      "not_recommended": [
+        {
+          "intervention": "Therapeutic ultrasound",
+          "rationale": "Explicitly NOT recommended by JOSPT 2025 and NOV/FMS 2025. No evidence of benefit.",
+          "coaching_prompt": "What does the 2025 evidence say about therapeutic ultrasound for shoulder tendinopathy?"
+        },
+        {
+          "intervention": "ESWT (Extracorporeal Shockwave Therapy)",
+          "rationale": "Only indicated for calcific tendinopathy. NOT recommended for non-calcific RC tendinopathy.",
+          "exception": "May be considered if calcific deposit confirmed on imaging and conservative management has failed"
+        },
+        {
+          "intervention": "PRP (Platelet-Rich Plasma) injection",
+          "rationale": "Not first-line treatment. Insufficient evidence for routine use in RC tendinopathy.",
+          "evidence": "Low quality, conflicting results"
+        },
+        {
+          "intervention": "Hyaluronic acid injection",
+          "rationale": "Not recommended for shoulder. Limited evidence, not first-line."
+        },
+        {
+          "intervention": "Opioid analgesics",
+          "rationale": "Must NOT be first-line for shoulder pain. Risk of dependence, no disease-modifying effect.",
+          "evidence": "Strong recommendation against"
+        },
+        {
+          "intervention": "Complete rest / immobilization",
+          "rationale": "Promotes tendon deconditioning, delays recovery. Activity modification preferred over cessation."
+        }
+      ]
+    }
+  },
+  "postoperative_rc_repair": {
+    "surgical_indications": {
+      "primary": [
+        "Full-thickness tear with significant functional limitation despite adequate conservative management (≥12 weeks)",
+        "Acute traumatic full-thickness tear in active individual",
+        "Progressive weakness despite conservative management"
+      ],
+      "factors_influencing_decision": [
+        "Tear size and configuration",
+        "Tissue quality (fatty infiltration, muscle atrophy)",
+        "Patient age and activity demands",
+        "Chronicity of tear",
+        "Failed conservative management duration"
+      ]
+    },
+    "immobilization_protocol_tension_2025": {
+      "critical_clinical_tension": "Genuine disagreement between two authoritative Dutch protocols on immobilization duration",
+      "nov_2025_recommendation": {
+        "guideline": "NOV/FMS Richtlijn SAPS 2025",
+        "recommendation": "3-week immobilization for isolated supraspinatus tears",
+        "qualifying_criteria": [
+          "Isolated supraspinatus involvement (no subscapularis or infraspinatus)",
+          "Small-to-medium tear size (<3cm)",
+          "Good tissue quality (minimal fatty infiltration, Goutallier ≤2)",
+          "Secure surgical fixation"
+        ],
+        "evidence_basis": "Early mobilization studies show equivalent re-tear rates (~9%) for small-to-medium tears with no difference in clinical outcomes",
+        "rationale": "Reduces stiffness risk, earlier functional recovery, maintained tendon healing"
+      },
+      "snn_baseline_protocol": {
+        "guideline": "SNN Basisprotocol Rotator Cuff Repair",
+        "recommendation": "6-week immobilization as baseline",
+        "variants": {
+          "progressive": {
+            "duration": "4 weeks",
+            "criteria": "Small tear, good tissue quality, low stiffness risk profile",
+            "rationale": "Reduces stiffness risk in patients with risk factors"
+          },
+          "baseline": {
+            "duration": "6 weeks",
+            "criteria": "Standard protocol for most repairs",
+            "rationale": "Balanced approach allowing biological healing"
+          },
+          "conservative": {
+            "duration": "8-10 weeks",
+            "criteria": "Large/massive tear, poor tissue quality, revision surgery, subscapularis involvement",
+            "rationale": "Extended protection for high re-tear risk repairs"
+          }
+        }
+      },
+      "clinical_reasoning_challenge": "For a patient with a medium isolated supraspinatus tear and good tissue quality, both the NOV (3 weeks) and SNN (6 weeks baseline, or 4 weeks progressive) could apply. The student must weigh: tissue healing biology, stiffness risk factors, patient characteristics, and surgeon preference.",
+      "stiffness_risk_factors": [
+        "Age >50",
+        "Diabetes mellitus",
+        "Adhesive capsulitis history",
+        "Thyroid disease",
+        "Prolonged pre-operative shoulder stiffness",
+        "Workers' compensation / litigation"
+      ],
+      "re_tear_evidence": {
+        "small_to_medium_tears": {
+          "early_mobilization_re_tear_rate": "~9%",
+          "delayed_mobilization_re_tear_rate": "~9%",
+          "conclusion": "No significant difference — early mobilization appears safe"
+        },
+        "large_to_massive_tears": {
+          "early_mobilization_risk": "Significantly elevated re-tear rate",
+          "recommendation": "Extended immobilization (8-10 weeks) warranted",
+          "conclusion": "Tear size is the key moderator of immobilization duration"
+        }
+      },
+      "coaching_prompt": "This patient's surgeon recommended 6 weeks in a sling. The NOV 2025 guideline suggests 3 weeks may be sufficient for this tear profile. How do you navigate this disagreement? What factors guide your decision?"
+    },
+    "rehabilitation_phases": {
+      "phase_1_protection": {
+        "name": "Maximum Protection Phase",
+        "duration_range": "0-3 weeks (NOV progressive) to 0-6 weeks (SNN baseline)",
+        "goals": [
+          "Protect surgical repair",
+          "Pain and edema management",
+          "Maintain elbow/wrist/hand ROM",
+          "Gentle pendulum exercises (Codman)",
+          "Scapular setting (gentle isometric)"
+        ],
+        "restrictions": [
+          "Sling immobilization as prescribed",
+          "No active shoulder ROM",
+          "No lifting",
+          "Sleep in sling"
+        ],
+        "criteria_to_progress": [
+          "Pain controlled (NPRS ≤3/10 at rest)",
+          "Wound healing satisfactory",
+          "Edema resolving",
+          "Prescribed immobilization period completed"
+        ]
+      },
+      "phase_2_passive_assisted_rom": {
+        "name": "Passive/Active-Assisted ROM Phase",
+        "duration": "Weeks 3-6 (NOV) or Weeks 6-8 (SNN baseline)",
+        "goals": [
+          "Restore passive ROM (flexion, ER at 0° abduction)",
+          "Begin active-assisted ROM",
+          "Continue scapular motor control",
+          "Patient education on healing timeline"
+        ],
+        "rom_targets": {
+          "flexion": "Progress to 140° passive",
+          "external_rotation_0_abd": "Progress to 30-40° passive",
+          "internal_rotation": "Hand to abdomen"
+        },
+        "precautions": [
+          "No combined abduction + external rotation",
+          "No behind-back internal rotation",
+          "Passive ROM only — therapist-controlled"
+        ]
+      },
+      "phase_3_active_rom": {
+        "name": "Active ROM Phase",
+        "duration": "Weeks 6-12 (NOV) or Weeks 8-12 (SNN baseline)",
+        "goals": [
+          "Achieve full active ROM",
+          "Begin light isometric strengthening",
+          "Scapular stabilization exercises",
+          "Begin aquatic therapy if available"
+        ],
+        "criteria_to_progress": [
+          "Full passive ROM achieved",
+          "Active ROM within 10° of passive",
+          "Pain ≤2/10 with activities",
+          "No signs of tendon irritation"
+        ]
+      },
+      "phase_4_strengthening": {
+        "name": "Strengthening Phase",
+        "duration": "Weeks 12-20",
+        "goals": [
+          "Progressive RC strengthening (isotonic → functional)",
+          "Scapular strengthening progression",
+          "Restore shoulder endurance",
+          "Begin sport/task-specific training"
+        ],
+        "dosage": {
+          "initial": "3 sets x 10-15 reps, light resistance (theraband/light dumbbell)",
+          "progression": "Increase resistance when 15 reps achieved with good form and no pain increase",
+          "frequency": "3-4x/week with rest days between"
+        }
+      },
+      "phase_5_return_to_activity": {
+        "name": "Return to Activity/Sport Phase",
+        "duration": "Weeks 20-26+",
+        "goals": [
+          "Full strength (≥80% of contralateral or pre-injury)",
+          "Full functional ROM",
+          "Sport/work-specific conditioning",
+          "Confidence in shoulder use"
+        ],
+        "criteria_for_discharge": [
+          "SPADI ≤15 or CMS ≥80",
+          "Full ROM equal to contralateral",
+          "Strength ≥80% contralateral (HHD)",
+          "Patient-reported readiness and confidence",
+          "Able to perform all required work/sport tasks"
+        ]
+      }
+    }
+  },
+  "pharmacology_2025": {
+    "first_line": {
+      "recommendation": "Paracetamol (acetaminophen) and/or topical NSAIDs",
+      "evidence": "Moderate",
+      "rationale": "Minimal systemic side effects, adequate for mild-moderate pain"
+    },
+    "second_line": {
+      "recommendation": "Oral NSAIDs (short course, ≤2 weeks)",
+      "evidence": "Moderate",
+      "caution": "GI and cardiovascular risk with prolonged use. Consider gastroprotection.",
+      "rationale": "Anti-inflammatory effect may help in reactive tendinopathy phase"
+    },
+    "not_first_line": [
+      {
+        "medication": "Opioid analgesics",
+        "status": "NOT first-line — strong recommendation against",
+        "rationale": "Risk of dependence, no disease-modifying effect, may mask symptoms leading to overuse"
+      },
+      {
+        "medication": "Corticosteroid injection (subacromial)",
+        "status": "NOT first-line",
+        "rationale": "Short-term pain relief only (4-8 weeks). May suppress collagen synthesis. Reserve for cases where pain prevents exercise participation.",
+        "maximum": "3 injections with minimum 6-week intervals"
+      }
+    ]
+  },
+  "outcome_measures_for_shoulder": {
+    "primary_recommended": [
+      {
+        "tool": "SPADI",
+        "full_name": "Shoulder Pain and Disability Index",
+        "type": "Patient-reported outcome",
+        "domains": "Pain (5 items) + Disability (8 items)",
+        "score_range": "0-100 (higher = worse)",
+        "mcid": "8-13 points",
+        "when_to_use": "All shoulder conditions — primary outcome measure",
+        "hoac_relevance": ["step_1", "step_2", "step_3", "step_7"]
+      },
+      {
+        "tool": "CMS",
+        "full_name": "Constant-Murley Score",
+        "type": "Clinician-rated + patient-reported",
+        "domains": "Pain (15) + ADL (20) + ROM (40) + Strength (25) = 100",
+        "score_range": "0-100 (higher = better)",
+        "mcid": "10-17 points",
+        "when_to_use": "Post-operative assessment, functional shoulder evaluation",
+        "hoac_relevance": ["step_1", "step_2", "step_7"]
+      },
+      {
+        "tool": "PSFS",
+        "full_name": "Patient-Specific Functional Scale",
+        "type": "Patient-reported",
+        "note": "Already in clinimetrics database — essential for shoulder cases"
+      }
+    ],
+    "secondary_recommended": [
+      {
+        "tool": "QuickDASH",
+        "full_name": "Quick Disabilities of Arm, Shoulder and Hand",
+        "type": "Patient-reported",
+        "domains": "11-item upper extremity function",
+        "score_range": "0-100 (higher = worse)",
+        "mcid": "8-12 points"
+      },
+      {
+        "tool": "WORC",
+        "full_name": "Western Ontario Rotator Cuff Index",
+        "type": "Patient-reported",
+        "domains": "Physical symptoms, Sports/recreation, Work, Lifestyle, Emotions",
+        "score_range": "0-2100 (higher = worse), often converted to percentage",
+        "when_to_use": "Specifically for rotator cuff pathology"
+      }
+    ],
+    "psychosocial_screening": [
+      {
+        "tool": "TSK",
+        "full_name": "Tampa Scale for Kinesiophobia",
+        "note": "Already in clinimetrics database",
+        "cutoff": "≥37 indicates high kinesiophobia"
+      },
+      {
+        "tool": "PCS",
+        "full_name": "Pain Catastrophizing Scale",
+        "score_range": "0-52",
+        "cutoff": "≥30 clinically relevant catastrophizing",
+        "when_to_use": "When catastrophizing suspected as perpetuating factor"
+      },
+      {
+        "tool": "ÖMPQ",
+        "full_name": "Örebro Musculoskeletal Pain Questionnaire",
+        "score_range": "0-210",
+        "cutoff": ">105 high risk of work disability, >130 very high risk",
+        "when_to_use": "Screening for chronicity risk in subacute MSK pain"
+      }
+    ]
+  },
+  "key_clinical_tensions_for_debate": [
+    {
+      "tension": "Immobilization duration post-RC repair: NOV 3 weeks vs SNN 6 weeks",
+      "context": "For isolated supraspinatus, small-to-medium tear, good tissue quality",
+      "factors_to_weigh": ["Re-tear risk vs stiffness risk", "Patient age and comorbidities (diabetes)", "Surgeon preference and experience", "Patient activity demands and goals"],
+      "no_single_right_answer": true
+    },
+    {
+      "tension": "Imaging timing: patient/referrer request vs 12-week prohibition",
+      "context": "Patient or GP requests imaging before 12 weeks of conservative management",
+      "factors_to_weigh": ["Evidence for imaging prohibition", "Patient anxiety and illness beliefs", "Red flags that warrant early imaging", "Therapeutic relationship management"],
+      "no_single_right_answer": false,
+      "evidence_favors": "12-week prohibition unless red flags present"
+    },
+    {
+      "tension": "Corticosteroid injection: pain barrier vs tendon health",
+      "context": "Patient cannot participate in exercise program due to pain severity",
+      "factors_to_weigh": ["Short-term pain relief enabling exercise", "Long-term tendon health", "Alternative pain management strategies", "Patient preference and shared decision-making"],
+      "no_single_right_answer": true
+    },
+    {
+      "tension": "Psychosocial factors: scope of physiotherapy practice",
+      "context": "Patient with significant yellow flags — how much does the physiotherapist address vs refer?",
+      "factors_to_weigh": ["Physiotherapy competence in psychological approaches", "Screening vs treatment responsibility", "Multidisciplinary referral options", "Integration of biopsychosocial approach within exercise program"],
+      "no_single_right_answer": true
+    }
+  ],
+  "references": {
+    "dutch_guidelines": [
+      "NOV/FMS. Richtlijn Subacromiale Pijn Syndrome (SAPS). 2025.",
+      "NHG. NHG-Standaard Schouderklachten M08. Nederlands Huisartsen Genootschap.",
+      "SNN. Basisprotocol Rotator Cuff Repair. Samenwerkingsverband Nazorg Netwerk."
+    ],
+    "international_guidelines": [
+      "Shire AR, et al. JOSPT Clinical Practice Guideline: Rotator Cuff Tendinopathy. J Orthop Sports Phys Ther. 2025.",
+      "Lewis J. Rotator cuff related shoulder pain: Assessment, management and uncertainties. Man Ther. 2016;23:57-68.",
+      "Cools AM, et al. Rehabilitation of scapular dyskinesis: from the office worker to the elite overhead athlete. Br J Sports Med. 2014;48(8):692-697."
+    ]
+  }
+}

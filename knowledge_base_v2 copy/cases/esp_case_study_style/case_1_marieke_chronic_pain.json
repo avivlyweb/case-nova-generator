@@ -1,0 +1,492 @@
+{
+  "metadata": {
+    "case_id": "esp_001_marieke",
+    "case_name": "Marieke de Groot - Chronic Pain, Life Stress, and Aging",
+    "format": "ESP Longitudinal Case Study",
+    "version": "2.0 CRISP Enhanced",
+    "age_progression": [42, 52, 62, 72],
+    "primary_themes": ["Chronic pain", "Psychosocial factors", "Divorce/life stress", "Fear-avoidance", "Depression", "Aging with chronic conditions"],
+    "prevention_cure_care_focus": "Evolves from Prevention/Cure to Care across lifespan",
+    "linked_courses": ["Case Study 4", "Assessment 4", "Interventions 4"],
+    "hoac_steps_covered": "All 7 steps",
+    "estimated_teaching_time": "2-3 class sessions"
+  },
+  "patient_overview": {
+    "name": "Marieke de Groot",
+    "setting": "You are a physiotherapist in a group practice in Haarlem, affiliated with a nearby hospital (Spaarne Gasthuis).",
+    "narrative_arc": "Marieke's story illustrates how life stressors, psychological factors, and suboptimal management can transform acute pain into chronic disability - and how early biopsychosocial intervention might have changed her trajectory."
+  },
+  "life_stage_1": {
+    "title": "Marieke at 42 years old",
+    "presentation": {
+      "referral": "Self-referred, no GP referral",
+      "setting": "Private practice",
+      "chief_complaint": "Low back pain for 3 months, started after lifting boxes during house move"
+    },
+    "patient_narrative": "Marieke de Groot is 42 years old and visits your practice for the first time without a referral. She works as a project manager at a marketing agency in Amsterdam, commuting daily by train. Marieke has been experiencing low back pain for about 3 months since helping with a house move after her divorce. She recently separated from her husband after 15 years of marriage and has two children (aged 14 and 11) who live with her during the week. Marieke appears stressed and mentions she's 'trying to hold everything together.' She hasn't been sleeping well and has stopped her weekly tennis due to the pain.",
+    "history_taking_findings": {
+      "pain_characteristics": {
+        "location": "Central low back, occasional radiation to left buttock",
+        "intensity": "NPRS 5-7/10",
+        "duration": "3 months",
+        "pattern": "Worse after prolonged sitting (train commute, desk work), better with movement initially but fatigues by evening"
+      },
+      "aggravating_factors": ["Prolonged sitting", "Bending to load dishwasher", "Lifting laundry basket", "Stress at work"],
+      "easing_factors": ["Walking", "Hot shower", "Wine in evening (she admits sheepishly)"],
+      "sleep": "Difficulty falling asleep due to racing thoughts, wakes 2x/night",
+      "red_flags_screening": "All negative",
+      "yellow_flags_identified": ["Stress/life changes (divorce)", "Sleep disturbance", "Stopped enjoyable activity (tennis)", "Possible low mood", "Work stress"]
+    },
+    "psychosocial_context": {
+      "work": "Full-time project manager, high pressure, job insecurity rumored",
+      "family": "Single mother, managing children alone during week, ex-husband takes weekends",
+      "support": "Parents live in Groningen (far), one close friend nearby",
+      "coping": "Tends to push through, doesn't want to 'burden' others",
+      "mood": "Admits feeling overwhelmed, tearful at times, but says 'I'm fine'"
+    },
+    "physical_examination": {
+      "observation": "Appears tired, slightly guarded posture, sighs frequently",
+      "bmi": 24,
+      "lumbar_rom": {
+        "flexion": "75% with pain at end range",
+        "extension": "Limited 50%, reproduces pain",
+        "lateral_flexion": "Full, mild discomfort left"
+      },
+      "neurological": "Intact - no radiculopathy",
+      "palpation": "Tender L4-L5 paraspinals bilateral, hypertonic QL left",
+      "functional_tests": {
+        "sit_to_stand": "Cautious but able",
+        "forward_bend_to_lift": "Avoids, states 'I'm scared to bend'"
+      }
+    },
+    "outcome_measures": {
+      "nprs": 6,
+      "oswestry_disability_index": 28,
+      "tampa_scale_kinesiophobia": 38,
+      "four_dsq": {
+        "distress": 14,
+        "depression": 4,
+        "anxiety": 6,
+        "somatization": 8,
+        "interpretation": "Elevated distress and somatization"
+      }
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b28013", "description": "Pain in back", "qualifier": 2},
+        {"code": "b7101", "description": "Mobility of joints (lumbar)", "qualifier": 1},
+        {"code": "b134", "description": "Sleep functions", "qualifier": 2},
+        {"code": "b152", "description": "Emotional functions", "qualifier": 2}
+      ],
+      "activity_limitations": [
+        {"code": "d4103", "description": "Sitting", "qualifier": 2},
+        {"code": "d4105", "description": "Bending", "qualifier": 2},
+        {"code": "d640", "description": "Doing housework", "qualifier": 2}
+      ],
+      "participation_restrictions": [
+        {"code": "d920", "description": "Recreation (tennis)", "qualifier": 3},
+        {"code": "d850", "description": "Work", "qualifier": 1}
+      ],
+      "personal_factors": ["High stress", "Recent divorce", "Tendency to push through", "Low self-care priority"]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care? Based on which information?",
+        "teaching_answer": "Prevention/Cure. At 42 with 3-month history, this is subacute LBP with significant yellow flags. Early appropriate intervention can prevent chronicity. Key information: duration only 3 months, yellow flags modifiable, no structural pathology."
+      },
+      "q2": {
+        "question": "What yellow flags have you identified? How might these affect Marieke's prognosis?",
+        "teaching_answer": "Yellow flags: (1) Major life stress/divorce, (2) Sleep disturbance, (3) Activity avoidance (stopped tennis), (4) Fear of bending (early kinesiophobia, TSK 38), (5) Elevated distress (4DSQ), (6) Work stress. These predict slower recovery and higher risk of chronicity if not addressed."
+      },
+      "q3": {
+        "question": "Formulate 2 hypotheses you would like to assess.",
+        "teaching_answer": "H1: Non-specific LBP with movement dysfunction (limited extension, L4-L5 segmental involvement) → causing difficulty with prolonged sitting and household tasks. H2: Fear-avoidance behavior secondary to pain catastrophizing → contributing to activity limitation (stopped tennis) and prolonged disability. Both hypotheses are testable and link impairment to activity limitation."
+      },
+      "q4": {
+        "question": "What intervention approach would you prioritize and why?",
+        "teaching_answer": "Biopsychosocial approach prioritizing: (1) Education/reassurance - address fear of bending, explain hurt≠harm, (2) Active exercise - graded return to movement, (3) Address sleep and stress - sleep hygiene, consider relaxation techniques, (4) Gradual return to tennis. Manual therapy may be adjunct but not primary. Must address psychosocial factors or physical treatment alone will likely fail."
+      }
+    },
+    "hoac_scaffolding": {
+      "step_1": {
+        "coaching_prompt": "What additional information would you want from the subjective exam?",
+        "expected_elements": ["Detailed pain behavior", "Work demands", "Home situation", "Beliefs about back pain", "Previous episodes", "Coping strategies"]
+      },
+      "step_2": {
+        "coaching_prompt": "State one patient-identified problem (PIP) and one non-patient-identified problem (NPIP).",
+        "example_pip": "Unable to sit through train commute without significant pain increase",
+        "example_npip": "Fear-avoidance behavior limiting physical activity and delaying recovery"
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Treating only the back",
+        "description": "Focusing on spinal mobility/manual therapy while ignoring the divorce, stress, and sleep issues",
+        "coaching_response": "You've planned spinal mobilization. What about the life stress she mentioned? How might her divorce and single-parenting affect her pain and recovery?"
+      },
+      {
+        "trap": "Dismissing emotional factors",
+        "description": "Thinking 'I'm a physio, not a psychologist' and avoiding the psychosocial domain",
+        "coaching_response": "The 4DSQ shows elevated distress. Is this within your scope to address? What strategies can physiotherapists use for distress management?"
+      }
+    ],
+    "anticipated_problems": {
+      "if_not_addressed": "Without addressing psychosocial factors, Marieke is at high risk of developing chronic pain, increased fear-avoidance, possible depression, and long-term disability. This is a critical intervention window."
+    }
+  },
+  "life_stage_2": {
+    "title": "Marieke at 52 years old",
+    "presentation": {
+      "referral": "GP referral for chronic low back pain",
+      "setting": "Private practice (you see her again after 10 years)",
+      "chief_complaint": "Chronic low back pain, now 10 years, with recent flare-up"
+    },
+    "patient_narrative": "Marieke is now 52 years old. She is referred by her GP for chronic low back pain that has persisted for 10 years. Since you last saw her, the pain never fully resolved. She changed jobs 5 years ago to a less demanding role (communications advisor at gemeente Haarlem) due to her back. Her children are now 24 and 21, both at university. Marieke has been in a new relationship for 3 years with Pieter, who is supportive but sometimes 'doesn't understand the pain.' She tried many treatments over the years: chiropractor, osteopath, acupuncture, pain clinic. She takes paracetamol daily and uses tramadol during flare-ups. Her current flare-up started 3 weeks ago after a stressful period at work. Marieke appears defeated and says 'I've accepted this is just my life now.'",
+    "interval_history": {
+      "treatments_tried": ["Multiple physiotherapists", "Chiropractor (2 years)", "Osteopath", "Acupuncture", "Pain clinic (multidisciplinary, didn't complete program)", "Medications"],
+      "imaging": "MRI 5 years ago: 'mild disc degeneration L4-L5, L5-S1' - Marieke believes this is 'damage'",
+      "work_changes": "Changed from high-pressure job to less demanding role 'because of my back'",
+      "weight_change": "Gained 12 kg since age 42 (now BMI 28)",
+      "physical_activity": "Walks occasionally, no other exercise ('everything aggravates it')",
+      "mood": "Admits low mood, has been prescribed antidepressant (citalopram) by GP"
+    },
+    "physical_examination": {
+      "observation": "Moves cautiously, sighs frequently, appears older than stated age",
+      "bmi": 28,
+      "lumbar_rom": "Globally restricted in all directions, significant guarding",
+      "neurological": "Intact",
+      "gait": "Slow, reduced arm swing",
+      "functional_tests": {
+        "sit_to_stand": "Uses arms, slow",
+        "five_times_sts": "18 seconds"
+      }
+    },
+    "outcome_measures": {
+      "nprs": 7,
+      "oswestry_disability_index": 48,
+      "tampa_scale_kinesiophobia": 52,
+      "pain_catastrophizing_scale": 32,
+      "four_dsq": {
+        "distress": 22,
+        "depression": 8,
+        "anxiety": 10,
+        "somatization": 16
+      },
+      "patient_specific_functional_scale": {
+        "activity_1": {"activity": "Walking >20 minutes", "score": 3},
+        "activity_2": {"activity": "Sitting at work", "score": 4},
+        "activity_3": {"activity": "Cycling", "score": 2}
+      }
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b28013", "description": "Pain in back", "qualifier": 3},
+        {"code": "b130", "description": "Energy and drive functions", "qualifier": 2},
+        {"code": "b152", "description": "Emotional functions", "qualifier": 3},
+        {"code": "b7101", "description": "Mobility of joints", "qualifier": 2},
+        {"code": "b730", "description": "Muscle power", "qualifier": 2}
+      ],
+      "activity_limitations": [
+        {"code": "d450", "description": "Walking", "qualifier": 2},
+        {"code": "d4103", "description": "Sitting", "qualifier": 2},
+        {"code": "d475", "description": "Driving", "qualifier": 2},
+        {"code": "d640", "description": "Housework", "qualifier": 3}
+      ],
+      "participation_restrictions": [
+        {"code": "d850", "description": "Work (changed job)", "qualifier": 2},
+        {"code": "d920", "description": "Recreation", "qualifier": 3},
+        {"code": "d770", "description": "Intimate relationships", "qualifier": 2}
+      ],
+      "environmental_factors": [
+        {"code": "e310", "description": "Partner (Pieter)", "qualifier": "+2", "note": "Supportive but frustrated"},
+        {"code": "e1101", "description": "Medications", "qualifier": "+1", "note": "Provides temporary relief"}
+      ],
+      "personal_factors": ["Chronic pain identity", "Learned helplessness", "Catastrophizing", "Belief in structural damage"]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care?",
+        "teaching_answer": "Primarily Cure with elements of Care. At 52 with 10-year history, this is established chronic pain. Goal is not to 'fix' the back but to improve function and quality of life despite pain. However, significant improvement is still possible with appropriate biopsychosocial approach."
+      },
+      "q2": {
+        "question": "Marieke believes her MRI shows 'damage.' How would you address this?",
+        "teaching_answer": "Education is critical. Key messages: (1) Disc degeneration is normal aging - like grey hair, (2) MRI findings poorly correlate with pain, (3) Many people with similar MRI have no pain, (4) The spine is strong and adaptable. Use analogies, visual aids. This belief must be addressed or treatment will fail."
+      },
+      "q3": {
+        "question": "What explains the transition from acute to chronic pain in Marieke's case?",
+        "teaching_answer": "Multiple factors: (1) Yellow flags present at 42 weren't adequately addressed, (2) Life stress continued (single parenting, job pressure), (3) Catastrophizing and fear-avoidance developed, (4) Activity avoidance led to deconditioning, (5) MRI finding reinforced 'damage' belief, (6) Multiple passive treatments reinforced sick role, (7) Opioid use for flares. This is a textbook case of chronic pain development."
+      },
+      "q4": {
+        "question": "Formulate an anticipated problem for Marieke over the next 10 years.",
+        "teaching_answer": "Anticipated problems: (1) Further deconditioning and physical decline, (2) Opioid dependence, (3) Social isolation, (4) Early retirement on disability, (5) Relationship strain with Pieter, (6) Development of comorbidities (cardiovascular, metabolic) due to inactivity and weight gain, (7) Falls risk as she ages."
+      },
+      "q5": {
+        "question": "What treatment approach would you recommend?",
+        "teaching_answer": "Comprehensive chronic pain rehabilitation: (1) Pain neuroscience education - reconceptualize pain, (2) Graded activity/graded exposure, (3) Cognitive-behavioral strategies addressing catastrophizing, (4) Physical reconditioning program, (5) Address medication with GP (reduce tramadol), (6) Goal-focused not pain-focused, (7) Consider multidisciplinary program if not progressing. Passive treatments contraindicated."
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Ordering more imaging",
+        "description": "Thinking 'maybe something was missed' and recommending new MRI",
+        "coaching_response": "Marieke has had imaging. What would another MRI tell you? What might be the unintended consequence of more imaging on her pain beliefs?"
+      },
+      {
+        "trap": "Passive treatment approach",
+        "description": "Providing manual therapy and modalities because 'that's what she expects'",
+        "coaching_response": "Marieke has had years of passive treatments. What happened? What does the evidence say about passive versus active treatment for chronic LBP?"
+      },
+      {
+        "trap": "Colluding with disability",
+        "description": "Agreeing that her work limitations are permanent and focusing on 'managing' rather than improving",
+        "coaching_response": "Marieke says she's 'accepted' her limitations. Is acceptance always healthy? What's the difference between acceptance and resignation?"
+      }
+    ]
+  },
+  "life_stage_3": {
+    "title": "Marieke at 62 years old",
+    "presentation": {
+      "referral": "Orthopedic surgeon post left total knee replacement",
+      "setting": "Hospital outpatient physiotherapy",
+      "chief_complaint": "Rehabilitation after TKR, also ongoing low back pain"
+    },
+    "patient_narrative": "Marieke is now 62 years old and is referred for physiotherapy 10 days after a left total knee replacement. She developed knee osteoarthritis over the past 5-7 years, likely accelerated by weight gain and reduced activity due to her back pain. She retired early at 60 on disability ('my back') but also felt 'burnt out.' She now lives with Pieter in a ground-floor apartment. Her children visit occasionally but are busy with their own families (she now has 2 grandchildren). The TKR has gone well surgically but Marieke is anxious about rehabilitation, saying 'I'm scared to push too hard - my back might flare up.' She is taking oxycodone for post-operative pain.",
+    "interval_history": {
+      "knee_oa_development": "Developed over 5-7 years, worsened with weight gain",
+      "retirement": "Early retirement at 60 on disability",
+      "living_situation": "Ground-floor apartment with Pieter",
+      "weight": "BMI now 31",
+      "back_pain": "Ongoing, she takes pregabalin daily and oxycodone PRN",
+      "mood": "Improved somewhat since retirement (less work stress) but still on antidepressant",
+      "physical_activity": "Very low - occasional short walks"
+    },
+    "physical_examination": {
+      "left_knee_post_tkr": {
+        "wound": "Clean, healing well",
+        "rom": "Flexion 75°, extension -5°",
+        "swelling": "Moderate",
+        "strength": "Quad 3/5"
+      },
+      "general": {
+        "bmi": 31,
+        "gait": "Antalgic, uses rollator, fearful of weight-bearing on left",
+        "right_knee": "Crepitus, mild OA developing",
+        "lumbar_spine": "Unchanged from previous"
+      },
+      "functional": {
+        "tug": "28 seconds (with rollator)",
+        "transfers": "Requires supervision"
+      }
+    },
+    "outcome_measures": {
+      "nprs_knee": 5,
+      "nprs_back": 4,
+      "koos": {
+        "pain": 35,
+        "symptoms": 40,
+        "adl": 30,
+        "sport_rec": 5,
+        "qol": 25
+      },
+      "tampa_scale_kinesiophobia": 48,
+      "falls_efficacy_scale": 35
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b28016", "description": "Pain in joints (knee)", "qualifier": 2},
+        {"code": "b28013", "description": "Pain in back", "qualifier": 2},
+        {"code": "b710", "description": "Joint mobility", "qualifier": 3},
+        {"code": "b730", "description": "Muscle power", "qualifier": 3}
+      ],
+      "activity_limitations": [
+        {"code": "d450", "description": "Walking", "qualifier": 3},
+        {"code": "d420", "description": "Transferring", "qualifier": 2},
+        {"code": "d455", "description": "Moving around", "qualifier": 3}
+      ],
+      "participation_restrictions": [
+        {"code": "d660", "description": "Caring for grandchildren", "qualifier": 3},
+        {"code": "d620", "description": "Shopping", "qualifier": 3}
+      ]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care?",
+        "teaching_answer": "Primarily Cure (post-TKR rehabilitation) with elements of Care (chronic back pain) and Prevention (prevent falls, prevent right knee deterioration, prevent opioid dependence)."
+      },
+      "q2": {
+        "question": "Marieke is scared to push hard due to fear of back flare-up. How do you address this?",
+        "teaching_answer": "Key challenge: her fear-avoidance, developed over 20 years with back pain, now generalizes to knee rehab. Must address: (1) Education - TKR rehab requires pushing through discomfort, (2) Differentiate knee pain (expected) from back pain, (3) Graded exposure, (4) Build self-efficacy through small successes. If not addressed, rehab will be suboptimal and she risks poor TKR outcome."
+      },
+      "q3": {
+        "question": "What medications concern you?",
+        "teaching_answer": "Opioids (oxycodone, previously tramadol) - risk of dependence, sedation, falls. Pregabalin - sedation, cognitive effects, falls risk. Long-term opioid use for chronic non-cancer pain is generally not recommended. Should communicate concerns to GP/surgeon."
+      },
+      "q4": {
+        "question": "Looking back, what could have been done at age 42 to prevent this trajectory?",
+        "teaching_answer": "Critical intervention points missed: (1) Address yellow flags at first presentation, (2) Biopsychosocial approach from the start, (3) Education about pain, (4) Graded return to activity including tennis, (5) Sleep and stress management, (6) Avoidance of passive treatments, (7) Monitoring mood and referring appropriately. The TKR, disability, and chronic pain state were potentially preventable."
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Ignoring the back pain",
+        "description": "Focusing only on knee rehab because 'that's the referral'",
+        "coaching_response": "You're treating the knee. But how does her 20-year back pain history affect this rehabilitation? Can you separate them?"
+      },
+      {
+        "trap": "Accepting low goals",
+        "description": "Setting goals that accommodate her fear rather than challenging it",
+        "coaching_response": "Your goals focus on 'safe' activities. What about her stated wish to care for her grandchildren? How ambitious should goals be for a 62-year-old post-TKR?"
+      }
+    ]
+  },
+  "life_stage_4": {
+    "title": "Marieke at 72 years old",
+    "presentation": {
+      "referral": "GP referral for home visit after fall",
+      "setting": "Home physiotherapy",
+      "chief_complaint": "Recurrent falls, decreased mobility"
+    },
+    "patient_narrative": "Marieke is now 72 years old. Pieter, her partner, called the GP after Marieke fell for the third time in 2 months. Fortunately, no fractures (somewhat surprising given her inactivity and likely osteoporosis - never tested). The GP has asked you to make a home visit. When you arrive, you notice the apartment is cluttered with mobility aids that don't seem to be used correctly - a walker in the corner, a cane by the door. Marieke is sitting in a recliner and seems reluctant to get up. Pieter (now 78, with his own health issues including mild heart failure) has been doing most of the household tasks. Marieke tells you she 'doesn't want to be a burden' and has been staying in the chair most of the day 'to avoid falling.' She still has back pain, knee pain (right knee now also replaced 3 years ago), and has developed significant muscle wasting.",
+    "interval_history": {
+      "falls": "3 falls in 2 months - 2 in bathroom, 1 getting out of chair",
+      "right_tkr": "3 years ago, outcome fair",
+      "left_tkr_status": "Stiff, some ongoing discomfort",
+      "back_pain": "Ongoing, 'part of life now'",
+      "medications": {
+        "pain": "Paracetamol, pregabalin (stopped opioids 5 years ago after intervention)",
+        "other": "Citalopram, omeprazole, calcium/vitamin D"
+      },
+      "activity_level": "Minimal - chair to bed to bathroom, uses walker or furniture for support",
+      "social": "Isolated - doesn't go out, children visit monthly, minimal friends"
+    },
+    "home_environment_assessment": {
+      "hazards_identified": [
+        "Loose rugs in living room",
+        "Bathroom: no grab rails, slippery floor",
+        "Poor lighting in hallway",
+        "Walker not adjusted to correct height",
+        "Cluttered pathways"
+      ],
+      "living_situation": "Ground floor apartment, Pieter is primary caregiver but struggling"
+    },
+    "physical_examination": {
+      "observation": "Frail appearance, significant muscle wasting, kyphotic posture",
+      "bmi": 26,
+      "transfers": {
+        "sit_to_stand": "Requires 2 attempts and arms of chair, unsteady"
+      },
+      "gait": {
+        "pattern": "Shuffling, wide base, looks at feet, holds furniture",
+        "assistive_device": "Walker available but not used consistently"
+      },
+      "balance": "Unable to tandem stand, single leg stance <3 seconds",
+      "strength": "Globally weak, grip strength 12 kg"
+    },
+    "outcome_measures": {
+      "berg_balance_scale": 28,
+      "tug": "24 seconds",
+      "gait_speed_10mwt": "0.5 m/s",
+      "five_times_sts": "Unable (can do 3 before fatigue)",
+      "sppb": 4,
+      "fes_i": 48,
+      "mmse": 26,
+      "tilburg_frailty_indicator": 10
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b730", "description": "Muscle power", "qualifier": 3},
+        {"code": "b755", "description": "Balance reactions", "qualifier": 3},
+        {"code": "b28013", "description": "Pain in back", "qualifier": 2},
+        {"code": "b28016", "description": "Pain in joints", "qualifier": 2},
+        {"code": "b152", "description": "Emotional functions (fear)", "qualifier": 3}
+      ],
+      "activity_limitations": [
+        {"code": "d450", "description": "Walking", "qualifier": 3},
+        {"code": "d420", "description": "Transfers", "qualifier": 3},
+        {"code": "d510", "description": "Washing", "qualifier": 3},
+        {"code": "d540", "description": "Dressing", "qualifier": 2}
+      ],
+      "participation_restrictions": [
+        {"code": "d910", "description": "Community life", "qualifier": 4},
+        {"code": "d660", "description": "Caring for grandchildren", "qualifier": 4}
+      ],
+      "environmental_factors": [
+        {"code": "e155", "description": "Home design", "qualifier": "-2"},
+        {"code": "e310", "description": "Partner (Pieter)", "qualifier": "+1", "note": "Willing but limited capacity"}
+      ]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care?",
+        "teaching_answer": "Primarily Care with Prevention focus. At 72 with frailty (TFI 10), the goal is maintaining function, preventing falls and injuries, and supporting quality of life. Some functional improvement is possible (frailty is partially reversible) but expectations should be realistic."
+      },
+      "q2": {
+        "question": "What is your multifactorial falls assessment?",
+        "teaching_answer": "Intrinsic factors: weakness (SPPB 4), poor balance (BBS 28), fear of falling (FES-I 48), chronic pain, possible sensory deficits, medications (pregabalin sedating). Extrinsic factors: home hazards (rugs, bathroom, lighting), incorrect walker use. Behavioral: staying in chair all day (ironic 'protection' that worsens weakness)."
+      },
+      "q3": {
+        "question": "Marieke stays in her chair 'to avoid falling.' Explain the vicious cycle.",
+        "teaching_answer": "Fear of falling → Activity avoidance → Deconditioning and weakness → Poorer balance → Higher actual fall risk → Falls occur → More fear. She is now at higher fall risk BECAUSE of avoidance. Breaking this cycle requires graded activity, building strength, and addressing fear cognitively."
+      },
+      "q4": {
+        "question": "Pieter is 78 with his own health issues. What caregiver considerations are relevant?",
+        "teaching_answer": "Caregiver burden and sustainability: (1) Pieter's own limitations (heart failure), (2) Risk of Pieter getting injured helping Marieke, (3) Caregiver burnout, (4) Need to involve formal care services, (5) May need to consider supported living if home care not sustainable. Pieter is a patient too - should not be expected to do everything."
+      },
+      "q5": {
+        "question": "What is your intervention plan?",
+        "teaching_answer": "Multifactorial approach: (1) Home hazard modification (OT referral for grab rails, remove rugs, lighting), (2) Walker fitting and training, (3) Otago-based exercise program (strength + balance), (4) Falls prevention education, (5) Address fear of falling, (6) Medication review with GP (pregabalin), (7) Social services for home support, (8) Consider day rehabilitation for intensive input."
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Accepting her chair-bound status",
+        "description": "Agreeing that staying in the chair is safest",
+        "coaching_response": "Marieke says the chair is safest. Is it? What happens to fall risk when someone stops moving? What message does acceptance of immobility send?"
+      },
+      {
+        "trap": "Treating Marieke in isolation",
+        "description": "Not considering Pieter's capacity as caregiver",
+        "coaching_response": "Your treatment plan relies on Pieter assisting with exercises. He has heart failure. Is this sustainable? Who else might be involved?"
+      }
+    ]
+  },
+  "longitudinal_reflection": {
+    "trajectory_summary": "Marieke's story illustrates the cascade from acute to chronic pain, complicated by psychosocial factors, leading to progressive disability, deconditioning, and ultimately frailty. Critical intervention points were missed at age 42.",
+    "key_lessons": [
+      "Early identification and treatment of yellow flags can prevent chronic pain",
+      "Passive treatments reinforce the sick role and can worsen outcomes",
+      "Pain beliefs ('damage' from MRI) are powerful and must be addressed",
+      "Chronic pain leads to secondary problems: deconditioning, weight gain, depression, early OA",
+      "Fear-avoidance can generalize to new situations (back fear → knee rehab fear → falls fear)",
+      "End-stage presentations are complex and require Care focus, but earlier Prevention/Cure could have changed the trajectory"
+    ],
+    "what_if_scenarios": [
+      {
+        "scenario": "What if at age 42, the treating physiotherapist had fully addressed the psychosocial factors?",
+        "possible_outcome": "With education, cognitive-behavioral approach, graded return to tennis, and addressing divorce-related stress, Marieke might have recovered fully. The 30-year trajectory of pain, disability, job loss, weight gain, OA, and TKR might have been avoided."
+      }
+    ]
+  },
+  "teaching_notes": {
+    "key_competencies_assessed": [
+      "Recognition of yellow flags",
+      "Biopsychosocial reasoning",
+      "Chronic pain understanding",
+      "Falls risk assessment",
+      "Longitudinal clinical reasoning",
+      "Prevention vs Cure vs Care differentiation"
+    ],
+    "common_student_errors": [
+      "Ignoring psychosocial factors at first presentation",
+      "Over-treating with passive modalities",
+      "Not challenging patient beliefs about 'damage'",
+      "Accepting disability rather than addressing it",
+      "Treating in isolation without considering home/caregiver context"
+    ],
+    "integration_with_courses": {
+      "assessment_4": "Use of 4DSQ, TSK, outcome measures, falls assessment",
+      "interventions_4": "Chronic pain management, falls prevention (Otago), graded activity",
+      "case_study_4": "Full HOAC application, Prevention/Cure/Care reasoning"
+    }
+  }
+}

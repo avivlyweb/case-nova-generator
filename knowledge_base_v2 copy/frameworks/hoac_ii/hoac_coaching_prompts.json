@@ -1,0 +1,382 @@
+{
+  "version": "2.0",
+  "description": "Detailed coaching prompts for each HOAC-II step, designed to scaffold student reasoning",
+
+  "coaching_prompts_by_step": {
+    "step_1": {
+      "title": "Patient Introduction",
+      "opening_prompt": "Let's start by understanding who this patient is. Tell me about their background, medical situation, and what brings them to physiotherapy.",
+      
+      "scaffolding_questions": {
+        "demographics": [
+          "What do we know about this patient's age, occupation, and living situation?",
+          "How might their occupation affect their condition or recovery?"
+        ],
+        "medical_context": [
+          "What is the medical information, and how does this fit with relevant guidelines?",
+          "Are there any red flags we need to consider?",
+          "What does the timeline of symptoms tell us?"
+        ],
+        "psychosocial": [
+          "What psychosocial factors might be relevant here?",
+          "What are the patient's beliefs about their condition?",
+          "What support systems does the patient have?"
+        ],
+        "guideline_context": [
+          "Which KNGF guideline applies to this case?",
+          "Based on the guideline, what prognostic category does this patient fall into?",
+          "What does the evidence tell us about typical recovery for this presentation?"
+        ]
+      },
+      
+      "transition_to_step_2": "Good. Now that we understand the patient's context, let's explore their main concerns and identify specific problems.",
+      
+      "common_mistakes": [
+        "Rushing through psychosocial factors",
+        "Not identifying relevant yellow flags",
+        "Missing occupational demands that affect prognosis"
+      ],
+      
+      "success_indicators": [
+        "Clear demographic and occupational picture",
+        "Red/yellow flags identified or ruled out",
+        "Relevant guideline identified and applied",
+        "Psychosocial context documented"
+      ]
+    },
+
+    "step_2": {
+      "title": "Interview and Problem List",
+      "opening_prompt": "Now let's identify the patient's problems. Start with what the patient tells you - what are they struggling with in their daily life?",
+      
+      "scaffolding_questions": {
+        "health_seeking": [
+          "What is the patient's main concern - in their own words?",
+          "What activities can they no longer do, or struggle with?",
+          "What does the patient hope to achieve from physiotherapy?"
+        ],
+        "pip_identification": [
+          "Let's state this as a functional problem: 'Unable to...' or 'Difficulty with...'",
+          "If this problem resolved, what would the patient be able to do?",
+          "Which of these problems matters most to the patient?"
+        ],
+        "npip_identification": [
+          "What impairments might be contributing to these activity limitations?",
+          "Are there problems the patient might not be aware of but could be relevant?",
+          "How do these NPIPs connect to the PIPs?"
+        ],
+        "hypothesis_formation": [
+          "For this problem, what mechanism might be causing or maintaining it?",
+          "What specific mediator are you proposing?",
+          "How would you test this hypothesis?",
+          "What would you expect to find if your hypothesis is correct?",
+          "What finding would make you reconsider this hypothesis?"
+        ],
+        "alternative_hypotheses": [
+          "What else could explain this problem?",
+          "Are there competing hypotheses to consider?",
+          "Why have you prioritized this mediator over alternatives?"
+        ]
+      },
+      
+      "intervention_prompts": {
+        "diagnosis_as_problem": {
+          "trigger": "Student states 'The problem is [diagnosis]'",
+          "response": "That's a diagnosis, not a functional problem. If this condition resolved, what would the patient be able to DO that they can't do now?"
+        },
+        "impairment_only": {
+          "trigger": "Student lists only impairments",
+          "response": "These are impairments at the body function level. How do they affect the patient's activities or participation?"
+        },
+        "vague_mediator": {
+          "trigger": "Student proposes vague mediator like 'weakness'",
+          "response": "Can you be more specific? Which muscles? What type of weakness? How would you measure it?"
+        }
+      },
+      
+      "transition_to_step_3": "You've identified clear problems and hypotheses. Now let's design an assessment strategy to test these hypotheses.",
+      
+      "common_mistakes": [
+        "Using diagnosis as the problem",
+        "Only listing impairments without functional context",
+        "Non-testable hypotheses",
+        "Single mediator for all problems",
+        "Not considering alternative hypotheses"
+      ],
+      
+      "success_indicators": [
+        "PIPs at activity/participation level",
+        "NPIPs linked to PIPs",
+        "Specific, testable hypotheses",
+        "Competing hypotheses considered",
+        "Clear problem-mediator-rationale structure"
+      ]
+    },
+
+    "step_3": {
+      "title": "Assessment Strategy",
+      "opening_prompt": "Now let's plan how to test your hypotheses. Remember: every test should have a purpose and influence your decisions.",
+      
+      "scaffolding_questions": {
+        "assessment_goals": [
+          "What are you trying to find out with this assessment?",
+          "Which hypotheses will these tests help you confirm or refute?"
+        ],
+        "test_selection": [
+          "For this hypothesis, what test would help you confirm or refute it?",
+          "Is this a functional test or an impairment test?",
+          "What is the diagnostic accuracy of this test?"
+        ],
+        "decision_rules": [
+          "What would you do differently if this test is positive versus negative?",
+          "What result would make you change your hypothesis?",
+          "How will this test result influence your treatment plan?"
+        ],
+        "clinimetrics": [
+          "What standardized measures will you use?",
+          "What is the MCID for this outcome measure?",
+          "How will you use this as a baseline for re-evaluation?"
+        ]
+      },
+      
+      "intervention_prompts": {
+        "test_without_purpose": {
+          "trigger": "Student adds test 'because it's standard'",
+          "response": "Before adding this test, let's think: what would you do differently if this test is positive versus negative?"
+        },
+        "no_hypothesis_link": {
+          "trigger": "Test not clearly linked to hypothesis",
+          "response": "Which of your hypotheses does this test help you evaluate?"
+        }
+      },
+      
+      "transition_to_step_4": "Good assessment plan. Now let's look at what these tests reveal.",
+      
+      "common_mistakes": [
+        "Standard test battery without reasoning",
+        "Tests that won't influence decisions",
+        "Missing functional assessments",
+        "No baseline outcome measures"
+      ],
+      
+      "success_indicators": [
+        "Each test linked to hypothesis",
+        "Decision rules specified",
+        "Balance of functional and impairment tests",
+        "Appropriate clinimetrics selected"
+      ]
+    },
+
+    "step_4": {
+      "title": "Assessment Findings",
+      "opening_prompt": "Let's interpret your assessment findings. What did you find, and what does it mean for your hypotheses?",
+      
+      "scaffolding_questions": {
+        "findings": [
+          "What were the results of each test?",
+          "How do these compare to expected/normal values?",
+          "Are there any unexpected findings?"
+        ],
+        "interpretation": [
+          "What does this result tell you about your hypothesis?",
+          "Does this finding support or refute your hypothesis?",
+          "Are there findings that contradict each other?"
+        ],
+        "hypothesis_revision": [
+          "Based on these findings, which hypothesis is now most supported?",
+          "Do you need to revise or abandon any hypotheses?",
+          "Is additional testing needed?"
+        ]
+      },
+      
+      "intervention_prompts": {
+        "confirmation_bias": {
+          "trigger": "Student ignores contradictory findings",
+          "response": "I notice you haven't addressed [finding]. How does this fit with your hypothesis?"
+        },
+        "all_findings_positive": {
+          "trigger": "Student interprets all findings as confirming hypothesis",
+          "response": "Let's pause - is there any finding that might challenge your hypothesis?"
+        }
+      },
+      
+      "transition_to_step_5": "Now that we understand the patient's presentation, let's set appropriate goals.",
+      
+      "common_mistakes": [
+        "Confirmation bias",
+        "Ignoring contradictory findings",
+        "Not comparing to normative values",
+        "Failing to revise hypotheses based on evidence"
+      ],
+      
+      "success_indicators": [
+        "Clear interpretation of each test",
+        "Honest evaluation of hypothesis support",
+        "Willingness to revise hypotheses",
+        "Primary working hypothesis justified"
+      ]
+    },
+
+    "step_5": {
+      "title": "Goals and Actions",
+      "opening_prompt": "Let's set goals for this patient. Remember: goals should reflect what the PATIENT wants to achieve, at the level of their daily life.",
+      
+      "scaffolding_questions": {
+        "long_term_goal": [
+          "What is the patient's ultimate functional goal?",
+          "At what ICF level is this goal - participation, activity, or impairment?",
+          "Is this goal realistic given the evidence and timeframe?"
+        ],
+        "short_term_goals": [
+          "What intermediate steps will lead to the long-term goal?",
+          "How does each short-term goal connect to your mediators?",
+          "How will you measure progress on each goal?"
+        ],
+        "patient_centeredness": [
+          "Does this goal reflect the patient's priorities?",
+          "How does achieving this goal change the patient's daily life?",
+          "Has the patient agreed to these goals?"
+        ]
+      },
+      
+      "intervention_prompts": {
+        "intervention_as_goal": {
+          "trigger": "Student states 'Goal: perform 3x10 squats'",
+          "response": "That sounds like an intervention, not a goal. What functional OUTCOME would performing squats lead to?"
+        },
+        "impairment_goal": {
+          "trigger": "Goal only at impairment level",
+          "response": "This goal addresses an impairment. How does improving this affect the patient's activities or participation?"
+        }
+      },
+      
+      "transition_to_step_6": "Great goals. Now let's design an intervention plan to achieve them.",
+      
+      "common_mistakes": [
+        "Goals describe interventions",
+        "Goals only at impairment level",
+        "No clear connection between STG and LTG",
+        "Goals not aligned with patient priorities"
+      ],
+      
+      "success_indicators": [
+        "LTG at participation level",
+        "STGs progressive and mechanism-linked",
+        "SMART criteria met",
+        "Patient priorities reflected"
+      ]
+    },
+
+    "step_6": {
+      "title": "Intervention Plan",
+      "opening_prompt": "Now let's design your intervention. Remember: interventions should target the mediators you identified, not just 'treat the diagnosis'.",
+      
+      "scaffolding_questions": {
+        "intervention_selection": [
+          "What intervention will target your identified mediator?",
+          "What is the evidence base for this intervention?",
+          "How does the KNGF guideline inform your choice?"
+        ],
+        "fitt_parameters": [
+          "What frequency is appropriate?",
+          "What intensity parameters will you use?",
+          "What is the duration of each session and overall program?"
+        ],
+        "progression": [
+          "What criteria will indicate the patient is ready to progress?",
+          "How will you progress the intervention - volume, intensity, complexity?",
+          "What would trigger a regression in your plan?"
+        ],
+        "safety": [
+          "What red flags would require immediate referral?",
+          "What yellow flags require modification of the plan?",
+          "What are the contraindications or precautions?"
+        ]
+      },
+      
+      "intervention_prompts": {
+        "no_exit_criteria": {
+          "trigger": "Plan has no failure criteria",
+          "response": "What result would tell you this plan is NOT working and needs to be changed?"
+        },
+        "guideline_name_dropping": {
+          "trigger": "Student cites guideline without specifics",
+          "response": "You mentioned the guideline. Which specific recommendation applies here, and how does it inform your dosage?"
+        }
+      },
+      
+      "transition_to_step_7": "Your intervention plan is taking shape. Finally, let's define how you'll evaluate its effectiveness.",
+      
+      "common_mistakes": [
+        "No progression/regression criteria",
+        "Fixed protocol without adaptation",
+        "Not targeting identified mediators",
+        "Missing safety considerations"
+      ],
+      
+      "success_indicators": [
+        "Clear mediator-intervention link",
+        "Specific FITT parameters",
+        "Progression and regression rules",
+        "Safety flags documented"
+      ]
+    },
+
+    "step_7": {
+      "title": "Reassessment",
+      "opening_prompt": "Finally, let's plan how you'll evaluate whether your intervention is working. When and how will you reassess?",
+      
+      "scaffolding_questions": {
+        "timeline": [
+          "When will you reassess this patient?",
+          "What milestones should we see along the way?",
+          "What does the evidence say about expected recovery timeline?"
+        ],
+        "methods": [
+          "Which outcome measures will you repeat?",
+          "How will you know if clinically meaningful change has occurred?",
+          "What functional indicators will you look for?"
+        ],
+        "decision_criteria": [
+          "What result would indicate the plan is working?",
+          "What result would indicate the plan needs modification?",
+          "What are your criteria for discharge?"
+        ],
+        "reflection": [
+          "What might you be wrong about in your reasoning?",
+          "What would change your plan?",
+          "What assumptions are you making that could be tested?"
+        ]
+      },
+      
+      "closing_reflection_prompts": [
+        "Looking back at your entire reasoning process, what are you most confident about?",
+        "What are you most uncertain about?",
+        "If you had to defend this plan to a colleague, what would you emphasize?",
+        "What would you do differently if you had more time or resources?"
+      ],
+      
+      "common_mistakes": [
+        "Vague re-evaluation timing",
+        "No criteria for plan modification",
+        "Not using baseline measures for comparison",
+        "Overconfidence in plan"
+      ],
+      
+      "success_indicators": [
+        "Specific re-evaluation timeline",
+        "Appropriate outcome measures selected",
+        "Clear success/failure criteria",
+        "Genuine reflection on reasoning process"
+      ]
+    }
+  },
+
+  "general_coaching_principles": {
+    "socratic_method": "Ask questions rather than give answers whenever possible",
+    "validation_first": "Acknowledge what the student did well before suggesting improvements",
+    "specificity": "Push for specific, concrete responses rather than vague generalities",
+    "patient_focus": "Regularly bring the conversation back to patient impact",
+    "uncertainty_tolerance": "Model comfort with clinical uncertainty while still requiring rigorous reasoning"
+  }
+}

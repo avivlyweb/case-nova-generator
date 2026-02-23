@@ -1,0 +1,582 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "case_id": "geri_001_falls",
+    "case_name": "Recurrent Falls with Frailty",
+    "category": "Geriatric",
+    "difficulty": "Intermediate-Advanced",
+    "hoac_steps_covered": ["step_1", "step_2", "step_3", "step_4", "step_5", "step_6", "step_7"],
+    "icf_domains_covered": ["body_function", "activity", "participation", "environmental_factors", "personal_factors"],
+    "clinical_reasoning_focus": ["multifactorial falls assessment", "frailty identification", "balance systems", "fear of falling", "home safety"],
+    "estimated_session_time": "60-75 minutes",
+    "guideline_reference": "KNGF Guideline on Falls Prevention, AGS/BGS Falls Prevention Guidelines"
+  },
+  "patient_profile": {
+    "name": "Elisabeth (Bep) Jansen",
+    "age": 81,
+    "gender": "Female",
+    "living_situation": "Lives alone in ground-floor apartment since husband died 2 years ago",
+    "previous_occupation": "Retired nurse (retired at 65)",
+    "hobbies": "Previously: walking group, church activities, visiting grandchildren. Now mostly stays home.",
+    "referral_source": "General practitioner",
+    "referral_reason": "Recurrent falls (3 in past 6 months), reduced mobility, family concerned"
+  },
+  "presenting_problem": {
+    "falls_history": {
+      "number_of_falls_past_year": 4,
+      "number_of_falls_past_6_months": 3,
+      "most_recent_fall": "2 weeks ago - fell in bathroom getting up from toilet at night",
+      "fall_circumstances": [
+        {"when": "2 weeks ago", "where": "Bathroom", "activity": "Getting up from toilet at night", "injury": "Bruised hip, no fracture"},
+        {"when": "2 months ago", "where": "Kitchen", "activity": "Reaching for item in cupboard", "injury": "No injury"},
+        {"when": "4 months ago", "where": "Living room", "activity": "Walking to answer phone", "injury": "Minor bruise"},
+        {"when": "8 months ago", "where": "Outside", "activity": "Walking on uneven pavement", "injury": "Scraped knee"}
+      ],
+      "pattern": "Mixed - some environmental, some balance-related, several at night"
+    },
+    "patient_narrative": "I've become so unsteady on my feet. It started after Henk died - I stopped going out as much and I suppose I got weaker. Now I'm scared to walk anywhere in case I fall again. My daughter wants me to move to a care home but I don't want to leave my apartment. I know I should walk more but what if I fall and nobody finds me? I've been using my husband's old walking stick but I'm not sure I'm using it right.",
+    "family_concerns": "Daughter visits twice weekly, noticed mother has lost weight, seems frailer, more confused at times, and is isolating herself. Worried about safety living alone."
+  },
+  "medical_history": {
+    "chronic_conditions": [
+      "Hypertension (20 years)",
+      "Type 2 diabetes (15 years)",
+      "Osteoarthritis bilateral knees",
+      "Osteoporosis (T-score -2.8 hip)",
+      "Mild cognitive impairment (diagnosed 1 year ago)",
+      "Depression (since husband's death)",
+      "Macular degeneration - reduced vision",
+      "History of UTI (recurrent)"
+    ],
+    "medications": [
+      {"name": "Amlodipine", "dose": "5mg", "frequency": "Daily", "indication": "Hypertension", "fall_risk": "Possible orthostatic hypotension"},
+      {"name": "Metformin", "dose": "500mg", "frequency": "Twice daily", "indication": "Diabetes"},
+      {"name": "Sertraline", "dose": "50mg", "frequency": "Daily", "indication": "Depression", "fall_risk": "SSRIs increase fall risk"},
+      {"name": "Alendronate", "dose": "70mg", "frequency": "Weekly", "indication": "Osteoporosis"},
+      {"name": "Paracetamol", "dose": "500mg", "frequency": "PRN", "indication": "Knee pain"},
+      {"name": "Zopiclone", "dose": "3.75mg", "frequency": "Nightly", "indication": "Insomnia", "fall_risk": "Sedative - significant fall risk"}
+    ],
+    "polypharmacy_note": "6 medications including sedative hypnotic (zopiclone) and SSRI - both independently associated with increased fall risk",
+    "surgical_history": [
+      "Right total knee replacement (8 years ago)",
+      "Hysterectomy (25 years ago)",
+      "Cataract surgery bilateral (5 years ago)"
+    ],
+    "allergies": "Sulfa drugs"
+  },
+  "physical_examination": {
+    "observation": {
+      "general_appearance": "Thin, appears older than stated age, mild kyphosis",
+      "mobility_aids": "Using single-point cane (husband's - not fitted to her)",
+      "footwear": "Loose slippers with no grip",
+      "posture": "Increased thoracic kyphosis, forward head position",
+      "facial_expression": "Looks anxious, avoids eye contact initially"
+    },
+    "vital_signs": {
+      "blood_pressure_sitting": "138/82",
+      "blood_pressure_standing_1min": "118/72",
+      "orthostatic_drop": "20mmHg systolic - positive for orthostatic hypotension",
+      "heart_rate": 78,
+      "clinical_note": "Orthostatic hypotension present - contributor to falls"
+    },
+    "gait_assessment": {
+      "observation": "Slow, shuffling gait, reduced arm swing, short stride, wide base, looks at feet",
+      "gait_speed_10mwt": {
+        "value": "0.6 m/s",
+        "interpretation": "Below community ambulation threshold (<0.8 m/s), indicates limited community mobility and frailty marker"
+      },
+      "assistive_device_use": "Using cane in wrong hand (left - should be right for left knee), incorrect height"
+    },
+    "balance_assessment": {
+      "berg_balance_scale": {
+        "score": 38,
+        "interpretation": "Medium fall risk (41-56 low risk, 21-40 medium, 0-20 high)",
+        "items_most_affected": ["Tandem stance", "Single leg stance", "Reaching forward", "Turning 360°"]
+      },
+      "timed_up_and_go": {
+        "time": "18 seconds",
+        "interpretation": "High fall risk (>14 sec = fall risk)",
+        "observations": "Difficulty rising from chair, needs multiple attempts, unsteady turning"
+      },
+      "four_stage_balance_test": {
+        "feet_together": "10 sec ✓",
+        "semi_tandem": "10 sec ✓",
+        "tandem": "3 sec (unable to hold 10 sec)",
+        "single_leg": "Unable to perform"
+      },
+      "functional_reach": {
+        "value": "15 cm",
+        "interpretation": "Fall risk (<25 cm indicates increased fall risk)"
+      },
+      "mini_best_test": {
+        "total": 14,
+        "max": 28,
+        "subsystems": {
+          "anticipatory": "4/6 - difficulty with transitions",
+          "reactive": "3/6 - poor protective stepping",
+          "sensory_orientation": "4/6 - relies heavily on vision",
+          "dynamic_gait": "3/10 - slow, difficulty with obstacles"
+        },
+        "interpretation": "All balance subsystems affected, particularly reactive and dynamic gait"
+      }
+    },
+    "strength_assessment": {
+      "five_times_sit_to_stand": {
+        "time": "19 seconds",
+        "interpretation": "Indicates weakness and fall risk (>12 sec concerning)",
+        "observation": "Uses arms to push up, forward trunk lean"
+      },
+      "mrc_lower_limbs": {
+        "hip_flexion": "4/5 bilateral",
+        "knee_extension": "4-/5 bilateral (R slightly weaker)",
+        "ankle_dorsiflexion": "3+/5 bilateral",
+        "hip_abduction": "3+/5 bilateral"
+      },
+      "grip_strength": {
+        "right": "14 kg",
+        "left": "12 kg",
+        "interpretation": "Below cut-off for sarcopenia (<16 kg for women)"
+      }
+    },
+    "sensory_assessment": {
+      "vision": "Wears glasses, reports difficulty seeing in low light (macular degeneration)",
+      "vibration_sense": "Reduced at great toes bilateral (possible diabetic neuropathy)",
+      "proprioception": "Intact at ankles but mildly reduced at toes",
+      "vestibular_screening": "Dix-Hallpike negative, no spontaneous nystagmus"
+    },
+    "cognitive_screening": {
+      "mmse": {
+        "score": 24,
+        "interpretation": "Mild impairment (borderline normal)"
+      },
+      "montreal_cognitive_assessment": {
+        "score": 21,
+        "interpretation": "Mild cognitive impairment (normal ≥26)"
+      },
+      "clinical_implications": "May affect ability to learn new strategies, follow complex instructions, remember exercises"
+    },
+    "frailty_assessment": {
+      "tilburg_frailty_indicator": {
+        "physical_domain": 5,
+        "psychological_domain": 2,
+        "social_domain": 2,
+        "total": 9,
+        "interpretation": "Frail (≥5 indicates frailty)"
+      },
+      "sppb": {
+        "balance": 2,
+        "gait_speed": 2,
+        "chair_stand": 1,
+        "total": 5,
+        "interpretation": "Low performance, indicates frailty and high risk"
+      },
+      "clinical_frailty_scale": "5 - Mildly frail (slowed, needs help with IADLs)"
+    },
+    "fear_of_falling": {
+      "fes_i": {
+        "score": 42,
+        "interpretation": "High concern about falling (range 16-64, >28 = high concern)"
+      },
+      "activity_avoidance": "Reports avoiding going outside, avoiding stairs, only bathes when daughter visits",
+      "clinical_note": "Fear of falling is leading to activity avoidance, which is worsening physical capacity - vicious cycle"
+    },
+    "outcome_measures_summary": {
+      "berg_balance_scale": 38,
+      "tug": "18 sec",
+      "gait_speed_10mwt": "0.6 m/s",
+      "five_times_sts": "19 sec",
+      "sppb": 5,
+      "fes_i": 42,
+      "tfi": 9,
+      "mmse": 24
+    }
+  },
+  "falls_risk_factor_analysis": {
+    "intrinsic_factors": [
+      {"factor": "Lower limb weakness", "evidence": "5xSTS 19 sec, MRC 3-4/5", "modifiable": true},
+      {"factor": "Balance impairment", "evidence": "BBS 38, TUG 18 sec, Mini-BEST 14/28", "modifiable": true},
+      {"factor": "Gait abnormality", "evidence": "Gait speed 0.6 m/s, shuffling", "modifiable": true},
+      {"factor": "Visual impairment", "evidence": "Macular degeneration", "modifiable": "Partially (lighting, contrast)"},
+      {"factor": "Orthostatic hypotension", "evidence": "20mmHg drop", "modifiable": "Yes - medication review, education"},
+      {"factor": "Peripheral sensory loss", "evidence": "Reduced vibration sense toes", "modifiable": "Limited"},
+      {"factor": "Cognitive impairment", "evidence": "MoCA 21", "modifiable": "Limited (compensatory strategies)"},
+      {"factor": "Fear of falling", "evidence": "FES-I 42", "modifiable": true},
+      {"factor": "Depression", "evidence": "On sertraline, reports low mood", "modifiable": true},
+      {"factor": "Medications", "evidence": "Zopiclone (sedative), sertraline (SSRI)", "modifiable": "Yes - discuss with GP"}
+    ],
+    "extrinsic_factors": [
+      {"factor": "Inappropriate footwear", "evidence": "Loose slippers", "modifiable": true},
+      {"factor": "Inappropriate walking aid", "evidence": "Cane wrong height, wrong hand", "modifiable": true},
+      {"factor": "Home hazards", "evidence": "Home assessment needed - falls in bathroom", "modifiable": true},
+      {"factor": "Lighting", "evidence": "Night-time falls, visual impairment", "modifiable": true}
+    ],
+    "behavioral_factors": [
+      {"factor": "Activity avoidance", "evidence": "Stays home, avoids walking", "modifiable": true},
+      {"factor": "Rushing", "evidence": "Fell hurrying to answer phone", "modifiable": true},
+      {"factor": "Night-time toileting", "evidence": "Fell getting up at night", "modifiable": "Partially (urinal, lighting)"}
+    ]
+  },
+  "icf_mapping": {
+    "body_functions": [
+      {"code": "b730", "description": "Muscle power functions", "qualifier": 2, "qualifier_description": "Moderate problem"},
+      {"code": "b755", "description": "Involuntary movement reaction functions (balance)", "qualifier": 3, "qualifier_description": "Severe problem"},
+      {"code": "b770", "description": "Gait pattern functions", "qualifier": 2, "qualifier_description": "Moderate problem"},
+      {"code": "b235", "description": "Vestibular functions", "qualifier": 1, "qualifier_description": "Mild problem"},
+      {"code": "b210", "description": "Seeing functions", "qualifier": 2, "qualifier_description": "Moderate problem"},
+      {"code": "b260", "description": "Proprioceptive function", "qualifier": 1, "qualifier_description": "Mild problem"},
+      {"code": "b152", "description": "Emotional functions (fear, depression)", "qualifier": 2, "qualifier_description": "Moderate problem"},
+      {"code": "b164", "description": "Higher-level cognitive functions", "qualifier": 1, "qualifier_description": "Mild problem"},
+      {"code": "b420", "description": "Blood pressure functions (orthostatic)", "qualifier": 2, "qualifier_description": "Moderate problem"}
+    ],
+    "activity_limitations": [
+      {"code": "d450", "description": "Walking", "qualifier": 2, "qualifier_description": "Moderate problem - slow, unsafe outdoors"},
+      {"code": "d455", "description": "Moving around", "qualifier": 3, "qualifier_description": "Severe problem - avoids stairs, outdoor mobility restricted"},
+      {"code": "d4103", "description": "Sitting (rising from sit)", "qualifier": 2, "qualifier_description": "Moderate problem"},
+      {"code": "d510", "description": "Washing oneself", "qualifier": 2, "qualifier_description": "Moderate problem - only bathes with help"},
+      {"code": "d620", "description": "Acquisition of goods (shopping)", "qualifier": 3, "qualifier_description": "Severe problem - cannot shop independently"}
+    ],
+    "participation_restrictions": [
+      {"code": "d910", "description": "Community life", "qualifier": 3, "qualifier_description": "Severe problem - isolated at home"},
+      {"code": "d920", "description": "Recreation and leisure", "qualifier": 3, "qualifier_description": "Severe problem - stopped walking group, church"},
+      {"code": "d660", "description": "Assisting others (grandchildren)", "qualifier": 3, "qualifier_description": "Severe problem - cannot visit, afraid to hold grandchildren"}
+    ],
+    "environmental_factors": [
+      {"code": "e155", "description": "Design of buildings - home", "qualifier": "-2", "qualifier_description": "Moderate barrier - bathroom hazards, lighting"},
+      {"code": "e1151", "description": "Assistive products for mobility", "qualifier": "-1", "qualifier_description": "Mild barrier - wrong cane"},
+      {"code": "e310", "description": "Immediate family", "qualifier": "+2", "qualifier_description": "Moderate facilitator - daughter helps"},
+      {"code": "e115", "description": "Products for daily living", "qualifier": "-1", "qualifier_description": "Mild barrier - no grab rails, inappropriate footwear"}
+    ],
+    "personal_factors": {
+      "fear_of_falling": "High - major barrier to activity",
+      "motivation": "Wants to stay independent and in her home",
+      "grief": "Still grieving husband - affects mood and activity",
+      "independence_identity": "Strong desire to remain independent - was a nurse, used to helping others",
+      "cognitive_status": "Mild impairment may affect learning"
+    }
+  },
+  "problem_statements": {
+    "problems": [
+      {
+        "problem_number": 1,
+        "activity_limitation": "Unsafe and slow ambulation (gait speed 0.6 m/s, TUG 18 sec) with high fall risk",
+        "underlying_impairments": [
+          "Lower limb weakness (5xSTS 19 sec)",
+          "Balance impairment (BBS 38)",
+          "Visual impairment",
+          "Orthostatic hypotension",
+          "Inappropriate walking aid use"
+        ],
+        "participation_impact": "Unable to safely mobilize in community, social isolation"
+      },
+      {
+        "problem_number": 2,
+        "activity_limitation": "Avoiding activities due to fear of falling (FES-I 42)",
+        "underlying_impairments": [
+          "Previous falls (4 in past year)",
+          "Depression",
+          "Low self-efficacy",
+          "Perceived inability to cope with fall"
+        ],
+        "participation_impact": "Social isolation, stopped walking group and church, declining physical capacity"
+      },
+      {
+        "problem_number": 3,
+        "activity_limitation": "Difficulty rising from chair/toilet requiring use of arms and multiple attempts",
+        "underlying_impairments": [
+          "Lower limb weakness",
+          "Reduced muscle power (frailty)",
+          "Knee osteoarthritis"
+        ],
+        "participation_impact": "Depends on daughter for bathing, fears toilet transfers at night"
+      },
+      {
+        "problem_number": 4,
+        "activity_limitation": "Home environment contains fall hazards",
+        "underlying_impairments": [
+          "Loose slippers",
+          "No bathroom grab rails",
+          "Poor lighting at night",
+          "Incorrect walking aid"
+        ],
+        "participation_impact": "Falls at home, unsafe to be alone"
+      }
+    ]
+  },
+  "goals": {
+    "long_term_goal": {
+      "timeframe": "12 weeks",
+      "goal": "Remain living safely at home with reduced fall risk, improved mobility, and resumed social activities (walking group OR church)",
+      "outcome_measures": ["BBS ≥45", "TUG ≤14 sec", "FES-I <28", "No falls", "Resumed 1+ social activity"]
+    },
+    "short_term_goals": [
+      {
+        "goal_number": 1,
+        "timeframe": "2 weeks",
+        "goal": "Home modifications completed (grab rails in bathroom, improved lighting, appropriate footwear obtained)",
+        "linked_to_problem": 4,
+        "outcome_measure": "Home safety checklist"
+      },
+      {
+        "goal_number": 2,
+        "timeframe": "2 weeks",
+        "goal": "Fitted with appropriate walking aid (rollator) and educated on correct use",
+        "linked_to_problem": 1,
+        "outcome_measure": "Walking aid assessment"
+      },
+      {
+        "goal_number": 3,
+        "timeframe": "4 weeks",
+        "goal": "Complete sit-to-stand without using arms for push-off (5xSTS <15 sec)",
+        "linked_to_problem": 3,
+        "outcome_measure": "5xSTS test"
+      },
+      {
+        "goal_number": 4,
+        "timeframe": "6 weeks",
+        "goal": "Walk 10 meters in <12 seconds (gait speed ≥0.8 m/s) with rollator",
+        "linked_to_problem": 1,
+        "outcome_measure": "10MWT"
+      },
+      {
+        "goal_number": 5,
+        "timeframe": "6 weeks",
+        "goal": "FES-I score reduced to <35 (from 42)",
+        "linked_to_problem": 2,
+        "outcome_measure": "FES-I"
+      },
+      {
+        "goal_number": 6,
+        "timeframe": "8 weeks",
+        "goal": "TUG completed in ≤14 seconds (from 18 sec)",
+        "linked_to_problem": 1,
+        "outcome_measure": "TUG"
+      },
+      {
+        "goal_number": 7,
+        "timeframe": "10 weeks",
+        "goal": "Resume one social activity outside the home (walking group or church) with confidence",
+        "linked_to_problem": 2,
+        "outcome_measure": "Patient report, activity diary"
+      }
+    ]
+  },
+  "intervention_plan": {
+    "treatment_approach": "Multifactorial falls prevention addressing strength, balance, fear of falling, home hazards, and medications. Gradual, confidence-building approach.",
+    "interventions": [
+      {
+        "category": "Strength training - Otago-based",
+        "intervention": "Progressive lower limb and functional strengthening",
+        "exercises": [
+          "Sit-to-stand practice (progress from high chair to normal height to without arms)",
+          "Heel raises (support progressing to unsupported)",
+          "Knee bends/mini squats",
+          "Hip abduction (standing with support)",
+          "Step-ups (low step, progress height)"
+        ],
+        "dosage": "3x/week in clinic initially, daily home exercises",
+        "evidence": "Strong - Otago exercise program reduces falls by 35%"
+      },
+      {
+        "category": "Balance training",
+        "intervention": "Progressive static and dynamic balance exercises",
+        "exercises": [
+          "Tandem stance practice",
+          "Single leg stance (with support initially)",
+          "Weight shifting",
+          "Reaching tasks",
+          "Perturbation training (gentle pushes)",
+          "Walking with head turns",
+          "Obstacle negotiation"
+        ],
+        "dosage": "Incorporated into every session + home program",
+        "progression": "Supported → Unsupported → Eyes closed → Dual-task",
+        "evidence": "Strong"
+      },
+      {
+        "category": "Gait training",
+        "intervention": "Walking practice with appropriate aid",
+        "focus": [
+          "Correct rollator use",
+          "Increase stride length",
+          "Reduce shuffling",
+          "Head up, not looking at feet",
+          "Turning safely"
+        ],
+        "dosage": "Daily walking practice, gradually increase distance",
+        "evidence": "Strong"
+      },
+      {
+        "category": "Fear of falling intervention",
+        "intervention": "Cognitive-behavioral approach and graded activity exposure",
+        "strategies": [
+          "Education - falls are not inevitable, strength improves",
+          "Discuss what she would do if she fell (getting up from floor practice)",
+          "Graded exposure to feared activities",
+          "Celebrate successes and progress",
+          "Consider personal alarm for reassurance",
+          "Involve daughter in building confidence"
+        ],
+        "evidence": "Moderate - CBT-based programs reduce fear of falling",
+        "coaching_note": "Fear of falling is as important to address as physical impairments"
+      },
+      {
+        "category": "Home modifications",
+        "intervention": "Home safety assessment and modifications",
+        "recommendations": [
+          "Grab rails in bathroom (toilet and shower)",
+          "Non-slip mat in bathroom",
+          "Night lights for path to bathroom",
+          "Remove loose rugs",
+          "Appropriate footwear (supportive slippers or shoes)",
+          "Consider commode or urinal for night-time",
+          "Personal alarm pendant"
+        ],
+        "collaboration": "Occupational therapy for home visit",
+        "evidence": "Strong - home modifications reduce falls"
+      },
+      {
+        "category": "Walking aid prescription",
+        "intervention": "Fit and train with appropriate walking aid",
+        "recommendation": "Four-wheeled rollator (more stable than cane, has seat for rest)",
+        "rationale": "Provides more support than cane, addresses multiple balance deficits, seat allows for rest breaks",
+        "training": "Correct height, posture, turning, use of brakes, sitting on seat"
+      },
+      {
+        "category": "Medication review",
+        "intervention": "Communicate with GP regarding fall-risk medications",
+        "concerns": [
+          "Zopiclone - sedative hypnotic, strong association with falls",
+          "Sertraline - SSRIs associated with falls",
+          "Amlodipine - contributing to orthostatic hypotension"
+        ],
+        "recommendation": "Letter to GP requesting medication review with focus on fall risk",
+        "pt_role": "Identify and communicate concerns, not prescribe",
+        "evidence": "Strong - medication review reduces falls"
+      },
+      {
+        "category": "Orthostatic hypotension management",
+        "intervention": "Education on postural changes",
+        "strategies": [
+          "Rise slowly from lying/sitting",
+          "Sit on edge of bed before standing",
+          "Ankle pumps before rising",
+          "Adequate hydration",
+          "Avoid standing immediately after meals"
+        ],
+        "evidence": "Moderate"
+      },
+      {
+        "category": "Education",
+        "intervention": "Patient and family education",
+        "topics": [
+          "Falls are not inevitable - they can be prevented",
+          "Importance of staying active (deconditioning worsens fall risk)",
+          "Medication effects on balance",
+          "When to call for help",
+          "Getting up from a fall safely"
+        ],
+        "involve_daughter": "Include in education sessions, discuss safety plan"
+      }
+    ],
+    "plan_of_care": {
+      "frequency": "2x/week for 6 weeks, then weekly for 6 weeks",
+      "duration": "12 weeks initial program",
+      "home_exercise_program": "Daily - Otago exercises, walking",
+      "follow_up": "Falls prevention group or ongoing community exercise",
+      "reassessment": "Week 4, Week 8, Week 12"
+    }
+  },
+  "multidisciplinary_considerations": {
+    "gp_communication": {
+      "purpose": "Medication review, orthostatic hypotension management, depression review",
+      "information_to_share": "Fall risk assessment findings, medication concerns, orthostatic hypotension"
+    },
+    "occupational_therapy": {
+      "purpose": "Home assessment, ADL training, equipment recommendation",
+      "referral_indicated": true
+    },
+    "ophthalmology": {
+      "purpose": "Review macular degeneration management, ensure optimal vision correction",
+      "referral_indicated": "Discuss with GP"
+    },
+    "social_services": {
+      "purpose": "Community support, day programs, personal alarm",
+      "consider": true
+    }
+  },
+  "reasoning_traps_for_this_case": [
+    {
+      "trap": "Attributing falls to 'old age'",
+      "description": "Accepting falls as inevitable consequence of aging rather than identifying modifiable factors",
+      "coaching_response": "You've noted she's 81 and has had falls. Are falls inevitable at this age? What modifiable risk factors have you identified?"
+    },
+    {
+      "trap": "Ignoring fear of falling",
+      "description": "Focusing only on physical impairments without addressing the fear component",
+      "coaching_response": "Her FES-I is 42 and she's avoiding activities. How might fear of falling be affecting her physical capacity? Is this a treatment target?"
+    },
+    {
+      "trap": "Not addressing medications",
+      "description": "Overlooking the contribution of zopiclone and other medications to fall risk",
+      "coaching_response": "You've listed her medications. Which ones might contribute to fall risk? What's your role in addressing this?"
+    },
+    {
+      "trap": "Ignoring environmental factors",
+      "description": "Only treating the patient without addressing home hazards",
+      "coaching_response": "She fell in the bathroom at night. What environmental modifications might reduce her fall risk at home?"
+    },
+    {
+      "trap": "Advising reduced activity",
+      "description": "Telling patient to be careful and avoid activities to prevent falls",
+      "coaching_response": "If we advise her to stay home and avoid walking, what will happen to her strength and balance over time? Is activity avoidance protective?"
+    },
+    {
+      "trap": "Not involving the family",
+      "description": "Treating patient in isolation without engaging daughter in care planning",
+      "coaching_response": "The daughter visits twice weekly and is concerned. How might you involve her in the rehabilitation plan?"
+    },
+    {
+      "trap": "Single-factor approach",
+      "description": "Providing balance exercises alone without addressing the multifactorial nature of falls",
+      "coaching_response": "You've prescribed balance exercises. What other fall risk factors need to be addressed for a comprehensive approach?"
+    }
+  ],
+  "coaching_questions_by_hoac_step": {
+    "step_1_data_collection": [
+      "What intrinsic, extrinsic, and behavioral risk factors did you identify?",
+      "What does the gait speed of 0.6 m/s tell you about community mobility and frailty?",
+      "The TUG is 18 seconds - what is the clinical significance?",
+      "What does the FES-I score tell you? Why is this important?",
+      "What medications might be contributing to fall risk?"
+    ],
+    "step_2_problem_statements": [
+      "You've listed 'poor balance' as a problem. Can you reframe this as an activity limitation?",
+      "How does the fear of falling connect to her social isolation?",
+      "What is the relationship between her activity avoidance and her physical decline?"
+    ],
+    "step_3_goal_setting": [
+      "Your goal is 'prevent falls' - is this measurable? How would you make it SMART?",
+      "What functional activities does the patient want to resume?",
+      "Are your goals realistic given her cognitive status? How will you ensure she can follow the program?"
+    ],
+    "step_4_intervention_selection": [
+      "Why did you choose the Otago exercise program?",
+      "How will you address the fear of falling component?",
+      "What environmental modifications would you recommend?",
+      "What will you communicate to the GP about medications?"
+    ],
+    "step_7_reevaluation": [
+      "What outcome measures will you use to track progress?",
+      "How will you know if the fear of falling is improving?",
+      "What would indicate the program is successful?"
+    ]
+  },
+  "key_education_messages": [
+    "Falls are not a normal part of aging - they can be prevented",
+    "Staying active is protective - being too careful and avoiding activity actually increases fall risk over time",
+    "Strength and balance can be improved at any age",
+    "Simple home modifications can significantly reduce fall risk",
+    "If you do fall, knowing how to get up safely is important (we'll practice this)",
+    "There are strategies to manage dizziness when standing up"
+  ]
+}

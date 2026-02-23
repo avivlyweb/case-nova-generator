@@ -1,0 +1,623 @@
+{
+  "metadata": {
+    "case_id": "esp_004_willem",
+    "case_name": "Willem van der Berg - Parkinson's Disease Progression and Caregiver Journey",
+    "format": "ESP Longitudinal Case Study",
+    "version": "2.0 CRISP Enhanced",
+    "age_progression": [58, 68, 75, 82],
+    "primary_themes": ["Parkinson's disease", "Progressive neurological condition", "Caregiver burden", "Freezing of gait", "Falls", "Dual tasking", "End-of-life care"],
+    "prevention_cure_care_focus": "No prevention possible, Cure through symptom management and function optimization, Care increasingly dominant",
+    "linked_courses": ["Case Study 4", "Assessment 4", "Interventions 4"],
+    "hoac_steps_covered": "All 7 steps"
+  },
+  "patient_overview": {
+    "name": "Willem van der Berg",
+    "setting": "You are a physiotherapist at a neurology outpatient clinic affiliated with a teaching hospital in Utrecht.",
+    "narrative_arc": "Willem's story follows the progression of Parkinson's disease from early diagnosis through advanced stages, illustrating the evolving role of physiotherapy across the disease trajectory. Equally important is the parallel story of his wife Ans, whose role shifts from partner to caregiver to care coordinator, demonstrating the profound impact of neurological disease on families."
+  },
+  "life_stage_1": {
+    "title": "Willem at 58 years old",
+    "presentation": {
+      "referral": "Neurologist referral",
+      "setting": "Neurology outpatient clinic",
+      "chief_complaint": "Newly diagnosed Parkinson's disease, referred for baseline assessment and exercise counseling"
+    },
+    "patient_narrative": "Willem van der Berg is 58 years old, a high school history teacher in Utrecht. He was diagnosed with Parkinson's disease 3 months ago after 2 years of symptoms he initially attributed to 'getting older' - a slight tremor in his right hand, difficulty with fine movements, and feeling 'slowed down.' His wife Ans noticed changes in his handwriting and facial expression before he did. Willem is still working full-time but finding it increasingly tiring. He's started on levodopa/carbidopa and has noticed some improvement. Willem is clearly intelligent and has read extensively about PD. He asks detailed questions and seems to be processing the diagnosis intellectually rather than emotionally. He says, 'I'm a historian. I know that nothing stays the same. I just need to understand what's coming so I can prepare.'",
+    "history_taking_findings": {
+      "parkinsons_history": {
+        "symptom_onset": "Approximately 2 years before diagnosis",
+        "initial_symptoms": ["Right hand tremor", "Micrographia", "Reduced arm swing", "Fatigue"],
+        "diagnosis_date": "3 months ago",
+        "hoehn_yahr": "Stage 1-2",
+        "most_affected_side": "Right"
+      },
+      "current_medications": [
+        {"name": "Levodopa/carbidopa (Sinemet)", "dose": "100/25 mg TID"}
+      ],
+      "functional_status": {
+        "work": "Full-time teaching, finds afternoon classes harder",
+        "hobbies": "Reading, cycling (still doing), chess",
+        "adls": "Independent in all"
+      },
+      "family": {
+        "wife": "Ans (56), works as nurse in elderly care",
+        "children": "Son Pieter (30) in Amsterdam, daughter Emma (27) in London",
+        "home": "Two-story house in Zeist"
+      },
+      "psychological": {
+        "reaction_to_diagnosis": "Intellectualizing, researching extensively",
+        "mood": "Some denial, focusing on 'staying positive'",
+        "concerns": "Impact on work, fear of disability"
+      }
+    },
+    "physical_examination": {
+      "general": {
+        "appearance": "Well-groomed, hypomimia noticeable",
+        "posture": "Slight forward stoop",
+        "speech": "Mild hypophonia"
+      },
+      "parkinsons_motor_exam": {
+        "tremor": "Right hand rest tremor (4-6 Hz), decreases with action",
+        "rigidity": "Mild right upper extremity, cogwheel phenomenon",
+        "bradykinesia": "Reduced right arm swing, slow finger tapping",
+        "postural_stability": "Pull test normal"
+      },
+      "gait": {
+        "pattern": "Mildly reduced stride length, reduced right arm swing",
+        "turning": "Takes 4-5 steps to turn",
+        "dual_task_gait": "Noticeable slowing when counting backwards",
+        "freezing": "None observed"
+      },
+      "balance": {
+        "static": "Good",
+        "dynamic": "Mild difficulty with tandem walking",
+        "functional_reach": "28 cm"
+      },
+      "fitness": {
+        "observation": "Reasonably fit for age",
+        "exercise_tolerance": "Good (still cycling)"
+      }
+    },
+    "outcome_measures": {
+      "updrs_motor": 18,
+      "timed_up_and_go": "9 seconds",
+      "berg_balance_scale": 54,
+      "pdq_39_mobility": 12,
+      "six_minute_walk": "520 meters",
+      "hads_anxiety": 9,
+      "hads_depression": 5
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b7650", "description": "Involuntary movement (tremor)", "qualifier": 1},
+        {"code": "b7602", "description": "Coordination of movements", "qualifier": 1},
+        {"code": "b760", "description": "Control of voluntary movement", "qualifier": 1},
+        {"code": "b1470", "description": "Psychomotor control", "qualifier": 1}
+      ],
+      "activity_limitations": [
+        {"code": "d440", "description": "Fine hand use", "qualifier": 1},
+        {"code": "d450", "description": "Walking", "qualifier": 0}
+      ],
+      "participation_restrictions": [
+        {"code": "d850", "description": "Work", "qualifier": 1}
+      ],
+      "environmental_factors": [
+        {"code": "e310", "description": "Wife (Ans)", "qualifier": "+3"},
+        {"code": "e580", "description": "Health services", "qualifier": "+2"}
+      ],
+      "personal_factors": ["Intellectual coping style", "Some denial", "Strong work identity", "Proactive approach to health"]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care?",
+        "teaching_answer": "Prevention and Cure. Prevention of deconditioning, falls, and secondary complications. 'Cure' in PD means optimizing function and slowing functional decline - exercise is disease-modifying in PD. Early intensive exercise may modify disease progression. This is a crucial intervention window."
+      },
+      "q2": {
+        "question": "What is the evidence for exercise in early Parkinson's disease?",
+        "teaching_answer": "Strong evidence: (1) Intensive exercise may have disease-modifying effects (neuroprotection), (2) Aerobic exercise improves motor symptoms, cognition, and mood, (3) Nordic walking shown effective, (4) Boxing/LSVT BIG improves amplitude, (5) Tai chi improves balance. Key message: early high-intensity exercise is recommended. Willem is at optimal stage for intensive intervention."
+      },
+      "q3": {
+        "question": "Willem is intellectualizing his diagnosis. Is this a concern?",
+        "teaching_answer": "Intellectual coping can be protective initially but may mask emotional processing. Watch for: (1) Depression developing later, (2) Anxiety about the future, (3) Impact on relationship with Ans. HADS-A of 9 suggests borderline anxiety. Current approach: (1) Provide information (he needs this), (2) Gently explore emotions, (3) Monitor over time, (4) Consider referral to PD nurse or psychologist if needed."
+      },
+      "q4": {
+        "question": "How do you counsel Willem about prognosis without causing distress?",
+        "teaching_answer": "Honest but hopeful approach: (1) PD is variable - impossible to predict individual trajectory, (2) New treatments are extending quality of life, (3) Exercise is proven to help, (4) Many people live well with PD for decades, (5) Focus on what he can control (exercise, medication adherence, lifestyle). Don't give false hope but don't catastrophize. Willem wants information - provide it in digestible amounts."
+      },
+      "q5": {
+        "question": "Design an exercise program for Willem at this stage.",
+        "teaching_answer": "Early-stage PD program: (1) Aerobic: cycling (he likes it) or Nordic walking, 30-40 min 3x/week, moderate-vigorous intensity; (2) Amplitude training: large movements, LSVT BIG principles, maintain movement size; (3) Balance: progressive balance training, dual-task practice; (4) Flexibility: stretching for rigidity, trunk rotation; (5) Consider group class (PD-specific boxing, dance, tai chi) for social support and fun. Key: make it intensive and enjoyable so he'll maintain it."
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Being too conservative",
+        "description": "Prescribing gentle exercise because he 'has a neurological condition'",
+        "coaching_response": "Your exercise prescription seems quite light. What does the evidence say about exercise intensity in early Parkinson's? Could more intensive exercise be beneficial here?"
+      },
+      {
+        "trap": "Ignoring the partner",
+        "description": "Not involving Ans in the assessment and planning",
+        "coaching_response": "You've focused on Willem's needs. But Ans noticed his symptoms before he did, and she'll be increasingly involved in his care. Have you assessed her understanding? Her concerns? Her role?"
+      },
+      {
+        "trap": "Focusing only on physical",
+        "description": "Not addressing psychological adjustment",
+        "coaching_response": "Willem seems to be coping by reading everything about PD. His HADS-A is 9. Are you confident he's emotionally adjusting to this diagnosis? What signs might suggest he needs more support?"
+      }
+    ]
+  },
+  "life_stage_2": {
+    "title": "Willem at 68 years old",
+    "presentation": {
+      "referral": "Neurologist referral for gait training",
+      "setting": "Hospital outpatient neurorehabilitation",
+      "chief_complaint": "Increasing motor fluctuations, freezing of gait, recent falls"
+    },
+    "patient_narrative": "Willem is now 68 and has been living with Parkinson's for 10 years. He retired from teaching at 62 when his symptoms made classroom management too difficult. His disease has progressed - he now experiences motor fluctuations with good 'on' periods and difficult 'off' periods. Most concerning are episodes of freezing of gait (FOG), particularly when going through doorways or when stressed. He's fallen twice in the past month. His medication regimen is complex. Ans (now 66) retired early to care for Willem. She attends every appointment with a notebook full of observations. Willem seems frustrated - 'I was the teacher. Now I need to be taught how to walk. It's humiliating.' Ans quietly says, 'He's not the only one affected by this disease.'",
+    "interval_history": {
+      "disease_progression": {
+        "hoehn_yahr": "Stage 3",
+        "years_since_diagnosis": 10,
+        "motor_fluctuations": {
+          "on_time": "Approximately 4-5 hours/day good function",
+          "off_time": "3-4 hours/day significantly impaired",
+          "wearing_off": "Noticeable before next dose"
+        }
+      },
+      "freezing_of_gait": {
+        "frequency": "Daily, multiple episodes",
+        "triggers": ["Doorways", "Turning", "Crowded spaces", "Stress", "Dual tasking"],
+        "consequences": "2 falls in past month, near-misses frequent"
+      },
+      "medications": [
+        {"name": "Levodopa/carbidopa", "dose": "100/25 mg 6x daily"},
+        {"name": "Entacapone", "dose": "200 mg with each levodopa dose"},
+        {"name": "Rasagiline", "dose": "1 mg daily"},
+        {"name": "Amantadine", "dose": "100 mg BID (for dyskinesias)"}
+      ],
+      "non_motor_symptoms": {
+        "constipation": "Chronic, managed with diet and laxatives",
+        "sleep": "REM sleep behavior disorder, separate bedrooms now",
+        "mood": "Apathy noticeable, less interest in former hobbies",
+        "cognition": "Mild slowing, no dementia"
+      },
+      "work_retirement": "Retired at 62, found transition difficult",
+      "family": {
+        "ans": "Full-time caregiver, showing signs of strain",
+        "children": "Pieter visits monthly, Emma rarely (lives abroad)"
+      }
+    },
+    "physical_examination": {
+      "general": {
+        "appearance": "Masked facies, stooped posture, dyskinesias visible",
+        "on_off_status": "Examined during 'on' period",
+        "speech": "Monotonous, reduced volume"
+      },
+      "parkinsons_motor_exam": {
+        "tremor": "Bilateral, right worse",
+        "rigidity": "Moderate bilateral, neck and axial prominent",
+        "bradykinesia": "Significant, affects all movements",
+        "postural_stability": "Pull test - takes 2-3 steps to recover",
+        "dyskinesias": "Peak-dose choreiform movements"
+      },
+      "gait": {
+        "pattern": "Shuffling, festinating, reduced arm swing",
+        "freezing_observed": "Yes - at doorway of exam room",
+        "cueing_response": "Responds to visual cues (stepping over obstacle) and auditory cues (metronome)",
+        "turning": "7-8 steps, freezing episodes",
+        "dual_task": "Marked deterioration when talking"
+      },
+      "balance": {
+        "static": "Moderate postural sway",
+        "limits_of_stability": "Reduced in all directions",
+        "reactive": "Delayed responses"
+      },
+      "functional_mobility": {
+        "transfers": "Slow but independent during 'on'",
+        "bed_mobility": "Difficulty rolling, uses bed rail"
+      }
+    },
+    "outcome_measures": {
+      "updrs_motor_on": 32,
+      "updrs_motor_off": 58,
+      "timed_up_and_go": "14 seconds (on), 28 seconds (off)",
+      "mini_best": 18,
+      "freezing_of_gait_questionnaire": 16,
+      "pdq_39_mobility": 48,
+      "zarit_caregiver_burden_ans": 38,
+      "hads_depression": 10
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b760", "description": "Control of voluntary movement", "qualifier": 3},
+        {"code": "b770", "description": "Gait pattern", "qualifier": 3},
+        {"code": "b755", "description": "Involuntary movement reactions", "qualifier": 2},
+        {"code": "b152", "description": "Emotional functions", "qualifier": 2}
+      ],
+      "activity_limitations": [
+        {"code": "d450", "description": "Walking", "qualifier": 3},
+        {"code": "d4106", "description": "Shifting body's centre of gravity", "qualifier": 3},
+        {"code": "d410", "description": "Changing body position", "qualifier": 2}
+      ],
+      "participation_restrictions": [
+        {"code": "d920", "description": "Recreation", "qualifier": 3},
+        {"code": "d910", "description": "Community life", "qualifier": 3},
+        {"code": "d770", "description": "Intimate relationships", "qualifier": 2}
+      ],
+      "environmental_factors": [
+        {"code": "e310", "description": "Wife (Ans)", "qualifier": "+2", "note": "Supportive but strained"},
+        {"code": "e155", "description": "Home design", "qualifier": "-1", "note": "Two-story, doorways problematic"},
+        {"code": "e1201", "description": "Mobility equipment", "qualifier": "+1"}
+      ],
+      "personal_factors": ["Loss of teacher identity", "Frustration", "Dependency difficult to accept", "Fear of burdening family"]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care?",
+        "teaching_answer": "Cure and Care. Cure of freezing/falls through cueing strategies and gait training (evidence-based). Care elements becoming more prominent as disease progresses. Prevention of falls and their consequences remains important."
+      },
+      "q2": {
+        "question": "Explain the mechanism of freezing of gait and evidence-based treatment strategies.",
+        "teaching_answer": "Freezing mechanism: likely involves basal ganglia dysfunction, impaired automaticity, and frontal-executive deficits. FOG often triggered by dual-tasking, spatial constraints, and stress. Treatment strategies: (1) External cueing - visual lines/laser, auditory metronome/rhythmic cues, (2) Attentional strategies - 'think about walking,' break down automatic pattern, (3) Avoid triggers when possible, (4) Action observation and motor imagery, (5) Cognitive training for dual-task performance, (6) Consider cueing devices (laser cane, metronome apps). Evidence supports cueing strategies; effects may not persist without practice."
+      },
+      "q3": {
+        "question": "Ans says 'He's not the only one affected by this disease.' How do you respond?",
+        "teaching_answer": "This is a critical statement revealing caregiver strain. Response: (1) Validate - 'You're absolutely right. PD affects the whole family,' (2) Assess - Zarit Burden (38 is moderate), her health, her support network, (3) Provide resources - caregiver support groups, respite options, (4) Include her in treatment planning - not as observer but as partner, (5) Consider referral to social worker or PD nurse for caregiver support. Her wellbeing directly affects Willem's care sustainability."
+      },
+      "q4": {
+        "question": "Willem says being taught to walk is 'humiliating.' How do you address his dignity?",
+        "teaching_answer": "Dignity is central to rehabilitation: (1) Reframe - you're not teaching him to walk, you're teaching his brain new strategies to overcome a dysfunction, (2) Use his intellect - explain the neuroscience (he'll appreciate understanding), (3) Emphasize agency - he's choosing to take action, (4) Focus on goals meaningful to him - what does he want to be able to do?, (5) Acknowledge his loss - he was a teacher, now he's being taught. Grief is appropriate. (6) Consider male peer support - PD groups with other men."
+      },
+      "q5": {
+        "question": "Design a gait training program addressing Willem's freezing.",
+        "teaching_answer": "FOG program: (1) Cueing training - introduce visual cues (tape lines, laser pointer on rollator), auditory cues (metronome at preferred cadence), teach internal counting; (2) Attention strategy training - 'think big' for walking, practice in doorways; (3) Dual-task training - gradual introduction of cognitive tasks while walking; (4) Turning practice - wide arc turns, pivot strategy; (5) Functional practice - in home, at supermarket, in challenging environments; (6) Home program with cue devices; (7) Consider technology - smartphone apps for cueing. Train Ans in cueing techniques too."
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Treating only 'on' state",
+        "description": "Only seeing patient during 'on' periods and not understanding 'off' function",
+        "coaching_response": "Your gait training is progressing well. But you always see Willem in his 'on' state. What happens during 'off' periods? How will your strategies work then? Should you schedule a session during 'off' time?"
+      },
+      {
+        "trap": "Ignoring caregiver burden",
+        "description": "Not assessing or addressing Ans's needs",
+        "coaching_response": "Ans's Zarit score is 38. She retired early and is showing strain. Your treatment depends on her support at home. Is she sustainable as a caregiver? What happens if she burns out?"
+      },
+      {
+        "trap": "Focusing on impairments not activities",
+        "description": "Training gait in clinic without real-world application",
+        "coaching_response": "Your cueing training is working well in the clinic corridor. But Willem freezes at doorways and in crowds. How do you translate clinic training to real-world function?"
+      }
+    ]
+  },
+  "life_stage_3": {
+    "title": "Willem at 75 years old",
+    "presentation": {
+      "referral": "Geriatrician referral",
+      "setting": "Home physiotherapy",
+      "chief_complaint": "Post-fall assessment, declining mobility, cognitive decline, DBS adjustment"
+    },
+    "patient_narrative": "Willem is now 75, living with Parkinson's for 17 years. He had Deep Brain Stimulation (DBS) surgery 5 years ago, which helped with motor fluctuations but less so with axial symptoms and freezing. He fell last week, fortunately without fracture, but the family is concerned. His cognition has declined - he has PD dementia (PDD), with memory problems, slower thinking, and visual hallucinations (usually benign - he sees children in the house). Ans (now 73) has taken over almost all decision-making. She looks exhausted but refuses help. They've moved to a ground-floor apartment in a senior living community. Son Pieter has moved back to Utrecht and is actively involved. Emma visits from London several times a year. Willem says little during the assessment - Ans answers most questions. When you ask Willem directly what he wants, he says slowly, 'I want Ans to have a life too.'",
+    "interval_history": {
+      "disease_progression": {
+        "hoehn_yahr": "Stage 4",
+        "years_since_diagnosis": 17,
+        "dbs": {
+          "implanted": "5 years ago (bilateral STN)",
+          "effect": "Reduced motor fluctuations and dyskinesias initially, less effect now on gait/freezing"
+        }
+      },
+      "cognitive_status": {
+        "diagnosis": "PD dementia (diagnosed 2 years ago)",
+        "moca": 18,
+        "features": ["Memory impairment", "Executive dysfunction", "Visual hallucinations", "Slowed processing"],
+        "hallucinations": "Sees children in house - not distressing, insight present"
+      },
+      "mobility_status": {
+        "walking": "Rollator indoors, wheelchair for outdoors and longer distances",
+        "freezing": "Severe, daily, cueing helps less now",
+        "falls": "4 falls in past year, this one prompted referral"
+      },
+      "medications": [
+        {"name": "Levodopa/carbidopa IR", "dose": "50/12.5 mg 8x daily (small frequent doses)"},
+        {"name": "Rivastigmine patch", "dose": "9.5 mg/24h (for cognition)"},
+        {"name": "Quetiapine", "dose": "12.5 mg nocte (for hallucinations, if needed)"}
+      ],
+      "other_health": {
+        "swallowing": "Mild dysphagia, modified diet",
+        "speech": "Hypophonic, difficult to understand",
+        "blood_pressure": "Orthostatic hypotension (symptomatic)",
+        "bladder": "Urgency, uses urinal at night"
+      },
+      "living_situation": {
+        "home": "Ground-floor apartment in senior living complex",
+        "services": "Home care 1x daily for washing, Pieter helps with meals",
+        "ans_health": "Exhausted, some depression, resists help"
+      }
+    },
+    "physical_examination": {
+      "general": {
+        "appearance": "Thin, stooped, expressionless face, slow to respond",
+        "orthostatic_bp": "Lying 130/80, standing 95/60 (symptomatic)",
+        "communication": "Hypophonic, slow, some word-finding difficulty"
+      },
+      "parkinsons_motor_exam": {
+        "note": "With DBS on and medication",
+        "rigidity": "Moderate axial rigidity",
+        "bradykinesia": "Severe",
+        "tremor": "Well-controlled by DBS",
+        "postural_stability": "Very impaired - would fall without catch",
+        "dyskinesias": "Minimal (DBS benefit)"
+      },
+      "gait": {
+        "pattern": "Festinating, shuffling, forward trunk lean",
+        "with_rollator": "Manages 10-15 meters with supervision",
+        "freezing": "At doorways, when reaching for rollator, when distracted",
+        "cueing_response": "Variable - sometimes helps, cognitive load may interfere",
+        "wheelchair_use": "Primary mode for longer distances"
+      },
+      "functional_mobility": {
+        "transfers": "Needs moderate assistance",
+        "bed_mobility": "Needs rail and assistance",
+        "sit_to_stand": "Needs armrests and supervision"
+      },
+      "cognition_during_session": {
+        "attention": "Variable, fatigues",
+        "comprehension": "Understands simple commands, struggles with multi-step",
+        "memory": "Forgets instructions within minutes"
+      }
+    },
+    "outcome_measures": {
+      "updrs_motor": 52,
+      "timed_up_and_go": "42 seconds (with rollator and supervision)",
+      "fac": 3,
+      "berg_balance_scale": 28,
+      "freezing_of_gait_questionnaire": 22,
+      "pdq_39_total": 68,
+      "moca": 18,
+      "zarit_caregiver_burden_ans": 56,
+      "npi": 24
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b760", "description": "Control of voluntary movement", "qualifier": 3},
+        {"code": "b144", "description": "Memory functions", "qualifier": 2},
+        {"code": "b156", "description": "Perceptual functions", "qualifier": 2, "note": "Hallucinations"},
+        {"code": "b420", "description": "Blood pressure functions", "qualifier": 2}
+      ],
+      "activity_limitations": [
+        {"code": "d450", "description": "Walking", "qualifier": 3},
+        {"code": "d420", "description": "Transferring", "qualifier": 3},
+        {"code": "d550", "description": "Eating", "qualifier": 2},
+        {"code": "d177", "description": "Making decisions", "qualifier": 3}
+      ],
+      "participation_restrictions": [
+        {"code": "d910", "description": "Community life", "qualifier": 4},
+        {"code": "d920", "description": "Recreation", "qualifier": 3}
+      ],
+      "environmental_factors": [
+        {"code": "e310", "description": "Wife (Ans)", "qualifier": "+2", "note": "Strained but devoted"},
+        {"code": "e315", "description": "Son Pieter", "qualifier": "+3"},
+        {"code": "e120", "description": "Mobility aids (rollator, wheelchair)", "qualifier": "+2"},
+        {"code": "e155", "description": "Home design", "qualifier": "+2", "note": "Adapted apartment"}
+      ],
+      "personal_factors": ["PD dementia affecting insight and learning", "Aware of burden on wife", "Accepting of situation", "Limited agency due to cognitive impairment"]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care?",
+        "teaching_answer": "Primarily Care. Focus shifts to maintaining safety, preventing falls, supporting caregiver, and maintaining quality of life. Some Cure elements (treating deconditioning) but realistic about disease stage. Prevention of complications (falls, aspiration, skin breakdown) is important."
+      },
+      "q2": {
+        "question": "Willem has PD dementia. How does this change your physiotherapy approach?",
+        "teaching_answer": "Cognitive impairment modifications: (1) Simplify instructions - one step at a time, (2) Demonstrate rather than explain, (3) Use consistent routine, (4) External cues may work when internal strategies don't, (5) Train caregiver/family in techniques, (6) Safety becomes paramount - reduced insight means supervision critical, (7) Goals may focus on maintaining rather than improving, (8) Quality of life is central outcome. Can he still learn? Yes, but procedural/implicit learning is better preserved than explicit memory."
+      },
+      "q3": {
+        "question": "Ans's Zarit score is 56 (high burden) and she's resisting help. What is your approach?",
+        "teaching_answer": "Caregiver intervention: (1) Acknowledge her devotion and dedication, (2) Explore why she resists help (guilt? feels no one else can do it right? financial?), (3) Explain that caregiver health affects patient care, (4) Specific suggestions for respite (dagbehandeling, family giving her morning off), (5) Consider Pieter's involvement - family meeting, (6) Referral to social worker or casemanager, (7) Monitor for depression - may need treatment. Her wellbeing is a legitimate therapy goal."
+      },
+      "q4": {
+        "question": "Willem says 'I want Ans to have a life too.' What does this tell you?",
+        "teaching_answer": "This reveals: (1) He has insight into his burden on her, (2) He values her wellbeing over his, (3) Possible guilt about dependency, (4) May be opening door to discussions about care options. Response: Explore further - 'That's a loving thing to say. What would that look like? What would make things easier for both of you?' May lead to discussion of more external care, dagopvang, or eventually residential care."
+      },
+      "q5": {
+        "question": "Design a home-based physiotherapy plan for Willem at this stage.",
+        "teaching_answer": "Home PT plan (maintenance focus): (1) Frequency: 1-2x/week home visits initially, reducing as family trained; (2) Content: safe transfers, bed mobility, sitting balance, gentle ROM; (3) Caregiver training: how to assist transfers safely, how to use cueing, recognizing 'off' periods; (4) Environmental modification check: remove trip hazards, lighting, bed rail safety, toilet grab rails; (5) Falls prevention: hip protectors consideration, alarm system, toileting schedule; (6) Swallow referral if not already done. Goal is safe, dignified function at home as long as possible."
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Continuing improvement-focused goals",
+        "description": "Setting goals for independent walking when disease stage makes this unrealistic",
+        "coaching_response": "Your goal is for Willem to walk independently with rollator. Given his Hoehn & Yahr Stage 4, DBS not controlling axial symptoms, and MOCA 18, is this realistic? What are appropriate goals at this stage?"
+      },
+      {
+        "trap": "Not addressing caregiver crisis",
+        "description": "Treating patient without recognizing caregiver burnout",
+        "coaching_response": "Ans's Zarit score is 56. She looks exhausted. She's resisting help. Your treatment plan depends on her supervision. What happens when she can no longer cope?"
+      },
+      {
+        "trap": "Complex instructions for cognitively impaired patient",
+        "description": "Giving multi-step home exercises that he cannot remember",
+        "coaching_response": "You've given Willem a 6-exercise home program with specific instructions. His MOCA is 18 and he forgets instructions within minutes. How will he do this program? Who is your teaching really for?"
+      }
+    ]
+  },
+  "life_stage_4": {
+    "title": "Willem at 82 years old",
+    "presentation": {
+      "referral": "Specialist elderly care physician (specialist ouderengeneeskunde)",
+      "setting": "Nursing home (verpleeghuis)",
+      "chief_complaint": "Admitted to nursing home, advanced PD, bedbound, palliative phase"
+    },
+    "patient_narrative": "Willem is 82 and has been in a nursing home for 6 months following a hospital admission for aspiration pneumonia. He spent a week in the hospital and couldn't return home - Ans simply couldn't manage anymore. Willem's Parkinson's is now advanced (Hoehn & Yahr Stage 5) - he's largely bedbound, has severe dysphagia (PEG tube placed for medications, pleasure feeding only), and his speech is barely understandable. His cognition has declined further. He has periods of clarity but also agitation and confusion. Ans visits daily, often just sitting and holding his hand. She struggled with guilt about the nursing home admission but is slowly accepting it. Pieter and Emma (who moved back from London) visit regularly. The nursing home team has discussed that Willem is in the palliative phase. He has previously expressed he would not want prolonged life with severe disability - Ans is his legal representative for medical decisions. The physiotherapist is asked to consult about positioning, contracture prevention, and comfort.",
+    "interval_history": {
+      "disease_progression": {
+        "hoehn_yahr": "Stage 5",
+        "years_since_diagnosis": 24,
+        "dbs": "Still on, minimal benefit, considered turning off"
+      },
+      "admission_precipitant": "Aspiration pneumonia requiring hospitalization, Ans couldn't manage discharge home",
+      "current_status": {
+        "mobility": "Bedbound, hoisted for all transfers",
+        "cognition": "Severe dementia, occasional lucid moments",
+        "communication": "Minimal speech, difficult to understand, sometimes nods/shakes head",
+        "nutrition": "PEG for medications and hydration, pleasure feeds (puree) by mouth for quality of life",
+        "continence": "Double incontinent"
+      },
+      "medications": [
+        {"name": "Levodopa suspension via PEG", "dose": "Simplified regimen"},
+        {"name": "PRN medications for agitation/discomfort", "dose": "Available"}
+      ],
+      "family": {
+        "ans": "Visits daily, has re-established some of her own life, less burdened but grieving",
+        "pieter": "Visits 2-3x/week",
+        "emma": "Moved back, visits weekly, processing father's decline",
+        "grandchildren": "Visit occasionally, find it difficult"
+      },
+      "advance_care_planning": {
+        "previous_wishes": "Did not want prolonged life with severe disability",
+        "dnr": "In place",
+        "focus": "Comfort-focused care"
+      }
+    },
+    "physical_examination": {
+      "general": {
+        "position": "In bed, specialized mattress",
+        "appearance": "Cachectic, contracted posture, eyes open, limited tracking",
+        "responsiveness": "Occasionally responds to voice, more to Ans"
+      },
+      "musculoskeletal": {
+        "contractures": "Developing - hip and knee flexion, elbow flexion, hands fisted",
+        "rigidity": "Severe axial and limb",
+        "pain_with_movement": "Facial grimacing with position changes",
+        "skin": "Fragile, redness over sacrum (preventive measures in place)"
+      },
+      "respiratory": {
+        "pattern": "Shallow, occasional congestion",
+        "aspiration_risk": "High"
+      },
+      "functional_status": {
+        "bed_mobility": "Fully dependent",
+        "transfers": "Hoisted",
+        "any_activity": "Nil independent"
+      }
+    },
+    "outcome_measures": {
+      "note": "Standard outcome measures less relevant in palliative phase",
+      "barthel_index": 0,
+      "palliative_care_outcome_scale": "In use",
+      "comfort_assessment": "Central focus"
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b760", "description": "Control of voluntary movement", "qualifier": 4},
+        {"code": "b144", "description": "Memory functions", "qualifier": 4},
+        {"code": "b510", "description": "Ingestion functions", "qualifier": 4},
+        {"code": "b280", "description": "Pain", "qualifier": 2, "note": "Presumed with contractures"}
+      ],
+      "activity_limitations": [
+        {"code": "d450", "description": "Walking", "qualifier": 4},
+        {"code": "d410", "description": "Changing body position", "qualifier": 4}
+      ],
+      "participation_restrictions": [
+        {"code": "d9", "description": "All participation", "qualifier": 4}
+      ],
+      "environmental_factors": [
+        {"code": "e310", "description": "Wife (Ans)", "qualifier": "+3"},
+        {"code": "e340", "description": "Care attendants", "qualifier": "+2"},
+        {"code": "e1101", "description": "Medications", "qualifier": "+2"},
+        {"code": "e155", "description": "Nursing home environment", "qualifier": "+2"}
+      ],
+      "personal_factors": ["Limited awareness", "Previously expressed end-of-life wishes", "Strong family presence"]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care?",
+        "teaching_answer": "Care only. This is the palliative phase. Focus is entirely on comfort, dignity, preventing suffering (from contractures, pressure sores, discomfort), and supporting family. 'Rehabilitation' in traditional sense is not appropriate."
+      },
+      "q2": {
+        "question": "What is the role of physiotherapy in the palliative phase of Parkinson's disease?",
+        "teaching_answer": "Palliative physiotherapy roles: (1) Positioning advice for comfort and pressure prevention, (2) Gentle ROM to prevent painful contractures, (3) Advice to nursing staff on handling and transfers, (4) Respiratory care if needed (positioning for secretion management), (5) Supporting family (teaching them gentle touch/movement), (6) Consultation rather than regular sessions. Goals shift from function to comfort."
+      },
+      "q3": {
+        "question": "Willem has developing contractures. How do you manage these in a palliative context?",
+        "teaching_answer": "Contracture management in palliative care: (1) Gentle passive ROM - not aggressive stretching (may cause pain), (2) Positioning with pillows/splints for comfort, (3) Hand rolls if hands are fisting, (4) Accept that some contracture is inevitable, (5) Pain with movement suggests stop or reduce range, (6) Communicate with nursing about positioning schedules. Goal is preventing painful severe contractures, not achieving normal ROM."
+      },
+      "q4": {
+        "question": "Ans visits daily and feels guilty about the nursing home admission. How do you support her?",
+        "teaching_answer": "Supporting Ans: (1) Normalize her feelings - guilt is common, (2) Affirm her years of care - she gave him 24 years of home care, (3) Reframe - nursing home enables her to be wife not just caregiver, (4) Encourage her ongoing role - she's still essential to his care and comfort, (5) Suggest ways she can participate (gentle hand massage, music, being present), (6) Acknowledge anticipatory grief. She's transitioning from caregiver role to preparing for loss."
+      },
+      "q5": {
+        "question": "The team is discussing whether to turn off Willem's DBS as it seems to offer minimal benefit. What are the considerations?",
+        "teaching_answer": "DBS discontinuation considerations: (1) Medical - is there any remaining benefit? Could turning off cause discomfort (return of tremor, rigidity)?, (2) Ethical - aligns with comfort-focused care, (3) Family - need to be involved in decision, (4) Process - usually gradual reduction, observe for negative effects, (5) Willem's previous wishes are relevant but current comfort is priority. This is a team decision with family involvement."
+      },
+      "q6": {
+        "question": "Looking back over Willem's 24-year disease trajectory, what does this case teach about progressive neurological disease?",
+        "teaching_answer": "Key lessons: (1) PD progresses variably but ultimately is a life-limiting condition, (2) Early intensive exercise may modify progression - intervention window is important, (3) Caregiver trajectory parallels patient trajectory - ignoring caregiver leads to crisis, (4) Role transitions are profound (teacher to patient, wife to caregiver to decision-maker), (5) Cognitive changes eventually dominate in many patients, (6) Palliative care principles apply long before end of life, (7) Advanced care planning allows wishes to guide care when capacity is lost."
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Inappropriate rehabilitation goals",
+        "description": "Setting goals for mobility or function when patient is bedbound and palliative",
+        "coaching_response": "You've set goals for 'maintaining sitting balance' and 'preventing further decline.' Willem is bedbound with end-stage PD dementia. What are appropriate physiotherapy goals in the palliative phase?"
+      },
+      {
+        "trap": "Aggressive ROM causing pain",
+        "description": "Forcing range of motion to 'prevent' contractures despite patient distress",
+        "coaching_response": "You're stretching Willem's hip flexors but he's grimacing. In palliative care, what takes priority - preventing contracture or preventing pain? How do you adjust your approach?"
+      },
+      {
+        "trap": "Avoiding family support role",
+        "description": "Focusing only on physical aspects without supporting family through the dying process",
+        "coaching_response": "You've given positioning advice to the nursing staff. Ans is here every day, feeling guilty and grieving. Is there a role for you in supporting her? Teaching her ways to connect with Willem through touch?"
+      }
+    ]
+  },
+  "longitudinal_reflection": {
+    "trajectory_summary": "Willem's 24-year journey with Parkinson's disease illustrates the progressive nature of the condition and the evolving role of physiotherapy from early intensive exercise through symptom management to palliative comfort care. Equally, this is the story of Ans - from observant wife to advocate to full-time caregiver to decision-maker to widow-in-waiting. The parallel trajectories of patient and caregiver are inseparable in neurological disease.",
+    "key_lessons": [
+      "Early intensive exercise in PD may have disease-modifying effects - a crucial intervention window",
+      "Freezing of gait is a major challenge - cueing strategies can help but may become less effective with cognitive decline",
+      "Caregiver trajectory must be assessed and supported throughout the disease",
+      "Cognitive changes in PD are common and eventually dominate care needs",
+      "Goals must evolve with disease stage - improvement → maintenance → comfort",
+      "DBS helps many symptoms but less so axial symptoms and cognition",
+      "Advanced care planning should happen when patient can still participate",
+      "Palliative care principles apply in late-stage PD - focus on comfort and dignity"
+    ],
+    "dutch_context": {
+      "parkinsons_care": "Netherlands has ParkinsonNet - integrated network of trained professionals",
+      "nursing_home_care": "Verpleeghuis provides specialized care, many have PG (psychogeriatric) and SOM (somatisch) units",
+      "palliative_care": "Palliative care well-developed in NL, includes option of euthanasia for unbearable suffering",
+      "caregiver_support": "Mantelzorg (informal care) is significant, with some support services but often insufficient"
+    }
+  },
+  "teaching_notes": {
+    "key_competencies_assessed": [
+      "Exercise prescription in early PD",
+      "Freezing of gait management",
+      "Cueing strategies",
+      "Cognitive impairment adaptations",
+      "Caregiver assessment and support",
+      "Goals-of-care across disease trajectory",
+      "Palliative physiotherapy",
+      "Interdisciplinary teamwork"
+    ],
+    "guideline_integration": [
+      "KNGF Guideline Parkinson's Disease",
+      "European Physiotherapy Guideline for PD",
+      "ParkinsonNet protocols",
+      "Palliative care frameworks"
+    ],
+    "special_considerations": [
+      "DBS and physiotherapy",
+      "On/off fluctuations",
+      "Non-motor symptoms in PD",
+      "PD dementia management"
+    ]
+  }
+}

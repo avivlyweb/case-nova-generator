@@ -1,10 +1,11 @@
 import { extractMedicalEntities } from './entityExtraction.ts';
 import { sections, specializedPrompts } from './sectionConfig.ts';
 import { ContextManager } from './contextManager.ts';
-import type { CaseStudy, Section, ProcessedCaseStudy, PubMedArticle } from './types.ts';
+import type { CaseStudy, Section, ProcessedCaseStudy, PubMedArticle, ClinicalGuideline } from './types.ts';
 import { generateClinicalReasoning } from './clinicalReasoningGenerator.ts';
 import { pubmedService } from './pubmedService.ts';
 import { Groq } from 'npm:groq-sdk';
+import { buildKnowledgeContext, formatKnowledgePromptBlock } from './knowledgeBase.ts';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -27,6 +28,17 @@ type MedicalEntities = Record<string, unknown>;
 interface SpecializationContext {
   context?: string;
   commonAssessments?: string[];
+}
+
+interface KnowledgeContext {
+  conditionBucket: string;
+  guidelineSummary: string;
+  guidelineObjects: ClinicalGuideline[];
+  hoacChecklist: string[];
+  reasoningTraps: string[];
+  clinimetricSuggestions: string[];
+  icfStarterCodes: string[];
+  coachingModeHint: string;
 }
 
 const getErrorMessage = (error: unknown): string => {
@@ -69,11 +81,13 @@ async function generateSingleSection(
   caseStudy: CaseStudy,
   entities: MedicalEntities,
   specializationContext: SpecializationContext | undefined,
+  knowledgeContext: KnowledgeContext,
   pubmedReferences: PubMedArticle[],
   model: string,
   maxTokens: number
 ): Promise<Section> {
   const referencesText = formatRefsShort(pubmedReferences);
+  const knowledgeBlock = formatKnowledgePromptBlock(knowledgeContext);
 
   const prompt = `You are an expert ${caseStudy.specialization} physiotherapist creating a comprehensive case study section.
 
@@ -98,6 +112,9 @@ ${JSON.stringify(entities, null, 1)}
 Evidence-Based References:
 ${referencesText}
 
+Knowledge Base Context:
+${knowledgeBlock}
+
 CRITICAL REQUIREMENTS:
 1. Follow the EXACT structure specified in the section requirements
 2. Use specific measurements with normal ranges (e.g., "ROM: 90° (NL: 110-130°)")
@@ -110,6 +127,9 @@ CRITICAL REQUIREMENTS:
 9. Make this section detailed and professional (aim for 400-600 words)
 10. Include specific examples relevant to this patient's condition
 11. Cite the provided evidence-based references where appropriate
+12. Apply HOAC logic and avoid listed reasoning traps
+13. Keep guideline advice consistent with the guideline summary above
+14. Use ICF starter codes only when clinically relevant
 
 Generate a comprehensive, detailed section.`;
 
@@ -189,11 +209,11 @@ interface AllFields {
   reassessment_rationale: string;
   treatment_approach: string;
   // Additional fields (5)
-  icf_codes: string;
+  icf_codes: string[];
   assessment_findings: string;
   intervention_plan: string;
-  clinical_guidelines: string;
-  evidence_levels: string;
+  clinical_guidelines: ClinicalGuideline[];
+  evidence_levels: Record<string, number>;
 }
 
 const ALL_FIELDS_DEFAULTS: AllFields = {
@@ -206,28 +226,98 @@ const ALL_FIELDS_DEFAULTS: AllFields = {
   intervention_rationale: '',
   reassessment_rationale: '',
   treatment_approach: '',
-  icf_codes: '',
+  icf_codes: [],
   assessment_findings: '',
   intervention_plan: '',
-  clinical_guidelines: '',
-  evidence_levels: '',
+  clinical_guidelines: [],
+  evidence_levels: {},
+};
+
+const parseStringArray = (value: unknown): string[] => {
+  if (Array.isArray(value)) {
+    return value.map(v => String(v).trim()).filter(Boolean);
+  }
+  if (typeof value === 'string') {
+    return value
+      .split(/\n|,|;/)
+      .map(v => v.replace(/^[-*]\s*/, '').trim())
+      .filter(Boolean);
+  }
+  return [];
+};
+
+const parseEvidenceLevels = (value: unknown): Record<string, number> => {
+  if (isObject(value)) {
+    const parsed: Record<string, number> = {};
+    for (const [key, raw] of Object.entries(value)) {
+      const count = Number(raw);
+      if (!Number.isNaN(count)) parsed[key] = count;
+    }
+    return parsed;
+  }
+  if (typeof value === 'string') {
+    const parsed: Record<string, number> = {};
+    for (const line of value.split('\n')) {
+      const match = line.match(/(Grade\s*[ABC]|Level\s*[IVX]+)\s*[:=-]\s*(\d+)/i);
+      if (match) parsed[match[1].replace(/\s+/g, ' ')] = Number(match[2]);
+    }
+    return parsed;
+  }
+  return {};
+};
+
+const parseClinicalGuidelines = (value: unknown): ClinicalGuideline[] => {
+  if (Array.isArray(value)) {
+    const parsed: ClinicalGuideline[] = [];
+    for (const item of value) {
+      if (!isObject(item)) continue;
+      parsed.push({
+        name: typeof item.name === 'string' ? item.name : 'Clinical Guideline',
+        url: typeof item.url === 'string' ? item.url : '',
+        recommendation_level: typeof item.recommendation_level === 'string'
+          ? item.recommendation_level
+          : 'Not specified',
+        key_points: Array.isArray(item.key_points)
+          ? item.key_points.map((v) => String(v).trim()).filter(Boolean)
+          : []
+      });
+    }
+    return parsed;
+  }
+  if (typeof value === 'string' && value.trim()) {
+    return [{
+      name: 'Generated Clinical Guidance',
+      url: '',
+      recommendation_level: 'Model-generated',
+      key_points: value.split('\n').map(v => v.replace(/^[-*]\s*/, '').trim()).filter(Boolean).slice(0, 8)
+    }];
+  }
+  return [];
 };
 
 async function generateAllFields(
   groq: Groq,
   caseStudy: CaseStudy,
   entities: MedicalEntities,
+  knowledgeContext: KnowledgeContext,
   pubmedReferences: PubMedArticle[],
   model: string
 ): Promise<AllFields> {
+  const knowledgeBlock = formatKnowledgePromptBlock(knowledgeContext);
   const consolidatedPrompt = `You are an expert physiotherapist. Generate ALL 14 sections below for this case.
 
 ${patientSummary(caseStudy)}
 
 Key Entities: ${JSON.stringify(entities, null, 1)}
 References: ${formatRefsShort(pubmedReferences)}
+Knowledge Base Context:
+${knowledgeBlock}
 
-Return ONLY a valid JSON object with these 14 keys. Each value: detailed markdown string (100-200 words).
+Return ONLY a valid JSON object with these 14 keys.
+- For narrative keys: detailed markdown string (100-200 words)
+- "icf_codes": JSON array of code strings (include code + label)
+- "clinical_guidelines": JSON array of objects with keys name, url, key_points, recommendation_level
+- "evidence_levels": JSON object with numeric counts
 
 {
   "treatment_progression": "Treatment progression plan with short/long-term goals, interventions, outcomes, adjustment criteria",
@@ -239,11 +329,18 @@ Return ONLY a valid JSON object with these 14 keys. Each value: detailed markdow
   "intervention_rationale": "Intervention rationale: theoretical basis, mechanisms, evidence",
   "reassessment_rationale": "Reassessment strategy: what/when, modification criteria, timeline",
   "treatment_approach": "Treatment approach: techniques, modalities, patient education, home program",
-  "icf_codes": "ICF codes with descriptions (b### body functions, d### activities, s### structures, e### environment)",
+  "icf_codes": ["b28013 Pain in back", "d415 Maintaining a body position"],
   "assessment_findings": "Specific assessment scores and findings with normal ranges",
   "intervention_plan": "Detailed intervention plan with specific interventions and progression",
-  "clinical_guidelines": "Relevant clinical practice guidelines with recommendations",
-  "evidence_levels": "Evidence levels (Grade A/B/C, Level I-V) supporting treatment decisions"
+  "clinical_guidelines": [
+    {
+      "name": "Guideline title",
+      "url": "",
+      "key_points": ["Recommendation 1", "Recommendation 2"],
+      "recommendation_level": "Grade A"
+    }
+  ],
+  "evidence_levels": {"Grade A": 3, "Grade B": 2, "Level I": 1}
 }
 
 Return ONLY the JSON object. No markdown fences, no explanation.`;
@@ -268,7 +365,13 @@ Return ONLY the JSON object. No markdown fences, no explanation.`;
         if (isObject(parsed)) {
           for (const key of Object.keys(ALL_FIELDS_DEFAULTS) as (keyof AllFields)[]) {
             const value = parsed[key];
-            if (typeof value === 'string') {
+            if (key === 'icf_codes') {
+              result.icf_codes = parseStringArray(value);
+            } else if (key === 'clinical_guidelines') {
+              result.clinical_guidelines = parseClinicalGuidelines(value);
+            } else if (key === 'evidence_levels') {
+              result.evidence_levels = parseEvidenceLevels(value);
+            } else if (typeof value === 'string') {
               result[key] = value;
             }
           }
@@ -559,6 +662,7 @@ export async function processCaseStudy(
 
     // Get specialization context
     const specializationContext = specializedPrompts[caseStudy.specialization as keyof typeof specializedPrompts];
+    const knowledgeContext = buildKnowledgeContext(caseStudy);
 
     // -----------------------------------------------------------------------
     // ANALYZE action — early return
@@ -578,6 +682,9 @@ export async function processCaseStudy(
 
       Specialization Context:
       ${JSON.stringify(specializationContext, null, 2)}
+
+      Knowledge Base Context:
+      ${formatKnowledgePromptBlock(knowledgeContext)}
 
       Extracted Medical Entities:
       ${JSON.stringify(entities, null, 2)}`;
@@ -622,7 +729,7 @@ export async function processCaseStudy(
         const batch = sectionsToGenerate.slice(i, i + 2);
         const batchResults = await Promise.all(
           batch.map(section =>
-            generateSingleSection(groq, section, caseStudy, enhancedEntities, specializationContext, pubmedReferences, resolvedModel, maxTokens)
+            generateSingleSection(groq, section, caseStudy, enhancedEntities, specializationContext, knowledgeContext, pubmedReferences, resolvedModel, maxTokens)
               .catch(err => {
                 console.error(`Section "${section.title}" failed:`, err);
                 return { title: section.title, content: '' } as Section;
@@ -635,7 +742,7 @@ export async function processCaseStudy(
       // Regular case: 2 sections in parallel
       const results = await Promise.all(
         sectionsToGenerate.map(section =>
-          generateSingleSection(groq, section, caseStudy, enhancedEntities, specializationContext, pubmedReferences, resolvedModel, maxTokens)
+          generateSingleSection(groq, section, caseStudy, enhancedEntities, specializationContext, knowledgeContext, pubmedReferences, resolvedModel, maxTokens)
             .catch(err => {
               console.error(`Section "${section.title}" failed:`, err);
               return { title: section.title, content: '' } as Section;
@@ -652,7 +759,7 @@ export async function processCaseStudy(
     console.log('Phase 2b: Generating all supplementary fields (14 fields, 1 call)...');
     const phase2bStart = Date.now();
 
-    const allFields = await generateAllFields(groq, caseStudy, enhancedEntities, pubmedReferences, resolvedModel);
+    const allFields = await generateAllFields(groq, caseStudy, enhancedEntities, knowledgeContext, pubmedReferences, resolvedModel);
     console.log(`Phase 2b complete in ${Date.now() - phase2bStart}ms`);
 
     // 2c: Additional case data (full case only)
@@ -725,6 +832,23 @@ These references provide evidence-based support for:
 
     allSections.push(...comprehensiveSections);
 
+    const mergedGuidelines =
+      allFields.clinical_guidelines.length > 0
+        ? allFields.clinical_guidelines
+        : knowledgeContext.guidelineObjects;
+
+    const mergedIcfCodes =
+      allFields.icf_codes.length > 0
+        ? allFields.icf_codes
+        : knowledgeContext.icfStarterCodes;
+
+    const extraData = isObject(additionalData) ? additionalData : {};
+    const {
+      clinical_guidelines: _dropGuidelines,
+      evidence_levels: _dropEvidenceLevels,
+      ...safeAdditionalData
+    } = extraData;
+
     const totalTime = Date.now() - phase1Start;
     console.log(`Total processing time: ${totalTime}ms (${allSections.length} sections generated)`);
 
@@ -734,10 +858,10 @@ These references provide evidence-based support for:
       references: pubmedReferences,
       medical_entities: enhancedEntities,
       analysis: allSections[0]?.content,
-      icf_codes: allFields.icf_codes,
+      icf_codes: mergedIcfCodes,
       assessment_findings: allFields.assessment_findings,
       intervention_plan: allFields.intervention_plan,
-      clinical_guidelines: allFields.clinical_guidelines,
+      clinical_guidelines: mergedGuidelines,
       evidence_levels: allFields.evidence_levels,
       treatment_progression: allFields.treatment_progression,
       evidence_based_context: allFields.evidence_based_context,
@@ -748,7 +872,7 @@ These references provide evidence-based support for:
       intervention_rationale: allFields.intervention_rationale,
       reassessment_rationale: allFields.reassessment_rationale,
       treatment_approach: allFields.treatment_approach,
-      ...additionalData
+      ...safeAdditionalData
     };
   } catch (error) {
     console.error('Error in processCaseStudy:', error);

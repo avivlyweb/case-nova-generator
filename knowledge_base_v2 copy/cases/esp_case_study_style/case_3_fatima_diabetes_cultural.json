@@ -1,0 +1,607 @@
+{
+  "metadata": {
+    "case_id": "esp_003_fatima",
+    "case_name": "Fatima El Amrani - Cultural Factors, Diabetes, and Health Literacy",
+    "format": "ESP Longitudinal Case Study",
+    "version": "2.0 CRISP Enhanced",
+    "age_progression": [45, 55, 65, 75],
+    "primary_themes": ["Type 2 diabetes", "Cultural factors", "Health literacy", "Language barriers", "Obesity", "Neuropathy", "Falls", "Family dynamics"],
+    "prevention_cure_care_focus": "Prevention opportunities limited by health literacy and cultural barriers, progressing to cure then care",
+    "linked_courses": ["Case Study 4", "Assessment 4", "Interventions 4"],
+    "hoac_steps_covered": "All 7 steps"
+  },
+  "patient_overview": {
+    "name": "Fatima El Amrani",
+    "setting": "You are a physiotherapist in a group practice in Amsterdam-West (Slotervaart), an area with a large Moroccan-Dutch community.",
+    "narrative_arc": "Fatima's story illustrates the health challenges faced by first-generation Moroccan-Dutch women: language barriers, cultural beliefs about health and body, limited health literacy, and high prevalence of diabetes. It highlights the importance of culturally sensitive care, working with family systems, and addressing social determinants of health."
+  },
+  "life_stage_1": {
+    "title": "Fatima at 45 years old",
+    "presentation": {
+      "referral": "GP referral",
+      "setting": "Primary care physiotherapy",
+      "chief_complaint": "Knee pain and difficulty walking"
+    },
+    "patient_narrative": "Fatima El Amrani is 45 years old and was referred by her GP for knee pain. She came to the Netherlands from Morocco in 1995 when she married her husband Hassan, who had been in the Netherlands since 1985. They live in a flat in Slotervaart with their youngest son (17). Their older children are married. Fatima speaks limited Dutch - she can manage basic conversations but struggles with medical terminology. Her daughter Nadia (26) accompanies her to translate. Fatima is visibly overweight and moves slowly. She explains through Nadia that her knees hurt 'all the time' and she has trouble with stairs. She mentions she was recently told by her GP that her 'sugar is a bit high' but seems unsure what this means. When you ask about exercise, Nadia translates Fatima's response: 'She says she's always busy - cooking, cleaning, taking care of the family. That's enough movement.'",
+    "history_taking_findings": {
+      "knee_pain": {
+        "onset": "Gradual, 2 years",
+        "location": "Bilateral, medial joint line",
+        "aggravating": "Stairs, prolonged walking, getting up from floor",
+        "morning_stiffness": "30 minutes"
+      },
+      "medical_history": {
+        "recent_blood_test": "HbA1c 48 mmol/mol (prediabetes range)",
+        "blood_pressure": "Elevated at GP (145/90), not yet treated",
+        "previous_healthcare": "Minimal contact with healthcare system"
+      },
+      "lifestyle": {
+        "diet": "Traditional Moroccan cooking - tagines, couscous, bread, sweet mint tea",
+        "physical_activity": "Household activities only, no recreational exercise",
+        "social": "Active in mosque community, visits family regularly"
+      },
+      "family": {
+        "husband": "Hassan (52), works as taxi driver, has diabetes",
+        "children": "4 children (26, 24, 21, 17)",
+        "grandchildren": "2 grandchildren, provides childcare"
+      },
+      "cultural_context": {
+        "language": "Speaks Berber (Tarifit) at home, limited Dutch",
+        "religion": "Practicing Muslim",
+        "gender_roles": "Traditional - responsible for household and family care",
+        "health_beliefs": "Some fatalistic views ('insha'Allah'), prefers natural remedies"
+      }
+    },
+    "physical_examination": {
+      "general": {
+        "bmi": 36,
+        "waist_circumference": "108 cm",
+        "blood_pressure": "142/88",
+        "appearance": "Wearing hijab, modest traditional dress"
+      },
+      "knee_examination": {
+        "observation": "Bilateral varus alignment, mild swelling",
+        "rom": "Flexion limited to 120 degrees bilaterally",
+        "crepitus": "Present bilaterally",
+        "special_tests": "Joint line tenderness, positive compression",
+        "muscle_strength": "Quadriceps 4/5 bilaterally",
+        "diagnosis": "Bilateral knee osteoarthritis"
+      },
+      "gait": {
+        "pattern": "Antalgic, reduced stride length",
+        "stairs": "Descending particularly difficult"
+      }
+    },
+    "outcome_measures": {
+      "nprs_knee": 6,
+      "womac": {
+        "pain": 12,
+        "stiffness": 5,
+        "function": 42
+      },
+      "timed_up_and_go": "14 seconds",
+      "note": "WOMAC explained through daughter, may have some interpretation variance"
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b28016", "description": "Pain in joints", "qualifier": 2},
+        {"code": "b7100", "description": "Mobility of joints (knee)", "qualifier": 2},
+        {"code": "b5403", "description": "Fat metabolism", "qualifier": 2, "note": "Prediabetes"},
+        {"code": "b530", "description": "Weight maintenance", "qualifier": 3}
+      ],
+      "activity_limitations": [
+        {"code": "d4551", "description": "Climbing stairs", "qualifier": 3},
+        {"code": "d450", "description": "Walking", "qualifier": 2},
+        {"code": "d4103", "description": "Sitting", "qualifier": 1, "note": "Difficulty with floor sitting for prayer"}
+      ],
+      "participation_restrictions": [
+        {"code": "d930", "description": "Religion/spirituality", "qualifier": 1, "note": "Difficulty with prayer positions"},
+        {"code": "d660", "description": "Assisting others", "qualifier": 1, "note": "Grandchildren care becoming harder"}
+      ],
+      "environmental_factors": [
+        {"code": "e310", "description": "Family support", "qualifier": "+2"},
+        {"code": "e580", "description": "Health services", "qualifier": "-1", "note": "Language barrier limits access"}
+      ],
+      "personal_factors": ["First-generation immigrant", "Limited Dutch language", "Low health literacy", "Traditional gender roles", "Strong family orientation"]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care?",
+        "teaching_answer": "Cure for the knee OA (can improve function with exercise) and Prevention is the critical focus - Fatima has prediabetes, central obesity, and hypertension. Without intervention, she will develop type 2 diabetes, which is already epidemic in the Moroccan-Dutch community. This is a crucial prevention window."
+      },
+      "q2": {
+        "question": "What cultural considerations should inform your approach to Fatima's care?",
+        "teaching_answer": "Cultural considerations: (1) Communication - use professional interpreter or trained family member, avoid medical jargon, (2) Gender - she may prefer a female physiotherapist, (3) Modesty - respect dress preferences, offer privacy, (4) Religion - understand prayer involves specific movements (kneeling, prostration), (5) Family - family involvement is expected and beneficial, (6) Diet - work within Moroccan cuisine rather than against it, (7) Ramadan - exercise and medication timing may need adjustment during fasting."
+      },
+      "q3": {
+        "question": "Fatima's daughter Nadia is translating. What are the advantages and risks of using family as interpreters?",
+        "teaching_answer": "Advantages: Trust, availability, knows context, can support at home. Risks: (1) Medical terminology may be inaccurate, (2) Daughter may filter or soften information (protective), (3) Privacy concerns (sensitive topics), (4) Daughter's agenda may differ from mother's, (5) Daughter may speak for mother rather than translating. Best practice: Use professional interpreter for medical discussions, family for support and reinforcement."
+      },
+      "q4": {
+        "question": "Fatima says household work is 'enough movement.' How do you respond?",
+        "teaching_answer": "Approach sensitively: (1) Acknowledge her work is physically demanding, (2) Explain that structured exercise has different benefits than general activity, (3) Connect exercise to her values (being able to care for grandchildren, pray comfortably), (4) Explore barriers (time, location, cultural appropriateness), (5) Offer culturally acceptable solutions (women-only swimming, home exercises, walking with family). Don't dismiss her perspective but expand it."
+      },
+      "q5": {
+        "question": "Formulate an anticipated problem if current trajectory continues.",
+        "teaching_answer": "Anticipated problems: (1) Prediabetes will progress to type 2 diabetes (very high risk), (2) Knee OA will worsen with continued obesity, (3) Reduced mobility will lead to more weight gain (vicious cycle), (4) Fall risk will increase, (5) Cardiovascular disease risk. At current trajectory, Fatima will likely have diabetes, worsening mobility limitations, and possible diabetic complications within 10 years."
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Assuming non-compliance is cultural",
+        "description": "Attributing lack of exercise adherence to 'cultural' factors rather than exploring real barriers",
+        "coaching_response": "You mentioned Fatima isn't exercising because of her 'culture.' Have you actually explored her specific barriers? What is she able to do? What does she want to be able to do?"
+      },
+      {
+        "trap": "Ignoring prediabetes",
+        "description": "Focusing only on knees and not addressing metabolic risk",
+        "coaching_response": "You've treated the knee pain effectively. But Fatima has prediabetes and central obesity. Is addressing this within physiotherapy scope? What intervention could prevent diabetes?"
+      },
+      {
+        "trap": "Communicating only through daughter",
+        "description": "Always speaking to Nadia instead of Fatima",
+        "coaching_response": "I notice you've been directing questions to Nadia. Fatima is your patient. How can you engage her directly even with the language barrier? What does this mean for patient autonomy?"
+      }
+    ]
+  },
+  "life_stage_2": {
+    "title": "Fatima at 55 years old",
+    "presentation": {
+      "referral": "Diabetes nurse referral for exercise therapy",
+      "setting": "Primary care, combined lifestyle intervention",
+      "chief_complaint": "Uncontrolled type 2 diabetes, weight management, declining mobility"
+    },
+    "patient_narrative": "Fatima is now 55 and has been living with type 2 diabetes for 6 years. Her HbA1c is 64 mmol/mol despite metformin - she's now starting a second medication. Her weight has increased (BMI 39) and her knees are worse. She's been referred by the diabetes nurse (diabetesverpleegkundige) for a Combined Lifestyle Intervention (GLI - Gecombineerde Leefstijl Interventie). Hassan now also has poorly controlled diabetes and recently had a minor stroke (TIA). Fatima seems overwhelmed - she's caring for Hassan, her elderly mother-in-law who moved in after becoming widowed, and regularly babysits grandchildren. Her Dutch has improved somewhat over the years. She tells you, 'Everyone needs me to take care of them. Who takes care of me?'",
+    "interval_history": {
+      "diabetes": {
+        "diagnosis": "Type 2 diabetes diagnosed at age 49",
+        "hba1c": "64 mmol/mol (target <53)",
+        "medications": ["Metformin 1000mg 2x", "Starting Gliclazide"],
+        "complications": "None yet documented"
+      },
+      "weight": {
+        "current_bmi": 39,
+        "weight_gain": "12 kg since last seen 10 years ago"
+      },
+      "knee_status": "Worsened, considering GP referral to orthopedics",
+      "family_changes": {
+        "husband": "Hassan had TIA 6 months ago, some residual word-finding difficulties",
+        "mother_in_law": "82, moved in 2 years ago, needs supervision",
+        "children": "Supportive but have own families"
+      },
+      "psychosocial": {
+        "caregiver_burden": "High - caring for husband and mother-in-law",
+        "mood": "Signs of stress and possible depression",
+        "social": "Less active in community due to caregiving duties"
+      }
+    },
+    "physical_examination": {
+      "general": {
+        "bmi": 39,
+        "waist": "118 cm",
+        "blood_pressure": "148/92",
+        "appearance": "Looks tired, moves slowly"
+      },
+      "metabolic_screening": {
+        "foot_inspection": "Calluses, early hallux valgus, sensation intact",
+        "peripheral_pulses": "Palpable but weak DP bilaterally"
+      },
+      "musculoskeletal": {
+        "knees": "Bilateral OA progressed, flexion 110 degrees, marked crepitus",
+        "gait": "Slow, wide-based, uses furniture for support"
+      },
+      "functional_tests": {
+        "timed_up_and_go": "18 seconds (increased fall risk)",
+        "chair_stand_5x": "22 seconds",
+        "grip_strength": "16 kg"
+      }
+    },
+    "outcome_measures": {
+      "womac_total": 68,
+      "timed_up_and_go": 18,
+      "chair_stand_5x": 22,
+      "who_5_wellbeing": 40,
+      "diabetes_distress_scale": "Not formally administered but high distress evident"
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b5403", "description": "Carbohydrate metabolism", "qualifier": 2},
+        {"code": "b530", "description": "Weight maintenance", "qualifier": 3},
+        {"code": "b28016", "description": "Pain in joints", "qualifier": 3},
+        {"code": "b152", "description": "Emotional functions", "qualifier": 2}
+      ],
+      "activity_limitations": [
+        {"code": "d450", "description": "Walking", "qualifier": 2},
+        {"code": "d4551", "description": "Climbing stairs", "qualifier": 3},
+        {"code": "d640", "description": "Doing housework", "qualifier": 2}
+      ],
+      "participation_restrictions": [
+        {"code": "d920", "description": "Recreation/leisure", "qualifier": 3},
+        {"code": "d910", "description": "Community life", "qualifier": 2}
+      ],
+      "environmental_factors": [
+        {"code": "e310", "description": "Family", "qualifier": "-1", "note": "Support network is now dependency network"},
+        {"code": "e5800", "description": "Health services", "qualifier": "+1", "note": "GLI program available"}
+      ],
+      "personal_factors": ["Caregiver burden", "Role as family matriarch", "Stress", "Limited time for self-care"]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care?",
+        "teaching_answer": "Prevention and Cure. Prevention of diabetes complications (which would be devastating for her function). Cure of current deconditioning - exercise can significantly improve glycemic control. The GLI is evidence-based for diabetes prevention and management."
+      },
+      "q2": {
+        "question": "What is the Gecombineerde Leefstijl Interventie (GLI) and what is the physiotherapist's role?",
+        "teaching_answer": "GLI is the Dutch Combined Lifestyle Intervention, covered by health insurance since 2019. It targets people with obesity-related health risks. Components: (1) Exercise therapy (physiotherapist), (2) Dietary counseling (dietitian), (3) Behavioral change (lifestyle coach). Duration: 2 years. Physiotherapy role: supervised exercise, improving physical fitness, building sustainable activity habits. Evidence shows significant benefits for diabetes control."
+      },
+      "q3": {
+        "question": "Fatima says 'Who takes care of me?' How do you respond, and what does this suggest about her situation?",
+        "teaching_answer": "This statement reveals caregiver burnout and possibly depression. Response: (1) Acknowledge her feelings - validate that caring for others while managing her own health is hard, (2) Explore further - screen for depression (PHQ-2), (3) Frame treatment as enabling her to continue caring for family, (4) Involve family - her children may need to help more, (5) Consider referral to POH-GGZ for psychological support. Self-care is not selfish - she needs support."
+      },
+      "q4": {
+        "question": "How do you design a culturally appropriate exercise intervention for Fatima?",
+        "teaching_answer": "Culturally appropriate design: (1) Women-only group if possible (she may not be comfortable in mixed groups), (2) Appropriate clothing - she should be able to wear loose clothes and hijab, (3) Timing - not during prayer times, consider Ramadan adjustments, (4) Activities - walking, aqua-aerobics in women-only sessions, chair exercises, (5) Setting - community center may be more comfortable than gym, (6) Social component - group with other Moroccan women can provide peer support. Ask Fatima what would work for her."
+      },
+      "q5": {
+        "question": "What is the relationship between Fatima's caregiver role and her health?",
+        "teaching_answer": "Caregiver burden directly impacts health: (1) Chronic stress worsens glucose control, (2) No time for self-care (exercise, medical appointments), (3) Priority is always others (cultural expectation), (4) Depression risk increases, (5) Sleep disruption if caring for mother-in-law at night. This is especially common in Mediterranean and Muslim cultures where women are expected to be primary caregivers. Intervention must acknowledge and work within this reality, while also advocating for her needs."
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Prescribing without considering context",
+        "description": "Giving standard exercise prescription without considering caregiving duties",
+        "coaching_response": "You've prescribed 30 minutes of exercise 5 times per week. Fatima cares for her husband, mother-in-law, and grandchildren. When exactly would she do this? How can you make this realistic?"
+      },
+      {
+        "trap": "Ignoring mental health",
+        "description": "Focusing only on physical exercise without addressing emotional distress",
+        "coaching_response": "Fatima said 'Who takes care of me?' You've prescribed exercises. Did you address what's behind that statement? Should we be screening for depression?"
+      },
+      {
+        "trap": "Not involving family",
+        "description": "Treating Fatima individually without engaging family system",
+        "coaching_response": "Fatima's health is embedded in her family role. Have you considered involving her children? Could family support enable her exercise? Could family habits change together?"
+      }
+    ]
+  },
+  "life_stage_3": {
+    "title": "Fatima at 65 years old",
+    "presentation": {
+      "referral": "GP referral for fall prevention",
+      "setting": "Primary care, Valpreventie program",
+      "chief_complaint": "Two falls in past 6 months, fear of falling, diabetic neuropathy"
+    },
+    "patient_narrative": "Fatima is now 65 and comes to you after her second fall. She tripped in the kitchen 3 months ago and fell again last week in the mosque. She didn't break anything but is now frightened to walk alone. Her diabetes has progressed - she now has peripheral neuropathy affecting sensation in her feet. She's on insulin injections (her daughter-in-law helps with these). Hassan passed away 2 years ago from a heart attack; Fatima now lives with her son Ahmed and his family. Her mother-in-law passed last year. Fatima seems smaller somehow - she's lost weight unintentionally and her clothes hang loose. She says, 'I don't want to be a burden. I don't want to fall and break my hip like my sister did.'",
+    "interval_history": {
+      "diabetes_status": {
+        "duration": "16 years",
+        "hba1c": "58 mmol/mol (on insulin)",
+        "medications": ["Metformin", "Insulin glargine (daughter-in-law administers)"],
+        "complications": {
+          "neuropathy": "Peripheral, loss of protective sensation in feet",
+          "retinopathy": "Mild background, monitored by ophthalmologist",
+          "nephropathy": "Stage 2 CKD"
+        }
+      },
+      "falls": {
+        "fall_1": "Kitchen, tripped on rug, 3 months ago",
+        "fall_2": "Mosque, lost balance during standing from prayer, last week",
+        "injuries": "Bruising only, no fractures",
+        "fear_of_falling": "High - avoiding going out alone"
+      },
+      "weight": {
+        "current_bmi": 31,
+        "unintentional_loss": "8 kg in past year"
+      },
+      "family": {
+        "living_situation": "Lives with son Ahmed (38), daughter-in-law Samira (36), and 3 grandchildren",
+        "support": "Samira helps with insulin, family is attentive",
+        "bereavement": "Husband died 2 years ago, mother-in-law last year"
+      },
+      "mood": "Grief-related depression improving but still present, anxious about falling"
+    },
+    "physical_examination": {
+      "general": {
+        "bmi": 31,
+        "blood_pressure": "138/82",
+        "appearance": "Weight loss visible, moves cautiously"
+      },
+      "neurological": {
+        "monofilament_test": "Absent sensation bilateral forefoot",
+        "vibration_sense": "Reduced at big toe bilaterally",
+        "reflexes": "Absent ankle reflexes",
+        "proprioception": "Reduced at toes"
+      },
+      "musculoskeletal": {
+        "knee_status": "Bilateral TKR 2 years ago - well-healed, good ROM",
+        "muscle_mass": "Reduced, visible wasting of quadriceps and calves",
+        "hip_strength": "Weakness hip abductors 3+/5"
+      },
+      "balance_and_gait": {
+        "romberg": "Positive (sways with eyes closed)",
+        "single_leg_stance": "Unable to maintain 5 seconds either leg",
+        "gait": "Cautious, shortened stride, looks at feet",
+        "tandem_gait": "Unable"
+      },
+      "feet": {
+        "inspection": "Dry skin, calluses, early claw toe deformity",
+        "footwear": "Worn slippers, no support",
+        "ulcer_risk": "High - loss of protective sensation + foot deformity"
+      }
+    },
+    "outcome_measures": {
+      "berg_balance_scale": 38,
+      "timed_up_and_go": 20,
+      "falls_efficacy_scale_international": 42,
+      "short_physical_performance_battery": 5,
+      "phq_9": 8,
+      "mna_sf": 9
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b260", "description": "Proprioceptive function", "qualifier": 3},
+        {"code": "b270", "description": "Sensory functions - touch", "qualifier": 3},
+        {"code": "b235", "description": "Vestibular functions", "qualifier": 1},
+        {"code": "b730", "description": "Muscle power", "qualifier": 2},
+        {"code": "b152", "description": "Emotional functions", "qualifier": 2}
+      ],
+      "activity_limitations": [
+        {"code": "d450", "description": "Walking", "qualifier": 2},
+        {"code": "d4106", "description": "Shifting body position", "qualifier": 2},
+        {"code": "d460", "description": "Moving around in different locations", "qualifier": 3}
+      ],
+      "participation_restrictions": [
+        {"code": "d930", "description": "Religion", "qualifier": 2, "note": "Fear of falling during prayer"},
+        {"code": "d910", "description": "Community life", "qualifier": 3},
+        {"code": "d920", "description": "Recreation", "qualifier": 3}
+      ],
+      "environmental_factors": [
+        {"code": "e310", "description": "Family", "qualifier": "+3"},
+        {"code": "e1201", "description": "Footwear", "qualifier": "-2"},
+        {"code": "e155", "description": "Home design", "qualifier": "-1", "note": "Rugs, threshold"}
+      ],
+      "personal_factors": ["Fear of falling", "Recent bereavement", "Does not want to burden family", "Loss of confidence"]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care?",
+        "teaching_answer": "Prevention of future falls and their consequences (fracture, loss of independence). Also Care - managing chronic conditions and maintaining quality of life. Fall prevention is evidence-based and effective even with neuropathy."
+      },
+      "q2": {
+        "question": "Fatima has diabetic neuropathy. Explain how this contributes to fall risk.",
+        "teaching_answer": "Neuropathy increases fall risk through: (1) Loss of protective sensation - can't feel foot position, (2) Reduced proprioception - poor awareness of joint position, (3) Muscle weakness - intrinsic foot muscles, distal leg, (4) Foot deformities - altered pressure distribution, (5) Delayed responses - can't react quickly to perturbations. Combined with reduced vision (retinopathy) and possible vestibular changes, she's lost multiple balance systems."
+      },
+      "q3": {
+        "question": "Fatima's Berg Balance Scale is 38. Interpret this and explain its implications.",
+        "teaching_answer": "BBS 38 indicates moderate fall risk (cutoff ~45 for fall risk). Implications: (1) High priority for fall prevention intervention, (2) May need walking aid for community ambulation, (3) Should not be walking alone in unfamiliar environments, (4) Home safety assessment needed. However, BBS can improve with intervention - this is not fixed."
+      },
+      "q4": {
+        "question": "Fatima lost 8 kg unintentionally. Why is this concerning and how do you address it?",
+        "teaching_answer": "Unintentional weight loss in older adults is concerning: (1) May indicate sarcopenia (she had high BMI, could be losing muscle not fat), (2) Could indicate depression (still grieving), (3) May indicate poor diabetes control or other illness, (4) MNA-SF 9 suggests malnutrition risk. Actions: (1) Refer to dietitian, (2) Screen for depression, (3) Communicate with GP about weight loss, (4) Resistance training to preserve muscle mass."
+      },
+      "q5": {
+        "question": "Fatima wears slippers at home. Why is this a problem and how do you address footwear with her?",
+        "teaching_answer": "Slippers increase fall risk: (1) Poor stability and support, (2) Often loose-fitting (trip hazard), (3) No protection for insensate feet. Diabetic footwear recommendations: (1) Well-fitting, supportive shoes indoors AND outdoors, (2) Custom orthotics if deformity, (3) Regular podiatry for nail and callus care, (4) Daily foot checks. Cultural note: shoes may not traditionally be worn indoors - find culturally acceptable solution (supportive indoor shoes, not outdoor shoes inside)."
+      },
+      "q6": {
+        "question": "Fatima is afraid of falling during prayer. How do you address this?",
+        "teaching_answer": "Islamic prayer (salat) involves specific movements: standing, bowing, prostration (kneeling/forehead to ground), sitting. With her balance and neuropathy, these are high-risk. Approach: (1) Discuss adaptations (prayer can be performed seated - chair or wheelchair - for those with disability, this is Islamically acceptable), (2) Practice transitions in therapy if she wants to continue floor prayer, (3) Suggest prayer rug on stable surface, (4) Family member present during prayer. Respect her religious practice while addressing safety."
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Only treating balance",
+        "description": "Focusing on exercises without addressing environmental and footwear factors",
+        "coaching_response": "You've prescribed balance exercises. But Fatima fell on a rug wearing slippers. Have you addressed her footwear? Her home environment? What does the evidence say about multifactorial fall prevention?"
+      },
+      {
+        "trap": "Ignoring nutrition",
+        "description": "Not addressing unintentional weight loss in fall prevention",
+        "coaching_response": "Fatima has lost 8 kg and has signs of sarcopenia. Your fall prevention program focuses on exercise. But can she build muscle while malnourished? Who else should be involved?"
+      },
+      {
+        "trap": "Generic program",
+        "description": "Applying standard Otago without adapting for neuropathy",
+        "coaching_response": "You've prescribed the Otago program. How do you modify balance training for someone who can't feel her feet? What sensory substitution strategies could help?"
+      }
+    ]
+  },
+  "life_stage_4": {
+    "title": "Fatima at 75 years old",
+    "presentation": {
+      "referral": "Hospital discharge referral",
+      "setting": "Home physiotherapy",
+      "chief_complaint": "Post hip fracture, declining independence, family considering care options"
+    },
+    "patient_narrative": "Fatima is 75 and has just returned home after a left hip fracture (intertrochanteric) treated with a dynamic hip screw. She fell getting up at night to use the bathroom. She spent 2 weeks in hospital and 4 weeks in a geriatric rehabilitation center. She's now home with her son Ahmed's family but things have changed. Samira (her daughter-in-law) works part-time and the children are older (teenagers now) with their own activities. Home care visits help with washing but the family is struggling. Fatima is using a rollator and needs supervision to walk. Her cognition has declined somewhat since hospitalization - she's occasionally confused about time and repeats herself. She tells you, 'I always feared breaking my hip. Now it happened. My sister died after hers. I don't want to die in a nursing home away from my family.'",
+    "interval_history": {
+      "hip_fracture": {
+        "type": "Left intertrochanteric fracture",
+        "treatment": "DHS (dynamic hip screw)",
+        "complications": "Post-operative delirium (resolved), urinary tract infection",
+        "rehab_stay": "4 weeks GRZ"
+      },
+      "functional_status": {
+        "pre_fracture": "Independent with rollator indoors, supervision outdoors",
+        "current": "Needs assistance for transfers, supervision for walking, needs help with ADLs"
+      },
+      "diabetes_status": {
+        "duration": "26 years",
+        "hba1c": "54 mmol/mol (on simplified insulin regimen)",
+        "complications": {
+          "neuropathy": "Severe, now mid-calf level",
+          "nephropathy": "Stage 3b CKD",
+          "retinopathy": "Moderate, limited visual acuity"
+        }
+      },
+      "cognition": {
+        "pre_fracture": "Mild cognitive impairment (undiagnosed)",
+        "current": "Worsened post-hospitalization, short-term memory affected, occasionally disoriented",
+        "screening": "MMSE 22/30 in GRZ"
+      },
+      "other_health": {
+        "incontinence": "New stress incontinence since fracture",
+        "vision": "Limited - diabetic retinopathy + cataracts",
+        "medications": "10 medications, simplified for adherence"
+      },
+      "family_situation": {
+        "living_with": "Ahmed (48), Samira (46), and 3 teenage grandchildren",
+        "home_care": "Thuiszorg for personal care, 2x daily",
+        "family_meeting": "Held during GRZ stay, discussed care options including nursing home"
+      }
+    },
+    "physical_examination": {
+      "general": {
+        "bmi": 28,
+        "appearance": "Frail, needs prompting for instructions",
+        "communication": "Dutch has deteriorated, prefers Berber"
+      },
+      "hip_status": {
+        "scar": "Well-healed",
+        "rom": "Flexion 90 degrees, abduction 20 degrees",
+        "weight_bearing": "Full weight bearing allowed",
+        "pain": "Minimal at rest, moderate with activity"
+      },
+      "functional_mobility": {
+        "bed_mobility": "Needs assistance to sit up",
+        "transfers": "Needs supervision/standby assist",
+        "gait_with_rollator": "10 meters with supervision, slow, stops frequently",
+        "stairs": "Unable (was managing 4 steps to home previously)"
+      },
+      "cognition_during_session": {
+        "attention": "Wanders, needs refocusing",
+        "memory": "Forgets instructions, needs demonstration each time",
+        "safety_awareness": "Reduced - attempts to stand without waiting for help"
+      }
+    },
+    "outcome_measures": {
+      "fac": 2,
+      "timed_up_and_go": 35,
+      "berg_balance_scale": 24,
+      "barthel_index": 55,
+      "fes_i": 56,
+      "mmse": 22,
+      "edmonton_frail_scale": 11
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b710", "description": "Joint mobility (hip)", "qualifier": 2},
+        {"code": "b730", "description": "Muscle power", "qualifier": 3},
+        {"code": "b260", "description": "Proprioception", "qualifier": 3},
+        {"code": "b144", "description": "Memory functions", "qualifier": 2},
+        {"code": "b156", "description": "Perceptual functions", "qualifier": 2}
+      ],
+      "activity_limitations": [
+        {"code": "d450", "description": "Walking", "qualifier": 3},
+        {"code": "d420", "description": "Transferring", "qualifier": 2},
+        {"code": "d510", "description": "Washing", "qualifier": 3},
+        {"code": "d540", "description": "Dressing", "qualifier": 3}
+      ],
+      "participation_restrictions": [
+        {"code": "d930", "description": "Religion", "qualifier": 3},
+        {"code": "d910", "description": "Community life", "qualifier": 4},
+        {"code": "d660", "description": "Assisting others", "qualifier": 4}
+      ],
+      "environmental_factors": [
+        {"code": "e310", "description": "Family", "qualifier": "+2", "note": "Willing but stretched"},
+        {"code": "e340", "description": "Paid caregivers", "qualifier": "+2"},
+        {"code": "e120", "description": "Mobility aids", "qualifier": "+2"},
+        {"code": "e155", "description": "Home environment", "qualifier": "-2", "note": "Stairs at entrance, small bathroom"}
+      ],
+      "personal_factors": ["Fear of nursing home", "Cultural expectation of family care", "Cognitive impairment affecting learning", "Loss of independence"]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care?",
+        "teaching_answer": "Care with Prevention elements. Focus is maintaining function, preventing falls and rehospitalization, and supporting quality of life at home. 'Cure' in terms of returning to pre-fracture level may not be realistic given cognitive decline, but improvement from current state is possible."
+      },
+      "q2": {
+        "question": "Fatima is frightened of going to a nursing home. Discuss the cultural context of this fear.",
+        "teaching_answer": "In Moroccan (and broader Mediterranean/Muslim) culture: (1) Family care for elders is a religious duty and cultural expectation, (2) Nursing homes may be seen as abandonment, (3) Fear of dying away from family, (4) Food, language, religious practice may not be accommodated in care homes, (5) Dutch nursing homes are improving in cultural competence but concerns remain valid. However, family must also be sustainable - caregiver burnout is real. Open discussion about what family can realistically provide is essential."
+      },
+      "q3": {
+        "question": "How does Fatima's cognitive impairment affect your rehabilitation approach?",
+        "teaching_answer": "Cognitive impairment adaptations: (1) Simplify instructions - one step at a time, (2) Demonstrate rather than explain, (3) Use consistent routine - same exercises, same order, (4) Involve family in exercises (they can cue and supervise), (5) Written or picture-based home program may not work - teach family, (6) Safety is primary concern - she may not remember to use rollator or call for help, (7) Consider whether she can learn new strategies or if environment must be adapted to current abilities."
+      },
+      "q4": {
+        "question": "The family is stretched between work, teenagers, and Fatima's care. What is your role?",
+        "teaching_answer": "Physiotherapist role in this context: (1) Optimize Fatima's independence to reduce care burden, (2) Teach family efficient and safe transfer techniques, (3) Advocate for adequate home care services, (4) Provide realistic prognosis to inform family decisions, (5) Connect family with resources (respite, dagbehandeling/day treatment), (6) Recognize limits - you cannot solve social problems but can contribute to sustainable care plan."
+      },
+      "q5": {
+        "question": "Looking back over Fatima's trajectory, what intervention points could have changed her outcome?",
+        "teaching_answer": "Critical intervention points: (1) Age 45: Prediabetes intervention - intensive lifestyle change could have prevented or delayed diabetes, (2) Age 55: Better diabetes control and addressing caregiver burden, (3) Age 65: More aggressive fall prevention - multifactorial intervention, footwear, home modification. Her hip fracture was predicted by her risk factors. Earlier multifactorial intervention, addressing both medical and social factors, could have prevented this trajectory. The health literacy and language barriers were never fully addressed."
+      },
+      "q6": {
+        "question": "Fatima's sister died after a hip fracture. What is the mortality risk and how do you discuss this?",
+        "teaching_answer": "Hip fracture mortality: ~20-30% of elderly die within 1 year of hip fracture, higher in those with cognitive impairment and comorbidities. Risk factors Fatima has: diabetes, cognitive impairment, frailty, CKD. Discussion: (1) Acknowledge her fear is based in reality, (2) Focus on what we can control (rehab, fall prevention, nutrition), (3) Understand her goals - what matters most to her?, (4) Advance care planning may be appropriate, (5) Involve GP in goals-of-care discussion. Be honest but not hopeless."
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Intensive rehabilitation mindset",
+        "description": "Pushing for aggressive rehab despite cognitive limitations and frailty",
+        "coaching_response": "You've set goals for independent walking and stair climbing. With her MMSE of 22, frailty score, and safety awareness issues, are these realistic? What would success look like for Fatima?"
+      },
+      {
+        "trap": "Ignoring the family system",
+        "description": "Focusing only on patient without considering sustainability of care",
+        "coaching_response": "Your home program requires supervision for safety. Samira works part-time and the teenagers are busy. Who will supervise? Is this sustainable? What happens when Samira burns out?"
+      },
+      {
+        "trap": "Avoiding prognosis discussion",
+        "description": "Not addressing realistic expectations",
+        "coaching_response": "The family hopes Fatima will be 'back to normal.' Given her trajectory, is this realistic? How do you have honest conversations about prognosis while maintaining hope?"
+      },
+      {
+        "trap": "Missing palliative opportunity",
+        "description": "Not considering goals-of-care discussion",
+        "coaching_response": "Fatima is frail, cognitively impaired, has multiple organ complications, and just survived a hip fracture. Has anyone discussed her goals and wishes? What matters most to her for her remaining time?"
+      }
+    ]
+  },
+  "longitudinal_reflection": {
+    "trajectory_summary": "Fatima's case illustrates the intersection of migration, culture, gender, and chronic disease in the Netherlands. As a first-generation Moroccan-Dutch woman, she faced language barriers, limited health literacy, and cultural expectations that prioritized family care over self-care. Her prediabetes progressed to diabetes with complications, while her role as caregiver prevented adequate self-management. Her fall and hip fracture, though predicted by risk factors, might have been prevented with earlier, culturally competent, multifactorial intervention.",
+    "key_lessons": [
+      "Cultural competence requires understanding individual context, not stereotyping",
+      "Language barriers limit access to health education and self-management support",
+      "Caregiver burden is a health risk factor, especially in cultures with strong family care expectations",
+      "Prediabetes is a critical intervention window - intensive lifestyle intervention can prevent progression",
+      "Fall prevention must address footwear, environment, and sensory loss, not just exercise",
+      "Health literacy affects every interaction - simplify, demonstrate, involve family",
+      "Immigrant populations may have different disease trajectories due to both biological and social factors"
+    ],
+    "dutch_context": {
+      "moroccan_dutch_health": "Moroccan-Dutch have higher rates of diabetes (2-3x Dutch population), often at younger ages",
+      "gli_program": "Combined Lifestyle Intervention is available but language-accessible programs are limited",
+      "family_care_vs_institutions": "Moroccan families often prefer home care but this places burden on women of the family",
+      "culturally_competent_care": "Amsterdam has resources (culturally sensitive home care, mosque-based health programs) but access varies"
+    }
+  },
+  "teaching_notes": {
+    "key_competencies_assessed": [
+      "Culturally sensitive practice",
+      "Working with interpreters",
+      "Diabetes and exercise",
+      "Fall prevention (multifactorial)",
+      "Diabetic neuropathy management",
+      "Frailty and geriatric rehabilitation",
+      "Caregiver considerations",
+      "Goals-of-care discussions"
+    ],
+    "guideline_integration": [
+      "KNGF Guideline Osteoarthritis Hip-Knee",
+      "KNGF Guideline Falls Prevention",
+      "NHG Standard Diabetes Type 2",
+      "Zorgstandaard Valpreventie bij Ouderen",
+      "GLI (Gecombineerde Leefstijl Interventie) guidelines"
+    ],
+    "cultural_competence_learning_objectives": [
+      "Recognize how migration history affects health access and outcomes",
+      "Adapt communication for patients with limited Dutch proficiency",
+      "Understand the role of family in care decisions across cultures",
+      "Balance cultural respect with health advocacy",
+      "Identify culturally appropriate exercise and lifestyle interventions"
+    ]
+  }
+}

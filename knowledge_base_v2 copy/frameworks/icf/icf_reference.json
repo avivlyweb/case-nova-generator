@@ -1,0 +1,598 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "description": "ICF framework reference for physiotherapy clinical reasoning",
+    "source": "WHO International Classification of Functioning, Disability and Health",
+    "curated_for": "ESP Amsterdam physiotherapy education",
+    "last_updated": "2025-01-29",
+    "usage_note": "This is a curated subset of ICF codes most relevant to physiotherapy practice. Full ICF contains 1800+ codes."
+  },
+  "icf_model_overview": {
+    "description": "The ICF provides a framework to describe health and health-related states. It shifts focus from cause (disease) to impact (functioning).",
+    "components": {
+      "body_functions": {
+        "code_prefix": "b",
+        "description": "Physiological functions of body systems, including psychological functions",
+        "example": "b28013 - Pain in back"
+      },
+      "body_structures": {
+        "code_prefix": "s",
+        "description": "Anatomical parts of the body such as organs, limbs, and their components",
+        "example": "s76002 - Muscles of thigh"
+      },
+      "activities_participation": {
+        "code_prefix": "d",
+        "description": "Activities (task execution) and Participation (life involvement)",
+        "example": "d4500 - Walking short distances"
+      },
+      "environmental_factors": {
+        "code_prefix": "e",
+        "description": "Physical, social, and attitudinal environment that impact functioning",
+        "example": "e310 - Immediate family"
+      },
+      "personal_factors": {
+        "code_prefix": "pf",
+        "description": "Individual background including age, lifestyle, habits, coping styles (not classified in ICF)",
+        "example": "Motivation, self-efficacy, prior experience"
+      }
+    },
+    "qualifiers": {
+      "description": "Numeric codes indicating the magnitude of impairment or limitation",
+      "scale": {
+        "0": "No problem (0-4%)",
+        "1": "Mild problem (5-24%)",
+        "2": "Moderate problem (25-49%)",
+        "3": "Severe problem (50-95%)",
+        "4": "Complete problem (96-100%)",
+        "8": "Not specified",
+        "9": "Not applicable"
+      }
+    }
+  },
+  "coaching_prompts": {
+    "general": {
+      "connecting_impairment_to_activity": "You've identified an impairment (body function). Now ask: How does this impairment affect the patient's activities?",
+      "connecting_activity_to_participation": "You've identified an activity limitation. Now ask: How does this affect the patient's participation in life roles?",
+      "avoiding_biomedical_tunnel_vision": "You've focused on body functions. Have you considered the patient's activity limitations and participation restrictions?",
+      "contextual_factors": "How do environmental or personal factors influence this patient's functioning?"
+    },
+    "common_student_errors": [
+      {
+        "error": "Listing impairments without linking to activities",
+        "coaching_response": "I see you've identified impairments. Can you explain HOW these impairments cause the patient's activity limitations?"
+      },
+      {
+        "error": "Confusing impairments with activity limitations",
+        "coaching_response": "Is 'pain' an impairment (body function) or an activity limitation? Where would 'difficulty walking' fit?"
+      },
+      {
+        "error": "Ignoring participation restrictions",
+        "coaching_response": "You've addressed the impairments and activities. But what about the patient's life roles - work, family, recreation?"
+      },
+      {
+        "error": "Not considering environmental factors",
+        "coaching_response": "How does the patient's environment (home, work, social support) affect their functioning?"
+      }
+    ]
+  },
+  "body_functions": {
+    "chapter_1_mental": {
+      "code": "b1",
+      "name": "Mental functions",
+      "relevant_codes": [
+        {
+          "code": "b126",
+          "name": "Temperament and personality functions",
+          "clinical_relevance": "Motivation, coping style"
+        },
+        {
+          "code": "b130",
+          "name": "Energy and drive functions",
+          "clinical_relevance": "Fatigue, motivation for therapy"
+        },
+        {
+          "code": "b134",
+          "name": "Sleep functions",
+          "clinical_relevance": "Sleep quality affecting recovery"
+        },
+        {
+          "code": "b152",
+          "name": "Emotional functions",
+          "clinical_relevance": "Depression, anxiety affecting rehabilitation"
+        },
+        {
+          "code": "b164",
+          "name": "Higher-level cognitive functions",
+          "clinical_relevance": "Planning, decision-making for self-management"
+        }
+      ]
+    },
+    "chapter_2_sensory": {
+      "code": "b2",
+      "name": "Sensory functions and pain",
+      "relevant_codes": [
+        {
+          "code": "b210",
+          "name": "Seeing functions",
+          "clinical_relevance": "Vision for balance, mobility"
+        },
+        {
+          "code": "b235",
+          "name": "Vestibular functions",
+          "clinical_relevance": "Balance, dizziness"
+        },
+        {
+          "code": "b260",
+          "name": "Proprioceptive function",
+          "clinical_relevance": "Position sense, joint stability"
+        },
+        {
+          "code": "b265",
+          "name": "Touch function",
+          "clinical_relevance": "Sensation testing"
+        },
+        {
+          "code": "b270",
+          "name": "Sensory functions related to temperature and other stimuli",
+          "clinical_relevance": "Thermal sensation testing"
+        },
+        {
+          "code": "b280",
+          "name": "Sensation of pain",
+          "clinical_relevance": "Pain assessment - central in PT",
+          "subcodes": [
+            {"code": "b28010", "name": "Pain in head and neck"},
+            {"code": "b28011", "name": "Pain in chest"},
+            {"code": "b28012", "name": "Pain in stomach or abdomen"},
+            {"code": "b28013", "name": "Pain in back"},
+            {"code": "b28014", "name": "Pain in upper limb"},
+            {"code": "b28015", "name": "Pain in lower limb"},
+            {"code": "b28016", "name": "Pain in joints"}
+          ]
+        }
+      ]
+    },
+    "chapter_4_cardiovascular": {
+      "code": "b4",
+      "name": "Functions of cardiovascular, haematological, immunological and respiratory systems",
+      "relevant_codes": [
+        {
+          "code": "b410",
+          "name": "Heart functions",
+          "clinical_relevance": "Cardiac conditions, exercise response"
+        },
+        {
+          "code": "b420",
+          "name": "Blood pressure functions",
+          "clinical_relevance": "Hypertension, exercise monitoring"
+        },
+        {
+          "code": "b430",
+          "name": "Haematological system functions",
+          "clinical_relevance": "Anemia affecting fatigue"
+        },
+        {
+          "code": "b440",
+          "name": "Respiration functions",
+          "clinical_relevance": "Breathing patterns, respiratory conditions"
+        },
+        {
+          "code": "b455",
+          "name": "Exercise tolerance functions",
+          "clinical_relevance": "Aerobic capacity, 6MWT"
+        }
+      ]
+    },
+    "chapter_7_neuromusculoskeletal": {
+      "code": "b7",
+      "name": "Neuromusculoskeletal and movement-related functions",
+      "description": "Most relevant chapter for physiotherapy",
+      "relevant_codes": [
+        {
+          "code": "b710",
+          "name": "Mobility of joint functions",
+          "clinical_relevance": "ROM assessment",
+          "subcodes": [
+            {"code": "b7100", "name": "Mobility of a single joint"},
+            {"code": "b7101", "name": "Mobility of several joints"},
+            {"code": "b7102", "name": "Mobility of joints generalized"}
+          ]
+        },
+        {
+          "code": "b715",
+          "name": "Stability of joint functions",
+          "clinical_relevance": "Ligament laxity, joint stability testing"
+        },
+        {
+          "code": "b720",
+          "name": "Mobility of bone functions",
+          "clinical_relevance": "Bone/fracture healing"
+        },
+        {
+          "code": "b730",
+          "name": "Muscle power functions",
+          "clinical_relevance": "Strength testing (MRC, HHD)"
+        },
+        {
+          "code": "b735",
+          "name": "Muscle tone functions",
+          "clinical_relevance": "Spasticity (MAS), hypotonia"
+        },
+        {
+          "code": "b740",
+          "name": "Muscle endurance functions",
+          "clinical_relevance": "Sustained activity tolerance"
+        },
+        {
+          "code": "b750",
+          "name": "Motor reflex functions",
+          "clinical_relevance": "Reflexes, spasticity"
+        },
+        {
+          "code": "b755",
+          "name": "Involuntary movement reaction functions",
+          "clinical_relevance": "Balance reactions, postural control"
+        },
+        {
+          "code": "b760",
+          "name": "Control of voluntary movement functions",
+          "clinical_relevance": "Coordination, ataxia"
+        },
+        {
+          "code": "b765",
+          "name": "Involuntary movement functions",
+          "clinical_relevance": "Tremor, chorea, tics"
+        },
+        {
+          "code": "b770",
+          "name": "Gait pattern functions",
+          "clinical_relevance": "Gait analysis, gait deviations"
+        },
+        {
+          "code": "b780",
+          "name": "Sensations related to muscles and movement functions",
+          "clinical_relevance": "Muscle stiffness, cramping"
+        }
+      ]
+    }
+  },
+  "activities_participation": {
+    "chapter_4_mobility": {
+      "code": "d4",
+      "name": "Mobility",
+      "description": "Most relevant chapter for physiotherapy",
+      "relevant_codes": [
+        {
+          "code": "d410",
+          "name": "Changing basic body position",
+          "clinical_relevance": "Bed mobility, transfers",
+          "subcodes": [
+            {"code": "d4100", "name": "Lying down"},
+            {"code": "d4101", "name": "Squatting"},
+            {"code": "d4102", "name": "Kneeling"},
+            {"code": "d4103", "name": "Sitting"},
+            {"code": "d4104", "name": "Standing"},
+            {"code": "d4105", "name": "Bending"}
+          ]
+        },
+        {
+          "code": "d415",
+          "name": "Maintaining a body position",
+          "clinical_relevance": "Sustained postures"
+        },
+        {
+          "code": "d420",
+          "name": "Transferring oneself",
+          "clinical_relevance": "Bed-chair, chair-toilet transfers"
+        },
+        {
+          "code": "d430",
+          "name": "Lifting and carrying objects",
+          "clinical_relevance": "Functional lifting capacity"
+        },
+        {
+          "code": "d440",
+          "name": "Fine hand use",
+          "clinical_relevance": "Dexterity (NHPT)"
+        },
+        {
+          "code": "d445",
+          "name": "Hand and arm use",
+          "clinical_relevance": "Reaching, upper limb function"
+        },
+        {
+          "code": "d450",
+          "name": "Walking",
+          "clinical_relevance": "Gait assessment",
+          "subcodes": [
+            {"code": "d4500", "name": "Walking short distances"},
+            {"code": "d4501", "name": "Walking long distances"},
+            {"code": "d4502", "name": "Walking on different surfaces"},
+            {"code": "d4503", "name": "Walking around obstacles"}
+          ]
+        },
+        {
+          "code": "d455",
+          "name": "Moving around",
+          "clinical_relevance": "Crawling, climbing, running"
+        },
+        {
+          "code": "d460",
+          "name": "Moving around in different locations",
+          "clinical_relevance": "Home, indoor, outdoor mobility"
+        },
+        {
+          "code": "d465",
+          "name": "Moving around using equipment",
+          "clinical_relevance": "Wheelchair, walker use"
+        },
+        {
+          "code": "d470",
+          "name": "Using transportation",
+          "clinical_relevance": "Community mobility"
+        },
+        {
+          "code": "d475",
+          "name": "Driving",
+          "clinical_relevance": "Return to driving"
+        }
+      ]
+    },
+    "chapter_5_self_care": {
+      "code": "d5",
+      "name": "Self-care",
+      "relevant_codes": [
+        {
+          "code": "d510",
+          "name": "Washing oneself",
+          "clinical_relevance": "ADL - bathing"
+        },
+        {
+          "code": "d520",
+          "name": "Caring for body parts",
+          "clinical_relevance": "Grooming"
+        },
+        {
+          "code": "d530",
+          "name": "Toileting",
+          "clinical_relevance": "Toilet transfers, continence"
+        },
+        {
+          "code": "d540",
+          "name": "Dressing",
+          "clinical_relevance": "Upper/lower body dressing"
+        },
+        {
+          "code": "d550",
+          "name": "Eating",
+          "clinical_relevance": "Feeding function"
+        },
+        {
+          "code": "d570",
+          "name": "Looking after one's health",
+          "clinical_relevance": "Self-management, exercise adherence"
+        }
+      ]
+    },
+    "chapter_6_domestic_life": {
+      "code": "d6",
+      "name": "Domestic life",
+      "relevant_codes": [
+        {
+          "code": "d620",
+          "name": "Acquisition of goods and services",
+          "clinical_relevance": "Shopping"
+        },
+        {
+          "code": "d630",
+          "name": "Preparing meals",
+          "clinical_relevance": "Kitchen tasks"
+        },
+        {
+          "code": "d640",
+          "name": "Doing housework",
+          "clinical_relevance": "Cleaning, laundry"
+        },
+        {
+          "code": "d650",
+          "name": "Caring for household objects",
+          "clinical_relevance": "Home maintenance"
+        }
+      ]
+    },
+    "chapter_8_work_employment": {
+      "code": "d8",
+      "name": "Major life areas",
+      "relevant_codes": [
+        {
+          "code": "d840",
+          "name": "Apprenticeship (work preparation)",
+          "clinical_relevance": "Return to work planning"
+        },
+        {
+          "code": "d845",
+          "name": "Acquiring, keeping and terminating a job",
+          "clinical_relevance": "Vocational rehabilitation"
+        },
+        {
+          "code": "d850",
+          "name": "Remunerative employment",
+          "clinical_relevance": "Work participation"
+        },
+        {
+          "code": "d855",
+          "name": "Non-remunerative employment",
+          "clinical_relevance": "Volunteer work"
+        }
+      ]
+    },
+    "chapter_9_community_life": {
+      "code": "d9",
+      "name": "Community, social and civic life",
+      "relevant_codes": [
+        {
+          "code": "d910",
+          "name": "Community life",
+          "clinical_relevance": "Social participation"
+        },
+        {
+          "code": "d920",
+          "name": "Recreation and leisure",
+          "clinical_relevance": "Sports, hobbies"
+        },
+        {
+          "code": "d930",
+          "name": "Religion and spirituality",
+          "clinical_relevance": "Spiritual needs"
+        }
+      ]
+    }
+  },
+  "environmental_factors": {
+    "chapter_1_products_technology": {
+      "code": "e1",
+      "name": "Products and technology",
+      "relevant_codes": [
+        {
+          "code": "e110",
+          "name": "Products for personal consumption",
+          "clinical_relevance": "Medication"
+        },
+        {
+          "code": "e115",
+          "name": "Products for personal use in daily living",
+          "clinical_relevance": "Assistive devices"
+        },
+        {
+          "code": "e120",
+          "name": "Products for personal indoor and outdoor mobility",
+          "clinical_relevance": "Wheelchair, walker, cane"
+        },
+        {
+          "code": "e150",
+          "name": "Design of buildings for public use",
+          "clinical_relevance": "Accessibility barriers"
+        },
+        {
+          "code": "e155",
+          "name": "Design of buildings for private use",
+          "clinical_relevance": "Home accessibility"
+        }
+      ]
+    },
+    "chapter_3_support_relationships": {
+      "code": "e3",
+      "name": "Support and relationships",
+      "relevant_codes": [
+        {
+          "code": "e310",
+          "name": "Immediate family",
+          "clinical_relevance": "Caregiver support"
+        },
+        {
+          "code": "e315",
+          "name": "Extended family",
+          "clinical_relevance": "Family support network"
+        },
+        {
+          "code": "e320",
+          "name": "Friends",
+          "clinical_relevance": "Social support"
+        },
+        {
+          "code": "e340",
+          "name": "Personal care providers and assistants",
+          "clinical_relevance": "Home care support"
+        },
+        {
+          "code": "e355",
+          "name": "Health professionals",
+          "clinical_relevance": "Multidisciplinary team"
+        }
+      ]
+    },
+    "chapter_4_attitudes": {
+      "code": "e4",
+      "name": "Attitudes",
+      "relevant_codes": [
+        {
+          "code": "e410",
+          "name": "Individual attitudes of immediate family members",
+          "clinical_relevance": "Family beliefs about recovery"
+        },
+        {
+          "code": "e450",
+          "name": "Individual attitudes of health professionals",
+          "clinical_relevance": "Healthcare team attitudes"
+        },
+        {
+          "code": "e460",
+          "name": "Societal attitudes",
+          "clinical_relevance": "Stigma, disability perception"
+        }
+      ]
+    },
+    "chapter_5_services_policies": {
+      "code": "e5",
+      "name": "Services, systems and policies",
+      "relevant_codes": [
+        {
+          "code": "e540",
+          "name": "Transportation services",
+          "clinical_relevance": "Access to therapy"
+        },
+        {
+          "code": "e570",
+          "name": "Social security services",
+          "clinical_relevance": "Insurance, disability benefits"
+        },
+        {
+          "code": "e580",
+          "name": "Health services",
+          "clinical_relevance": "Access to physiotherapy"
+        }
+      ]
+    }
+  },
+  "icf_core_sets": {
+    "description": "Condition-specific subsets of ICF codes identified through research",
+    "low_back_pain": {
+      "body_functions": ["b130", "b134", "b152", "b280", "b28013", "b710", "b715", "b730", "b735", "b740", "b770"],
+      "activities_participation": ["d410", "d415", "d430", "d450", "d475", "d530", "d540", "d640", "d850", "d920"],
+      "environmental_factors": ["e110", "e115", "e310", "e355", "e570", "e580"]
+    },
+    "stroke": {
+      "body_functions": ["b114", "b140", "b144", "b152", "b167", "b280", "b730", "b735", "b760", "b770"],
+      "activities_participation": ["d310", "d330", "d410", "d415", "d420", "d450", "d510", "d520", "d540", "d550", "d850"],
+      "environmental_factors": ["e115", "e120", "e310", "e340", "e355", "e580"]
+    },
+    "osteoarthritis": {
+      "body_functions": ["b130", "b134", "b152", "b280", "b710", "b730", "b740", "b770", "b780"],
+      "activities_participation": ["d410", "d415", "d430", "d450", "d455", "d470", "d510", "d540", "d640", "d850", "d920"],
+      "environmental_factors": ["e110", "e115", "e120", "e150", "e310", "e355", "e580"]
+    }
+  },
+  "hoac_icf_integration": {
+    "description": "How ICF maps to HOAC-II steps",
+    "step_1_collect_data": {
+      "icf_focus": "Identify all relevant body functions, activities, and participation from patient interview",
+      "key_question": "What impairments, activity limitations, and participation restrictions are present?"
+    },
+    "step_2_problem_statements": {
+      "icf_focus": "Frame problems as activity limitations and participation restrictions (not just impairments)",
+      "key_question": "Are your problems framed at the activity/participation level, linked to underlying impairments?"
+    },
+    "step_3_establish_goals": {
+      "icf_focus": "Goals should target activity and participation levels",
+      "key_question": "Are your goals written at the activity/participation level with measurable outcomes?"
+    },
+    "step_4_select_interventions": {
+      "icf_focus": "Interventions address impairments to improve activities and participation",
+      "key_question": "How does this intervention address the impairment to improve the activity limitation?"
+    },
+    "step_7_reevaluate": {
+      "icf_focus": "Reassess at all ICF levels - impairments, activities, participation",
+      "key_question": "Have you reassessed both the underlying impairments AND the functional outcomes?"
+    }
+  }
+}

@@ -1,0 +1,659 @@
+{
+  "metadata": {
+    "case_id": "esp_005_bram",
+    "case_name": "Bram Jansen - Cerebral Palsy and the Transition to Adulthood",
+    "format": "ESP Longitudinal Case Study",
+    "version": "2.0 CRISP Enhanced",
+    "age_progression": [8, 14, 18, 25],
+    "primary_themes": ["Cerebral palsy", "Pediatric to adult transition", "GMFCS progression", "Participation focus", "Self-determination", "Aging with disability", "School and work integration"],
+    "prevention_cure_care_focus": "Prevention of secondary complications, Cure through optimizing function, Care with participation focus throughout",
+    "linked_courses": ["Case Study 4", "Assessment 4", "Interventions 4"],
+    "hoac_steps_covered": "All 7 steps"
+  },
+  "patient_overview": {
+    "name": "Bram Jansen",
+    "setting": "You encounter Bram across different settings as he grows: a children's rehabilitation center in Rotterdam, a mainstream secondary school, and eventually an adult rehabilitation service.",
+    "narrative_arc": "Bram's story follows a young person with cerebral palsy from childhood through adolescence and into young adulthood. It illustrates the shifting priorities from motor development and preventing deformity in childhood, to participation and independence in adolescence, to self-determination and 'living with' CP in adulthood. The case highlights the critical transition from pediatric to adult services and the reality that CP is a lifelong condition requiring evolving support."
+  },
+  "life_stage_1": {
+    "title": "Bram at 8 years old",
+    "presentation": {
+      "referral": "Regular review at children's rehabilitation center",
+      "setting": "Outpatient pediatric physiotherapy, Rijndam Revalidatie Rotterdam",
+      "chief_complaint": "Routine review, parents concerned about upcoming transition to 'grote school'"
+    },
+    "patient_narrative": "Bram Jansen is 8 years old and has spastic diplegic cerebral palsy (GMFCS Level II). He was born prematurely at 28 weeks and diagnosed with CP at 18 months. He attends a mainstream primary school (basisschool) in Rotterdam with some support. Bram walks independently but has a characteristic scissoring gait and has difficulty keeping up with his peers in the schoolyard. He uses a posterior walker for longer distances and has a wheelchair for family outings. Bram is a bright, cheerful boy who loves dinosaurs and playing Minecraft. His parents, Marco (38, IT consultant) and Sophie (36, part-time office manager), are actively involved in his care. They're anxious about his transition to secondary school (middelbare school) in a few years. 'Will he cope? Will he be bullied? Should we look at special education?' Bram himself seems less worried. When asked what he wants, he says, 'I want to play football with my friends, but they're too fast.'",
+    "history_taking_findings": {
+      "cp_history": {
+        "birth": "28 weeks gestation, birth weight 1050g, PVL confirmed on MRI",
+        "diagnosis": "CP diagnosed at 18 months, spastic diplegia",
+        "gmfcs": "Level II (walks without aids, limitations in outdoor/community)",
+        "macs": "Level I (handles objects easily)",
+        "cfcs": "Level I (communicates effectively)"
+      },
+      "medical_history": {
+        "surgeries": "Bilateral tendo-Achilles lengthening age 5",
+        "botox": "Regular botulinum toxin injections to gastrocnemius/hamstrings",
+        "last_injection": "6 months ago",
+        "spasticity_management": "Botox, stretching, AFOs",
+        "ophthalmology": "Glasses for myopia (common in premature)",
+        "other": "History of constipation"
+      },
+      "current_therapies": {
+        "physiotherapy": "Weekly at rehabilitation center",
+        "occupational_therapy": "Periodic review",
+        "school_support": "Klassenassistent for some activities"
+      },
+      "development_and_school": {
+        "cognitive": "Age-appropriate intelligence, no learning difficulties",
+        "school": "Mainstream primary, Year 4",
+        "social": "Has friends but struggles in active play"
+      },
+      "family": {
+        "parents": "Marco and Sophie, married, both employed",
+        "siblings": "Sister Lotte (5), typically developing",
+        "home": "Ground-floor apartment, adapted bathroom"
+      }
+    },
+    "physical_examination": {
+      "general": {
+        "appearance": "Small for age but proportional, wears glasses, AFOs on",
+        "cooperation": "Excellent, chatty during assessment"
+      },
+      "neurological": {
+        "spasticity": {
+          "lower_limb": "MAS 2 bilateral gastrocnemius, MAS 1+ hamstrings",
+          "upper_limb": "Minimal involvement"
+        },
+        "selective_motor_control": "Reduced, especially distally",
+        "deep_reflexes": "Brisk bilateral LE"
+      },
+      "musculoskeletal": {
+        "hip_rom": {
+          "flexion": "Full",
+          "abduction": "35 degrees bilateral (should monitor)",
+          "rotation": "Increased internal rotation (femoral anteversion)"
+        },
+        "knee_rom": {
+          "extension": "-5 degrees bilateral (mild fixed flexion)",
+          "popliteal_angle": "50 degrees"
+        },
+        "ankle_rom": {
+          "dorsiflexion_knee_extended": "0 degrees bilateral (tight gastrocs)",
+          "dorsiflexion_knee_flexed": "10 degrees"
+        },
+        "spine": "Mild lumbar hyperlordosis"
+      },
+      "gait": {
+        "pattern": "Crouch gait tendency, toe-walking, scissoring, reduced knee extension in stance",
+        "with_afos": "Improved heel strike, still crouched",
+        "velocity": "Reduced compared to peers",
+        "endurance": "Fatigues on school playground"
+      },
+      "gross_motor_function": {
+        "gmfcs": "Level II",
+        "gmfm_d_e": "D (standing) 78%, E (walk/run/jump) 62%"
+      }
+    },
+    "outcome_measures": {
+      "gmfm_66": 72,
+      "gmfcs": "Level II",
+      "six_minute_walk": "380 meters (below peer average)",
+      "fms": {"5m": 1, "50m": 1, "500m": 2},
+      "gdi": 68,
+      "cpchild_parent": 72,
+      "copm_child": {
+        "identified_issues": ["Keep up with friends at break", "Ride a two-wheel bike", "Go to the swimming pool with Lotte"],
+        "performance_satisfaction": "Will establish"
+      }
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b7350", "description": "Tone of muscles of lower limbs", "qualifier": 2},
+        {"code": "b7602", "description": "Coordination of voluntary movements", "qualifier": 2},
+        {"code": "b7100", "description": "Mobility of joints (LE)", "qualifier": 2}
+      ],
+      "activity_limitations": [
+        {"code": "d450", "description": "Walking", "qualifier": 2},
+        {"code": "d4551", "description": "Climbing", "qualifier": 2},
+        {"code": "d4553", "description": "Jumping", "qualifier": 3},
+        {"code": "d4751", "description": "Driving human-powered vehicles (bike)", "qualifier": 3}
+      ],
+      "participation_restrictions": [
+        {"code": "d920", "description": "Recreation and leisure (active play)", "qualifier": 2},
+        {"code": "d880", "description": "Play with peers", "qualifier": 2}
+      ],
+      "environmental_factors": [
+        {"code": "e310", "description": "Family", "qualifier": "+3"},
+        {"code": "e1201", "description": "AFOs, walker", "qualifier": "+2"},
+        {"code": "e585", "description": "Education services", "qualifier": "+2"},
+        {"code": "e340", "description": "Personal care providers (klassenassistent)", "qualifier": "+1"}
+      ],
+      "personal_factors": ["Bright", "Sociable", "Motivated", "Good problem-solver", "Interested in technology"]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care?",
+        "teaching_answer": "Prevention and Cure. Prevention of secondary musculoskeletal problems (contractures, hip displacement, crouch gait progression). 'Cure' through optimizing function - at age 8 with GMFCS II, there is still potential for motor gains. Participation is already important but will become central focus as he ages."
+      },
+      "q2": {
+        "question": "Explain the significance of GMFCS Level II and what it predicts about Bram's future function.",
+        "teaching_answer": "GMFCS Level II: Walks independently, limitations outdoors/community, may use wheeled mobility for long distances, can use handrails for stairs. Prediction: GMFCS is stable after age 6 for most children. Bram will likely remain Level II but may function at the lower end without intervention. Risk: crouch gait can worsen in adolescence if not managed. Strength, flexibility, and fitness are modifiable factors."
+      },
+      "q3": {
+        "question": "Bram's parents are worried about mainstream secondary school. How do you address this?",
+        "teaching_answer": "Approach: (1) Validate concerns - transition is challenging, (2) Focus on preparation rather than changing schools, (3) Discuss what he needs - physical access, fatigue management, peer relationships, (4) Many GMFCS II children succeed in mainstream with support, (5) Introduce gradual independence now (carrying own bag, managing breaks), (6) Connect with families who've navigated this, (7) Occupational therapy for school function. Inclusion is best supported by preparation, not avoidance."
+      },
+      "q4": {
+        "question": "Bram says he wants to 'play football but they're too fast.' How do you use this goal therapeutically?",
+        "teaching_answer": "Using child's goals: (1) This is a COPM goal - meaningful to him, (2) Analyze the activity - football requires speed, agility, endurance, ball skills, (3) Modify the goal - maybe not competitive football but he could play goalkeeper, join CP football, or play adapted games, (4) Train component skills - endurance, speed, ball control, (5) Introduce alternatives - boccia, wheelchair basketball, frame football, (6) Social aspect is key - he wants to play WITH friends. Therapy goals should include participation in play, not just motor skills."
+      },
+      "q5": {
+        "question": "What surveillance is needed for a child with GMFCS II CP?",
+        "teaching_answer": "CP surveillance (Dutch CPNET guidelines): (1) Hip surveillance - X-rays every 1-2 years until hip stable (risk of displacement), (2) Spine monitoring - scoliosis watch, (3) ROM monitoring - identify contracture early, (4) GMFM tracking - monitor for functional decline, (5) Nutrition and growth, (6) Communication and learning, (7) Vision and hearing. Early intervention prevents surgery/deterioration."
+      },
+      "q6": {
+        "question": "Design a physiotherapy program for Bram at this stage.",
+        "teaching_answer": "PT program for 8-year-old GMFCS II: (1) Stretching - gastrocnemius, hamstrings, hip flexors (daily home program with parents), (2) Strengthening - functional lower limb strength, especially extensors (step-ups, sit-to-stand games), (3) Gait training - cueing for knee extension, reducing crouch, (4) Fitness - cycling (adapted if needed), swimming, active games, (5) Motor learning - bike riding if possible, ball skills, (6) AFO optimization - review with orthotist. Make it fun - games-based approach. Involve parents in home program."
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Adult-centric goals",
+        "description": "Setting goals about 'normal gait' rather than participation",
+        "coaching_response": "Your goals are about improving gait pattern and ROM. These are important, but what does Bram want? How do these impairment goals translate to playing with his friends?"
+      },
+      {
+        "trap": "Over-therapizing",
+        "description": "Prescribing intensive therapy that leaves no time for play",
+        "coaching_response": "You've prescribed daily stretching, 3x/week physio, and swimming. When does Bram just get to be a kid? How do we balance therapy with childhood?"
+      },
+      {
+        "trap": "Ignoring parents' emotional needs",
+        "description": "Focusing on physical management without addressing parental anxiety",
+        "coaching_response": "Marco and Sophie seem very anxious about secondary school. You've focused on exercises. Have you addressed their fears? Connected them with peer support?"
+      }
+    ]
+  },
+  "life_stage_2": {
+    "title": "Bram at 14 years old",
+    "presentation": {
+      "referral": "Self-referral via parents",
+      "setting": "Adolescent transition program, rehabilitation center",
+      "chief_complaint": "Declining function, increasing fatigue, struggling at school, frustration"
+    },
+    "patient_narrative": "Bram is now 14 and in his second year of HAVO (secondary school). He's grown significantly - now tall and lanky after a recent growth spurt. His parents are concerned: his walking has deteriorated, he's more fatigued, and he's resistant to physiotherapy. 'He used to be so compliant, now he won't do his exercises or wear his AFOs.' Bram himself seems withdrawn. When you ask how school is going, he shrugs. Eventually he says, 'I'm sick of being different. I don't want people to see me with a walker. I just want to be normal.' He's stopped doing his stretches, refuses to wear AFOs at school, and has dropped out of CP football - 'too babyish.' He's interested in computers and gaming. Physically, he's developed more crouch in his gait, has lost some of the ROM he had at 8, and his endurance is reduced.",
+    "interval_history": {
+      "growth_and_development": {
+        "growth_spurt": "12 cm growth in past 18 months",
+        "puberty": "In progress"
+      },
+      "function_changes": {
+        "walking": "Deteriorated - more crouch, using rollator more",
+        "endurance": "Significantly reduced, fatigues at school",
+        "rom_loss": "Lost ankle dorsiflexion, increased knee flexion contracture"
+      },
+      "school": {
+        "type": "HAVO, mainstream",
+        "accommodations": "Extra time, laptop, elevator access",
+        "peer_relationships": "Some friends but feels different",
+        "academic": "Doing well in technical subjects, struggling with PE exemption"
+      },
+      "therapies": {
+        "adherence": "Poor - stopped stretching, doesn't wear AFOs at school",
+        "physiotherapy": "Was 1x/week, hasn't attended for 2 months",
+        "reason": "Refuses, doesn't want to be 'the kid with CP'"
+      },
+      "psychosocial": {
+        "mood": "Low, withdrawn",
+        "identity": "Struggling with disability identity",
+        "independence": "Wanting more but physical function limiting"
+      },
+      "family": {
+        "parents": "Frustrated and worried",
+        "sibling": "Lotte (11) is active in sports - comparison is hard"
+      }
+    },
+    "physical_examination": {
+      "general": {
+        "appearance": "Tall, thin adolescent, poor posture, not wearing AFOs",
+        "cooperation": "Initially reluctant, engages when interests addressed"
+      },
+      "musculoskeletal": {
+        "hip_rom": {
+          "flexion": "Full",
+          "abduction": "25 degrees (decreased)",
+          "hip_x_ray": "No displacement (last checked 12 months ago)"
+        },
+        "knee_rom": {
+          "fixed_flexion_contracture": "-15 degrees bilateral (worsened)",
+          "popliteal_angle": "60 degrees (worsened)"
+        },
+        "ankle_rom": {
+          "dorsiflexion_knee_extended": "-10 degrees (plantar flexion contracture)",
+          "dorsiflexion_knee_flexed": "0 degrees"
+        },
+        "spine": "Increased lumbar lordosis, compensatory"
+      },
+      "gait": {
+        "without_aids": "Possible 20-30 meters, severe crouch, toe-walking",
+        "with_rollator": "Better but still crouched",
+        "preference": "Uses walls, furniture for support, hates rollator at school"
+      },
+      "functional_assessment": {
+        "gmfcs": "Level II (borderline III)",
+        "endurance": "6MWT not completed - too fatigued",
+        "stairs": "With rail, step-by-step, slow"
+      }
+    },
+    "outcome_measures": {
+      "gmfm_66": 64,
+      "fms": {"5m": 1, "50m": 2, "500m": 3},
+      "six_minute_walk": "280 meters (declined significantly)",
+      "fatigue_severity_scale": 48,
+      "who_5_wellbeing": 32,
+      "self_perception_profile_adolescent": "Low physical competence domain",
+      "copm": {
+        "identified_issues": ["Being normal at school", "Hanging out with friends", "Not being tired all the time"],
+        "notes": "Bram identified goals himself this time"
+      }
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b7350", "description": "Muscle tone (LE)", "qualifier": 3},
+        {"code": "b7100", "description": "Joint mobility", "qualifier": 3},
+        {"code": "b455", "description": "Exercise tolerance", "qualifier": 3},
+        {"code": "b152", "description": "Emotional functions", "qualifier": 2}
+      ],
+      "activity_limitations": [
+        {"code": "d450", "description": "Walking", "qualifier": 3},
+        {"code": "d475", "description": "Driving (cycling not possible now)", "qualifier": 4},
+        {"code": "d4551", "description": "Climbing", "qualifier": 3}
+      ],
+      "participation_restrictions": [
+        {"code": "d820", "description": "School education", "qualifier": 2},
+        {"code": "d920", "description": "Recreation with peers", "qualifier": 3},
+        {"code": "d760", "description": "Family relationships", "qualifier": 1}
+      ],
+      "environmental_factors": [
+        {"code": "e310", "description": "Family", "qualifier": "+2"},
+        {"code": "e1201", "description": "AFOs, rollator", "qualifier": "-1", "note": "Refuses to use at school"},
+        {"code": "e585", "description": "School", "qualifier": "+1"},
+        {"code": "e420", "description": "Peers", "qualifier": "-1", "note": "Feels different"}
+      ],
+      "personal_factors": ["Adolescent identity development", "Wants normalcy", "Disability denial phase", "Interest in technology", "Low mood"]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care?",
+        "teaching_answer": "Prevention of further deterioration (contracture, crouch progression). Cure of current deconditioning if possible. But critically, Care in terms of supporting adolescent development, identity, and participation. Cannot separate physical and psychosocial - both must be addressed."
+      },
+      "q2": {
+        "question": "Why has Bram's function deteriorated? Explain the adolescent 'decline' in CP.",
+        "teaching_answer": "Multiple factors: (1) Growth spurt - muscles can't keep up with bone growth, relative muscle shortening, (2) Increased body weight with same muscle strength, (3) Decreased activity - social factors, avoidance, (4) Poor adherence to stretching/AFOs, (5) Possible progression of crouch gait pattern. This is common in GMFCS II-III - the 'teenage dip.' NOT inevitable - intervention can help, but requires engagement."
+      },
+      "q3": {
+        "question": "Bram says 'I just want to be normal.' How do you respond?",
+        "teaching_answer": "This statement reflects identity struggle common in adolescents with disability. Response: (1) Validate - 'Of course you want that. Feeling different is hard.' (2) Explore - what does 'normal' mean to him? What specifically does he want? (3) Gently reframe - 'normal' is a myth; everyone has challenges, (4) Focus on function not appearance - what does he want to DO?, (5) Connect with positive disability identity - other successful adults with CP, role models, (6) May benefit from psychology/peer support. Don't lecture - listen first."
+      },
+      "q4": {
+        "question": "Bram refuses his AFOs and walker at school. How do you approach this?",
+        "teaching_answer": "Adolescent autonomy approach: (1) This is his body - he has a right to make choices (with consequences), (2) Explore his reasoning - appearance? comfort? practical issues?, (3) Problem-solve together - more cosmetically acceptable options? Different equipment?, (4) Explain consequences without lecturing - 'If you don't stretch, this is what might happen,' (5) Negotiate - minimum necessary, (6) Accept he may choose function loss to gain social acceptance - that's his right. Transition to self-management means accepting his choices."
+      },
+      "q5": {
+        "question": "Bram is interested in computers and gaming. How can you use this therapeutically?",
+        "teaching_answer": "Interest-led therapy: (1) Gaming can be exercise - active video games, VR, (2) Technology skills are valuable - could pursue IT career (cognitive ability intact), (3) Online communities - can connect with others without physical demands, (4) Use his interest to engage - therapy apps, exercise games, tracking technology, (5) Career counseling - many computer-based careers accessible with CP. Don't dismiss his interests as 'sedentary' - they're his identity and future."
+      },
+      "q6": {
+        "question": "Should Bram have orthopedic surgery for his contractures?",
+        "teaching_answer": "Surgical considerations: (1) Current contractures (knee -15°, ankle -10°) may benefit from SEMLS (Single Event Multi-Level Surgery), (2) Goals: prevent further crouch, optimize function, (3) Requires significant post-op rehabilitation (6-12 months), (4) Bram must be willing - non-adherent adolescent + major surgery = poor outcome, (5) Discussion with orthopedic surgeon needed, (6) Timing matters - before further deterioration but when mature enough for commitment. Decision should involve Bram as primary decision-maker."
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Forcing compliance",
+        "description": "Insisting on AFO use and exercises despite adolescent resistance",
+        "coaching_response": "You've emphasized that Bram must wear his AFOs and do his stretches. He's 14 and has refused for months. How's that approach working? What happens if you shift from compliance to collaboration?"
+      },
+      {
+        "trap": "Ignoring mental health",
+        "description": "Focusing on physical deterioration without addressing low mood and identity issues",
+        "coaching_response": "Bram's WHO-5 is 32 and he seems withdrawn. You've focused on his ROM and exercise program. Is he in a state to engage with physical therapy? What needs to be addressed first?"
+      },
+      {
+        "trap": "Parent-focused rather than adolescent-focused",
+        "description": "Working with parents' concerns rather than Bram's goals",
+        "coaching_response": "The parents want Bram to wear his AFOs and do his exercises. Bram wants to be normal. Whose goals are we treating? Who should set the direction of therapy at age 14?"
+      }
+    ]
+  },
+  "life_stage_3": {
+    "title": "Bram at 18 years old",
+    "presentation": {
+      "referral": "Transition clinic - pediatric to adult services",
+      "setting": "Young adult rehabilitation program",
+      "chief_complaint": "Transitioning to adult care, planning for higher education, questioning future"
+    },
+    "patient_narrative": "Bram is 18 and has just completed HAVO. He had orthopedic surgery at 15 (SEMLS - bilateral hamstring lengthening, gastrocnemius recession) and after a difficult year of rehabilitation, his function improved. He now uses a rollator full-time for community mobility and has accepted this. He's attending the transition clinic as he moves from pediatric to adult services. Bram has been accepted to HBO-ICT (university of applied sciences, computer science) in Rotterdam and will live in adapted student housing. He's nervous but excited. He has a small group of good friends and recently went on a first date. He's started following disability activists on Instagram and has become more vocal about accessibility. He asks you: 'What's going to happen to me as I get older? I read that people with CP have problems when they're adults. No one ever told me that.'",
+    "interval_history": {
+      "surgery_and_recovery": {
+        "surgery": "SEMLS at age 15 - bilateral hamstring lengthening, gastrocnemius recession, femoral derotation",
+        "recovery": "Difficult - 6 months in cast/braces, 1 year intensive PT",
+        "outcome": "Improved ROM, reduced crouch, walks better with rollator"
+      },
+      "current_mobility": {
+        "gmfcs": "Level III (walks with hand-held mobility device)",
+        "indoors": "Rollator, can stand briefly without",
+        "outdoors": "Rollator or wheelchair for longer distances",
+        "fatigue": "Still a significant issue, manages with pacing"
+      },
+      "education": {
+        "completed": "HAVO diploma",
+        "starting": "HBO-ICT (university of applied sciences)",
+        "accommodations_needed": "Accessible building, exam accommodations, possible scribe for fast typing"
+      },
+      "living": {
+        "current": "Still at home with parents",
+        "planned": "Adapted student housing with personal budget (PGB) for care support"
+      },
+      "psychosocial": {
+        "identity": "Much more accepting of CP, follows disability community online",
+        "relationships": "Has friends, dating",
+        "mood": "Good, some anxiety about independence"
+      },
+      "healthcare_transition": {
+        "leaving": "Children's rehabilitation",
+        "entering": "Adult rehabilitation service, GP-centered care",
+        "concerns": "Will anyone know about CP? Will he fall through the cracks?"
+      }
+    },
+    "physical_examination": {
+      "general": {
+        "appearance": "Young man, uses rollator, well-presented",
+        "cooperation": "Engaged, asks questions"
+      },
+      "musculoskeletal": {
+        "post_surgical_status": "Maintained ROM from surgery",
+        "hip": "Abduction 30 degrees, stable on X-ray",
+        "knee": "Fixed flexion -10 degrees (better than pre-op)",
+        "ankle": "Dorsiflexion 5 degrees (maintained)",
+        "upper_limb": "Functional, minimal involvement"
+      },
+      "gait": {
+        "with_rollator": "Less crouched than at 14, reasonable velocity",
+        "endurance": "Walks 10-15 minutes before needing rest",
+        "without_aids": "Can stand, cannot walk safely"
+      },
+      "functional": {
+        "transfers": "Independent",
+        "stairs": "With rail and time, avoids if possible",
+        "adl": "Independent except some heavy housework"
+      }
+    },
+    "outcome_measures": {
+      "gmfm_66": 58,
+      "gmfcs": "Level III",
+      "six_minute_walk": "240 meters",
+      "fms": {"5m": 2, "50m": 2, "500m": 3},
+      "life_h_3_1": "Participation outcome measure",
+      "cpqol_teen": "Improved from age 14",
+      "self_efficacy": "Moderate to high",
+      "transition_readiness_assessment": "Ready with support"
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b7350", "description": "Muscle tone", "qualifier": 2},
+        {"code": "b7100", "description": "Joint mobility", "qualifier": 2},
+        {"code": "b455", "description": "Exercise tolerance", "qualifier": 2}
+      ],
+      "activity_limitations": [
+        {"code": "d450", "description": "Walking", "qualifier": 2},
+        {"code": "d460", "description": "Moving around in different locations", "qualifier": 2}
+      ],
+      "participation_restrictions": [
+        {"code": "d825", "description": "Vocational training", "qualifier": 1},
+        {"code": "d920", "description": "Recreation", "qualifier": 1}
+      ],
+      "environmental_factors": [
+        {"code": "e310", "description": "Family", "qualifier": "+2"},
+        {"code": "e320", "description": "Friends", "qualifier": "+2"},
+        {"code": "e525", "description": "Housing services", "qualifier": "+1"},
+        {"code": "e1201", "description": "Rollator", "qualifier": "+2"},
+        {"code": "e585", "description": "Education", "qualifier": "+1"}
+      ],
+      "personal_factors": ["Positive disability identity", "Tech-oriented", "Self-advocating", "Anxious but motivated", "Planning for future"]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care?",
+        "teaching_answer": "Prevention of adult-onset complications (pain, fatigue, deterioration) and Care focused on participation, life role development, and self-management. Transition phase is critical - establishing adult healthcare habits now."
+      },
+      "q2": {
+        "question": "Bram asks 'What's going to happen to me as I get older?' What is the evidence on aging with CP?",
+        "teaching_answer": "Aging with CP evidence: (1) Adults with CP often experience functional decline earlier than general population, (2) Pain is very common (>75%) and often undertreated, (3) Fatigue is a major issue, (4) Many ambulatory children become non-ambulatory adults (GMFCS can worsen), (5) Secondary conditions: osteoarthritis, osteoporosis, mental health issues, (6) Life expectancy is reduced especially for GMFCS IV-V. For Bram (GMFCS III): (1) Likely to maintain walking with aids if active, (2) Pain and fatigue are risks, (3) Fitness and strength maintenance are key. Honest information is important - he deserves to know and prepare."
+      },
+      "q3": {
+        "question": "What are the key elements of a successful pediatric-to-adult transition for Bram?",
+        "teaching_answer": "Transition elements: (1) Medical - transfer to adult services with summary of history, ensure GP understands CP, (2) Self-management - shift from parent-managed to self-managed care, (3) Education/vocation - accommodations, accessibility, career planning, (4) Independent living - housing, transport, personal assistance, (5) Social/relational - friendships, dating, sexuality, (6) Financial - benefits, insurance, personal budget. Transition is a process not an event - should start years before transfer."
+      },
+      "q4": {
+        "question": "Bram will live in student housing with PGB-funded support. Explain this Dutch system.",
+        "teaching_answer": "Dutch system: (1) WMO (Wet Maatschappelijke Ondersteuning) provides community support for disabilities, (2) PGB (Persoonsgebonden Budget) is personal budget to purchase care, (3) Bram can use PGB to hire care assistants for personal care, housework, (4) Wajong may provide income support if CP limits work capacity, (5) Student housing often has adapted units, (6) He'll need to coordinate his own care - different from parents doing it. Physiotherapy may continue under Zorgverzekeringswet (health insurance) with chronic indication."
+      },
+      "q5": {
+        "question": "Bram is starting higher education in IT. What accommodations might he need and how do you support this?",
+        "teaching_answer": "Accommodations: (1) Physical accessibility - building access, adapted workstation, accessible toilet, (2) Exam accommodations - extra time, separate room, rest breaks, possible scribe if handwriting difficult, (3) Timetable - avoiding early mornings if fatigue is issue, breaks between classes, (4) Technology - speech-to-text, ergonomic keyboard, (5) Support - study advisor aware of needs, peer support. Physiotherapy role: (1) Provide documentation, (2) Advise on workstation ergonomics, (3) Fatigue management strategies, (4) Fitness program to maintain function through demanding studies."
+      },
+      "q6": {
+        "question": "Design an adult maintenance physiotherapy plan for Bram.",
+        "teaching_answer": "Adult maintenance plan: (1) Frequency: periodic blocks rather than ongoing (e.g., 2x/year for 6-8 sessions), (2) Focus: fitness (gym program he can do independently), flexibility maintenance, pain prevention, (3) Self-management: he leads, physio advises, (4) Gym integration: liaise with fitness instructor, design accessible program, (5) Annual review: check ROM, function, any new issues, (6) As-needed access: flare-ups, new challenges. Shift to autonomy and episodic care rather than continuous therapy."
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Continued pediatric approach",
+        "description": "Treating 18-year-old like a child, involving parents as primary partners",
+        "coaching_response": "You discussed Bram's care plan with his parents. He's 18 and moving out. Who is your primary partner now? How do you shift the therapeutic relationship?"
+      },
+      {
+        "trap": "Not discussing prognosis",
+        "description": "Avoiding honest discussion about aging with CP",
+        "coaching_response": "Bram asked what will happen as he ages. You gave a vague reassurance. He deserves honest information. What does the evidence say, and how do you share it appropriately?"
+      },
+      {
+        "trap": "Over-treating stable condition",
+        "description": "Prescribing ongoing weekly therapy for a stable 18-year-old",
+        "coaching_response": "You've prescribed weekly physiotherapy indefinitely. Is this the best model for a stable young adult starting university? What's the evidence for ongoing vs. episodic care in adult CP?"
+      }
+    ]
+  },
+  "life_stage_4": {
+    "title": "Bram at 25 years old",
+    "presentation": {
+      "referral": "Self-referral",
+      "setting": "Adult rehabilitation outpatient",
+      "chief_complaint": "Increasing pain, worried about function, work challenges"
+    },
+    "patient_narrative": "Bram is now 25 and has graduated with his HBO-ICT degree. He works as a junior software developer at a tech company in Rotterdam. He lives independently in an accessible apartment with PGB-funded support for personal care and household tasks. He's in a relationship with Sanne, who he met through a disability community group. He's referred himself to physiotherapy because of increasing hip and back pain over the past year. He's also noticed he's more fatigued and feels like his walking is getting worse. He managed to avoid PT through university ('I was too busy and thought I'd outgrown it') but now is worried. 'I thought I had this figured out. I've got a job, I've got a girlfriend, I've got my own place. And now my body is letting me down. I'm 25, not 65.'",
+    "interval_history": {
+      "education_and_work": {
+        "degree": "HBO-ICT, graduated at 23",
+        "work": "Junior software developer, full-time (32 hours with accommodations)",
+        "workplace": "Mostly desk-based, accessible office"
+      },
+      "living": {
+        "home": "Ground-floor accessible apartment",
+        "support": "PGB for personal care (morning routine) and cleaning",
+        "relationship": "Partner Sanne (24), has spina bifida, lives separately but together often"
+      },
+      "current_function": {
+        "mobility": "Rollator indoors, electric wheelchair for outdoors and work",
+        "transfers": "Independent but becoming harder",
+        "self_care": "Mostly independent, morning support due to time/fatigue"
+      },
+      "new_symptoms": {
+        "hip_pain": "Left hip, present for 1 year, progressively worse",
+        "back_pain": "Lumbar, related to posture in wheelchair and at desk",
+        "fatigue": "Worse than university, despite less physical demand",
+        "walking_decline": "Uses wheelchair more, rollator for short distances only"
+      },
+      "healthcare_gap": {
+        "last_physio": "3 years ago",
+        "last_rehab_doctor": "Transition at 18",
+        "current_healthcare": "GP only"
+      },
+      "psychosocial": {
+        "mood": "Frustrated, worried",
+        "disability_identity": "Strong, part of disability community",
+        "concern": "Fears rapid decline, losing job, losing independence"
+      }
+    },
+    "physical_examination": {
+      "general": {
+        "appearance": "Young man, uses wheelchair for appointment, able to transfer to plinth",
+        "posture": "Increased lumbar lordosis, hip flexion in sitting"
+      },
+      "musculoskeletal": {
+        "left_hip": {
+          "pain_location": "Anterior groin, lateral",
+          "rom": "Flexion 100°, abduction 15° (limited), internal rotation 5° (painful)",
+          "x_ray_recommended": "Yes - query secondary osteoarthritis"
+        },
+        "right_hip": "Abduction 25°, less symptomatic",
+        "spine": {
+          "lumbar": "Hyperlordotic, tight hip flexors contributing",
+          "pain": "Mechanical, worse with prolonged sitting"
+        },
+        "contractures": "Some recurrence - knee FFD 15° bilateral, ankle neutral"
+      },
+      "gait": {
+        "with_rollator": "Short distances only, painful, slow",
+        "preference": "Wheelchair for most mobility"
+      },
+      "upper_limb": {
+        "shoulders": "Some overuse symptoms (wheelchair propulsion)",
+        "wrists": "Mild carpal tunnel symptoms (typing + wheelchair)"
+      }
+    },
+    "outcome_measures": {
+      "gmfcs": "Level III-IV (functional decline)",
+      "six_minute_walk": "120 meters (significant decline)",
+      "nprs_hip": 6,
+      "nprs_back": 4,
+      "fss_fatigue": 54,
+      "whoqol_bref": "Physical domain low, other domains moderate",
+      "work_ability_index": "Moderate - concerned about sustainability"
+    },
+    "icf_mapping": {
+      "body_functions": [
+        {"code": "b28016", "description": "Pain in joints", "qualifier": 2},
+        {"code": "b7100", "description": "Joint mobility (hip)", "qualifier": 3},
+        {"code": "b455", "description": "Exercise tolerance", "qualifier": 3},
+        {"code": "b730", "description": "Muscle power", "qualifier": 2}
+      ],
+      "activity_limitations": [
+        {"code": "d450", "description": "Walking", "qualifier": 3},
+        {"code": "d475", "description": "Driving (manual wheelchair)", "qualifier": 2},
+        {"code": "d4", "description": "Transfers", "qualifier": 2}
+      ],
+      "participation_restrictions": [
+        {"code": "d850", "description": "Work", "qualifier": 2},
+        {"code": "d920", "description": "Recreation", "qualifier": 2}
+      ],
+      "environmental_factors": [
+        {"code": "e310", "description": "Partner (Sanne)", "qualifier": "+3"},
+        {"code": "e590", "description": "Labour and employment services", "qualifier": "+1"},
+        {"code": "e1201", "description": "Electric wheelchair, rollator", "qualifier": "+2"},
+        {"code": "e155", "description": "Work environment", "qualifier": "+1"}
+      ],
+      "personal_factors": ["Self-advocate", "Strong disability identity", "Career-oriented", "Frustrated with body", "Proactive about health now"]
+    },
+    "preparatory_questions": {
+      "q1": {
+        "question": "Would your therapeutic approach be focused more on prevention, cure, or care?",
+        "teaching_answer": "Care with Prevention elements. Care focused on managing chronic condition, optimizing participation, and work sustainability. Prevention of further deterioration and secondary conditions (shoulder overuse, further hip damage). Some 'cure' may be possible for current pain with appropriate intervention."
+      },
+      "q2": {
+        "question": "Bram says 'I'm 25, not 65.' Explain premature aging in cerebral palsy.",
+        "teaching_answer": "Premature aging in CP: (1) Musculoskeletal overload - abnormal forces over decades lead to early degeneration (hip OA common in CP), (2) Muscle imbalance and spasticity cause joint damage, (3) Reduced physical activity accelerates decline, (4) Pain is a major issue affecting 75%+ of adults with CP, (5) Many become more dependent in 30s-40s than they were in 20s. His experience is typical, not unusual. Reframe: not premature aging but 'living with CP across the lifespan' - predictable and manageable with the right support."
+      },
+      "q3": {
+        "question": "Bram's hip pain is worsening. What investigation and management is indicated?",
+        "teaching_answer": "Hip assessment: (1) X-ray to assess for OA, hip morphology, (2) Referral to rehabilitation physician for comprehensive assessment, (3) Management options: physio for strengthening and pain management, medication (NSAIDs with caution), consider hip injection, surgery if severe OA. For CP-related hip OA: conservative first but may need arthroplasty earlier than general population. Important: don't dismiss pain as 'just CP' - investigate properly."
+      },
+      "q4": {
+        "question": "Bram is experiencing upper limb overuse from wheelchair propulsion and typing. How do you address this?",
+        "teaching_answer": "Upper limb preservation is critical for wheelchair users: (1) Assess wheelchair setup - may need power assist or switch to power wheelchair for longer distances, (2) Ergonomic workstation - keyboard, mouse, positioning, (3) Upper limb strengthening and stretching program, (4) Activity modification - reduce unnecessary transfers, (5) Consider voice-to-text for some typing, (6) Regular monitoring - upper limbs are his lifeline for independence. Upper limb pain is the beginning of a serious problem - address early."
+      },
+      "q5": {
+        "question": "Bram works full-time and is worried about sustainability. What are his options?",
+        "teaching_answer": "Work sustainability options: (1) Reasonable accommodations under Dutch employment law - modified hours, remote work, breaks, (2) Reduced hours (he's already at 32), (3) Energy management training - pacing across day/week, (4) Workplace assessment by arbeidsdeskundige, (5) Wajong or WIA for partial income support if needed, (6) Career counseling - is current role sustainable long-term? IT has many less physical options. Goal is sustainable career, not burning out by 30."
+      },
+      "q6": {
+        "question": "Bram fell through the gap between pediatric and adult services for 7 years. How should adult CP healthcare be structured?",
+        "teaching_answer": "Adult CP healthcare model (what should exist): (1) Regular review by rehabilitation physician who knows CP (annually or as needed), (2) Access to physiotherapy for episodic intervention and maintenance, (3) Access to other specialists (orthopedics, pain, psychology) as needed, (4) Case manager or care coordinator for complex needs, (5) Transition from pediatric should include warm handoff, (6) GP education about CP in adults. Reality: many adults with CP are lost to follow-up and present only when problems develop. Advocacy for better adult CP services is needed."
+      }
+    },
+    "reasoning_traps": [
+      {
+        "trap": "Blaming the patient for the gap",
+        "description": "Focusing on him avoiding physio for 7 years rather than system failures",
+        "coaching_response": "You mentioned that Bram should have continued with physio through university. Was that service available and accessible? What does the system do to keep adults with CP in care?"
+      },
+      {
+        "trap": "Accepting decline as inevitable",
+        "description": "Telling him functional decline is 'just what happens with CP'",
+        "coaching_response": "You've told Bram that some decline is expected. Is all of his current decline inevitable? His hip pain may be treatable. His fitness is modifiable. What can we actually change?"
+      },
+      {
+        "trap": "Not addressing work sustainability",
+        "description": "Focusing only on physical symptoms without considering occupational factors",
+        "coaching_response": "You've addressed his hip pain and prescribed exercises. But he's worried about his job. How does his work contribute to his symptoms? Is his current work pattern sustainable? Who else should be involved?"
+      }
+    ]
+  },
+  "longitudinal_reflection": {
+    "trajectory_summary": "Bram's journey from childhood through young adulthood illustrates that cerebral palsy is a lifelong condition requiring evolving support. Key transitions - from childhood to adolescence, pediatric to adult services, and school to work - each brought new challenges. The focus shifted from motor development and preventing deformity in childhood, to identity and participation in adolescence, to self-determination and sustainable function in adulthood. The gap in adult services represents a systemic failure that many adults with CP experience.",
+    "key_lessons": [
+      "GMFCS provides useful but not absolute prediction - level can worsen without intervention",
+      "Adolescence is a vulnerable period - physical changes plus identity development plus non-adherence",
+      "Transition to adult services is a critical period requiring careful planning",
+      "Adults with CP experience premature musculoskeletal aging, pain, and fatigue",
+      "Upper limb preservation is critical for wheelchair users",
+      "Work sustainability requires proactive accommodation and sometimes reduced expectations",
+      "Adult CP healthcare is poorly developed - many fall through the gaps",
+      "Disability identity development is as important as physical rehabilitation"
+    ],
+    "dutch_context": {
+      "pediatric_services": "CPNET provides coordinated pediatric CP care",
+      "adult_gap": "Adult CP services are fragmented - no equivalent to CPNET",
+      "support_systems": "WMO, PGB, Wajong provide support framework but require navigation",
+      "inclusive_education": "Passend onderwijs aims for inclusion but implementation varies"
+    }
+  },
+  "teaching_notes": {
+    "key_competencies_assessed": [
+      "Pediatric cerebral palsy management",
+      "Adolescent rehabilitation",
+      "Transition planning",
+      "Adult CP and premature aging",
+      "Participation-focused practice",
+      "Self-management support",
+      "Occupational rehabilitation",
+      "Lifespan approach to chronic conditions"
+    ],
+    "guideline_integration": [
+      "CPNET CP Richtlijn",
+      "NICE Guideline Cerebral Palsy in under 25s",
+      "Surveillance protocol for hip and spine",
+      "Transition guidelines"
+    ],
+    "special_considerations": [
+      "GMFCS classification and prognosis",
+      "Orthopedic surgery timing (SEMLS)",
+      "Adolescent autonomy and risk",
+      "Adult onset secondary conditions",
+      "Disability identity development"
+    ]
+  }
+}

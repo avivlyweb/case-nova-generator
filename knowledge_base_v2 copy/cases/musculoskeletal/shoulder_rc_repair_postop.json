@@ -1,0 +1,1015 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "case_id": "msk_003_shoulder_rc_repair_postop",
+    "case_name": "Post-Operative Rotator Cuff Repair — Retired Handyman with Protocol Tension",
+    "category": "Musculoskeletal",
+    "difficulty": "Intermediate-Advanced",
+    "hoac_steps_covered": ["step_1", "step_2", "step_3", "step_4", "step_5", "step_6", "step_7"],
+    "icf_domains_covered": ["body_function", "activity", "participation", "environmental_factors", "personal_factors"],
+    "clinical_reasoning_focus": ["post-operative protocol navigation", "guideline tension (NOV 2025 vs SNN)", "criteria-based vs time-based progression", "stiffness risk management", "shared decision-making with surgeon", "patient education on healing biology"],
+    "estimated_session_time": "45-60 minutes",
+    "guideline_references": [
+      "NOV/FMS Richtlijn SAPS 2025",
+      "SNN Basisprotocol Rotator Cuff Repair",
+      "NHG-Standaard Schouderklachten M08"
+    ],
+    "note": "This case features a genuine clinical tension between two authoritative Dutch guidelines on immobilization duration. There is no single correct answer — the reasoning process is what matters.",
+    "unique_teaching_value": "Navigating conflicting guideline recommendations; weighing re-tear risk vs stiffness risk; communicating with surgeon; managing patient expectations in post-operative rehabilitation"
+  },
+  "patient_profile": {
+    "name": "Henk Jansen",
+    "age": 62,
+    "gender": "Male",
+    "occupation": "Recently retired handyman/klusjesman (retired 1 year ago). Still does extensive DIY projects at home and helps neighbors with maintenance tasks.",
+    "living_situation": "Lives with wife Bep (60) in a terraced house (rijtjeshuis) in a small town. House requires ongoing maintenance — Henk has always done all household repairs and renovations himself.",
+    "hobbies": "DIY projects (woodworking, painting, minor plumbing), fishing (freshwater, from bank — casting involved), playing cards with friends weekly, walking with wife",
+    "referral_source": "Orthopedic surgeon, post-operative referral",
+    "referral_reason": "Arthroscopic rotator cuff repair right shoulder, 1 week post-operative. Referral for rehabilitation."
+  },
+  "injury_and_surgery": {
+    "pre_operative_history": {
+      "symptom_duration": "18 months of progressive right shoulder pain",
+      "conservative_management_attempted": [
+        "GP: paracetamol, NSAIDs (6 months)",
+        "Physiotherapy: 12 sessions over 4 months — exercise-based, moderate improvement in pain (NPRS 7 → 5) but persistent functional limitation with overhead activities and heavy lifting",
+        "Subacromial corticosteroid injection (x1, 3 months pre-op) — provided 6 weeks of significant relief, then gradual return of symptoms",
+        "Referral to orthopedic surgeon at 14 months"
+      ],
+      "pre_operative_imaging": {
+        "ultrasound": "Full-thickness supraspinatus tear, 2.0 x 1.5 cm, moderate retraction",
+        "mri": "Confirmed isolated supraspinatus tear, medium size. Infraspinatus and subscapularis intact. Goutallier grade 1 fatty infiltration of supraspinatus. No significant muscle atrophy. Mild superior labral fraying. No biceps pathology.",
+        "clinical_note": "Medium-sized tear with good tissue quality — favorable surgical prognosis"
+      },
+      "pre_operative_status": {
+        "nprs": 5,
+        "spadi": 54,
+        "active_flexion": "120°",
+        "active_abduction": "100°",
+        "functional_limitations": "Unable to reach overhead, unable to lift >5kg above shoulder, unable to do DIY work involving overhead reaching (painting ceilings, fixing gutters), difficulty sleeping on right side"
+      }
+    },
+    "surgical_procedure": {
+      "date": "1 week ago",
+      "type": "Arthroscopic rotator cuff repair",
+      "findings": "Medium isolated supraspinatus tear (2.0 x 1.5 cm), good tissue quality, no significant retraction at time of repair. Infraspinatus and subscapularis intact. Mild superior labral fraying debrided. No acromioplasty performed.",
+      "repair_technique": "Double-row suture bridge repair with 2 medial anchors and 1 lateral anchor. Good fixation achieved.",
+      "additional_procedures": "Superior labral debridement only",
+      "surgeon_notes": "Straightforward repair. Good tissue quality. Tendon mobilized easily to footprint with minimal tension. Expect good healing potential. Recommend 6 weeks sling immobilization per our standard protocol.",
+      "post_op_protocol_prescribed": {
+        "surgeon_recommendation": "6 weeks sling immobilization",
+        "rationale_stated": "Standard protocol for medium RC repair at our institution",
+        "passive_rom_allowed": "Pendulum exercises from day 1. Passive flexion to 90° and ER to 20° at 0° abduction with physiotherapist from week 2.",
+        "active_rom": "No active ROM for 6 weeks"
+      }
+    },
+    "protocol_tension": {
+      "description": "The surgeon prescribed 6 weeks of sling immobilization based on institutional protocol. However, this patient's tear characteristics (isolated supraspinatus, medium size, good tissue quality, secure double-row fixation) meet the NOV 2025 qualifying criteria for 3-week immobilization. Additionally, the patient has significant stiffness risk factors (age 62, mild T2DM-related glucose intolerance, already restricted pre-operative ROM). The physiotherapist must navigate this tension.",
+      "nov_2025_position": {
+        "recommendation": "3 weeks immobilization would be appropriate for this tear profile",
+        "qualifying_criteria_met": [
+          "Isolated supraspinatus — YES",
+          "Medium tear (<3cm) — YES (2.0 x 1.5 cm)",
+          "Good tissue quality (Goutallier ≤2) — YES (grade 1)",
+          "Secure surgical fixation — YES (double-row suture bridge)"
+        ],
+        "evidence": "Early mobilization studies show equivalent re-tear rates (~9%) for small-to-medium tears"
+      },
+      "snn_position": {
+        "recommendation": "6 weeks baseline immobilization, or 4 weeks progressive variant",
+        "progressive_variant_criteria": "Small tear, good tissue quality, low stiffness risk — partially met (tear is medium, not small; stiffness risk factors present)",
+        "baseline_recommendation": "6 weeks — standard for most repairs"
+      },
+      "stiffness_risk_assessment": {
+        "risk_factors_present": [
+          "Age 62 (>50 — risk factor)",
+          "Impaired glucose tolerance / pre-diabetes (HbA1c 44 mmol/mol — just below T2DM threshold, but still a stiffness risk)",
+          "Pre-operative ROM already restricted (flexion 120°, abduction 100°)",
+          "Male sex (lower stiffness risk than female, partially mitigating)"
+        ],
+        "risk_factors_absent": [
+          "No history of adhesive capsulitis",
+          "No thyroid disease",
+          "No workers' compensation / litigation",
+          "No pre-operative shoulder stiffness >6 months"
+        ],
+        "overall_stiffness_risk": "Moderate — multiple risk factors present. Prolonged immobilization increases this risk."
+      },
+      "clinical_reasoning_challenge": "The student/clinician must: (1) Recognize the tension between surgeon's 6-week protocol and NOV 2025 evidence, (2) Assess stiffness risk factors that argue for shorter immobilization, (3) Consider re-tear risk factors that argue for adequate protection, (4) Decide how to communicate with the surgeon, (5) Apply shared decision-making with patient. There is no single right answer — the quality of reasoning matters.",
+      "coaching_prompt": "The surgeon prescribed 6 weeks in a sling. You've read the NOV 2025 guideline suggesting 3 weeks may be sufficient for this tear profile. You've also identified stiffness risk factors. What do you do? Walk me through your reasoning."
+    }
+  },
+  "current_status_1_week_post_op": {
+    "patient_narrative": "The surgery went well, the surgeon said. He told me I need to wear this sling for 6 weeks and then we start working on getting the movement back. I'm doing the pendulum exercises they showed me in the hospital. My wife Bep helps me get dressed and showered. I feel a bit useless — I'm not used to sitting around doing nothing. I can't even carry my own coffee cup with my right hand because of the sling. The pain isn't too bad actually — it's mainly sore at night when I roll over. The surgeon said it would take about 6 months before I can do my DIY work again. That's a long time. My neighbor asked me to help fix his garden fence next month and I had to say no. I just hope this surgery works — I tried physiotherapy before and it helped a bit but the shoulder never got properly strong again. I'm a practical man, I want to know exactly what I can and can't do, and when things will get better.",
+    "current_complaints": [
+      "Surgical site soreness (expected post-operative pain)",
+      "Night pain when rolling onto right side (wakes 1-2x)",
+      "Frustration with immobility and dependence on wife",
+      "Concern about recovery timeline and return to DIY activities",
+      "Mild swelling around shoulder"
+    ],
+    "pain_status": {
+      "nprs_current": 3,
+      "nprs_worst": 6,
+      "nprs_best": 1,
+      "location": "Surgical site (anterolateral shoulder), deep ache in shoulder",
+      "aggravating": "Rolling onto right side at night, accidental arm movements, reaching for objects instinctively",
+      "easing": "Sling support, ice (20 min), paracetamol, keeping arm still"
+    },
+    "wound_status": {
+      "arthroscopic_portals": "Three small portal incisions — clean, dry, well-approximated, no signs of infection",
+      "sutures": "Steri-strips in place, removal at 2-week post-op surgeon visit",
+      "swelling": "Mild perioperative swelling, expected at 1 week. No excessive warmth or erythema."
+    }
+  },
+  "past_medical_history": {
+    "previous_shoulder_problems": "18 months right shoulder pain (pre-operative — see above). No previous left shoulder problems.",
+    "surgeries": "Inguinal hernia repair (age 45), right knee arthroscopy for meniscal trim (age 52)",
+    "chronic_conditions": [
+      {
+        "condition": "Impaired glucose tolerance / pre-diabetes",
+        "details": "HbA1c 44 mmol/mol (T2DM threshold is 48). GP monitoring annually. Not on medication. Dietary advice given.",
+        "relevance": "Increases stiffness risk post-operatively. May delay tissue healing. Not yet T2DM but metabolically at risk."
+      },
+      {
+        "condition": "Mild hypercholesterolemia",
+        "management": "Rosuvastatin 10mg daily",
+        "relevance": "Statins: theoretical concern about tendon effects, but clinically not significant at this dose. No direct rehab implication."
+      },
+      {
+        "condition": "Mild osteoarthritis bilateral knees",
+        "details": "Right knee worse than left (post-meniscectomy). Occasional pain with prolonged walking or stairs. Manageable.",
+        "relevance": "May affect exercise options — avoid prolonged kneeling, consider knee-friendly alternatives for lower body conditioning"
+      }
+    ],
+    "medications": [
+      {"name": "Paracetamol", "dose": "1000mg", "frequency": "3x daily (current post-op)", "indication": "Post-operative pain"},
+      {"name": "Rosuvastatin", "dose": "10mg", "frequency": "Daily", "indication": "Hypercholesterolemia"},
+      {"name": "Tramadol", "dose": "50mg", "frequency": "PRN at night (prescribed post-op, using 1x/night currently)", "indication": "Post-operative night pain"}
+    ],
+    "allergies": "Penicillin (rash)",
+    "family_history": "Father — Type 2 diabetes (diagnosed age 65). Mother — osteoarthritis. No family history of shoulder problems."
+  },
+  "social_history": {
+    "work_status": "Retired 1 year ago from self-employed handyman business. Still very active with DIY — treats it as primary occupation/identity.",
+    "physical_activity_pre_injury": "Very active lifestyle: DIY projects daily (carpentry, painting, repairs), walking with wife 3-4x/week (30-45 min), fishing weekends",
+    "physical_activity_current": "Minimal — restricted by sling. Short walks with wife (10-15 min). Left hand for basic tasks.",
+    "smoking": "Former smoker — quit 10 years ago (25 pack-year history)",
+    "alcohol": "2-3 beers on weekend, occasional jenever",
+    "bmi": 27.8,
+    "support_system": "Wife Bep — very supportive, managing all household tasks currently. Good relationship. Neighbor friends. Adult son (35) visits weekly.",
+    "psychological_status": {
+      "mood": "Mildly frustrated by dependence and inactivity, but generally pragmatic and optimistic",
+      "fear_avoidance": "Low — Henk is more likely to push too hard too fast than to be overly cautious. 'I just want to get on with it.'",
+      "expectations": "Realistic but impatient. Understands recovery takes months but wants clear milestones and timelines.",
+      "identity_connection": "Strong identity connection to being 'the man who fixes things.' Loss of this role during recovery is the primary psychosocial challenge."
+    }
+  },
+  "physical_examination": {
+    "note": "Limited examination at 1 week post-op. Focus on wound assessment, pain status, sling compliance, and baseline documentation. No active ROM testing. Gentle passive ROM assessment within prescribed limits.",
+    "observation": {
+      "posture": "Sling in place, right arm supported. Slightly protective posture but generally relaxed.",
+      "sling_compliance": "Good — wearing sling consistently including at night. Reports removing briefly for washing under supervision of wife.",
+      "wound": "Three arthroscopic portals — clean, dry, no erythema, no discharge. Steri-strips intact.",
+      "swelling": "Mild diffuse swelling around shoulder and upper arm. No excessive ecchymosis.",
+      "contralateral_shoulder": "Full, pain-free ROM. Good muscle bulk."
+    },
+    "passive_rom_right_shoulder": {
+      "pendulum_exercises": {
+        "observation": "Performing gentle pendulums correctly — relaxed, gravity-dependent, small circles",
+        "pain": "1/10 during pendulums"
+      },
+      "passive_flexion_therapist": {
+        "range": "70° (performed gently, within surgeon limits of 90°)",
+        "pain": "3/10 at end range",
+        "end_feel": "Guarding — patient tensing, not purely mechanical restriction",
+        "note": "Will progress cautiously to 90° over next 1-2 sessions as comfort allows"
+      },
+      "passive_er_at_0_abd": {
+        "range": "15° (within surgeon limit of 20°)",
+        "pain": "2/10",
+        "note": "Within prescribed limits. Will progress to 20° next session."
+      },
+      "internal_rotation": "Not assessed — not within Phase 1 protocol",
+      "abduction": "Not assessed — not within Phase 1 protocol",
+      "clinical_note": "ROM assessment at 1 week post-op is primarily baseline documentation. Expected to be limited by pain, guarding, and surgical precautions. Will track closely at each session."
+    },
+    "contralateral_comparison": {
+      "left_shoulder_flexion": "170° full, pain-free",
+      "left_shoulder_abduction": "175° full, pain-free",
+      "left_shoulder_er": "70°",
+      "left_shoulder_ir": "Hand to T8",
+      "left_shoulder_strength": "5/5 all directions",
+      "note": "Left shoulder serves as reference for goal setting"
+    },
+    "other_assessment": {
+      "elbow_wrist_hand": "Full ROM, good grip strength. No complaints.",
+      "cervical_spine": "Full ROM, no complaints. Quick screening only.",
+      "scapular_position": "Cannot meaningfully assess with sling. Baseline scapular assessment at sling removal.",
+      "neurovascular_status": "Radial pulse present, sensation intact all digits, no signs of CRPS (color, temperature, swelling appropriate for post-op day 7)"
+    },
+    "outcome_measures": {
+      "nprs": {
+        "current": 3,
+        "worst_past_week": 6,
+        "best_past_week": 1
+      },
+      "spadi": {
+        "total_score": 78,
+        "pain_subscale": 72,
+        "disability_subscale": 82,
+        "interpretation": "Severe shoulder disability — expected at 1 week post-op. Serves as baseline for tracking improvement.",
+        "note": "Disability subscale heavily influenced by sling restrictions — true functional disability will become apparent after sling removal"
+      },
+      "patient_specific_functional_scale": {
+        "activity_1": {"activity": "DIY — using a drill or screwdriver overhead", "baseline_score": 0},
+        "activity_2": {"activity": "Fishing — casting the rod", "baseline_score": 0},
+        "activity_3": {"activity": "Getting dressed independently", "baseline_score": 2}
+      },
+      "quickdash": {
+        "score": 82,
+        "interpretation": "Severe upper extremity disability — expected post-op. Baseline."
+      },
+      "tsk": {
+        "score": 28,
+        "interpretation": "Low kinesiophobia (well below cutoff of 37). Henk is not fear-avoidant — if anything, risk is over-activity."
+      }
+    }
+  },
+  "phase_criteria_assessment": {
+    "phase_1_maximum_protection": {
+      "status": "Current — 1 week post-op",
+      "duration_prescribed": "0-6 weeks (surgeon protocol)",
+      "duration_nov_2025": "0-3 weeks (if NOV 2025 criteria applied)",
+      "goals": [
+        "Protect surgical repair",
+        "Pain and edema management",
+        "Maintain elbow/wrist/hand ROM and grip strength",
+        "Gentle pendulum exercises (Codman)",
+        "Scapular setting (gentle isometric retraction)",
+        "Patient education on healing timeline and precautions",
+        "Therapist-guided passive ROM within prescribed limits"
+      ],
+      "restrictions": [
+        "Sling immobilization at all times (remove for exercises and hygiene only)",
+        "No active shoulder ROM",
+        "No lifting with right arm",
+        "No behind-back reaching",
+        "No combined abduction + external rotation",
+        "Sleep in sling"
+      ],
+      "current_criteria_status": [
+        {"criterion": "Pain controlled at rest (NPRS ≤3)", "status": "Met", "value": "NPRS 3 at rest"},
+        {"criterion": "Wound healing satisfactory", "status": "Met", "value": "Clean, dry, no infection signs"},
+        {"criterion": "Edema resolving", "status": "Progressing", "value": "Mild swelling, improving"},
+        {"criterion": "Sling compliance", "status": "Met", "value": "Good compliance reported"},
+        {"criterion": "Pendulum exercises performed correctly", "status": "Met", "value": "Demonstrated correctly"},
+        {"criterion": "Passive flexion to 90° tolerated", "status": "Progressing", "value": "70° currently, will progress"}
+      ]
+    },
+    "phase_2_passive_active_assisted_rom": {
+      "status": "Upcoming",
+      "trigger": "Completion of prescribed immobilization period (3 weeks per NOV 2025, or 6 weeks per surgeon protocol — THIS IS THE CLINICAL DECISION POINT)",
+      "goals": [
+        "Restore passive ROM (flexion to 140°, ER at 0° abduction to 30-40°)",
+        "Begin active-assisted ROM (stick exercises, pulleys)",
+        "Continue scapular motor control (setting, gentle protraction/retraction)",
+        "Education on gradual progression and tissue healing"
+      ],
+      "criteria_to_enter": [
+        "Prescribed immobilization period completed",
+        "Pain ≤3/10 at rest",
+        "Wound fully healed",
+        "Edema resolved",
+        "Surgeon clearance (if modifying prescribed timeline)"
+      ],
+      "precautions": [
+        "No combined abduction + external rotation until 8 weeks",
+        "No behind-back internal rotation until 8 weeks",
+        "Passive/active-assisted only — no active ROM against gravity"
+      ]
+    },
+    "phase_3_active_rom": {
+      "status": "Future",
+      "timing": "Weeks 6-12 (NOV timeline) or weeks 8-12 (surgeon/SNN timeline)",
+      "goals": [
+        "Achieve full active ROM (flexion, abduction, ER, IR)",
+        "Begin light isometric strengthening",
+        "Scapular stabilization exercises",
+        "Begin aquatic therapy if available",
+        "Gradual return to light daily activities (carrying light objects, gentle gardening)"
+      ],
+      "criteria_to_enter": [
+        "Full passive ROM achieved (within 10° of contralateral)",
+        "Active-assisted ROM progressing without pain increase",
+        "Pain ≤2/10 with activities",
+        "No signs of tendon irritation (no catching, no sudden pain episodes)"
+      ]
+    },
+    "phase_4_strengthening": {
+      "status": "Future",
+      "timing": "Weeks 12-20",
+      "goals": [
+        "Progressive RC strengthening (isometric → isotonic → functional)",
+        "Scapular strengthening progression",
+        "Restore shoulder endurance",
+        "Begin activity-specific training (light DIY tasks, fishing preparation)",
+        "Address any persistent ROM deficits"
+      ],
+      "dosage": {
+        "initial": "3 sets x 10-15 reps, light theraband/0.5-1kg dumbbell",
+        "progression": "Increase resistance when 15 reps completed with good form and no pain increase",
+        "frequency": "3-4x/week with rest days"
+      },
+      "criteria_to_enter": [
+        "Full active ROM (within 5° of contralateral)",
+        "Pain ≤2/10 with active ROM",
+        "Scapular motor control adequate during elevation"
+      ]
+    },
+    "phase_5_return_to_activity": {
+      "status": "Future",
+      "timing": "Weeks 20-26+",
+      "goals": [
+        "Full strength (≥80% of contralateral by HHD)",
+        "Full functional ROM equal to contralateral",
+        "DIY-specific conditioning (overhead work, tool use, lifting)",
+        "Fishing (casting practice — graduated distance and weight)",
+        "Confidence in shoulder use for all daily and recreational activities"
+      ],
+      "criteria_for_discharge": [
+        "SPADI ≤15 or CMS ≥80",
+        "Full ROM equal to contralateral",
+        "Strength ≥80% contralateral (HHD)",
+        "Patient-reported readiness and confidence",
+        "Able to perform required DIY tasks (sustained overhead work, lifting 10kg+ above shoulder)",
+        "Fishing — casting without pain or apprehension"
+      ]
+    }
+  },
+  "icf_mapping": {
+    "body_functions": [
+      {
+        "code": "b28014",
+        "description": "Pain in upper limb (right shoulder — post-operative)",
+        "qualifier": 2,
+        "qualifier_description": "Moderate problem (expected post-operatively)"
+      },
+      {
+        "code": "b7100",
+        "description": "Mobility of single joint (glenohumeral — all directions restricted by surgical precautions and post-op status)",
+        "qualifier": 3,
+        "qualifier_description": "Severe problem (restricted by protocol, not purely structural)"
+      },
+      {
+        "code": "b730",
+        "description": "Muscle power functions (rotator cuff — post-repair, cannot test actively)",
+        "qualifier": 3,
+        "qualifier_description": "Severe problem (assumed — cannot assess until Phase 3)"
+      },
+      {
+        "code": "b134",
+        "description": "Sleep functions",
+        "qualifier": 2,
+        "qualifier_description": "Moderate problem — night pain, sling sleeping difficulty"
+      },
+      {
+        "code": "b840",
+        "description": "Sensation related to the skin (surgical wound healing)",
+        "qualifier": 1,
+        "qualifier_description": "Mild problem — wound soreness, expected"
+      }
+    ],
+    "activity_limitations": [
+      {
+        "code": "d4452",
+        "description": "Reaching",
+        "qualifier": 4,
+        "qualifier_description": "Complete problem — cannot reach with right arm (sling)"
+      },
+      {
+        "code": "d4300",
+        "description": "Lifting",
+        "qualifier": 4,
+        "qualifier_description": "Complete problem — cannot lift with right arm (protocol restriction)"
+      },
+      {
+        "code": "d4301",
+        "description": "Carrying in the hands",
+        "qualifier": 3,
+        "qualifier_description": "Severe problem — limited to left hand only"
+      },
+      {
+        "code": "d5400",
+        "description": "Putting on clothes",
+        "qualifier": 3,
+        "qualifier_description": "Severe problem — requires wife's assistance"
+      },
+      {
+        "code": "d5100",
+        "description": "Washing whole body",
+        "qualifier": 3,
+        "qualifier_description": "Severe problem — requires wife's assistance for right side"
+      },
+      {
+        "code": "d6300",
+        "description": "Preparing simple meals",
+        "qualifier": 2,
+        "qualifier_description": "Moderate problem — can manage with left hand only for simple tasks"
+      }
+    ],
+    "participation_restrictions": [
+      {
+        "code": "d6501",
+        "description": "Maintaining dwelling (DIY, repairs, maintenance)",
+        "qualifier": 4,
+        "qualifier_description": "Complete problem — unable to perform any DIY tasks. Primary identity/role impact."
+      },
+      {
+        "code": "d9204",
+        "description": "Hobbies (fishing, woodworking)",
+        "qualifier": 4,
+        "qualifier_description": "Complete problem — cannot fish or do woodworking"
+      },
+      {
+        "code": "d920",
+        "description": "Recreation and leisure (cards with friends, walking)",
+        "qualifier": 1,
+        "qualifier_description": "Mild problem — can still do cards and gentle walks"
+      },
+      {
+        "code": "d660",
+        "description": "Assisting others (helping neighbors with maintenance)",
+        "qualifier": 4,
+        "qualifier_description": "Complete problem — cannot help others. Significant role loss."
+      }
+    ],
+    "environmental_factors": [
+      {
+        "code": "e310",
+        "description": "Immediate family (wife Bep)",
+        "qualifier": "+3",
+        "qualifier_description": "Substantial facilitator — providing daily care, very supportive"
+      },
+      {
+        "code": "e355",
+        "description": "Health professionals (surgeon, physiotherapist)",
+        "qualifier": "+2",
+        "qualifier_description": "Moderate facilitator — but protocol tension may create confusion if not managed"
+      },
+      {
+        "code": "e1101",
+        "description": "Drugs/medication (paracetamol, tramadol)",
+        "qualifier": "+2",
+        "qualifier_description": "Moderate facilitator — adequate pain control currently"
+      },
+      {
+        "code": "e1150",
+        "description": "Products and technology for personal use in daily living (sling)",
+        "qualifier": "+2/-2",
+        "qualifier_description": "Facilitator (protects repair) AND barrier (restricts function). Duration is the clinical question."
+      },
+      {
+        "code": "e325",
+        "description": "Acquaintances/neighbors",
+        "qualifier": "+1",
+        "qualifier_description": "Mild facilitator — social support, but also source of pressure (neighbor wants help)"
+      }
+    ],
+    "personal_factors": {
+      "motivation": "High — wants to return to DIY and fishing as quickly as safely possible",
+      "adherence_risk": "Risk of over-activity, not under-activity. Pragmatic personality may lead to testing boundaries too early.",
+      "coping_style": "Active, practical, problem-solving oriented. Wants clear rules and timelines.",
+      "self_efficacy": "High for general function, currently frustrated by dependence",
+      "identity": "Strongly identifies as 'the fixer/handyman.' Loss of this role is primary psychosocial impact.",
+      "expectations": "Realistic about timeline but impatient. Wants milestones to work toward.",
+      "glucose_intolerance": "Pre-diabetes (HbA1c 44) — stiffness risk factor. Not on medication. Lifestyle modification recommended.",
+      "former_smoker": "Quit 10 years ago. Historical smoking may affect tissue healing quality."
+    }
+  },
+  "clinical_reasoning_pathway": {
+    "hypothesis_generation": {
+      "working_hypotheses": [
+        {
+          "hypothesis": "Standard post-operative recovery trajectory after medium RC repair with good healing potential",
+          "supporting_evidence": [
+            "Uncomplicated surgery with good fixation",
+            "Good tissue quality (Goutallier grade 1)",
+            "Isolated supraspinatus (no subscapularis or infraspinatus involvement)",
+            "Appropriate post-operative pain levels at 1 week",
+            "Good sling compliance",
+            "Motivated patient with good support system"
+          ],
+          "mediator": "Biological tendon-to-bone healing progressing normally. Functional recovery depends on appropriate balance between protection (preventing re-tear) and mobilization (preventing stiffness).",
+          "probability": "High — favorable surgical and patient factors"
+        },
+        {
+          "hypothesis": "Elevated stiffness risk requiring modified immobilization approach",
+          "supporting_evidence": [
+            "Age 62 (>50 — risk factor)",
+            "Pre-diabetes with HbA1c 44 (glucose intolerance — stiffness risk)",
+            "Pre-operative ROM already restricted (flexion 120°, abduction 100°)",
+            "6 weeks prescribed immobilization may be excessive for this risk profile"
+          ],
+          "mediator": "Capsular fibrosis and adhesion formation accelerated by prolonged immobility, particularly in presence of metabolic risk factors",
+          "probability": "Moderate risk — requires proactive management",
+          "clinical_action": "Argue for earlier mobilization (NOV 2025 3-week protocol or SNN 4-week progressive variant). Discuss with surgeon."
+        },
+        {
+          "hypothesis": "Risk of patient non-compliance with restrictions (over-activity)",
+          "supporting_evidence": [
+            "Low TSK (28) — not fear-avoidant",
+            "Highly active personality, identifies as 'the fixer'",
+            "Already expressing frustration with immobility at 1 week",
+            "Neighbor pressure (fence repair request)",
+            "History of being self-employed — used to working through discomfort"
+          ],
+          "mediator": "Premature loading of repair before adequate tendon-to-bone healing, risking re-tear",
+          "probability": "Moderate — requires education and clear boundary-setting",
+          "clinical_action": "Provide very clear restrictions with rationale. Use Henk's pragmatic nature — frame protection as 'investing in a good outcome' not 'being careful.'"
+        }
+      ],
+      "excluded_hypotheses": [
+        {
+          "hypothesis": "Surgical complication (infection, hardware failure)",
+          "reason": "Wound clean and dry, no infection signs, pain levels appropriate for 1 week post-op, no unexpected symptoms"
+        },
+        {
+          "hypothesis": "CRPS development",
+          "reason": "No disproportionate pain, no autonomic changes, normal neurovascular status, appropriate swelling for post-op day 7"
+        }
+      ]
+    },
+    "key_clinical_reasoning_questions": [
+      {
+        "question": "Should the physiotherapist follow the surgeon's 6-week immobilization protocol or advocate for earlier mobilization based on 2025 evidence?",
+        "answer": "This is the central reasoning challenge. The physiotherapist should: (1) Review the evidence (NOV 2025 supports 3 weeks for this tear profile), (2) Assess patient-specific stiffness risk (moderate — argues for shorter immobilization), (3) Weigh re-tear risk (low for small-to-medium tears regardless of mobilization timing), (4) Communicate professionally with the surgeon — present the evidence and patient-specific factors, request shared decision-making, (5) NOT unilaterally change the protocol without surgeon discussion. The answer is a PROCESS, not a number."
+      },
+      {
+        "question": "How do you communicate with a surgeon who prescribed a protocol you believe may not be optimal?",
+        "answer": "Professional, evidence-based communication: (1) Acknowledge the surgeon's expertise and standard protocol, (2) Present specific patient risk factors (age 62, pre-diabetes, pre-op ROM restriction), (3) Reference the 2025 evidence supporting earlier mobilization for this tear profile, (4) Propose a specific modification (e.g., transition to active-assisted at 4 weeks instead of 6), (5) Request discussion, not demand change, (6) Document the conversation and agreed plan."
+      },
+      {
+        "question": "What is the role of tramadol in this patient's current management?",
+        "answer": "Tramadol is an opioid prescribed for post-operative night pain. Per 2025 evidence, opioids should not be first-line for shoulder pain. However, short-term post-operative use is clinically appropriate. The key is: (1) Plan for tapering within 2-3 weeks, (2) Monitor for dependency signs, (3) Transition to paracetamol-only as pain decreases, (4) Address night pain through positioning strategies to reduce pharmacological dependence."
+      },
+      {
+        "question": "How do you manage a patient who is more likely to do too much rather than too little?",
+        "answer": "Henk's risk is over-activity. Strategies: (1) Frame restrictions positively — 'you're investing in the best possible outcome,' (2) Give very concrete rules — 'nothing heavier than a coffee cup with your right hand for X weeks,' (3) Use his practical nature — explain tendon healing biology in tangible terms, (4) Set clear milestones — 'at week X you can do Y,' (5) Involve wife Bep as ally in monitoring adherence, (6) Channel his energy into things he CAN do (walks, left-hand activities, planning future projects)."
+      }
+    ]
+  },
+  "problem_statements": {
+    "hoac_format": true,
+    "problems": [
+      {
+        "problem_number": 1,
+        "activity_limitation": "Unable to use right arm for any functional tasks (reaching, lifting, carrying) due to post-operative restrictions and immobilization",
+        "underlying_impairments": [
+          "Post-operative rotator cuff repair requiring protection",
+          "Restricted ROM (protocol-imposed + surgical guarding)",
+          "Post-operative pain and swelling"
+        ],
+        "participation_impact": "Completely unable to perform DIY tasks, fishing, or independent self-care. Dependent on wife for dressing and hygiene."
+      },
+      {
+        "problem_number": 2,
+        "activity_limitation": "Risk of developing post-operative shoulder stiffness due to prolonged immobilization in a patient with moderate stiffness risk factors",
+        "underlying_impairments": [
+          "Pre-operative ROM restriction (flexion 120°, abduction 100°)",
+          "Metabolic risk factor (pre-diabetes, HbA1c 44)",
+          "Age-related tissue factors (62 years)",
+          "Prescribed 6-week immobilization (potentially excessive for tear profile)"
+        ],
+        "participation_impact": "If stiffness develops, may significantly delay or compromise return to DIY and fishing activities. Could result in secondary adhesive capsulitis."
+      },
+      {
+        "problem_number": 3,
+        "activity_limitation": "Risk of premature loading of repair due to patient's active personality, low kinesiophobia, and frustration with restrictions",
+        "underlying_impairments": [
+          "Low TSK (28) — insufficient protective behavior",
+          "High motivation to return to activities",
+          "External pressure (neighbor requests, role identity)",
+          "Practical personality — may test boundaries"
+        ],
+        "participation_impact": "Re-tear would require revision surgery with significantly worse prognosis and prolonged disability."
+      },
+      {
+        "problem_number": 4,
+        "activity_limitation": "Sleep disruption due to night pain and sling discomfort",
+        "underlying_impairments": [
+          "Post-operative pain with position changes",
+          "Sling sleeping discomfort",
+          "Habitual right-side sleeper"
+        ],
+        "participation_impact": "Fatigue, irritability, reduced recovery capacity"
+      }
+    ]
+  },
+  "goals": {
+    "smart_format": true,
+    "long_term_goal": {
+      "timeframe": "6 months post-op",
+      "goal": "Return to full DIY activities including overhead work (painting, gutter maintenance) and fishing with casting, with full shoulder ROM and strength ≥80% of contralateral, pain-free or minimal pain (NPRS ≤1)",
+      "outcome_measures": ["SPADI ≤15", "CMS ≥80", "PSFS all items ≥8/10", "Strength ≥80% contralateral (HHD)", "Full ROM equal to contralateral"]
+    },
+    "medium_term_goals": [
+      {
+        "goal_number": 1,
+        "timeframe": "6 weeks post-op",
+        "goal": "Achieve passive flexion ≥140° and passive ER ≥40° at 0° abduction with pain ≤2/10",
+        "criteria": ["Passive ROM targets met", "No signs of stiffness progression", "Pain controlled"]
+      },
+      {
+        "goal_number": 2,
+        "timeframe": "12 weeks post-op",
+        "goal": "Full active ROM (flexion ≥160°, abduction ≥160°, ER ≥60°) with good scapulohumeral rhythm",
+        "criteria": ["Active ROM within 10° of contralateral", "No scapular compensatory patterns", "Pain ≤2/10"]
+      },
+      {
+        "goal_number": 3,
+        "timeframe": "16 weeks post-op",
+        "goal": "Begin light DIY tasks (sanding, hand tool use below shoulder level) and resume fishing (light casting, short sessions)",
+        "criteria": ["RC strength ≥60% contralateral", "Full ROM", "Pain-free with moderate loading"]
+      }
+    ],
+    "short_term_goals": [
+      {
+        "goal_number": 1,
+        "timeframe": "2 weeks post-op",
+        "goal": "Passive flexion to 90° and ER to 20° tolerated with pain ≤3/10; pendulum exercises performed correctly 3x/day",
+        "linked_to_problem": 1,
+        "outcome_measure": "Goniometry, pain report, exercise diary"
+      },
+      {
+        "goal_number": 2,
+        "timeframe": "2 weeks post-op",
+        "goal": "Tramadol tapered to PRN only, night pain managed with positioning strategies",
+        "linked_to_problem": 4,
+        "outcome_measure": "Medication diary, sleep quality report"
+      },
+      {
+        "goal_number": 3,
+        "timeframe": "3 weeks post-op",
+        "goal": "Clinical decision on immobilization duration communicated to and agreed with surgeon, based on patient-specific risk assessment",
+        "linked_to_problem": 2,
+        "outcome_measure": "Documented surgeon communication, agreed protocol modification (if any)"
+      },
+      {
+        "goal_number": 4,
+        "timeframe": "4 weeks post-op",
+        "goal": "Henk verbalizes understanding of healing timeline, restrictions rationale, and consequences of premature loading",
+        "linked_to_problem": 3,
+        "outcome_measure": "Patient understanding assessment, sling compliance maintained"
+      },
+      {
+        "goal_number": 5,
+        "timeframe": "6 weeks post-op",
+        "goal": "Independent dressing using learned compensatory strategies, without wife's assistance",
+        "linked_to_problem": 1,
+        "outcome_measure": "PSFS dressing activity, patient report"
+      }
+    ]
+  },
+  "intervention_plan": {
+    "treatment_approach": "Post-operative criteria-based rehabilitation emphasizing balance between tissue protection and stiffness prevention. Clear communication with surgeon regarding protocol modification. Patient education on healing biology to manage expectations and prevent over-activity. Aligned with SNN Basisprotocol and NOV/FMS SAPS 2025.",
+    "guideline_alignment": "Hybrid approach: SNN Basisprotocol provides phase structure, NOV 2025 informs immobilization duration decision. No dedicated KNGF shoulder guideline.",
+    "critical_first_action": {
+      "action": "Contact surgeon to discuss immobilization duration",
+      "timing": "Within first 2 weeks (before 3-week decision point)",
+      "rationale": "Patient's tear profile meets NOV 2025 criteria for 3-week immobilization, and he has moderate stiffness risk factors (age 62, pre-diabetes, pre-op ROM restriction). The prescribed 6 weeks may increase stiffness risk without meaningful re-tear risk reduction for this tear size.",
+      "proposed_communication": "Present patient-specific factors (stiffness risk profile, tear characteristics meeting NOV 2025 criteria) and request shared decision-making on transitioning to passive/active-assisted ROM at 3-4 weeks instead of 6 weeks.",
+      "possible_outcomes": [
+        "Surgeon agrees to 3-4 week transition — proceed with accelerated passive ROM",
+        "Surgeon prefers to maintain 6 weeks — respect decision but maximize passive ROM within allowed parameters and document stiffness risk monitoring plan",
+        "Surgeon requests review at 3-4 weeks to reassess — ideal shared decision-making outcome"
+      ]
+    },
+    "interventions": [
+      {
+        "category": "Phase 1: Protection and education (Weeks 1-3/6)",
+        "interventions": [
+          {
+            "intervention": "Pendulum exercises (Codman)",
+            "dosage": "3-5 minutes, 3x/day. Relaxed, gravity-dependent. Forward/back, side-to-side, circles.",
+            "rationale": "Gentle joint lubrication, prevent adhesions, pain modulation, patient engagement",
+            "evidence_level": "Expert consensus"
+          },
+          {
+            "intervention": "Therapist-guided passive ROM",
+            "dosage": "2x/week in clinic. Flexion progressing to 90° (then 120° by week 3-4), ER at 0° abduction to 20° (then 30° by week 3-4). Gentle, within pain tolerance.",
+            "rationale": "Maintain and progress ROM within safe limits. Prevent capsular adhesions.",
+            "precautions": "No combined abduction + ER. No behind-back IR. Stay within surgeon-approved limits.",
+            "evidence_level": "Standard post-op rehabilitation practice"
+          },
+          {
+            "intervention": "Scapular isometric setting",
+            "dosage": "Gentle scapular retraction in supported position. 10x 5-sec holds, 3x/day.",
+            "rationale": "Maintain scapular muscle activation without loading RC repair",
+            "evidence_level": "Expert consensus"
+          },
+          {
+            "intervention": "Elbow/wrist/hand active ROM and grip strengthening",
+            "dosage": "Full ROM exercises 3x/day. Squeeze ball for grip maintenance.",
+            "rationale": "Prevent disuse stiffness and weakness in distal joints"
+          },
+          {
+            "intervention": "Cryotherapy",
+            "dosage": "Ice pack 15-20 min, 3-4x/day, over surgical site with protection",
+            "rationale": "Pain and edema management"
+          },
+          {
+            "intervention": "Sleep positioning education",
+            "dosage": "One-time instruction with reinforcement",
+            "details": "Semi-reclined position (30-45° with pillow support) or supine with pillow under elbow. Avoid right side-lying. Sling on at night.",
+            "rationale": "Reduce night pain and tramadol dependence"
+          }
+        ]
+      },
+      {
+        "category": "Patient education — healing biology and restriction rationale",
+        "intervention": "Structured education on tendon-to-bone healing, why restrictions matter, and recovery milestones",
+        "rationale": "Henk's risk is over-activity. He needs to understand WHY restrictions exist, not just WHAT they are. Use his practical nature — explain in concrete, mechanical terms he relates to.",
+        "key_messages": [
+          "Think of the repair like gluing two pieces of wood together — the bond needs time to cure before you stress-test it. Right now we're in the curing phase.",
+          "At 3 weeks the repair has about 30% of its final strength. At 6 weeks about 50%. Full healing takes 12-16 weeks.",
+          "A re-tear from doing too much too soon means revision surgery, which has a much worse outcome than the original repair.",
+          "Your job right now is to be the patient patient. The sling isn't holding you back — it's protecting your investment.",
+          "We will give you progressively more to do. Each milestone means you've earned the next step."
+        ],
+        "education_for_wife": "Involve Bep as ally — she can help monitor his activity levels and remind him of restrictions. Provide her with clear dos and don'ts.",
+        "coaching_prompt": "How would you explain the healing timeline to a practical, action-oriented patient who is frustrated by restrictions? What analogies would you use?"
+      },
+      {
+        "category": "Phase 2: Passive/Active-Assisted ROM (Weeks 3-8, timing depends on protocol decision)",
+        "interventions": [
+          {
+            "intervention": "Progressive passive ROM",
+            "dosage": "Flexion to 140°, ER to 40° at 0° abd. Gentle sustained stretches. 2x/week in clinic + daily at home (stick exercises).",
+            "rationale": "Restore ROM while repair continues to strengthen",
+            "progression_criteria": "No pain increase >2/10 above resting level during stretching, no increase in resting pain lasting >24 hours"
+          },
+          {
+            "intervention": "Active-assisted ROM",
+            "dosage": "Stick exercises (supine flexion, supine ER), pulley flexion, table slides. 3x/day.",
+            "rationale": "Transition from passive to assisted active motion. Begin re-establishing motor patterns."
+          },
+          {
+            "intervention": "Scapular motor control progression",
+            "dosage": "Wall slides (supported), standing scapular retraction with theraband. 3x10 reps, 2x/day.",
+            "rationale": "Prepare scapular stabilizers for upcoming active ROM phase"
+          }
+        ]
+      },
+      {
+        "category": "Phase 3: Active ROM (Weeks 8-12)",
+        "interventions": [
+          {
+            "intervention": "Active ROM in all planes",
+            "dosage": "Active flexion, abduction, ER, IR. Progress from gravity-eliminated to against-gravity positions. 3x/day.",
+            "rationale": "Restore active control of shoulder"
+          },
+          {
+            "intervention": "Light isometric strengthening",
+            "dosage": "Isometric ER, IR, flexion, abduction at multiple angles. 5x 10-sec holds, 2x/day.",
+            "rationale": "Begin loading repaired tendon with low-magnitude forces"
+          },
+          {
+            "intervention": "Aquatic therapy (if available)",
+            "dosage": "1-2x/week, 30 min. Buoyancy-assisted active ROM and gentle resistance.",
+            "rationale": "Reduced gravitational load facilitates active ROM training"
+          }
+        ]
+      },
+      {
+        "category": "Phase 4: Strengthening (Weeks 12-20)",
+        "interventions": [
+          {
+            "intervention": "Progressive RC strengthening",
+            "exercises": [
+              "Sidelying ER with dumbbell (1-3kg) — 3x12 reps",
+              "Standing flexion/scaption with theraband or dumbbell — 3x12 reps",
+              "Prone horizontal abduction (Y, T, W) — 3x10 reps with progression",
+              "Standing IR with theraband — 3x12 reps",
+              "Push-up progression (wall → incline → floor) — 3x10 reps"
+            ],
+            "dosage": "3-4x/week, progressive overload",
+            "progression": "Increase load when 12 reps completed with good form and no pain increase"
+          },
+          {
+            "intervention": "Functional task training",
+            "exercises": [
+              "Reaching to progressive heights (waist → shoulder → overhead)",
+              "Carrying objects with progressive weight (0.5kg → 2kg → 5kg)",
+              "Simulated tool use (hammer motion, screwdriver motion) with light resistance",
+              "Simulated casting motion (fishing) with theraband"
+            ],
+            "rationale": "Bridge gap between clinical exercises and real-world DIY/fishing demands"
+          }
+        ]
+      },
+      {
+        "category": "Phase 5: Return to Activity (Weeks 20-26+)",
+        "interventions": [
+          {
+            "intervention": "Activity-specific conditioning",
+            "protocol": [
+              "Light DIY: sanding, hand tools below shoulder — from week 16-18",
+              "Moderate DIY: painting at shoulder level, light drilling — from week 20",
+              "Heavy DIY: overhead work, ladder work, power tools — from week 24+ (criteria-based)",
+              "Fishing: light casting from bank — from week 18; full casting — from week 22"
+            ],
+            "rationale": "Graduated return to meaningful activities with clear milestones Henk can work toward"
+          },
+          {
+            "intervention": "Endurance training for sustained overhead work",
+            "dosage": "Timed overhead activities with progressive duration (2 min → 5 min → 15 min → 30 min)",
+            "rationale": "DIY tasks require sustained overhead endurance, not just brief strength"
+          }
+        ]
+      },
+      {
+        "category": "General conditioning (throughout all phases)",
+        "intervention": "Cardiovascular and general health maintenance",
+        "protocol": [
+          "Walking with wife: maintain 30-45 min walks, 3-4x/week (immediate — no shoulder involvement)",
+          "Stationary cycling: 20-30 min, 3x/week (from week 2 — one-handed, seated upright with sling)",
+          "Lower body strengthening (mindful of knee OA): bodyweight squats, step-ups, seated leg exercises",
+          "Pre-diabetes management: encourage dietary modifications, walking program supports glucose control"
+        ],
+        "rationale": "Prevent deconditioning, support metabolic health (pre-diabetes), maintain mood and energy, channel Henk's active nature into safe activities"
+      }
+    ],
+    "plan_of_care": {
+      "frequency": "2x/week for weeks 1-6, then 2x/week for weeks 6-12 (active ROM phase), then 1x/week for weeks 12-20, then 1x/2 weeks for weeks 20-26",
+      "total_sessions": "25-30 sessions over 6 months",
+      "home_exercise_program": "Daily — pendulums, scapular setting, elbow/wrist ROM (Phase 1). Progress with each phase.",
+      "reassessment_schedule": "Week 3 (stiffness risk check + protocol decision point), Week 6 (formal: NPRS, SPADI, ROM), Week 12 (formal + strength baseline), Week 20 (formal + functional testing), Week 26 (discharge assessment)",
+      "surgeon_communication_plan": "Week 2-3: discuss immobilization duration. Week 6: update on progress. Week 12: update on active ROM and strength. As needed for any concerns."
+    }
+  },
+  "reasoning_traps_for_this_case": [
+    {
+      "trap": "Blindly following surgeon protocol without clinical reasoning",
+      "description": "Accepting the 6-week immobilization without considering patient-specific stiffness risk factors or 2025 evidence supporting shorter immobilization for this tear profile",
+      "coaching_response": "The surgeon prescribed 6 weeks. What does the NOV 2025 guideline say about immobilization for this tear profile? What stiffness risk factors does this patient have? Should physiotherapists ever question surgeon protocols? How would you communicate your concerns?"
+    },
+    {
+      "trap": "Unilaterally modifying surgeon protocol",
+      "description": "Changing the immobilization duration without discussing with the surgeon — the opposite extreme of blind compliance",
+      "coaching_response": "You've decided to mobilize at 3 weeks based on NOV 2025. Have you discussed this with the surgeon? What are the professional and ethical implications of changing a prescribed protocol without surgeon agreement?"
+    },
+    {
+      "trap": "Time-based rather than criteria-based progression",
+      "description": "Progressing to the next phase because 'it's week 6' rather than because criteria are met",
+      "coaching_response": "It's week 8 and you want to start strengthening. What criteria should be met before Phase 4? Has this patient met them? What are the risks of progressing too early?"
+    },
+    {
+      "trap": "Ignoring stiffness risk factors",
+      "description": "Not recognizing pre-diabetes, age, and pre-operative ROM restriction as stiffness risk factors that should influence immobilization and mobilization decisions",
+      "coaching_response": "This patient has pre-diabetes and is 62 years old. What does this mean for his stiffness risk? How does this affect your rehabilitation planning? Should this influence your discussion with the surgeon about immobilization duration?"
+    },
+    {
+      "trap": "Not managing the over-active patient",
+      "description": "Failing to recognize that Henk's risk is doing too much too soon, not too little. Not setting clear boundaries or involving wife as support.",
+      "coaching_response": "Henk's TSK is 28 — very low. He's already frustrated at week 1. His neighbor wants him to fix a fence. What is this patient's primary behavioral risk? How do you protect the repair without being patronizing?"
+    },
+    {
+      "trap": "Not tapering tramadol",
+      "description": "Continuing tramadol beyond the acute post-operative period without a tapering plan",
+      "coaching_response": "This patient is still using tramadol at night at week 3. What does the 2025 evidence say about opioids for shoulder pain? What is your plan for tapering? What alternative night pain strategies have you implemented?"
+    },
+    {
+      "trap": "Ignoring pre-diabetes implications",
+      "description": "Not recognizing that pre-diabetes affects tissue healing, stiffness risk, and general health management",
+      "coaching_response": "This patient has an HbA1c of 44. What are the implications for tendon healing and stiffness risk? Should you address his metabolic health as part of rehabilitation? How?"
+    },
+    {
+      "trap": "Setting impairment-focused goals only",
+      "description": "Goals like 'achieve 160° flexion' without connecting to functional activities that matter to Henk",
+      "coaching_response": "Your goal is '160° active flexion by week 12.' What does Henk want to do? How would you reframe this as a functional goal? What activity requires this ROM?"
+    },
+    {
+      "trap": "Not planning for return to DIY activities specifically",
+      "description": "Generic strengthening without task-specific training for DIY demands (overhead work, power tools, sustained postures, lifting)",
+      "coaching_response": "Henk's primary goal is returning to DIY work. What are the specific physical demands of his activities? How would you simulate and progressively train for these? Is generic shoulder strengthening sufficient?"
+    }
+  ],
+  "session_progression": {
+    "session_1_week_1": {
+      "focus": "Initial assessment, education, exercise instruction, sling management",
+      "activities": [
+        "Read surgical report and post-operative instructions",
+        "Comprehensive assessment within post-operative limits",
+        "Wound check",
+        "Teach/refine pendulum exercises and scapular setting",
+        "Education: healing biology, restriction rationale, sling management",
+        "Sleep positioning advice",
+        "Discuss tramadol tapering plan",
+        "Involve wife Bep — provide dos and don'ts sheet",
+        "Begin planning surgeon communication regarding immobilization duration"
+      ],
+      "homework": "Pendulums 3x/day, scapular setting 3x/day, elbow/wrist ROM 3x/day, ice 3-4x/day, daily walks with Bep"
+    },
+    "session_3_week_2": {
+      "focus": "Progress passive ROM, communicate with surgeon, reinforce education",
+      "activities": [
+        "Progress passive flexion toward 90°, ER toward 20°",
+        "Assess sling compliance and home exercise adherence",
+        "Contact surgeon to discuss immobilization duration — present stiffness risk factors and NOV 2025 evidence",
+        "Address Henk's frustration — provide milestones to look forward to",
+        "Begin stationary cycling (one-arm)"
+      ],
+      "expected_progress": "Passive flexion 85-90°, ER 20°, pain decreasing (NPRS 2-3), tramadol reducing to PRN only"
+    },
+    "session_5_week_3": {
+      "focus": "Protocol decision point — transition to Phase 2 if agreed with surgeon",
+      "activities": [
+        "Clinical decision: if surgeon agrees to earlier mobilization, begin active-assisted ROM",
+        "If maintaining 6 weeks: maximize passive ROM within limits, document stiffness risk monitoring",
+        "Progress passive ROM targets (flexion 100-110°, ER 25-30°)",
+        "Add stick exercises (supine flexion) if Phase 2 initiated",
+        "Reinforce exercise program"
+      ],
+      "expected_progress": "Decision made on immobilization. If Phase 2: active-assisted exercises initiated. If Phase 1 continues: passive ROM progressing well."
+    },
+    "session_8_week_6": {
+      "focus": "Formal reassessment, sling removal (if not already), Phase 2/3 transition",
+      "activities": [
+        "Formal reassessment: NPRS, SPADI, ROM (passive and beginning of active), PSFS",
+        "Sling removal (regardless of protocol — 6 weeks completed even in surgeon protocol)",
+        "Begin active ROM if criteria met (Phase 3)",
+        "Scapular assessment (first meaningful assessment without sling)",
+        "Update home exercise program — active ROM exercises",
+        "Review milestones for coming weeks"
+      ],
+      "expected_progress": "Passive flexion ≥140°, passive ER ≥40°, beginning active ROM, SPADI improving, pain ≤2/10 at rest"
+    },
+    "session_14_week_12": {
+      "focus": "Strength baseline, functional assessment, Phase 4 preparation",
+      "activities": [
+        "Formal reassessment: all measures + first strength assessment (HHD)",
+        "Assess active ROM — should be approaching full",
+        "Begin progressive strengthening if criteria met",
+        "Functional task assessment (simulated reaching, lifting, tool use)",
+        "Discuss return-to-DIY timeline and graduated plan"
+      ],
+      "expected_progress": "Active flexion ≥155°, active abduction ≥150°, SPADI ≤35, beginning to use shoulder for light daily tasks"
+    },
+    "session_20_week_20": {
+      "focus": "Functional strengthening, return to DIY activities, fishing",
+      "activities": [
+        "Formal reassessment",
+        "Progress to DIY-specific exercises (overhead drilling simulation, sustained painting position)",
+        "Trial light DIY task in clinic (using actual tools if possible)",
+        "Fishing preparation (casting simulation with progressive distance/weight)",
+        "Endurance testing for overhead activities"
+      ],
+      "expected_progress": "SPADI ≤20, CMS ≥70, strength ≥70% contralateral, light DIY and fishing initiated"
+    },
+    "session_24_week_26": {
+      "focus": "Discharge assessment, long-term self-management",
+      "activities": [
+        "Final outcome measures: SPADI, CMS, PSFS, QuickDASH, ROM, strength (HHD)",
+        "Review all goals — achieved?",
+        "Overhead endurance assessment",
+        "Full DIY readiness assessment",
+        "Self-management plan (ongoing exercises, load management, when to seek help)",
+        "Pre-diabetes management reinforcement (continued exercise, dietary advice)",
+        "Discharge or transition to maintenance"
+      ],
+      "expected_outcomes": "SPADI ≤15, CMS ≥80, full ROM, strength ≥80% contralateral, returned to DIY and fishing, independent self-management"
+    }
+  },
+  "coaching_questions_by_hoac_step": {
+    "step_1_data_collection": [
+      "What information from the surgical report is most important for your rehabilitation planning?",
+      "What stiffness risk factors does this patient have? How do they affect your approach?",
+      "What is the difference between the NOV 2025 and SNN protocols for immobilization? Which applies to this tear profile?",
+      "This patient's TSK is 28 (low). Is that a concern? Why?",
+      "What is the significance of pre-diabetes for post-operative shoulder rehabilitation?"
+    ],
+    "step_2_problem_statements": [
+      "You've listed 'inability to use right arm' as a problem. Is this due to the surgery, the protocol restrictions, or both? How do you frame a problem that is partially iatrogenic (treatment-imposed)?",
+      "How do you formulate stiffness RISK as a problem statement when stiffness hasn't actually developed yet?",
+      "Is the patient's frustration and over-activity risk an impairment, activity limitation, or personal factor? Where does it belong in your problem list?"
+    ],
+    "step_3_goal_setting": [
+      "Your goal is 'full ROM by 12 weeks.' Is this realistic given the surgical repair? What does the evidence say about expected ROM timeline?",
+      "How do you set goals with a patient who wants to return to heavy DIY at 3 months? Is that realistic?",
+      "You've set 'return to fishing' as a goal. What are the specific shoulder demands of freshwater fishing? How would you make this more SMART?"
+    ],
+    "step_4_intervention_selection": [
+      "Why are you doing passive ROM and not active ROM at week 2? What would happen if you started active ROM now?",
+      "How do you decide between the surgeon's 6-week protocol and the NOV 2025 3-week recommendation?",
+      "What is your plan for preventing stiffness while also protecting the repair?",
+      "How will you channel Henk's active personality constructively during the protection phase?"
+    ],
+    "step_7_reevaluation": [
+      "What criteria determine when this patient is ready to progress from Phase 2 to Phase 3?",
+      "At week 8, passive flexion is only 110°. Is this stiffness developing? What do you do?",
+      "At week 16, Henk tells you he's been painting his garden fence without telling you. How do you respond? What do you assess?",
+      "What does a successful outcome look like for this patient? How do you measure it?"
+    ]
+  }
+}

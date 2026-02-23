@@ -1,0 +1,689 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "case_id": "msk_001_nslbp",
+    "case_name": "Non-Specific Low Back Pain - Office Worker",
+    "category": "Musculoskeletal",
+    "difficulty": "Intermediate",
+    "hoac_steps_covered": ["step_1", "step_2", "step_3", "step_4", "step_5", "step_6", "step_7"],
+    "icf_domains_covered": ["body_function", "activity", "participation", "environmental_factors", "personal_factors"],
+    "clinical_reasoning_focus": ["hypothesis generation", "ICF mapping", "goal setting", "intervention selection"],
+    "estimated_session_time": "45-60 minutes",
+    "kngf_guideline_reference": "KNGF Guideline on Low Back Pain (2013/2017)"
+  },
+  "patient_profile": {
+    "name": "Jan de Vries",
+    "age": 42,
+    "gender": "Male",
+    "occupation": "Financial analyst - office work",
+    "living_situation": "Lives with wife and two children (ages 8 and 12)",
+    "hobbies": "Previously played tennis twice weekly, enjoys cycling with family",
+    "referral_source": "General practitioner",
+    "referral_reason": "Low back pain for 6 weeks, no improvement with NSAIDs"
+  },
+  "session_1_initial_encounter": {
+    "presenting_complaint": {
+      "chief_complaint": "Low back pain that started 6 weeks ago after moving boxes during house renovation",
+      "pain_location": "Central low back, sometimes radiating to right buttock",
+      "pain_intensity_current": 5,
+      "pain_intensity_worst": 8,
+      "pain_intensity_best": 3,
+      "pain_scale": "NPRS",
+      "aggravating_factors": [
+        "Prolonged sitting (>30 minutes)",
+        "Bending forward",
+        "Lifting objects from floor",
+        "Getting out of bed in morning"
+      ],
+      "easing_factors": [
+        "Walking",
+        "Lying down with knees bent",
+        "Movement in general after initial stiffness"
+      ],
+      "24_hour_pattern": "Stiff and painful in morning (7/10), improves with movement, worsens by end of workday (6-7/10)",
+      "sleep_impact": "Wakes 1-2 times per night when turning, takes 20 min to fall asleep due to discomfort"
+    },
+    "patient_narrative": "I hurt my back about 6 weeks ago when I was carrying boxes up the stairs during our house renovation. I felt a sharp pain in my lower back and had to stop. The next day I could barely move. My GP gave me ibuprofen and told me to rest. It got a bit better after a week, but now it's stuck at this level. I've been worried because my father had a disc herniation and needed surgery. I've stopped playing tennis and I'm scared to pick up my kids. At work, I can barely concentrate because of the pain after sitting for a while. My wife has to do more around the house and I feel guilty about that.",
+    "red_flags_screening": {
+      "cauda_equina_symptoms": false,
+      "saddle_anesthesia": false,
+      "bladder_bowel_dysfunction": false,
+      "progressive_neurological_deficit": false,
+      "unexplained_weight_loss": false,
+      "fever": false,
+      "night_pain_unrelenting": false,
+      "history_of_cancer": false,
+      "immunosuppression": false,
+      "age_over_55_first_episode": false,
+      "recent_trauma": true,
+      "trauma_severity": "Minor (lifting boxes)",
+      "red_flags_present": false,
+      "clinical_reasoning_note": "No red flags identified. Trauma was minor and mechanism consistent with musculoskeletal origin."
+    },
+    "yellow_flags_assessment": {
+      "fear_avoidance": {
+        "present": true,
+        "indicators": [
+          "Stopped all sports",
+          "Afraid to pick up children",
+          "Fear of 'disc herniation like father'"
+        ]
+      },
+      "catastrophizing": {
+        "present": true,
+        "indicators": [
+          "Worried about father's surgery history",
+          "Believes something is 'seriously wrong'"
+        ]
+      },
+      "passive_coping": {
+        "present": true,
+        "indicators": [
+          "Relying on rest initially",
+          "Waiting for pain to 'go away'"
+        ]
+      },
+      "work_related_factors": {
+        "present": true,
+        "indicators": [
+          "Difficulty concentrating at work",
+          "Prolonged sitting required"
+        ]
+      },
+      "tampa_scale_estimate": "High (likely >37)",
+      "clinical_reasoning_note": "Significant yellow flags present - fear-avoidance and catastrophizing are primary targets. Psychoeducation and graded activity essential."
+    },
+    "past_medical_history": {
+      "previous_lbp_episodes": "One episode 5 years ago, resolved in 2 weeks with PT",
+      "surgeries": "None",
+      "chronic_conditions": "Mild hypertension, controlled with medication",
+      "medications": [
+        {"name": "Lisinopril", "dose": "10mg", "frequency": "Daily", "indication": "Hypertension"},
+        {"name": "Ibuprofen", "dose": "400mg", "frequency": "PRN", "indication": "Back pain"}
+      ],
+      "allergies": "None known",
+      "family_history": "Father - lumbar disc herniation with surgery age 55"
+    },
+    "social_history": {
+      "work_demands": "Full-time office work, 8-9 hours sitting at desk, some flexibility to work from home",
+      "physical_activity_pre_injury": "Tennis 2x/week, cycling with family on weekends",
+      "physical_activity_current": "None - stopped all activities due to pain and fear",
+      "smoking": "Never",
+      "alcohol": "Social, 2-3 glasses wine on weekends",
+      "support_system": "Supportive wife, but she is taking on more household responsibilities",
+      "stress_level": "Moderate - deadline pressure at work, feels guilty about home situation"
+    }
+  },
+  "physical_examination": {
+    "observation": {
+      "posture_standing": "Slight flattening of lumbar lordosis, guarded standing posture",
+      "posture_sitting": "Tends to slump, shifts frequently",
+      "movement_quality": "Moves cautiously, protects back during position changes",
+      "facial_expression": "Grimacing during forward bending",
+      "gait": "Normal, slightly reduced arm swing, shortened stride"
+    },
+    "active_rom_lumbar": {
+      "flexion": {
+        "range": "50% of expected",
+        "pain": "Yes - central LBP 6/10 at end range",
+        "pattern": "Painful arc, deviation to left"
+      },
+      "extension": {
+        "range": "75% of expected",
+        "pain": "Mild - 3/10",
+        "pattern": "Limited but less painful than flexion"
+      },
+      "lateral_flexion_left": {
+        "range": "Full",
+        "pain": "No"
+      },
+      "lateral_flexion_right": {
+        "range": "Slightly limited",
+        "pain": "Mild pulling sensation right LBP"
+      },
+      "rotation_left": {
+        "range": "Full",
+        "pain": "No"
+      },
+      "rotation_right": {
+        "range": "Full",
+        "pain": "Mild end-range"
+      }
+    },
+    "repeated_movements_mckenzie": {
+      "repeated_flexion_standing": {
+        "effect": "Pain increases, centralizes initially then peripheralizes with repetition",
+        "clinical_interpretation": "Flexion-intolerant pattern"
+      },
+      "repeated_extension_standing": {
+        "effect": "Pain decreases, centralizes after 10 repetitions",
+        "clinical_interpretation": "Extension appears to be directional preference"
+      },
+      "repeated_extension_lying": {
+        "effect": "Pain centralizes to midline, 2/10 after 10 reps",
+        "clinical_interpretation": "Confirms extension directional preference"
+      }
+    },
+    "neurological_screening": {
+      "myotomes": {
+        "L2_hip_flexion": "5/5 bilateral",
+        "L3_knee_extension": "5/5 bilateral",
+        "L4_ankle_dorsiflexion": "5/5 bilateral",
+        "L5_great_toe_extension": "5/5 bilateral",
+        "S1_ankle_plantarflexion": "5/5 bilateral"
+      },
+      "dermatomes": {
+        "L4": "Normal bilateral",
+        "L5": "Normal bilateral",
+        "S1": "Normal bilateral"
+      },
+      "reflexes": {
+        "patellar_L4": "2+ bilateral",
+        "achilles_S1": "2+ bilateral"
+      },
+      "slr": {
+        "left": "Negative at 80 degrees",
+        "right": "Hamstring tightness at 60 degrees, no radicular symptoms"
+      },
+      "clinical_reasoning_note": "No neurological deficits. SLR negative for radiculopathy. Buttock pain is likely referred pain from lumbar structures."
+    },
+    "palpation": {
+      "tenderness": "Moderate tenderness L4-L5 paraspinals bilateral, more right than left",
+      "muscle_tone": "Increased tone in erector spinae bilateral",
+      "trigger_points": "Latent trigger points in gluteus medius right",
+      "bony_tenderness": "None"
+    },
+    "special_tests": {
+      "prone_instability_test": "Negative",
+      "passive_lumbar_extension_test": "Negative",
+      "hip_flexor_length": "Positive for tightness bilateral (Thomas test)",
+      "hip_rotation": "Internal rotation limited to 25 degrees bilateral (normal 35-45)"
+    },
+    "functional_tests": {
+      "sit_to_stand": {
+        "observation": "Uses arms to push up, forward trunk lean, guarded",
+        "pain": "4/10"
+      },
+      "picking_up_object_from_floor": {
+        "observation": "Avoids bending, squats stiffly with excessive caution",
+        "pain": "5/10 - anticipatory guarding"
+      },
+      "sustained_sitting_3_min": {
+        "observation": "Starts to shift and fidget after 90 seconds",
+        "pain": "Increases from 3/10 to 5/10"
+      }
+    },
+    "outcome_measures": {
+      "nprs": {
+        "current": 5,
+        "worst_past_week": 8,
+        "best_past_week": 3
+      },
+      "oswestry_disability_index": {
+        "score": 42,
+        "interpretation": "Moderate disability",
+        "sections_most_affected": ["Sitting", "Lifting", "Standing", "Social life"]
+      },
+      "patient_specific_functional_scale": {
+        "activity_1": {"activity": "Sitting at work for 2 hours", "baseline_score": 3},
+        "activity_2": {"activity": "Picking up my children", "baseline_score": 2},
+        "activity_3": {"activity": "Playing tennis", "baseline_score": 1}
+      },
+      "tampa_scale_kinesiophobia": {
+        "score": 44,
+        "interpretation": "High kinesiophobia (cutoff 37)",
+        "clinical_implication": "Fear-avoidance behavior is significant barrier to recovery"
+      }
+    }
+  },
+  "icf_mapping": {
+    "body_functions": [
+      {
+        "code": "b28013",
+        "description": "Pain in back",
+        "qualifier": 2,
+        "qualifier_description": "Moderate problem"
+      },
+      {
+        "code": "b7101",
+        "description": "Mobility of several joints (lumbar spine)",
+        "qualifier": 2,
+        "qualifier_description": "Moderate problem"
+      },
+      {
+        "code": "b730",
+        "description": "Muscle power functions (core stability)",
+        "qualifier": 1,
+        "qualifier_description": "Mild problem - suspected but needs assessment"
+      },
+      {
+        "code": "b134",
+        "description": "Sleep functions",
+        "qualifier": 1,
+        "qualifier_description": "Mild problem - disturbed 1-2x/night"
+      },
+      {
+        "code": "b152",
+        "description": "Emotional functions (fear, worry)",
+        "qualifier": 2,
+        "qualifier_description": "Moderate problem"
+      }
+    ],
+    "activity_limitations": [
+      {
+        "code": "d4100",
+        "description": "Lying down (position changes in bed)",
+        "qualifier": 1,
+        "qualifier_description": "Mild problem"
+      },
+      {
+        "code": "d4103",
+        "description": "Sitting (prolonged)",
+        "qualifier": 3,
+        "qualifier_description": "Severe problem"
+      },
+      {
+        "code": "d4105",
+        "description": "Bending",
+        "qualifier": 3,
+        "qualifier_description": "Severe problem"
+      },
+      {
+        "code": "d430",
+        "description": "Lifting and carrying objects",
+        "qualifier": 3,
+        "qualifier_description": "Severe problem"
+      },
+      {
+        "code": "d4500",
+        "description": "Walking short distances",
+        "qualifier": 0,
+        "qualifier_description": "No problem"
+      },
+      {
+        "code": "d4501",
+        "description": "Walking long distances",
+        "qualifier": 1,
+        "qualifier_description": "Mild problem"
+      }
+    ],
+    "participation_restrictions": [
+      {
+        "code": "d850",
+        "description": "Remunerative employment (work participation)",
+        "qualifier": 2,
+        "qualifier_description": "Moderate problem - reduced concentration, discomfort"
+      },
+      {
+        "code": "d920",
+        "description": "Recreation and leisure (tennis, cycling)",
+        "qualifier": 3,
+        "qualifier_description": "Severe problem - completely stopped"
+      },
+      {
+        "code": "d660",
+        "description": "Assisting others (caring for children)",
+        "qualifier": 3,
+        "qualifier_description": "Severe problem - afraid to lift children"
+      }
+    ],
+    "environmental_factors": [
+      {
+        "code": "e1101",
+        "description": "Drugs/medication",
+        "qualifier": "+1",
+        "qualifier_description": "Mild facilitator - NSAIDs provide some relief"
+      },
+      {
+        "code": "e310",
+        "description": "Immediate family",
+        "qualifier": "+3",
+        "qualifier_description": "Substantial facilitator - supportive wife"
+      },
+      {
+        "code": "e1350",
+        "description": "General products for work/employment",
+        "qualifier": "-2",
+        "qualifier_description": "Moderate barrier - non-ergonomic workstation"
+      }
+    ],
+    "personal_factors": {
+      "fear_avoidance_beliefs": "High - significant barrier to recovery",
+      "catastrophizing": "Moderate - 'like my father who needed surgery'",
+      "self_efficacy": "Low for managing back pain",
+      "previous_experience": "Positive - previous episode resolved with PT",
+      "motivation": "High - wants to return to sport and family activities",
+      "coping_style": "Currently passive, but amenable to active approach"
+    }
+  },
+  "clinical_reasoning_pathway": {
+    "hypothesis_generation": {
+      "working_hypotheses": [
+        {
+          "hypothesis": "Non-specific low back pain with flexion-intolerant pattern",
+          "supporting_evidence": [
+            "No red flags",
+            "Pain with forward bending",
+            "Relief with extension",
+            "Repeated extension centralizes pain"
+          ],
+          "probability": "High"
+        },
+        {
+          "hypothesis": "Lumbar disc involvement (not herniation with radiculopathy)",
+          "supporting_evidence": [
+            "Flexion-intolerant pattern",
+            "Extension directional preference",
+            "Buttock referral (can occur with disc)"
+          ],
+          "against": [
+            "No neurological deficits",
+            "SLR negative",
+            "No progressive symptoms"
+          ],
+          "probability": "Medium - possible disc bulge but no indication for imaging"
+        },
+        {
+          "hypothesis": "Fear-avoidance as primary perpetuating factor",
+          "supporting_evidence": [
+            "TSK 44 (high)",
+            "Stopped all physical activity",
+            "Family history creating fear",
+            "Avoidance of lifting children"
+          ],
+          "probability": "High"
+        }
+      ],
+      "excluded_hypotheses": [
+        {
+          "hypothesis": "Lumbar radiculopathy",
+          "reason": "Negative SLR, no dermatomal pattern, no myotomal weakness, no reflex changes"
+        },
+        {
+          "hypothesis": "Serious spinal pathology",
+          "reason": "No red flags present"
+        },
+        {
+          "hypothesis": "Sacroiliac joint dysfunction",
+          "reason": "No SI joint provocation tests performed yet, but pain pattern more consistent with lumbar origin"
+        }
+      ]
+    },
+    "key_clinical_reasoning_questions": [
+      {
+        "question": "Why has this episode persisted beyond the typical 6-week recovery?",
+        "answer": "Psychosocial factors (fear-avoidance, catastrophizing) and behavioral factors (stopped all activity, passive coping) are likely perpetuating factors."
+      },
+      {
+        "question": "What is the relationship between the tissue pathology and the disability?",
+        "answer": "The disability (unable to work comfortably, no sport, can't lift children) is disproportionate to the tissue findings. Fear-avoidance is amplifying functional limitations."
+      },
+      {
+        "question": "Is imaging indicated?",
+        "answer": "No - per KNGF guideline, imaging not indicated for non-specific LBP without red flags. Would reinforce illness beliefs."
+      }
+    ]
+  },
+  "problem_statements": {
+    "hoac_format": true,
+    "problems": [
+      {
+        "problem_number": 1,
+        "activity_limitation": "Unable to sit for >30 minutes without significant increase in back pain (3/10 to 6/10)",
+        "underlying_impairments": [
+          "Decreased lumbar flexion mobility",
+          "Poor sitting posture endurance",
+          "Pain with sustained flexion loading"
+        ],
+        "participation_impact": "Limits work productivity and concentration at desk job"
+      },
+      {
+        "problem_number": 2,
+        "activity_limitation": "Unable to bend and lift objects >5kg from floor",
+        "underlying_impairments": [
+          "Pain with forward bending",
+          "Fear of movement (kinesiophobia)",
+          "Potential core stability deficit (hypothesis)"
+        ],
+        "participation_impact": "Cannot lift children, cannot perform household tasks"
+      },
+      {
+        "problem_number": 3,
+        "activity_limitation": "Not participating in any physical activity (tennis, cycling)",
+        "underlying_impairments": [
+          "High kinesiophobia (TSK 44)",
+          "Fear of reinjury",
+          "Catastrophizing about disc herniation"
+        ],
+        "participation_impact": "Loss of recreation, reduced quality of life, family activities affected"
+      }
+    ]
+  },
+  "goals": {
+    "smart_format": true,
+    "long_term_goal": {
+      "timeframe": "8 weeks",
+      "goal": "Return to full participation in work and leisure activities including tennis and cycling with family, with manageable or minimal back pain (NPRS ≤2/10)",
+      "outcome_measures": ["ODI ≤20%", "PSFS all items ≥8/10", "TSK <37"]
+    },
+    "short_term_goals": [
+      {
+        "goal_number": 1,
+        "timeframe": "2 weeks",
+        "goal": "Sit at work desk for 60 minutes with pain ≤3/10, using microbreaks and posture strategies",
+        "linked_to_problem": 1,
+        "outcome_measure": "PSFS sitting activity, pain diary"
+      },
+      {
+        "goal_number": 2,
+        "timeframe": "2 weeks",
+        "goal": "Perform 10 prone press-ups 3x daily with pain centralizing and reducing to ≤2/10",
+        "linked_to_problem": 1,
+        "outcome_measure": "Home exercise diary, pain response"
+      },
+      {
+        "goal_number": 3,
+        "timeframe": "4 weeks",
+        "goal": "Lift 10kg box from floor using proper mechanics with confidence and pain ≤3/10",
+        "linked_to_problem": 2,
+        "outcome_measure": "Functional lifting test, PSFS lifting activity"
+      },
+      {
+        "goal_number": 4,
+        "timeframe": "4 weeks",
+        "goal": "Resume cycling with family for 30 minutes, pain ≤3/10",
+        "linked_to_problem": 3,
+        "outcome_measure": "Activity diary, PSFS"
+      },
+      {
+        "goal_number": 5,
+        "timeframe": "6 weeks",
+        "goal": "TSK score reduced to <40 (from 44)",
+        "linked_to_problem": 3,
+        "outcome_measure": "Tampa Scale re-assessment"
+      },
+      {
+        "goal_number": 6,
+        "timeframe": "8 weeks",
+        "goal": "Return to tennis with appropriate warm-up, playing at 80% intensity with pain ≤2/10",
+        "linked_to_problem": 3,
+        "outcome_measure": "PSFS tennis activity, patient report"
+      }
+    ]
+  },
+  "intervention_plan": {
+    "treatment_approach": "Biopsychosocial, active approach with focus on education, fear-avoidance reduction, and graded activity",
+    "kngf_guideline_alignment": "Active interventions, patient education, no passive modalities for non-specific LBP",
+    "interventions": [
+      {
+        "category": "Education/Reassurance",
+        "intervention": "Pain neuroscience education and reassurance",
+        "rationale": "Address catastrophizing and fear-avoidance. Explain non-specific LBP, good prognosis, that hurt ≠ harm",
+        "dosage": "20 min session 1, reinforcement ongoing",
+        "evidence_level": "Strong (KNGF guideline)",
+        "key_messages": [
+          "Your back is strong, not fragile",
+          "Pain does not equal damage",
+          "Your father's situation was different - you don't have the same condition",
+          "Movement is medicine - avoiding activity makes things worse",
+          "Imaging wouldn't change our approach and might increase worry"
+        ]
+      },
+      {
+        "category": "Directional preference exercises",
+        "intervention": "Prone press-ups (McKenzie extension)",
+        "rationale": "Extension centralized pain on examination. Directional preference for extension.",
+        "dosage": "10 reps every 2-3 hours, especially before and after prolonged sitting",
+        "evidence_level": "Moderate - for patients with directional preference",
+        "progression": "Progress to standing extension when able to maintain neutral spine"
+      },
+      {
+        "category": "Motor control/core stability",
+        "intervention": "Graded core stability training",
+        "rationale": "Address hypothesized core stability deficit, build confidence in spine loading",
+        "dosage": "Start with low-load (dead bug, bird-dog), progress to functional loading",
+        "evidence_level": "Moderate",
+        "progression": "Dead bug → Bird dog → Plank → Loaded movements"
+      },
+      {
+        "category": "Graded activity/exercise",
+        "intervention": "Progressive walking program",
+        "rationale": "Walking is pain-free and builds confidence. Start successful exercise habit.",
+        "dosage": "Start 15 min daily, increase 5 min/week to 30-45 min",
+        "evidence_level": "Strong",
+        "progression": "Walking → Cycling → Tennis (gradual return)"
+      },
+      {
+        "category": "Graded exposure",
+        "intervention": "Graded lifting exposure",
+        "rationale": "Address kinesiophobia around lifting. Build confidence through successful experiences.",
+        "dosage": "Start with light objects (2kg), practice proper mechanics, progressive loading",
+        "evidence_level": "Moderate for fear-avoidant patients",
+        "progression": "2kg object from table → 5kg from low surface → 10kg from floor → lifting children"
+      },
+      {
+        "category": "Workplace modifications",
+        "intervention": "Ergonomic advice and microbreak strategy",
+        "rationale": "Reduce sustained flexion loading at work, implement movement breaks",
+        "dosage": "Microbreaks every 30 min (standing, walking, extension), workstation review",
+        "evidence_level": "Moderate"
+      }
+    ],
+    "plan_of_care": {
+      "frequency": "2x/week for first 2 weeks, then 1x/week for 4 weeks, then 2-weekly for final 4 weeks",
+      "total_sessions": "10-12 sessions over 8-10 weeks",
+      "home_exercise_program": "Daily - press-ups, core exercises, walking",
+      "reassessment_schedule": "Week 2, Week 4, Week 8 (formal outcome measures)"
+    }
+  },
+  "reasoning_traps_for_this_case": [
+    {
+      "trap": "Over-focusing on tissue pathology",
+      "description": "Spending too much time trying to identify exact tissue source rather than addressing modifiable factors",
+      "coaching_response": "You've done a thorough physical exam. What modifiable factors (physical AND psychosocial) can you address that will help this patient return to function?"
+    },
+    {
+      "trap": "Ordering imaging",
+      "description": "Recommending MRI to 'rule out disc herniation' despite no red flags",
+      "coaching_response": "According to the KNGF guideline, when is imaging indicated for low back pain? What might be the unintended consequences of imaging in a patient with high fear-avoidance?"
+    },
+    {
+      "trap": "Ignoring yellow flags",
+      "description": "Treating this as purely biomechanical problem without addressing fear-avoidance",
+      "coaching_response": "This patient's TSK is 44 and he's stopped all activity. How might his beliefs about his back be perpetuating his pain and disability?"
+    },
+    {
+      "trap": "Passive treatment approach",
+      "description": "Prescribing manual therapy, electrotherapy, or other passive modalities",
+      "coaching_response": "What does the KNGF guideline say about passive treatments for non-specific LBP? How might passive treatment affect this patient's beliefs about his back?"
+    },
+    {
+      "trap": "Setting impairment-focused goals",
+      "description": "Setting goals like 'improve lumbar flexion ROM' rather than functional goals",
+      "coaching_response": "Your goal focuses on an impairment. What activity or participation does the patient want to achieve? Can you reframe this as a functional goal?"
+    },
+    {
+      "trap": "Excessive activity restrictions",
+      "description": "Advising patient to continue avoiding lifting, tennis, etc. 'until pain-free'",
+      "coaching_response": "How might advising continued activity avoidance reinforce his fear-avoidance beliefs? What would a graded return to activity look like?"
+    }
+  ],
+  "session_progression": {
+    "session_1": {
+      "focus": "Assessment, reassurance, education, initial exercises",
+      "activities": [
+        "Complete subjective and objective examination",
+        "Red and yellow flag screening",
+        "Provide reassurance - no serious pathology",
+        "Pain neuroscience education (basic)",
+        "Teach press-ups",
+        "Discuss graded activity plan"
+      ],
+      "homework": "Press-ups 10x every 2-3 hours, walking 15 min daily, posture breaks at work"
+    },
+    "session_2": {
+      "focus": "Review, education reinforcement, progress exercises",
+      "activities": [
+        "Review home exercise performance",
+        "Assess pain response to exercises",
+        "Reinforce education - hurt ≠ harm",
+        "Add core stability exercises (dead bug)",
+        "Discuss workstation ergonomics"
+      ],
+      "expected_progress": "Able to sit 45-60 min with strategy use, pain centralizing with press-ups"
+    },
+    "session_4": {
+      "focus": "Progress to functional activities, address fear of lifting",
+      "activities": [
+        "Reassess outcome measures (NPRS, ODI, PSFS)",
+        "Begin graded lifting exposure",
+        "Discuss return to cycling plan",
+        "Progress core exercises"
+      ],
+      "expected_progress": "ODI improved 10-15 points, PSFS sitting improved, TSK showing improvement"
+    },
+    "session_8": {
+      "focus": "Return to sport planning, discharge planning",
+      "activities": [
+        "Final outcome measures",
+        "Tennis-specific preparation",
+        "Self-management strategies review",
+        "Flare-up plan discussion",
+        "Discharge recommendations"
+      ],
+      "expected_outcomes": "ODI <20%, PSFS all items >7, TSK <40, returned to cycling, ready for tennis"
+    }
+  },
+  "coaching_questions_by_hoac_step": {
+    "step_1_data_collection": [
+      "What red flags did you screen for? Were any present?",
+      "What yellow flags did you identify? Why are these important?",
+      "How would you describe the patient's pain pattern (irritability, stage, nature)?",
+      "What information from the subjective exam influenced your physical examination choices?"
+    ],
+    "step_2_problem_statements": [
+      "Can you state the problem in terms of activity limitation first, then link to impairments?",
+      "How is the sitting limitation affecting his participation at work?",
+      "Is 'fear of movement' an impairment or something else? How do you classify it?",
+      "You've listed pain as a problem. How does pain CAUSE the activity limitations you've identified?"
+    ],
+    "step_3_goal_setting": [
+      "Is this goal written at the activity/participation level or impairment level?",
+      "Does this goal address what the PATIENT wants to achieve?",
+      "How will you measure if this goal has been achieved?",
+      "Is this goal realistic given the patient's current status and yellow flags?"
+    ],
+    "step_4_intervention_selection": [
+      "What is your evidence for choosing this intervention?",
+      "Does the KNGF guideline support this intervention for non-specific LBP?",
+      "How does this intervention address the fear-avoidance component?",
+      "Is this an active or passive intervention? What do guidelines recommend?"
+    ],
+    "step_7_reevaluation": [
+      "How will you know if treatment is working?",
+      "What outcome measures will you use to track progress?",
+      "If the patient isn't progressing as expected, what factors would you reassess?",
+      "When would you consider referring to another discipline?"
+    ]
+  }
+}
