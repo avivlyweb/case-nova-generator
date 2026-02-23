@@ -13,7 +13,8 @@ interface CaseStudy {
 export async function generateClinicalReasoning(
   groq: Groq,
   caseStudy: CaseStudy,
-  queryEmbedding: any
+  queryEmbedding: number[],
+  model = "llama-3.1-8b-instant"
 ) {
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL');
@@ -102,7 +103,7 @@ Ensure to:
           content: prompt
         }
       ],
-      model: "llama-3.1-8b-instant",
+      model,
       temperature: 0.7,
       max_tokens: 2000,
     });

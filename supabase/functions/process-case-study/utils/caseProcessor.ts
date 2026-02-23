@@ -6,138 +6,453 @@ import { generateClinicalReasoning } from './clinicalReasoningGenerator.ts';
 import { pubmedService } from './pubmedService.ts';
 import { Groq } from 'npm:groq-sdk';
 
-async function generateComprehensiveFields(
-  groq: Groq,
-  caseStudy: CaseStudy,
-  entities: any,
-  pubmedReferences: PubMedArticle[]
-): Promise<Partial<ProcessedCaseStudy>> {
-  const prompts = {
-    treatment_progression: `Generate a detailed treatment progression plan for this case. Include:
-      - Short-term and long-term goals
-      - Specific interventions and their progression
-      - Expected outcomes and how to measure them
-      - Adjustment criteria based on patient response`,
-      
-    evidence_based_context: `Provide an evidence-based context for this case, including:
-      - Relevant research findings
-      - Clinical practice guidelines
-      - Best practices in the field
-      - Strength of evidence for recommended interventions`,
-      
-    outcome_measures_data: `List and describe the outcome measures that should be used to track progress, including:
-      - Specific assessment tools
-      - Frequency of assessment
-      - Interpretation of results
-      - How results will guide treatment`,
-      
-    clinical_decision_points: `Identify key clinical decision points in the treatment plan, including:
-      - When to progress or regress interventions
-      - Red flags to watch for
-      - When to refer to other specialists
-      - Criteria for discharge`,
-      
-    diagnostic_reasoning: `Detail the diagnostic reasoning process, including:
-      - Differential diagnosis
-      - Clinical findings that support the diagnosis
-      - Ruling out other potential conditions
-      - Any diagnostic tests that were or should be performed`,
-      
-    problem_prioritization: `Prioritize the patient's problems and explain the rationale, considering:
-      - Immediate vs. long-term needs
-      - Patient's goals and preferences
-      - Clinical urgency
-      - Potential for improvement`,
-      
-    intervention_rationale: `Provide a detailed rationale for the chosen interventions, including:
-      - Theoretical basis
-      - Expected mechanisms of action
-      - Evidence supporting effectiveness
-      - How it addresses the patient's specific needs`,
-      
-    reassessment_rationale: `Explain the reassessment strategy, including:
-      - What will be reassessed and when
-      - How reassessment will inform treatment decisions
-      - Criteria for modifying the treatment plan
-      - Expected timeline for seeing results`,
-      
-    treatment_approach: `Describe the overall treatment approach, including:
-      - Therapeutic techniques and modalities
-      - Patient education components
-      - Home exercise program
-      - Frequency and duration of treatment`
-  };
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
 
-  const result: Partial<ProcessedCaseStudy> = {};
-  
-  // Generate each field using the appropriate prompt
-  for (const [field, prompt] of Object.entries(prompts)) {
-    try {
-      // Format PubMed references for inclusion in prompt
-      const referencesText = pubmedReferences.length > 0 
-        ? `\n\nEvidence-Based References:\n${pubmedReferences.map(ref => 
-            `- ${ref.title} (${ref.evidenceLevel})\n  Authors: ${ref.authors.join(', ')}\n  Journal: ${ref.journal}\n  Abstract: ${ref.abstract.substring(0, 200)}...\n  Citation: ${ref.citation}`
-          ).join('\n\n')}`
-        : '\n\nNo specific references found for this case.';
-
-      const completion = await groq.chat.completions.create({
-        messages: [
-          {
-            role: "system",
-            content: `You are an expert physiotherapist creating a comprehensive case study. Use the provided evidence-based references to support your recommendations and cite them appropriately.`
-          },
-          {
-            role: "user",
-            content: `Case Information:
-${JSON.stringify({
-              name: caseStudy.patient_name,
-              age: caseStudy.age,
-              gender: caseStudy.gender,
-              condition: caseStudy.condition,
-              complaint: caseStudy.presenting_complaint,
-              background: caseStudy.patient_background,
-              adl_problem: caseStudy.adl_problem,
-              psychosocial_factors: caseStudy.psychosocial_factors
-            }, null, 2)}
-
-            Medical Entities:
-            ${JSON.stringify(entities, null, 2)}
-
-            ${referencesText}
-
-            ${prompt}
-
-            Please reference the provided evidence-based literature where appropriate and include proper citations.`
-          }
-        ],
-        model: "llama-3.1-8b-instant",
-        temperature: 0.7,
-        max_tokens: 1000,
-      });
-
-      const content = completion.choices[0]?.message?.content || '';
-      // Type assertion to handle the dynamic field assignment
-      (result as any)[field] = content;
-    } catch (error) {
-      console.error(`Error generating ${field}:`, error);
-      // Type assertion to handle the dynamic field assignment
-      (result as any)[field] = '';
-    }
-  }
-
-  return result;
-}
+const DEFAULT_MODEL = 'llama-3.1-8b-instant';
+const SUPPORTED_MODELS = [
+  'llama-3.1-8b-instant',
+  'llama-3.3-70b-versatile',
+  'groq/compound',
+  'groq/compound-mini',
+];
 
 const MAX_PROMPT_LENGTH = 4000;
 
-// Create a default embedding vector
-const createDefaultEmbedding = () => {
-  // Initialize a 384-dimensional vector with zeros (standard dimension for text embeddings)
-  return Array(384).fill(0);
+const createDefaultEmbedding = () => Array(384).fill(0);
+
+type MedicalEntities = Record<string, unknown>;
+
+interface SpecializationContext {
+  context?: string;
+  commonAssessments?: string[];
+}
+
+const getErrorMessage = (error: unknown): string => {
+  if (error instanceof Error) return error.message;
+  return String(error);
 };
 
-export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'generate' = 'generate', generateFullCase: boolean = false) {
-  console.log('Processing case study:', caseStudy.id);
+const isObject = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null;
+
+/** Compact patient context string used in several prompts */
+function patientSummary(cs: CaseStudy): string {
+  return [
+    `Patient: ${cs.patient_name}, ${cs.age}yo ${cs.gender}`,
+    `Condition: ${cs.condition || 'Not specified'}`,
+    `Complaint: ${cs.presenting_complaint || 'Not specified'}`,
+    `Background: ${cs.patient_background || 'Not specified'}`,
+    `ADL Problem: ${cs.adl_problem || 'Not specified'}`,
+    `Medical History: ${cs.medical_history || 'Not specified'}`,
+    `Comorbidities: ${cs.comorbidities || 'None reported'}`,
+    `Psychosocial: ${cs.psychosocial_factors || 'Not specified'}`,
+  ].join('\n');
+}
+
+/** Short reference list for embedding in prompts */
+function formatRefsShort(refs: PubMedArticle[]): string {
+  if (refs.length === 0) return 'No specific references found.';
+  return refs
+    .map(r => `- ${r.title} (${r.evidenceLevel}). ${r.journal}.`)
+    .join('\n');
+}
+
+// ---------------------------------------------------------------------------
+// Parallel section generation
+// ---------------------------------------------------------------------------
+
+async function generateSingleSection(
+  groq: Groq,
+  section: { title: string; description: string },
+  caseStudy: CaseStudy,
+  entities: MedicalEntities,
+  specializationContext: SpecializationContext | undefined,
+  pubmedReferences: PubMedArticle[],
+  model: string,
+  maxTokens: number
+): Promise<Section> {
+  const referencesText = formatRefsShort(pubmedReferences);
+
+  const prompt = `You are an expert ${caseStudy.specialization} physiotherapist creating a comprehensive case study section.
+
+${caseStudy.ai_role || ''}
+
+Generate the "${section.title}" section for this physiotherapy case study following the exact structure and format specified below.
+
+SECTION REQUIREMENTS:
+${section.description}
+
+PATIENT INFORMATION:
+${patientSummary(caseStudy)}
+
+SPECIALIZATION CONTEXT (${caseStudy.specialization}):
+${specializationContext?.context || ''}
+
+Common Assessments: ${specializationContext?.commonAssessments?.join(', ') || 'Standard physiotherapy assessments'}
+
+MEDICAL ENTITIES IDENTIFIED:
+${JSON.stringify(entities, null, 1)}
+
+Evidence-Based References:
+${referencesText}
+
+CRITICAL REQUIREMENTS:
+1. Follow the EXACT structure specified in the section requirements
+2. Use specific measurements with normal ranges (e.g., "ROM: 90° (NL: 110-130°)")
+3. Include standardized assessment scores with interpretations
+4. Reference evidence levels (Grade A, B, C or Level I-V)
+5. Use clinical terminology appropriate for ${caseStudy.specialization}
+6. Include specific numerical values, dates, and measurements
+7. Create detailed tables when specified using markdown format
+8. Provide comprehensive clinical reasoning
+9. Make this section detailed and professional (aim for 400-600 words)
+10. Include specific examples relevant to this patient's condition
+11. Cite the provided evidence-based references where appropriate
+
+Generate a comprehensive, detailed section.`;
+
+  const completion = await groq.chat.completions.create({
+    messages: [
+      {
+        role: "system",
+        content: `You are an expert ${caseStudy.specialization} physiotherapist creating detailed, evidence-based case study sections.`
+      },
+      { role: "user", content: prompt }
+    ],
+    model,
+    temperature: 0.7,
+    max_tokens: maxTokens,
+  });
+
+  return {
+    title: section.title,
+    content: completion.choices[0]?.message?.content || ''
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Groq call with retry logic for rate limiting
+// ---------------------------------------------------------------------------
+
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+async function groqWithRetry(
+  groq: Groq,
+  messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }>,
+  model: string,
+  options: { max_tokens: number; temperature?: number },
+  maxRetries = 3
+): Promise<string> {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      const completion = await groq.chat.completions.create({
+        messages,
+        model,
+        temperature: options.temperature ?? 0.7,
+        max_tokens: options.max_tokens,
+      });
+      return completion.choices[0]?.message?.content || '';
+    } catch (error: unknown) {
+      const status = isObject(error) ? error.status : undefined;
+      const message = getErrorMessage(error).toLowerCase();
+      const isRateLimit = status === 429 ||
+        message.includes('rate_limit') ||
+        message.includes('rate limit');
+      if (isRateLimit && attempt < maxRetries - 1) {
+        const backoff = (attempt + 1) * 2000; // 2s, 4s, 6s
+        console.warn(`Rate limited on attempt ${attempt + 1}, retrying in ${backoff}ms...`);
+        await delay(backoff);
+        continue;
+      }
+      throw error;
+    }
+  }
+  return '';
+}
+
+// ---------------------------------------------------------------------------
+// ALL supplementary fields in ONE consolidated Groq call (14 fields total)
+// Merges what was previously two separate calls to reduce rate limit pressure.
+// ---------------------------------------------------------------------------
+
+interface AllFields {
+  // Comprehensive fields (9)
+  treatment_progression: string;
+  evidence_based_context: string;
+  outcome_measures_data: string;
+  clinical_decision_points: string;
+  diagnostic_reasoning: string;
+  problem_prioritization: string;
+  intervention_rationale: string;
+  reassessment_rationale: string;
+  treatment_approach: string;
+  // Additional fields (5)
+  icf_codes: string;
+  assessment_findings: string;
+  intervention_plan: string;
+  clinical_guidelines: string;
+  evidence_levels: string;
+}
+
+const ALL_FIELDS_DEFAULTS: AllFields = {
+  treatment_progression: '',
+  evidence_based_context: '',
+  outcome_measures_data: '',
+  clinical_decision_points: '',
+  diagnostic_reasoning: '',
+  problem_prioritization: '',
+  intervention_rationale: '',
+  reassessment_rationale: '',
+  treatment_approach: '',
+  icf_codes: '',
+  assessment_findings: '',
+  intervention_plan: '',
+  clinical_guidelines: '',
+  evidence_levels: '',
+};
+
+async function generateAllFields(
+  groq: Groq,
+  caseStudy: CaseStudy,
+  entities: MedicalEntities,
+  pubmedReferences: PubMedArticle[],
+  model: string
+): Promise<AllFields> {
+  const consolidatedPrompt = `You are an expert physiotherapist. Generate ALL 14 sections below for this case.
+
+${patientSummary(caseStudy)}
+
+Key Entities: ${JSON.stringify(entities, null, 1)}
+References: ${formatRefsShort(pubmedReferences)}
+
+Return ONLY a valid JSON object with these 14 keys. Each value: detailed markdown string (100-200 words).
+
+{
+  "treatment_progression": "Treatment progression plan with short/long-term goals, interventions, outcomes, adjustment criteria",
+  "evidence_based_context": "Evidence-based context with research findings, guidelines, best practices",
+  "outcome_measures_data": "Outcome measures: assessment tools, frequency, interpretation",
+  "clinical_decision_points": "Key decision points: when to progress/regress, red flags, referral criteria",
+  "diagnostic_reasoning": "Diagnostic reasoning: differential diagnosis, supporting findings",
+  "problem_prioritization": "Problem prioritization: immediate vs long-term, patient goals, urgency",
+  "intervention_rationale": "Intervention rationale: theoretical basis, mechanisms, evidence",
+  "reassessment_rationale": "Reassessment strategy: what/when, modification criteria, timeline",
+  "treatment_approach": "Treatment approach: techniques, modalities, patient education, home program",
+  "icf_codes": "ICF codes with descriptions (b### body functions, d### activities, s### structures, e### environment)",
+  "assessment_findings": "Specific assessment scores and findings with normal ranges",
+  "intervention_plan": "Detailed intervention plan with specific interventions and progression",
+  "clinical_guidelines": "Relevant clinical practice guidelines with recommendations",
+  "evidence_levels": "Evidence levels (Grade A/B/C, Level I-V) supporting treatment decisions"
+}
+
+Return ONLY the JSON object. No markdown fences, no explanation.`;
+
+  try {
+    console.log('generateAllFields: calling groqWithRetry...');
+    const responseText = await groqWithRetry(groq, [
+      { role: "system", content: "You are an expert physiotherapist. Return ONLY valid JSON. No markdown code fences." },
+      { role: "user", content: consolidatedPrompt }
+    ], model, { max_tokens: 4000 });
+
+    console.log(`generateAllFields response length: ${responseText.length}`);
+    if (responseText.length > 0) {
+      console.log(`generateAllFields first 200 chars: ${responseText.substring(0, 200)}`);
+    }
+
+    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      try {
+        const parsed = JSON.parse(jsonMatch[0]);
+        const result: AllFields = { ...ALL_FIELDS_DEFAULTS };
+        if (isObject(parsed)) {
+          for (const key of Object.keys(ALL_FIELDS_DEFAULTS) as (keyof AllFields)[]) {
+            const value = parsed[key];
+            if (typeof value === 'string') {
+              result[key] = value;
+            }
+          }
+        }
+        const filledCount = Object.values(result).filter(v => v).length;
+        console.log(`generateAllFields: ${filledCount}/14 fields populated`);
+        return result;
+      } catch (parseErr) {
+        console.error('generateAllFields: JSON parse error:', parseErr);
+        console.error('generateAllFields: matched text first 500 chars:', jsonMatch[0].substring(0, 500));
+      }
+    } else {
+      console.error('generateAllFields: No JSON match found in response of length', responseText.length);
+    }
+  } catch (error: unknown) {
+    const errorObj = isObject(error) ? error : {};
+    console.error('generateAllFields ERROR:', getErrorMessage(error));
+    console.error('generateAllFields error status:', errorObj.status);
+    console.error('generateAllFields error type:', errorObj.constructor?.name);
+  }
+  return { ...ALL_FIELDS_DEFAULTS };
+}
+
+// ---------------------------------------------------------------------------
+// Additional case data (full case only) — 2 Groq calls in PARALLEL
+// ---------------------------------------------------------------------------
+
+async function generateAdditionalCaseData(groq: Groq, caseStudy: CaseStudy, entities: MedicalEntities, model: string) {
+  console.log('Generating additional comprehensive case data...');
+
+  try {
+    const guidelinesPrompt = `Generate specific clinical guidelines for ${caseStudy.condition} in ${caseStudy.specialization} physiotherapy.
+    Format as a structured list including:
+    - Guideline name and source
+    - Key recommendations with evidence levels
+    - Specific intervention protocols
+    - Outcome measures recommended
+    Focus on evidence-based guidelines from professional organizations.`;
+
+    const assessmentPrompt = `Generate a comprehensive list of assessment tools for ${caseStudy.condition} in ${caseStudy.specialization}.
+    For each tool include:
+    - Tool name and acronym
+    - Scoring method and range
+    - Reliability and validity evidence
+    - Clinical interpretation guidelines
+    - Recommended frequency of use
+    Include both condition-specific and general functional assessments.`;
+
+    // Run BOTH Groq calls in parallel instead of sequentially
+    const [guidelinesCompletion, assessmentCompletion] = await Promise.all([
+      groq.chat.completions.create({
+        messages: [
+          { role: "system", content: "You are a clinical guidelines expert specializing in evidence-based physiotherapy practice." },
+          { role: "user", content: guidelinesPrompt }
+        ],
+        model,
+        temperature: 0.3,
+        max_tokens: 1500,
+      }),
+      groq.chat.completions.create({
+        messages: [
+          { role: "system", content: "You are an assessment and outcome measurement specialist in physiotherapy." },
+          { role: "user", content: assessmentPrompt }
+        ],
+        model,
+        temperature: 0.3,
+        max_tokens: 1500,
+      })
+    ]);
+
+    return {
+      clinical_guidelines: [{
+        name: `${caseStudy.specialization} Guidelines for ${caseStudy.condition}`,
+        content: guidelinesCompletion.choices[0]?.message?.content || '',
+        evidence_level: "Grade A",
+        source: "Professional Association Guidelines"
+      }],
+      assessment_tools: [{
+        category: `${caseStudy.specialization} Assessment Tools`,
+        content: assessmentCompletion.choices[0]?.message?.content || '',
+        reliability: "High",
+        validity: "Established"
+      }],
+      evidence_levels: {
+        "Grade A": 3, "Grade B": 4, "Grade C": 2,
+        "Level I": 2, "Level II": 3, "Level III": 2
+      },
+      measurement_data: {
+        "Range of Motion": "Goniometry - Universal goniometer, digital inclinometer",
+        "Muscle Strength": "Manual Muscle Testing (0-5 scale), Hand-held dynamometry",
+        "Pain Assessment": "Visual Analog Scale (0-10), Numeric Pain Rating Scale",
+        "Functional Capacity": "Timed Up and Go, 6-Minute Walk Test, Berg Balance Scale",
+        "Quality of Life": "SF-36, EQ-5D-5L, condition-specific questionnaires"
+      },
+      professional_frameworks: {
+        "ICF Framework": {
+          description: "International Classification of Functioning, Disability and Health",
+          components: ["Body Functions", "Body Structures", "Activities", "Participation", "Environmental Factors"],
+          guidelines: "Use ICF codes to classify patient problems and track outcomes"
+        },
+        "Evidence-Based Practice": {
+          description: "Integration of best research evidence with clinical expertise and patient values",
+          components: ["Research Evidence", "Clinical Expertise", "Patient Preferences"],
+          guidelines: "Apply EBP principles in assessment and intervention selection"
+        }
+      },
+      standardized_tests: [
+        {
+          name: "Berg Balance Scale",
+          category: "Balance Assessment",
+          measurement_type: "Functional Balance",
+          normal_ranges: { "Low Risk": "45-56", "Moderate Risk": "21-44", "High Risk": "0-20" },
+          interpretation_guidelines: "Higher scores indicate better balance control"
+        },
+        {
+          name: "Timed Up and Go",
+          category: "Mobility Assessment",
+          measurement_type: "Functional Mobility",
+          normal_ranges: { "Normal": "<10 seconds", "Mild Impairment": "10-20 seconds", "Significant Impairment": ">20 seconds" },
+          interpretation_guidelines: "Shorter times indicate better mobility"
+        }
+      ]
+    };
+  } catch (error) {
+    console.error('Error generating additional case data:', error);
+    return {};
+  }
+}
+
+// ---------------------------------------------------------------------------
+// PubMed helpers
+// ---------------------------------------------------------------------------
+
+function getMockReferences(caseStudy: CaseStudy): PubMedArticle[] {
+  return [
+    {
+      id: "mock1",
+      title: `Evidence-based physiotherapy for ${caseStudy.condition || 'musculoskeletal conditions'}`,
+      abstract: `This systematic review examines the effectiveness of physiotherapy interventions for ${caseStudy.condition || 'musculoskeletal conditions'}. The study analyzed multiple randomized controlled trials and found significant improvements in pain reduction and functional outcomes with structured physiotherapy programs.`,
+      authors: ["Smith, J.", "Johnson, A.", "Williams, B."],
+      publicationDate: "2023-06-15",
+      journal: "Journal of Physiotherapy Research",
+      evidenceLevel: "Level I - Systematic Review/Meta-analysis",
+      url: "https://pubmed.ncbi.nlm.nih.gov/mock1/",
+      citation: "Smith, J., Johnson, A., & Williams, B. (2023). Evidence-based physiotherapy for musculoskeletal conditions. Journal of Physiotherapy Research."
+    },
+    {
+      id: "mock2",
+      title: `${caseStudy.specialization || 'Orthopedic'} physiotherapy: Clinical guidelines and best practices`,
+      abstract: `This clinical practice guideline provides evidence-based recommendations for ${caseStudy.specialization?.toLowerCase() || 'orthopedic'} physiotherapy interventions.`,
+      authors: ["Brown, C.", "Davis, M.", "Wilson, K."],
+      publicationDate: "2023-03-20",
+      journal: "Clinical Rehabilitation",
+      evidenceLevel: "Level II - Clinical Practice Guidelines",
+      url: "https://pubmed.ncbi.nlm.nih.gov/mock2/",
+      citation: "Brown, C., Davis, M., & Wilson, K. (2023). Orthopedic physiotherapy: Clinical guidelines and best practices. Clinical Rehabilitation."
+    },
+    {
+      id: "mock3",
+      title: `Outcome measures in ${caseStudy.specialization?.toLowerCase() || 'physiotherapy'}: A comprehensive review`,
+      abstract: `This review examines validated outcome measures commonly used in ${caseStudy.specialization?.toLowerCase() || 'physiotherapy'} practice.`,
+      authors: ["Taylor, R.", "Anderson, L.", "Thompson, S."],
+      publicationDate: "2022-11-10",
+      journal: "Physical Therapy Reviews",
+      evidenceLevel: "Level III - Systematic Review",
+      url: "https://pubmed.ncbi.nlm.nih.gov/mock3/",
+      citation: "Taylor, R., Anderson, L., & Thompson, S. (2022). Outcome measures in physiotherapy: A comprehensive review. Physical Therapy Reviews."
+    }
+  ];
+}
+
+// ---------------------------------------------------------------------------
+// Main entry — fully parallelized pipeline
+// ---------------------------------------------------------------------------
+
+export async function processCaseStudy(
+  caseStudy: CaseStudy,
+  action: 'analyze' | 'generate' = 'generate',
+  generateFullCase: boolean = false,
+  model: string = DEFAULT_MODEL
+): Promise<ProcessedCaseStudy | { analysis?: string; medical_entities: MedicalEntities }> {
+  const resolvedModel = SUPPORTED_MODELS.includes(model) ? model : DEFAULT_MODEL;
+  console.log(`Processing case study: ${caseStudy.id} | model: ${resolvedModel} | action: ${action}`);
+
   const groq = new Groq({
     apiKey: Deno.env.get('GROQ_API_KEY') || '',
   });
@@ -152,22 +467,26 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       caseStudy.adl_problem
     ].filter(Boolean).join(' ').slice(0, MAX_PROMPT_LENGTH);
 
-    // Initialize embedding vector
     const queryEmbedding = createDefaultEmbedding();
-    console.log('Created default embedding vector');
-
-    // Get environment variables
     const supabaseUrl = Deno.env.get('SUPABASE_URL');
     const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY');
-    
+
     if (!supabaseUrl || !supabaseKey) {
       throw new Error('Missing required environment variables: SUPABASE_URL or SUPABASE_ANON_KEY');
     }
 
-    console.log('Calling biomedical-nlp function...');
-    
-    // Call biomedical-nlp function with proper URL
-    const biomedicalResponse = await fetch(
+    // -----------------------------------------------------------------------
+    // PHASE 1 — Run ALL independent operations in parallel:
+    //   1. Biomedical NLP (HTTP)
+    //   2. Entity extraction (Groq)
+    //   3. Clinical reasoning (Groq + Supabase RPC) — only for 'generate'
+    //   4. PubMed search (HTTP) — use condition/specialization/complaint only
+    // -----------------------------------------------------------------------
+    console.log('Phase 1: Starting parallel entity extraction, biomedical NLP, PubMed, and clinical reasoning...');
+
+    const phase1Start = Date.now();
+
+    const biomedicalPromise = fetch(
       `${supabaseUrl}/functions/v1/biomedical-nlp`,
       {
         method: 'POST',
@@ -175,156 +494,91 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
           'Authorization': `Bearer ${supabaseKey}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          text: textForAnalysis,
-          task: 'ner'
-        })
+        body: JSON.stringify({ text: textForAnalysis, task: 'ner' })
       }
-    );
+    ).then(async (res) => {
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('Biomedical NLP error:', errorText);
+        return { result: [] };
+      }
+      return res.json();
+    }).catch(err => {
+      console.error('Biomedical NLP failed:', err);
+      return { result: [] };
+    });
 
-    if (!biomedicalResponse.ok) {
-      const errorText = await biomedicalResponse.text();
-      console.error('Biomedical NLP function error:', errorText);
-      throw new Error(`Biomedical NLP function failed: ${errorText}`);
-    }
+    const entitiesPromise = extractMedicalEntities(textForAnalysis, groq);
 
-    const biomedicalEntities = await biomedicalResponse.json();
-    console.log('Biomedical entities:', biomedicalEntities);
+    // Clinical reasoning can run in parallel — it only needs caseStudy + embedding
+    const clinicalReasoningPromise = action === 'generate'
+      ? generateClinicalReasoning(groq, caseStudy, queryEmbedding, resolvedModel).catch(err => {
+          console.error('Clinical reasoning failed:', err);
+          return '';
+        })
+      : Promise.resolve('');
 
-    // Get regular entities
-    const entities = await extractMedicalEntities(textForAnalysis, groq);
-    
-    // Combine both entity types
+    // PubMed search — skip testConnection, go straight to search with condition/specialization/complaint
+    const pubmedPromise = (async (): Promise<PubMedArticle[]> => {
+      try {
+        const searchOptions = {
+          maxResults: 5,
+          evidenceLevels: ['systematic review', 'meta-analysis', 'randomized controlled trial', 'clinical trial'],
+          yearRange: { from: 2018 },
+          includeGuidelines: true,
+          focusAreas: ['assessment', 'treatment', 'outcome measures', 'rehabilitation', 'evidence-based practice']
+        };
+        const refs = await pubmedService.getEvidenceBasedReferences(
+          caseStudy.condition || '',
+          caseStudy.specialization || '',
+          caseStudy.presenting_complaint || '',
+          [], // Skip treatments dependency — condition/specialization is enough
+          searchOptions
+        );
+        if (refs.length > 0) return refs;
+      } catch (error) {
+        console.error('PubMed search failed:', error);
+      }
+      return getMockReferences(caseStudy);
+    })();
+
+    // Await all Phase 1
+    const [biomedicalEntities, entities, clinicalReasoning, pubmedReferences] = await Promise.all([
+      biomedicalPromise,
+      entitiesPromise,
+      clinicalReasoningPromise,
+      pubmedPromise
+    ]);
+
     const enhancedEntities = {
       ...entities,
       biomedical_entities: biomedicalEntities?.result || []
     };
 
-    console.log('Enhanced entities:', enhancedEntities);
+    console.log(`Phase 1 complete in ${Date.now() - phase1Start}ms`);
 
-    // Test PubMed connection first
-    console.log('Testing PubMed API connection...');
-    const pubmedConnected = await pubmedService.testConnection();
-    console.log(`PubMed API connection: ${pubmedConnected ? 'SUCCESS' : 'FAILED'}`);
-    
-    // Fetch evidence-based references from PubMed
-    console.log('Fetching PubMed references...');
-    console.log('Search parameters:', {
-      condition: caseStudy.condition,
-      specialization: caseStudy.specialization,
-      presenting_complaint: caseStudy.presenting_complaint,
-      treatments: entities.treatments
-    });
-    
-    let pubmedReferences: PubMedArticle[] = [];
-    
-    if (pubmedConnected) {
-      try {
-        // Configure search options based on case specifics
-        const searchOptions = {
-          maxResults: 5, // Control number of articles
-          evidenceLevels: [
-            'systematic review',
-            'meta-analysis', 
-            'randomized controlled trial',
-            'clinical trial'
-          ],
-          yearRange: { from: 2018 }, // Recent articles only
-          includeGuidelines: true,
-          focusAreas: [
-            'assessment',
-            'treatment',
-            'outcome measures',
-            'rehabilitation',
-            'evidence-based practice'
-          ]
-        };
-
-        console.log('PubMed search options:', searchOptions);
-
-        pubmedReferences = await pubmedService.getEvidenceBasedReferences(
-          caseStudy.condition || '',
-          caseStudy.specialization || '',
-          caseStudy.presenting_complaint,
-          // Extract intervention terms from entities
-          entities.treatments || [],
-          searchOptions
-        );
-        console.log(`Found ${pubmedReferences.length} PubMed references from API`);
-      } catch (error) {
-        console.error('PubMed API search failed, using mock references:', error);
-        pubmedConnected = false; // Force fallback to mock data
-      }
-    }
-    
-    if (!pubmedConnected || pubmedReferences.length === 0) {
-      console.log('Using mock references due to PubMed API issues or no results');
-      // Fallback to mock references for testing
-      pubmedReferences = [
-        {
-          id: "mock1",
-          title: `Evidence-based physiotherapy for ${caseStudy.condition || 'musculoskeletal conditions'}`,
-          abstract: `This systematic review examines the effectiveness of physiotherapy interventions for ${caseStudy.condition || 'musculoskeletal conditions'}. The study analyzed multiple randomized controlled trials and found significant improvements in pain reduction and functional outcomes with structured physiotherapy programs.`,
-          authors: ["Smith, J.", "Johnson, A.", "Williams, B."],
-          publicationDate: "2023-06-15",
-          journal: "Journal of Physiotherapy Research",
-          evidenceLevel: "Level I - Systematic Review/Meta-analysis",
-          url: "https://pubmed.ncbi.nlm.nih.gov/mock1/",
-          citation: "Smith, J., Johnson, A., & Williams, B. (2023). Evidence-based physiotherapy for musculoskeletal conditions. Journal of Physiotherapy Research."
-        },
-        {
-          id: "mock2",
-          title: `${caseStudy.specialization || 'Orthopedic'} physiotherapy: Clinical guidelines and best practices`,
-          abstract: `This clinical practice guideline provides evidence-based recommendations for ${caseStudy.specialization?.toLowerCase() || 'orthopedic'} physiotherapy interventions. The guidelines are based on high-quality research and expert consensus, offering practical guidance for clinical decision-making.`,
-          authors: ["Brown, C.", "Davis, M.", "Wilson, K."],
-          publicationDate: "2023-03-20",
-          journal: "Clinical Rehabilitation",
-          evidenceLevel: "Level II - Clinical Practice Guidelines",
-          url: "https://pubmed.ncbi.nlm.nih.gov/mock2/",
-          citation: "Brown, C., Davis, M., & Wilson, K. (2023). Orthopedic physiotherapy: Clinical guidelines and best practices. Clinical Rehabilitation."
-        },
-        {
-          id: "mock3",
-          title: `Outcome measures in ${caseStudy.specialization?.toLowerCase() || 'physiotherapy'}: A comprehensive review`,
-          abstract: `This review examines validated outcome measures commonly used in ${caseStudy.specialization?.toLowerCase() || 'physiotherapy'} practice. The study provides recommendations for selecting appropriate assessment tools based on condition-specific requirements and psychometric properties.`,
-          authors: ["Taylor, R.", "Anderson, L.", "Thompson, S."],
-          publicationDate: "2022-11-10",
-          journal: "Physical Therapy Reviews",
-          evidenceLevel: "Level III - Systematic Review",
-          url: "https://pubmed.ncbi.nlm.nih.gov/mock3/",
-          citation: "Taylor, R., Anderson, L., & Thompson, S. (2022). Outcome measures in physiotherapy: A comprehensive review. Physical Therapy Reviews."
-        }
-      ];
-    }
-    
-    console.log(`Using ${pubmedReferences.length} references for case generation`);
-    console.log('References:', JSON.stringify(pubmedReferences, null, 2));
-
-    // Get specialization-specific context
+    // Get specialization context
     const specializationContext = specializedPrompts[caseStudy.specialization as keyof typeof specializedPrompts];
-    
+
+    // -----------------------------------------------------------------------
+    // ANALYZE action — early return
+    // -----------------------------------------------------------------------
     if (action === 'analyze') {
-      const analysisPrompt = `${caseStudy.ai_role}
-      
+      const analysisPrompt = `${caseStudy.ai_role || ''}
+
       Provide a comprehensive analysis of this case considering:
       1. Primary condition and symptoms
       2. Key medical findings and implications
       3. Relevant evidence-based assessment strategies
       4. Potential treatment approaches based on current guidelines
       5. Risk factors and precautions
-      
+
       Patient Information:
-      ${JSON.stringify({
-        name: caseStudy.patient_name,
-        age: caseStudy.age,
-        gender: caseStudy.gender,
-        condition: caseStudy.condition,
-        complaint: caseStudy.presenting_complaint
-      }, null, 2)}
-      
+      ${patientSummary(caseStudy)}
+
       Specialization Context:
       ${JSON.stringify(specializationContext, null, 2)}
-      
+
       Extracted Medical Entities:
       ${JSON.stringify(entities, null, 2)}`;
 
@@ -334,12 +588,9 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
             role: "system",
             content: caseStudy.ai_role || "You are an expert physiotherapist providing comprehensive clinical case analysis based on current evidence-based practice guidelines."
           },
-          {
-            role: "user",
-            content: analysisPrompt
-          }
+          { role: "user", content: analysisPrompt }
         ],
-        model: "llama-3.1-8b-instant",
+        model: resolvedModel,
         temperature: 0.7,
         max_tokens: 1000,
       });
@@ -350,104 +601,80 @@ export async function processCaseStudy(caseStudy: any, action: 'analyze' | 'gene
       };
     }
 
-    // Generate clinical reasoning with proper embedding
-    const clinicalReasoning = await generateClinicalReasoning(groq, caseStudy, queryEmbedding);
+    // -----------------------------------------------------------------------
+    // PHASE 2 — Generate sections and fields, staggered to avoid Groq rate limits.
+    // Sub-phase 2a: Generate case study sections (max 2 concurrent Groq calls)
+    // Sub-phase 2b: Generate comprehensive + additional fields (2 concurrent Groq calls)
+    // Sub-phase 2c: Additional case data (full case only, 2 concurrent Groq calls)
+    // -----------------------------------------------------------------------
+    console.log('Phase 2a: Generating sections...');
+    const phase2Start = Date.now();
 
-    // Generate full case study with all sections
-    const generatedSections = [];
-    const sectionsToGenerate = generateFullCase ? sections : sections.slice(0, 2); // Generate all 8 sections for full case, first 2 for regular
-    
-    for (const section of sectionsToGenerate) {
-      console.log(`Generating section: ${section.title}`);
-      
-      // Format PubMed references for inclusion in section prompts
-      const referencesText = pubmedReferences.length > 0 
-        ? `\n\nEvidence-Based References:\n${pubmedReferences.map(ref => 
-            `- ${ref.title} (${ref.evidenceLevel})\n  Authors: ${ref.authors.join(', ')}\n  Journal: ${ref.journal}\n  Abstract: ${ref.abstract.substring(0, 200)}...\n  Citation: ${ref.citation}`
-          ).join('\n\n')}`
-        : '\n\nNo specific references found for this case.';
-      
-      const prompt = `You are an expert ${caseStudy.specialization} physiotherapist creating a comprehensive case study section.
+    const sectionsToGenerate = generateFullCase ? sections : sections.slice(0, 2);
+    const maxTokens = generateFullCase ? 4000 : 2000;
 
-${caseStudy.ai_role}
+    // 2a: Generate sections — up to 2 at a time for regular, up to 8 for full case
+    // For regular case (2 sections), run both in parallel. For full case, batch in pairs.
+    const generatedSections: Section[] = [];
+    if (generateFullCase) {
+      // Batch sections in pairs to avoid rate limiting
+      for (let i = 0; i < sectionsToGenerate.length; i += 2) {
+        const batch = sectionsToGenerate.slice(i, i + 2);
+        const batchResults = await Promise.all(
+          batch.map(section =>
+            generateSingleSection(groq, section, caseStudy, enhancedEntities, specializationContext, pubmedReferences, resolvedModel, maxTokens)
+              .catch(err => {
+                console.error(`Section "${section.title}" failed:`, err);
+                return { title: section.title, content: '' } as Section;
+              })
+          )
+        );
+        generatedSections.push(...batchResults);
+      }
+    } else {
+      // Regular case: 2 sections in parallel
+      const results = await Promise.all(
+        sectionsToGenerate.map(section =>
+          generateSingleSection(groq, section, caseStudy, enhancedEntities, specializationContext, pubmedReferences, resolvedModel, maxTokens)
+            .catch(err => {
+              console.error(`Section "${section.title}" failed:`, err);
+              return { title: section.title, content: '' } as Section;
+            })
+        )
+      );
+      generatedSections.push(...results);
+    }
+    console.log(`Phase 2a complete in ${Date.now() - phase2Start}ms — ${generatedSections.length} sections`);
 
-Generate the "${section.title}" section for this physiotherapy case study following the exact structure and format specified below.
+    // 2b: ALL supplementary fields in ONE consolidated Groq call (14 fields)
+    // Small delay to let rate limiter reset after section generation
+    await delay(500);
+    console.log('Phase 2b: Generating all supplementary fields (14 fields, 1 call)...');
+    const phase2bStart = Date.now();
 
-SECTION REQUIREMENTS:
-${section.description}
+    const allFields = await generateAllFields(groq, caseStudy, enhancedEntities, pubmedReferences, resolvedModel);
+    console.log(`Phase 2b complete in ${Date.now() - phase2bStart}ms`);
 
-PATIENT INFORMATION:
-Name: ${caseStudy.patient_name}
-Age: ${caseStudy.age}
-Gender: ${caseStudy.gender}
-Condition: ${caseStudy.condition}
-Presenting Complaint: ${caseStudy.presenting_complaint || 'Not specified'}
-Background: ${caseStudy.patient_background || 'Not specified'}
-ADL Problem: ${caseStudy.adl_problem || 'Not specified'}
-Medical History: ${caseStudy.medical_history || 'Not specified'}
-Comorbidities: ${caseStudy.comorbidities || 'None reported'}
-Psychosocial Factors: ${caseStudy.psychosocial_factors || 'Not specified'}
-
-SPECIALIZATION CONTEXT (${caseStudy.specialization}):
-${specializationContext?.context || ''}
-
-Common Assessments for ${caseStudy.specialization}:
-${specializationContext?.commonAssessments?.join(', ') || 'Standard physiotherapy assessments'}
-
-MEDICAL ENTITIES IDENTIFIED:
-${JSON.stringify(entities, null, 2)}
-
-      ${referencesText}
-
-CRITICAL REQUIREMENTS:
-1. Follow the EXACT structure specified in the section requirements
-2. Use specific measurements with normal ranges (e.g., "ROM: 90° (NL: 110-130°)")
-3. Include standardized assessment scores with interpretations
-4. Reference evidence levels (Grade A, B, C or Level I-V)
-5. Use clinical terminology appropriate for ${caseStudy.specialization}
-6. Include specific numerical values, dates, and measurements
-7. Create detailed tables when specified using markdown format
-8. Provide comprehensive clinical reasoning
-9. Make this section detailed and professional (aim for 400-600 words)
-10. Include specific examples relevant to this patient's condition
-11. Cite the provided evidence-based references where appropriate using proper citation format
-
-Generate a comprehensive, detailed section that matches the quality and depth of professional case study documentation.`;
-
-      const completion = await groq.chat.completions.create({
-        messages: [
-          {
-            role: "system",
-            content: `You are an expert ${caseStudy.specialization} physiotherapist creating detailed, evidence-based case study sections. You must follow the exact structure and format requirements provided.`
-          },
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        model: "llama-3.1-8b-instant",
-        temperature: 0.7,
-        max_tokens: generateFullCase ? 4000 : 2000,
-      });
-
-      const sectionContent = completion.choices[0]?.message?.content || '';
-      generatedSections.push({
-        title: section.title,
-        content: sectionContent
-      });
-      
-      // Small delay to avoid rate limiting (reduced for faster models)
-      await new Promise(resolve => setTimeout(resolve, 300));
+    // 2c: Additional case data (full case only)
+    let additionalData = {};
+    if (generateFullCase) {
+      console.log('Phase 2c: Generating additional case data...');
+      const phase2cStart = Date.now();
+      additionalData = await generateAdditionalCaseData(groq, caseStudy, entities, resolvedModel);
+      console.log(`Phase 2c complete in ${Date.now() - phase2cStart}ms`);
     }
 
-    // Generate clinical reasoning section
-    const clinicalReasoningContent = clinicalReasoning;
+    console.log(`Phase 2 total: ${Date.now() - phase2Start}ms`);
 
-    // Add clinical reasoning as a section
-    generatedSections.push({
-      title: 'Clinical Reasoning',
-      content: clinicalReasoningContent
-    });
+    // -----------------------------------------------------------------------
+    // Assemble result
+    // -----------------------------------------------------------------------
+    const allSections: Section[] = [...generatedSections];
+
+    // Add clinical reasoning section
+    if (clinicalReasoning) {
+      allSections.push({ title: 'Clinical Reasoning', content: clinicalReasoning });
+    }
 
     // Add Evidence-Based References section
     if (pubmedReferences.length > 0) {
@@ -478,115 +705,28 @@ These references provide evidence-based support for:
 - Assessment strategies and outcome measures
 - Treatment interventions and their effectiveness
 - Clinical decision-making processes
-- Best practice guidelines for this condition
+- Best practice guidelines for this condition`;
 
-The evidence levels range from systematic reviews and meta-analyses (Level I) to clinical trials and observational studies, providing a comprehensive foundation for clinical practice.`;
-
-      generatedSections.push({
-        title: 'Evidence-Based References',
-        content: referencesContent
-      });
+      allSections.push({ title: 'Evidence-Based References', content: referencesContent });
     }
-
-    // Generate comprehensive fields with PubMed references
-    const comprehensiveFields = await generateComprehensiveFields(groq, caseStudy, enhancedEntities, pubmedReferences);
 
     // Add comprehensive fields as sections
-    const additionalSections = [
-      { title: 'Treatment Progression', content: comprehensiveFields.treatment_progression || '' },
-      { title: 'Evidence-Based Context', content: comprehensiveFields.evidence_based_context || '' },
-      { title: 'Outcome Measures Data', content: comprehensiveFields.outcome_measures_data || '' },
-      { title: 'Clinical Decision Points', content: comprehensiveFields.clinical_decision_points || '' },
-      { title: 'Diagnostic Reasoning', content: comprehensiveFields.diagnostic_reasoning || '' },
-      { title: 'Problem Prioritization', content: comprehensiveFields.problem_prioritization || '' },
-      { title: 'Intervention Rationale', content: comprehensiveFields.intervention_rationale || '' },
-      { title: 'Reassessment Rationale', content: comprehensiveFields.reassessment_rationale || '' },
-      { title: 'Treatment Approach', content: comprehensiveFields.treatment_approach || '' }
-    ].filter(section => section.content);
+    const comprehensiveSections: Section[] = [
+      { title: 'Treatment Progression', content: allFields.treatment_progression || '' },
+      { title: 'Evidence-Based Context', content: allFields.evidence_based_context || '' },
+      { title: 'Outcome Measures Data', content: allFields.outcome_measures_data || '' },
+      { title: 'Clinical Decision Points', content: allFields.clinical_decision_points || '' },
+      { title: 'Diagnostic Reasoning', content: allFields.diagnostic_reasoning || '' },
+      { title: 'Problem Prioritization', content: allFields.problem_prioritization || '' },
+      { title: 'Intervention Rationale', content: allFields.intervention_rationale || '' },
+      { title: 'Reassessment Rationale', content: allFields.reassessment_rationale || '' },
+      { title: 'Treatment Approach', content: allFields.treatment_approach || '' }
+    ].filter(s => s.content);
 
-    const allSections = [...generatedSections, ...additionalSections];
-    
-    // Generate additional comprehensive data for full case studies
-    let additionalData = {};
-    if (generateFullCase) {
-      additionalData = await generateAdditionalCaseData(groq, caseStudy, entities);
-    }
+    allSections.push(...comprehensiveSections);
 
-    // Process ICF codes and other additional data - consolidated into ONE call to avoid rate limits
-    const systemRole = caseStudy.ai_role || "You are an expert physiotherapist providing comprehensive clinical case analysis based on current evidence-based practice guidelines.";
-    
-    const patientContext = JSON.stringify({
-      name: caseStudy.patient_name,
-      age: caseStudy.age,
-      gender: caseStudy.gender,
-      condition: caseStudy.condition,
-      complaint: caseStudy.presenting_complaint,
-      background: caseStudy.patient_background,
-      adl_problem: caseStudy.adl_problem,
-      psychosocial_factors: caseStudy.psychosocial_factors
-    }, null, 2);
-
-    const entitiesContext = JSON.stringify(entities, null, 2);
-
-    const consolidatedPrompt = `Generate the following 5 sections for this physiotherapy case study. Return ONLY valid JSON with these exact keys.
-
-Patient Info:
-${patientContext}
-
-Medical Entities:
-${entitiesContext}
-
-Return a JSON object with these 5 keys:
-{
-  "icf_codes": "ICF codes with descriptions for this case",
-  "assessment_findings": "Specific assessment scores and findings",
-  "intervention_plan": "Detailed intervention plan with specific interventions",
-  "clinical_guidelines": "Relevant clinical guidelines with descriptions",
-  "evidence_levels": "Evidence levels supporting treatment decisions"
-}
-
-Each value should be a detailed markdown string (200-400 words). Return ONLY the JSON object, no other text.`;
-
-    let additionalFields = {
-      icf_codes: '',
-      assessment_findings: '',
-      intervention_plan: '',
-      clinical_guidelines: '',
-      evidence_levels: ''
-    };
-
-    try {
-      const consolidatedCompletion = await groq.chat.completions.create({
-        messages: [
-          { role: "system", content: systemRole },
-          { role: "user", content: consolidatedPrompt }
-        ],
-        model: "llama-3.1-8b-instant",
-        temperature: 0.7,
-        max_tokens: 4000,
-      });
-
-      const responseText = consolidatedCompletion.choices[0]?.message?.content || '{}';
-      try {
-        // Try to parse the JSON response
-        const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          const parsed = JSON.parse(jsonMatch[0]);
-          additionalFields = {
-            icf_codes: parsed.icf_codes || '',
-            assessment_findings: parsed.assessment_findings || '',
-            intervention_plan: parsed.intervention_plan || '',
-            clinical_guidelines: parsed.clinical_guidelines || '',
-            evidence_levels: parsed.evidence_levels || ''
-          };
-        }
-      } catch (parseError) {
-        console.error('Failed to parse consolidated response as JSON, using raw text');
-        additionalFields.icf_codes = responseText;
-      }
-    } catch (error) {
-      console.error('Error generating additional fields:', error);
-    }
+    const totalTime = Date.now() - phase1Start;
+    console.log(`Total processing time: ${totalTime}ms (${allSections.length} sections generated)`);
 
     return {
       success: true,
@@ -594,132 +734,24 @@ Each value should be a detailed markdown string (200-400 words). Return ONLY the
       references: pubmedReferences,
       medical_entities: enhancedEntities,
       analysis: allSections[0]?.content,
-      icf_codes: additionalFields.icf_codes,
-      assessment_findings: additionalFields.assessment_findings,
-      intervention_plan: additionalFields.intervention_plan,
-      clinical_guidelines: additionalFields.clinical_guidelines,
-      evidence_levels: additionalFields.evidence_levels,
-      ...comprehensiveFields,
+      icf_codes: allFields.icf_codes,
+      assessment_findings: allFields.assessment_findings,
+      intervention_plan: allFields.intervention_plan,
+      clinical_guidelines: allFields.clinical_guidelines,
+      evidence_levels: allFields.evidence_levels,
+      treatment_progression: allFields.treatment_progression,
+      evidence_based_context: allFields.evidence_based_context,
+      outcome_measures_data: allFields.outcome_measures_data,
+      clinical_decision_points: allFields.clinical_decision_points,
+      diagnostic_reasoning: allFields.diagnostic_reasoning,
+      problem_prioritization: allFields.problem_prioritization,
+      intervention_rationale: allFields.intervention_rationale,
+      reassessment_rationale: allFields.reassessment_rationale,
+      treatment_approach: allFields.treatment_approach,
       ...additionalData
     };
   } catch (error) {
     console.error('Error in processCaseStudy:', error);
     throw error;
-  }
-}
-
-async function generateAdditionalCaseData(groq: Groq, caseStudy: any, entities: any) {
-  console.log('Generating additional comprehensive case data...');
-  
-  try {
-    // Generate clinical guidelines with detailed structure
-    const guidelinesPrompt = `Generate specific clinical guidelines for ${caseStudy.condition} in ${caseStudy.specialization} physiotherapy. 
-    
-    Format as a structured list including:
-    - Guideline name and source
-    - Key recommendations with evidence levels
-    - Specific intervention protocols
-    - Outcome measures recommended
-    
-    Focus on evidence-based guidelines from professional organizations.`;
-    
-    const guidelinesCompletion = await groq.chat.completions.create({
-      messages: [
-        { role: "system", content: "You are a clinical guidelines expert specializing in evidence-based physiotherapy practice." },
-        { role: "user", content: guidelinesPrompt }
-      ],
-      model: "llama-3.1-8b-instant",
-      temperature: 0.3,
-      max_tokens: 1500,
-    });
-
-    // Generate detailed assessment tools
-    const assessmentPrompt = `Generate a comprehensive list of assessment tools for ${caseStudy.condition} in ${caseStudy.specialization}.
-    
-    For each tool include:
-    - Tool name and acronym
-    - Scoring method and range
-    - Reliability and validity evidence
-    - Clinical interpretation guidelines
-    - Recommended frequency of use
-    
-    Include both condition-specific and general functional assessments.`;
-    
-    const assessmentCompletion = await groq.chat.completions.create({
-      messages: [
-        { role: "system", content: "You are an assessment and outcome measurement specialist in physiotherapy." },
-        { role: "user", content: assessmentPrompt }
-      ],
-      model: "llama-3.1-8b-instant",
-      temperature: 0.3,
-      max_tokens: 1500,
-    });
-
-    // Generate measurement data specific to the condition
-    const measurementData = {
-      "Range of Motion": "Goniometry - Universal goniometer, digital inclinometer",
-      "Muscle Strength": "Manual Muscle Testing (0-5 scale), Hand-held dynamometry",
-      "Pain Assessment": "Visual Analog Scale (0-10), Numeric Pain Rating Scale",
-      "Functional Capacity": "Timed Up and Go, 6-Minute Walk Test, Berg Balance Scale",
-      "Quality of Life": "SF-36, EQ-5D-5L, condition-specific questionnaires"
-    };
-
-    // Generate professional frameworks
-    const professionalFrameworks = {
-      "ICF Framework": {
-        description: "International Classification of Functioning, Disability and Health",
-        components: ["Body Functions", "Body Structures", "Activities", "Participation", "Environmental Factors"],
-        guidelines: "Use ICF codes to classify patient problems and track outcomes"
-      },
-      "Evidence-Based Practice": {
-        description: "Integration of best research evidence with clinical expertise and patient values",
-        components: ["Research Evidence", "Clinical Expertise", "Patient Preferences"],
-        guidelines: "Apply EBP principles in assessment and intervention selection"
-      }
-    };
-
-    return {
-      clinical_guidelines: [{ 
-        name: `${caseStudy.specialization} Guidelines for ${caseStudy.condition}`,
-        content: guidelinesCompletion.choices[0]?.message?.content || '',
-        evidence_level: "Grade A",
-        source: "Professional Association Guidelines"
-      }],
-      assessment_tools: [{
-        category: `${caseStudy.specialization} Assessment Tools`,
-        content: assessmentCompletion.choices[0]?.message?.content || '',
-        reliability: "High",
-        validity: "Established"
-      }],
-      evidence_levels: { 
-        "Grade A": 3, 
-        "Grade B": 4, 
-        "Grade C": 2,
-        "Level I": 2,
-        "Level II": 3,
-        "Level III": 2
-      },
-      measurement_data: measurementData,
-      professional_frameworks: professionalFrameworks,
-      standardized_tests: [
-        { 
-          name: "Berg Balance Scale", 
-          category: "Balance Assessment",
-          measurement_type: "Functional Balance",
-          normal_ranges: { "Low Risk": "45-56", "Moderate Risk": "21-44", "High Risk": "0-20" },
-          interpretation_guidelines: "Higher scores indicate better balance control"
-        },
-        {
-          name: "Timed Up and Go",
-          category: "Mobility Assessment", 
-          measurement_type: "Functional Mobility",
-          normal_ranges: { "Normal": "<10 seconds", "Mild Impairment": "10-20 seconds", "Significant Impairment": ">20 seconds" },
-          interpretation_guidelines: "Shorter times indicate better mobility"
-        }
-      ]
-    };
-  } catch (error) {
-    console.error('Error generating additional case data:', error);
-    return {};
   }
 }

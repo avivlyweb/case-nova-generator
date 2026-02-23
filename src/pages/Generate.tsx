@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { createCaseStudy } from "@/lib/db";
 import { PatientFormData } from "@/components/generate/steps/Step2PatientInfo";
@@ -11,6 +12,12 @@ import Step1Specialization from "@/components/generate/steps/Step1Specialization
 import Step2PatientInfo from "@/components/generate/steps/Step2PatientInfo";
 import Step3Review from "@/components/generate/steps/Step3Review";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+
+const MODEL_OPTIONS = [
+  { value: "llama-3.1-8b-instant", label: "Llama 3.1 8B (Fast)", description: "Fast generation, good quality" },
+  { value: "llama-3.3-70b-versatile", label: "Llama 3.3 70B (Quality)", description: "Higher quality, slower" },
+  { value: "groq/compound", label: "Compound (Research)", description: "Web search + research, richest output" },
+];
 
 const aiRoleDescriptions = {
   Orthopedic: "Expert in musculoskeletal conditions and rehabilitation",
@@ -28,6 +35,7 @@ const Generate = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [specialization, setSpecialization] = useState("Orthopedic");
   const [aiRole, setAiRole] = useState(aiRoleDescriptions.Orthopedic);
+  const [selectedModel, setSelectedModel] = useState("llama-3.1-8b-instant");
   const [formData, setFormData] = useState<PatientFormData>({
     patientName: "",
     age: 0,
@@ -132,7 +140,8 @@ const Generate = () => {
         const { data, error } = await supabase.functions.invoke('process-case-study', {
           body: { 
             caseStudy: newCaseStudy,
-            action: 'generate'
+            action: 'generate',
+            model: selectedModel
           }
         });
 
@@ -234,6 +243,24 @@ const Generate = () => {
         <p className="text-medical-body">
           Create comprehensive, evidence-based physiotherapy case studies tailored to your specialization
         </p>
+      </div>
+
+      {/* Model Selector */}
+      <div className="mb-6 flex items-center gap-4">
+        <label className="text-sm font-medium text-gray-700">AI Model:</label>
+        <Select value={selectedModel} onValueChange={setSelectedModel}>
+          <SelectTrigger className="w-[280px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {MODEL_OPTIONS.map((opt) => (
+              <SelectItem key={opt.value} value={opt.value}>
+                <span className="font-medium">{opt.label}</span>
+                <span className="ml-2 text-xs text-muted-foreground">{opt.description}</span>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Step Wizard */}
